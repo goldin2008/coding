@@ -1,5 +1,45 @@
 # Leet_Code
 
+https://hzhou.me/LeetCode/
+
+http://www.lintcode.com/en/
+
+http://www.jiuzhang.com/solutions/
+
+https://github.com/FreeTymeKiyan/LeetCode-Sol-Res
+
+http://blog.csdn.net/lilong_dream/article/details/19298357
+
+http://blog.csdn.net/fightforyourdream/article/details/12705509
+
+http://blog.sina.com.cn/s/blog_eb52001d0102v235.html
+
+http://www.raychase.net/2763
+
+http://www.lilongdream.com/2014/04/08/30.html
+
+http://coolshell.cn/articles/12052.html
+
+http://www.xuebuyuan.com/1996110.html
+
+https://github.com/zdzapple/LeetCode
+
+http://www.hawstein.com/posts/ctci-solutions-contents.html
+
+http://www.cnblogs.com/grandyang/p/4606334.html
+
+http://www.acmerblog.com/leetcode
+
+http://bowang.name/leetcode-150/
+
+https://www.gitbook.com/book/siddontang/leetcode-solution/details
+
+http://www.douban.com/note/330562764/
+
+
+
+
+
 
 个人目前的战略是先用python刷，因为Python语法简单，还不用一大堆初始化的东西，效率很高。
 然后完全不看答案，按照easy->medium->hard 的顺序刷，系列题也是按照先后顺序刷
