@@ -1,5 +1,8 @@
 # Leet_Code
 
+Python
+http://www.cnblogs.com/zuoyuan/p/3698966.html
+
 https://hzhou.me/LeetCode/
 
 http://www.lintcode.com/en/
