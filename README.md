@@ -6,10 +6,15 @@ https://www.google.com/about/careers/students/guide-to-technical-development.htm
 
 ## Materials
 http://www.kancloud.cn/kancloud/data-structure-and-algorithm-notes/72947
+
 http://www.lintcode.com/en/problem/#
+
 http://bangbingsyb.blogspot.com/2014/11/leetcode-pascals-triangle-i-ii.html
+
 https://github.com/goldin2008/LeetCode-4
+
 http://www.jiuzhang.com/solutions/pascals-triangle/
+
 https://plus.google.com/105852295213412135941
 ## END
 
