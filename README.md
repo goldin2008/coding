@@ -15,6 +15,7 @@ https://plus.google.com/105852295213412135941
 
 ## SQL
 http://sqlzoo.net/wiki/SELECT_from_WORLD_Tutorial
+
 http://www.w3schools.com/sql/sql_intro.asp
 ## END
 
