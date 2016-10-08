@@ -11,13 +11,12 @@ http://bangbingsyb.blogspot.com/2014/11/leetcode-pascals-triangle-i-ii.html
 https://github.com/goldin2008/LeetCode-4
 http://www.jiuzhang.com/solutions/pascals-triangle/
 https://plus.google.com/105852295213412135941
-
-
 ## END
 
 ## SQL
 http://sqlzoo.net/wiki/SELECT_from_WORLD_Tutorial
 http://www.w3schools.com/sql/sql_intro.asp
+## END
 
 
 
