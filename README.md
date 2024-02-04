@@ -21,6 +21,8 @@
 <!-- ![Diagram of deployment.](pic/sorting.png) -->
 <img src="pic/sorting.png" width=50% height=50%>
 
+<img src="pic/sort.png" width=50% height=50%>
+
 <img src="pic/binarytree.png" width=50% height=50%>
 
 <img src="pic/backtracking.png" width=50% height=50%>
