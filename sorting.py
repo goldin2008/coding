@@ -1,4 +1,6 @@
 # Approach 1: Merge Sort
+https://www.geeksforgeeks.org/merge-sort/
+
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         temp_arr = [0] * len(nums)
@@ -54,6 +56,7 @@ class Solution:
     
 # Approach 2: Heap Sort
 https://www.geeksforgeeks.org/heap-sort/
+
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         # Function to heapify a subtree (in top-down order) rooted at index i.
@@ -89,6 +92,8 @@ class Solution:
         return nums
     
     # Approach 3: Counting Sort
+    https://www.geeksforgeeks.org/counting-sort/
+
     class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         def counting_sort():
