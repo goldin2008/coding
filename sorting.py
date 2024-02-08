@@ -53,6 +53,7 @@ class Solution:
         return nums
     
 # Approach 2: Heap Sort
+https://www.geeksforgeeks.org/heap-sort/
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         # Function to heapify a subtree (in top-down order) rooted at index i.
