@@ -12,9 +12,9 @@ while fast and fast.next:
     slow = slow.next
     fast = fast.next.next
 
-区别在slow停在的位置，第1个要从slow.next断，第2个要从slow断!!!
-两种方法区别在linked list中node数目为偶数时slow的停留点不一样，这时分割的时候要注意是用slow还是slow.next来分
-node数目为奇数的时候,用两种方法slow的停留点都一样，没有影响
+区别在slow停在的位置, 第1个要从slow.next断, 第2个要从slow断!!!
+两种方法区别在linked list中node数目为偶数时slow的停留点不一样, 这时分割的时候要注意是用slow还是slow.next来分
+node数目为奇数的时候,用两种方法slow的停留点都一样, 没有影响
 """
 # Definition for singly-linked list.
 # class ListNode:
@@ -43,7 +43,7 @@ class Solution:
         cur = head   
         pre = None
         while(cur!=None):
-            temp = cur.next # 保存一下 cur的下一个节点，因为接下来要改变cur->next
+            temp = cur.next # 保存一下 cur的下一个节点, 因为接下来要改变cur->next
             cur.next = pre #反转
             #更新pre、cur指针
             pre = cur

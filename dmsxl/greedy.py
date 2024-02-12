@@ -100,11 +100,11 @@ class Solution:
 class Solution:
     def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
     	# 先按照h维度的身高顺序从高到低排序。确定第一个维度
-        # lambda返回的是一个元组：当-x[0](维度h）相同时，再根据x[1]（维度k）从小到大排序
+        # lambda返回的是一个元组：当-x[0](维度h）相同时, 再根据x[1]（维度k）从小到大排序
         people.sort(key=lambda x: (-x[0], x[1]))
         que = []
 	
-	# 根据每个元素的第二个维度k，贪心算法，进行插入
+	# 根据每个元素的第二个维度k, 贪心算法, 进行插入
         # people已经排序过了：同一高度时k值小的排前面。
         for p in people:
             que.insert(p[1], p)
@@ -117,7 +117,7 @@ class Solution:
         points.sort(key=lambda x: x[0])
         result = 1
         for i in range(1, len(points)):
-            if points[i][0] > points[i - 1][1]: # 气球i和气球i-1不挨着，注意这里不是>=
+            if points[i][0] > points[i - 1][1]: # 气球i和气球i-1不挨着, 注意这里不是>=
                 result += 1     
             else:
                 points[i][1] = min(points[i - 1][1], points[i][1]) # 更新重叠气球最小右边界
@@ -174,7 +174,7 @@ class Solution:
         for i in range(len(a)-1,0,-1):
             if int(a[i]) < int(a[i-1]):
                 a[i-1] = str(int(a[i-1]) - 1)
-                a[i:] = '9' * (len(a) - i)  #python不需要设置flag值，直接按长度给9就好了
+                a[i:] = '9' * (len(a) - i)  #python不需要设置flag值, 直接按长度给9就好了
         return int("".join(a)) 
 
 #??? 714. 买卖股票的最佳时机含手续费
@@ -196,8 +196,8 @@ class Solution: # 贪心思路
 class Solution:
     def minCameraCover(self, root: TreeNode) -> int:
         # Greedy Algo:
-        # 从下往上安装摄像头：跳过leaves这样安装数量最少，局部最优 -> 全局最优
-        # 先给leaves的父节点安装，然后每隔两层节点安装一个摄像头，直到Head
+        # 从下往上安装摄像头：跳过leaves这样安装数量最少, 局部最优 -> 全局最优
+        # 先给leaves的父节点安装, 然后每隔两层节点安装一个摄像头, 直到Head
         # 0: 该节点未覆盖
         # 1: 该节点有摄像头
         # 2: 该节点有覆盖
@@ -218,17 +218,17 @@ class Solution:
 
             # Case 2:
                 # left == 0 && right == 0 左右节点无覆盖
-                # left == 1 && right == 0 左节点有摄像头，右节点无覆盖
-                # left == 0 && right == 1 左节点有无覆盖，右节点摄像头
-                # left == 0 && right == 2 左节点无覆盖，右节点覆盖
-                # left == 2 && right == 0 左节点覆盖，右节点无覆盖
+                # left == 1 && right == 0 左节点有摄像头, 右节点无覆盖
+                # left == 0 && right == 1 左节点有无覆盖, 右节点摄像头
+                # left == 0 && right == 2 左节点无覆盖, 右节点覆盖
+                # left == 2 && right == 0 左节点覆盖, 右节点无覆盖
             elif left == 0 or right == 0: 
                 result += 1
                 return 1
 
             # Case 3:
-                # left == 1 && right == 2 左节点有摄像头，右节点有覆盖
-                # left == 2 && right == 1 左节点有覆盖，右节点有摄像头
+                # left == 1 && right == 2 左节点有摄像头, 右节点有覆盖
+                # left == 2 && right == 1 左节点有覆盖, 右节点有摄像头
                 # left == 1 && right == 1 左右节点都有摄像头
             elif left == 1 or right == 1:
                 return 2
