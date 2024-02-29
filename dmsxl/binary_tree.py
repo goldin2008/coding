@@ -1,14 +1,14 @@
 """
 ===================================================================================================
 NOTE:
-递归（深度和广度）只需要function call function, 用一个result储存结果；
+递归(深度和广度)只需要function call function, 用一个result储存结果;
 
-深度（迭代）需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list []
+深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list []
 深度遍历先遍历子node, 然后再处理node, 所以是preorder的话, 先处理node再添加子node, 如果不是preorder, 需要用None标记待处理node
 
-广度（迭代）需要额外用queue来存遍历的node, 用while循环来遍历queue里面的所有node。队列queue用deque([])
+广度(迭代)需要额外用queue来存遍历的node, 用while循环来遍历queue里面的所有node。队列queue用deque([])
 广度遍历level order先处理node, 然后再遍历添加子node
-广度（递归和迭代）都是先处理node, 再遍历添加子node
+广度(递归和迭代)都是先处理node, 再遍历添加子node
 ===================================================================================================
 
 满二叉树: 如果一棵二叉树只有度为0的结点和度为2的结点, 并且度为0的结点在同一层上, 则这棵二叉树为满二叉树。
@@ -19,11 +19,11 @@ NOTE:
 优先级队列其实是一个堆, 堆就是一棵完全二叉树, 同时保证父子节点的顺序关系。
 
 二叉搜索树是有数值的了, 二叉搜索树是一个有序树。
-1. 若它的左子树不空, 则左子树上所有结点的值均小于它的根结点的值；
-2. 若它的右子树不空, 则右子树上所有结点的值均大于它的根结点的值；
+1. 若它的左子树不空, 则左子树上所有结点的值均小于它的根结点的值;
+2. 若它的右子树不空, 则右子树上所有结点的值均大于它的根结点的值;
 3. 它的左、右子树也分别为二叉排序树
 
-平衡二叉搜索树: 又被称为AVL（Adelson-Velsky and Landis）树, 
+平衡二叉搜索树: 又被称为AVL(Adelson-Velsky and Landis)树, 
 且具有以下性质: 它是一棵空树或它的左右两个子树的高度差的绝对值不超过1, 并且左右两个子树都是一棵平衡二叉树。
 
 链式存储方式就用指针,  顺序存储的方式就是用数组
@@ -32,11 +32,11 @@ NOTE:
 1. 深度优先遍历: 先往深走, 遇到叶子节点再往回走。
 2. 广度优先遍历: 一层一层的去遍历。
 深度优先遍历
-1. 前序遍历（递归法, 迭代法）
-2. 中序遍历（递归法, 迭代法）
-3. 后序遍历（递归法, 迭代法）
+1. 前序遍历(递归法, 迭代法)
+2. 中序遍历(递归法, 迭代法)
+3. 后序遍历(递归法, 迭代法)
 广度优先遍历
-1. 层次遍历（迭代法）
+1. 层次遍历(迭代法)
 二叉树中深度优先和广度优先遍历实现方式, 我们做二叉树相关题目, 经常会使用递归的方式来实现深度优先遍历, 也就是实现前中后序遍历, 使用递归是比较方便的。
 栈其实就是递归的一种是实现结构, 也就说前中后序遍历的逻辑其实都是可以借助栈使用递归的方式来实现的。
 广度优先遍历的实现一般使用队列来实现, 这也是队列先进先出的特点所决定的, 因为需要先进先出的结构, 才能一层一层的来遍历二叉树。
@@ -128,13 +128,13 @@ class Solution:
         while st:
             node = st.pop()
             if node != None:
-                if node.right: #添加右节点（空节点不入栈）
+                if node.right: #添加右节点(空节点不入栈)
                     st.append(node.right)
                 
                 st.append(node) #添加中节点
                 st.append(None) #中节点访问过, 但是还没有处理, 加入空节点做为标记。
                 
-                if node.left: #添加左节点（空节点不入栈）
+                if node.left: #添加左节点(空节点不入栈)
                     st.append(node.left)
             else: #只有遇到空节点的时候, 才将下一个节点放进结果集
                 node = st.pop() #重新取出栈中元素
@@ -217,7 +217,7 @@ class Solution:
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         # 为什么要有返回值: 
         #   因为搜索到目标节点就要立即return, 
-        #   这样才是找到节点就返回（搜索某一条边）, 如果不加return, 就是遍历整棵树了。
+        #   这样才是找到节点就返回(搜索某一条边), 如果不加return, 就是遍历整棵树了。
         if not root or root.val == val: 
             return root
 
@@ -250,7 +250,7 @@ class Solution:
         self.invertTree(root.left) #左
         self.invertTree(root.right) #右
         return root
-# 迭代法：深度优先遍历（前序遍历）：
+# 迭代法：深度优先遍历(前序遍历)：
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if not root:
@@ -265,7 +265,7 @@ class Solution:
             if node.left:
                 st.append(node.left) #左
         return root
-# 迭代法：广度优先遍历（层序遍历）：
+# 迭代法：广度优先遍历(层序遍历)：
 import collections
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
@@ -304,7 +304,7 @@ class Solution:
         #此时才做递归, 做下一层的判断
         outside = self.compare(left.left, right.right) #左子树：左、 右子树：右
         inside = self.compare(left.right, right.left) #左子树：右、 右子树：左
-        isSame = outside and inside #左子树：中、 右子树：中 （逻辑处理）
+        isSame = outside and inside #左子树：中、 右子树：中 (逻辑处理)
         return isSame
 
 
@@ -428,7 +428,7 @@ class Solution:
 
 
 # 700.二叉搜索树中的搜索
-# 给定二叉搜索树（BST）的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在, 则返回 NULL。
+# 给定二叉搜索树(BST)的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在, 则返回 NULL。
 
 
 
@@ -464,7 +464,7 @@ class Solution:
 
 
 # 501.二叉搜索树中的众数
-# 给定一个有相同值的二叉搜索树（BST）, 找出 BST 中的所有众数（出现频率最高的元素）。
+# 给定一个有相同值的二叉搜索树(BST), 找出 BST 中的所有众数(出现频率最高的元素)。
 # 假定 BST 有如下定义：
 # 结点左子树中所含结点的值小于等于当前结点的值
 # 结点右子树中所含结点的值大于等于当前结点的值
@@ -473,7 +473,7 @@ class Solution:
 
 # 236. 二叉树的最近公共祖先
 # 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
-# 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+# 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
 class Solution:
     """二叉树的最近公共祖先 递归法"""
 
@@ -493,11 +493,11 @@ class Solution:
 
 # 235. 二叉搜索树的最近公共祖先
 # 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
-# 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+# 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
 
 
 # 701.二叉搜索树中的插入操作
-# 给定二叉搜索树（BST）的根节点和要插入树中的值, 将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据保证, 新值和原始二叉搜索树中的任意节点值都不同。
+# 给定二叉搜索树(BST)的根节点和要插入树中的值, 将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据保证, 新值和原始二叉搜索树中的任意节点值都不同。
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -527,12 +527,12 @@ class Solution:
 
 
 # 450.删除二叉搜索树中的节点
-# 给定一个二叉搜索树的根节点 root 和一个值 key, 删除二叉搜索树中的 key 对应的节点, 并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。
+# 给定一个二叉搜索树的根节点 root 和一个值 key, 删除二叉搜索树中的 key 对应的节点, 并保证二叉搜索树的性质不变。返回二叉搜索树(有可能被更新)的根节点的引用。
 class Solution:
     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
         if not root: return root  #第一种情况：没找到删除的节点, 遍历到空节点直接返回了
         if root.val == key:  
-            if not root.left and not root.right:  #第二种情况：左右孩子都为空（叶子节点）, 直接删除节点,  返回NULL为根节点
+            if not root.left and not root.right:  #第二种情况：左右孩子都为空(叶子节点), 直接删除节点,  返回NULL为根节点
                 del root
                 return None
             if not root.left and root.right:  #第三种情况：其左孩子为空, 右孩子不为空, 删除节点, 右孩子补位 , 返回右孩子为根节点
@@ -574,7 +574,7 @@ class Solution:
 class Solution:
     def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
         '''
-        构造二叉树：重点是选取数组最中间元素为分割点, 左侧是递归左区间；右侧是递归右区间
+        构造二叉树：重点是选取数组最中间元素为分割点, 左侧是递归左区间;右侧是递归右区间
         必然是平衡树
         左闭右闭区间
         '''
@@ -600,7 +600,7 @@ class Solution:
 
 
 # 538.把二叉搜索树转换为累加树
-# 给出二叉 搜索 树的根节点, 该树的节点值各不相同, 请你将其转换为累加树（Greater Sum Tree）, 使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
+# 给出二叉 搜索 树的根节点, 该树的节点值各不相同, 请你将其转换为累加树(Greater Sum Tree), 使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
 # 提醒一下, 二叉搜索树满足下列约束条件：
 # 节点的左子树仅包含键 小于 节点键的节点。 节点的右子树仅包含键 大于 节点键的节点。 左右子树也必须是二叉搜索树。
 # Definition for a binary tree node.
