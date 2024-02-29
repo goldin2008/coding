@@ -5,8 +5,10 @@ NOTE:
 
 深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list []
 深度遍历先遍历子node, 然后再处理node. 所以是preorder的话, 先处理node再添加子node; 如果不是preorder, 需要用None标记待处理node
+重点:要区分先处理还是后处理node
 
-广度(迭代)需要额外用queue来存遍历的node, 用while循环来遍历queue里面的所有node。数据结构队列queue用deque([])
+广度(迭代)需要额外用queue(FIFO)来存遍历的node, 用while循环来遍历queue里面的所有node。数据结构队列queue用deque([]), q=collections.deque()
+可以用q.popleft()获得item (first one in the queue)
 广度遍历level order先处理node, 然后再遍历添加子node
 广度(递归和迭代)都是先处理node, 再遍历添加子node
 ===================================================================================================
