@@ -63,7 +63,7 @@ class TreeNode:
         self.right = right
 
 """
-深度优先(前中后序遍历) 递归
+DFS 深度优先(前中后序遍历) 递归
 """
 # 前序遍历-递归-LC144_二叉树的前序遍历
 # Definition for a binary tree node.
@@ -141,9 +141,10 @@ class Solution:
         right = self.postorderTraversal(root.right)
 
         return left + right + [root.val]
-    
+
+
 """
-深度优先(前中后序遍历) 迭代
+DFS 深度优先(前中后序遍历) 迭代
 数据结构: 栈 stack, [] in python
 """
 # 迭代统一写法
@@ -211,9 +212,11 @@ class Solution:
                 result.append(node.val)
         return result
 
+
 """
-广度优先(层序遍历) 递归
+BFS 广度优先(层序遍历) 递归
 """
+# 102.二叉树的层序遍历
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         res = []
@@ -225,38 +228,66 @@ class Solution:
             if  root.right: helper(root.right, depth + 1)
         helper(root, 0)
         return res
+# 递归法
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        levels = []
+        self.helper(root, 0, levels)
+        return levels
+    
+    def helper(self, node, level, levels):
+        if not node:
+            return
+        if len(levels) == level:
+            levels.append([])
+        levels[level].append(node.val)
+        self.helper(node.left, level + 1, levels)
+        self.helper(node.right, level + 1, levels)
+
 
 """
-广度优先(层序遍历) 迭代
+BFS 广度优先(层序遍历) 迭代
 数据结构: 队列 queue, deque() in python
 """
+# 利用迭代法
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
     """二叉树层序遍历迭代解法"""
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
-        results = []
         if not root:
-            return results
-
-        from collections import deque
-        que = deque([root])
+            return []
+        
+        result = []
+        que = collections.deque([root])
 
         while que:
             # que里面现有的所有node都是一层要遍历的node
-            size = len(que)
-            result = []
+            level = []
             # 遍历一层的所有node
-            for _ in range(size):
+            for _ in range(len(que)):
                 # 处理node
                 cur = que.popleft()
-                result.append(cur.val)
+                level.append(cur.val)
                 # 添加左右子node
                 if cur.left:
                     que.append(cur.left)
                 if cur.right:
                     que.append(cur.right)
-            results.append(result)
+            result.append(level)
 
-        return results
+        return result
+
 
 """
 二叉搜索树中的搜索
@@ -287,6 +318,306 @@ class Solution:
 
 
 
+#(1-10) 107.二叉树的层次遍历 II
+class Solution:
+    """二叉树层序遍历II迭代解法"""
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return []
+        queue = collections.deque([root])
+        result = []
+        while queue:
+            level = []
+            for _ in range(len(queue)):
+                cur = queue.popleft()
+                level.append(cur.val)
+                if cur.left:
+                    queue.append(cur.left)
+                if cur.right:
+                    queue.append(cur.right)
+            result.append(level)
+        return result[::-1]
+
+
+# 199.二叉树的右视图
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rightSideView(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+        
+        queue = collections.deque([root])
+        right_view = []
+        
+        while queue:
+            level_size = len(queue)
+            
+            for i in range(level_size):
+                node = queue.popleft()
+                
+                if i == level_size - 1:
+                    right_view.append(node.val)
+                
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        
+        return right_view
+
+
+# 637.二叉树的层平均值
+class Solution:
+    """二叉树层平均值迭代解法"""
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def averageOfLevels(self, root: TreeNode) -> List[float]:
+        if not root:
+            return []
+
+        queue = collections.deque([root])
+        averages = []
+        
+        while queue:
+            size = len(queue)
+            level_sum = 0
+            
+            for i in range(size):
+                node = queue.popleft()
+                
+                
+                level_sum += node.val
+                    
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            
+            averages.append(level_sum / size)
+        
+        return averages
+
+
+# 429.N叉树的层序遍历
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+"""
+
+class Solution:
+    def levelOrder(self, root: 'Node') -> List[List[int]]:
+        if not root:
+            return []
+
+        result = []
+        queue = collections.deque([root])
+
+        while queue:
+            level_size = len(queue)
+            level = []
+
+            for _ in range(level_size):
+                node = queue.popleft()
+                level.append(node.val)
+
+                for child in node.children:
+                    queue.append(child)
+
+            result.append(level)
+
+        return result
+
+
+# 515.在每个树行中找最大值
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def largestValues(self, root: TreeNode) -> List[int]:
+        if not root:
+            return []
+
+        result = []
+        queue = collections.deque([root])
+
+        while queue:
+            level_size = len(queue)
+            max_val = float('-inf')
+
+            for _ in range(level_size):
+                node = queue.popleft()
+                max_val = max(max_val, node.val)
+
+                if node.left:
+                    queue.append(node.left)
+
+                if node.right:
+                    queue.append(node.right)
+
+            result.append(max_val)
+
+        return result
+
+
+# 116.填充每个节点的下一个右侧节点指针
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root:
+            return root
+        
+        queue = collections.deque([root])
+        
+        while queue:
+            level_size = len(queue)
+            prev = None
+            
+            for i in range(level_size):
+                node = queue.popleft()
+                
+                if prev:
+                    prev.next = node
+                
+                prev = node
+                
+                if node.left:
+                    queue.append(node.left)
+                
+                if node.right:
+                    queue.append(node.right)
+        
+        return root
+
+
+# 117.填充每个节点的下一个右侧节点指针II
+# 层序遍历解法
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+
+class Solution:
+    def connect(self, root: 'Node') -> 'Node':
+        if not root:
+            return root
+        
+        queue = collections.deque([root])
+        
+        while queue:
+            level_size = len(queue)
+            prev = None
+            
+            for i in range(level_size):
+                node = queue.popleft()
+                
+                if prev:
+                    prev.next = node
+                
+                prev = node
+                
+                if node.left:
+                    queue.append(node.left)
+                
+                if node.right:
+                    queue.append(node.right)
+        
+        return root
+
+
+# 104.二叉树的最大深度
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxDepth(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        
+        depth = 0
+        queue = collections.deque([root])
+        
+        while queue:
+            depth += 1
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        
+        return depth
+
+
+# 111.二叉树的最小深度
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def minDepth(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        depth = 0
+        queue = collections.deque([root])
+        
+        while queue:
+            depth += 1 
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                
+                if not node.left and not node.right:
+                    return depth
+            
+                if node.left:
+                    queue.append(node.left)
+                    
+                if node.right:
+                    queue.append(node.right)
+
+        return depth
 
 
 #1 226.翻转二叉树
