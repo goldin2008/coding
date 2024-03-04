@@ -408,11 +408,8 @@ class Solution:
         while queue:
             size = len(queue)
             level_sum = 0
-            
             for i in range(size):
-                node = queue.popleft()
-                
-                
+                node = queue.popleft()                
                 level_sum += node.val
                     
                 if node.left:
@@ -541,7 +538,6 @@ class Node:
         self.right = right
         self.next = next
 """
-
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root:
