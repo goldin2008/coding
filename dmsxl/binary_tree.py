@@ -299,7 +299,8 @@ class Solution:
 """
 二叉搜索树中的搜索
 """
-# 递归法
+# 700.二叉搜索树中的搜索
+# 递归法 (方法一)
 class Solution:
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         # 为什么要有返回值: 
@@ -314,10 +315,10 @@ class Solution:
         if root.val < val: 
             return self.searchBST(root.right, val)
 
-# 迭代法
+# 迭代法 (方法二)
 class Solution:
     def searchBST(self, root: TreeNode, val: int) -> TreeNode:
-        while root is not None:
+        while root:
             if val < root.val: root = root.left
             elif val > root.val: root = root.right
             else: return root
