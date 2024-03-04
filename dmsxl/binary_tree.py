@@ -3,11 +3,11 @@
 NOTE:
 递归(深度和广度)只需要function call function, 用一个result储存结果;
 
-深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list []
+DFS 深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list []
 深度遍历先遍历子node, 然后再处理node. 所以是preorder的话, 先处理node再添加子node; 如果不是preorder, 需要用None标记待处理node
 重点:要区分先处理还是后处理node
 
-广度(迭代)需要额外用queue(FIFO)来存遍历的node, 用while循环来遍历queue里面的所有node。数据结构队列queue用deque([]), q=collections.deque()
+BFS 广度(迭代)需要额外用queue(FIFO)来存遍历的node, 用while循环来遍历queue里面的所有node。数据结构队列queue用deque([]), q=collections.deque()
 可以用q.popleft()获得item (first one in the queue)
 广度遍历level order先处理node, 然后再遍历添加子node
 广度(递归和迭代)都是先处理node, 再遍历添加子node
@@ -72,18 +72,19 @@ DFS 深度优先(前中后序遍历) 递归
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
-    def preorderTraversal(self, root: TreeNode) -> List[int]:
-        # 保存结果
-        result = []
-        def traversal(root: TreeNode):
-            if root == None:
-                return
-            result.append(root.val) # 前序
-            traversal(root.left)    # 左
-            traversal(root.right)   # 右
-        traversal(root)
-        return result
+
+# class Solution:
+#     def preorderTraversal(self, root: TreeNode) -> List[int]:
+#         # 保存结果
+#         result = []
+#         def traversal(root: TreeNode):
+#             if root == None:
+#                 return
+#             result.append(root.val) # 前序
+#             traversal(root.left)    # 左
+#             traversal(root.right)   # 右
+#         traversal(root)
+#         return result
 # 这第二种方法更好,因为func call func, 只用一个func就够了,不需要再早一点func了
 class Solution:
     def preorderTraversal(self, root: TreeNode) -> List[int]:
@@ -96,18 +97,18 @@ class Solution:
         return  [root.val] + left +  right
 
 
-# 中序遍历-递归-LC94_二叉树的中序遍历
-class Solution:
-    def inorderTraversal(self, root: TreeNode) -> List[int]:
-        result = []
-        def traversal(root: TreeNode):
-            if root == None:
-                return
-            traversal(root.left)    # 左
-            result.append(root.val) # 中序
-            traversal(root.right)   # 右
-        traversal(root)
-        return result
+# # 中序遍历-递归-LC94_二叉树的中序遍历
+# class Solution:
+#     def inorderTraversal(self, root: TreeNode) -> List[int]:
+#         result = []
+#         def traversal(root: TreeNode):
+#             if root == None:
+#                 return
+#             traversal(root.left)    # 左
+#             result.append(root.val) # 中序
+#             traversal(root.right)   # 右
+#         traversal(root)
+#         return result
 # 中序遍历-递归-LC94_二叉树的中序遍历
 class Solution:
     def inorderTraversal(self, root: TreeNode) -> List[int]:
@@ -120,18 +121,18 @@ class Solution:
         return left + [root.val] + right
 
 
-# 后序遍历-递归-LC145_二叉树的后序遍历
-class Solution:
-    def postorderTraversal(self, root: TreeNode) -> List[int]:
-        result = []
-        def traversal(root: TreeNode):
-            if root == None:
-                return
-            traversal(root.left)    # 左
-            traversal(root.right)   # 右
-            result.append(root.val) # 后序
-        traversal(root)
-        return result
+# # 后序遍历-递归-LC145_二叉树的后序遍历
+# class Solution:
+#     def postorderTraversal(self, root: TreeNode) -> List[int]:
+#         result = []
+#         def traversal(root: TreeNode):
+#             if root == None:
+#                 return
+#             traversal(root.left)    # 左
+#             traversal(root.right)   # 右
+#             result.append(root.val) # 后序
+#         traversal(root)
+#         return result
 # 后序遍历-递归-LC145_二叉树的后序遍历
 class Solution:
     def postorderTraversal(self, root: TreeNode) -> List[int]:
