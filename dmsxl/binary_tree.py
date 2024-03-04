@@ -84,6 +84,7 @@ class Solution:
             traversal(root.right)   # 右
         traversal(root)
         return result
+# 这第二种方法更好,因为func call func, 只用一个func就够了,不需要再早一点func了
 class Solution:
     def preorderTraversal(self, root: TreeNode) -> List[int]:
         if not root:
