@@ -5,7 +5,7 @@ NOTE:
 
 DFS 深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list [], st = []
 可用st.pop()获得item (last one in the stack)
-深度遍历先遍历子node, 然后再处理node. 所以是preorder的话, 先处理node再添加子node; 如果不是preorder, 需要用None标记待处理node
+深度遍历先遍历子node, 然后再处理node. 用同一写法的话,都是先遍历(包括用None来先标记处理node)在处理."所以是preorder的话, 先处理node再添加子node; 如果不是preorder, 需要用None标记待处理node"
 重点:要区分先处理还是后处理node
 
 BFS 广度(迭代)需要额外用queue(FIFO)来存遍历的node, 用while循环来遍历queue里面的所有node。数据结构队列queue用deque([]), q=collections.deque()
@@ -172,6 +172,7 @@ class Solution:
                 result.append(node.val)
         return result
 # 迭代法中序遍历：
+    # 深度遍历先遍历子node, 然后再处理node
 class Solution:
     def inorderTraversal(self, root: TreeNode) -> List[int]:
         result = []
@@ -181,6 +182,7 @@ class Solution:
         while st:
             node = st.pop()
             if node != None:
+                # 深度遍历先遍历子node, 然后再处理node
                 if node.right: #添加右节点(空节点不入栈)
                     st.append(node.right)
                 
@@ -190,6 +192,7 @@ class Solution:
                 if node.left: #添加左节点(空节点不入栈)
                     st.append(node.left)
             else: #只有遇到空节点的时候, 才将下一个节点放进结果集
+                # 深度遍历先遍历子node, 然后再处理node
                 node = st.pop() #重新取出栈中元素
                 result.append(node.val) #加入到结果集
         return result
