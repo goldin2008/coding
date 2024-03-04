@@ -4,6 +4,9 @@
 # Even though they work almost the same, the aggregate function returns a single row for each target field, 
 # but the window function produces a result for each row.
 
+# This table may contain duplicates (In other words, there is no primary key for this table in SQL).
+
+
 1164. Product Price at a Given Date
 
 SELECT
