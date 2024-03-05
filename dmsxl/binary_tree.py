@@ -625,7 +625,7 @@ class Solution:
 
 
 #1 226.翻转二叉树
-## 递归法：前序遍历：
+## 递归法：前序遍历
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if not root:
@@ -634,7 +634,7 @@ class Solution:
         self.invertTree(root.left) #左
         self.invertTree(root.right) #右
         return root
-# 迭代法：深度优先遍历(前序遍历)：
+# 迭代法：深度优先遍历(前序遍历)
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if not root:
@@ -644,18 +644,70 @@ class Solution:
         while st:
             node = st.pop()
             node.left, node.right = node.right, node.left #中
-            if node.right:
-                st.append(node.right) #右
             if node.left:
                 st.append(node.left) #左
+            if node.right:
+                st.append(node.right) #右
         return root
-# 迭代法：广度优先遍历(层序遍历)：
-import collections
+
+
+# 递归法：中序遍历
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
-        queue = collections.deque() #使用deque()
-        if root:
-            queue.append(root)
+        if not root:
+            return None
+        self.invertTree(root.left)
+        root.left, root.right = root.right, root.left
+        self.invertTree(root.left)
+        return root
+# 迭代法：中序遍历
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return None      
+        stack = [root]        
+        while stack:
+            node = stack.pop()                   
+            if node.left:
+                stack.append(node.left)
+            node.left, node.right = node.right, node.left               
+            if node.right:
+                stack.append(node.right)       
+        return root
+
+
+# 递归法：后序遍历
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return None
+        self.invertTree(root.left)
+        self.invertTree(root.right)
+        root.left, root.right = root.right, root.left
+        return root
+# 迭代法：后序遍历
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root:
+            return None      
+        stack = [root]        
+        while stack:
+            node = stack.pop()                   
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)  
+            node.left, node.right = node.right, node.left
+        return root
+
+
+# 迭代法：广度优先遍历(层序遍历)
+class Solution:
+    def invertTree(self, root: TreeNode) -> TreeNode:
+        if not root: 
+            return None
+
+        queue = collections.deque([root])
         while queue:
             size = len(queue)
             for i in range(size):
