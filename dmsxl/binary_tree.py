@@ -1656,13 +1656,125 @@ class Solution:
 
 # 617.合并二叉树
 # 给定两个二叉树, 想象当你将它们中的一个覆盖到另一个上时, 两个二叉树的一些节点便会重叠。
+# (版本一) 递归 - 前序 - 修改root1
+class Solution:
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        # 递归终止条件: 
+        #  但凡有一个节点为空, 就立刻返回另外一个. 如果另外一个也为None就直接返回None. 
+        if not root1: 
+            return root2
+        if not root2: 
+            return root1
+        # 上面的递归终止条件保证了代码执行到这里root1, root2都非空. 
+        root1.val += root2.val # 中
+        root1.left = self.mergeTrees(root1.left, root2.left) #左
+        root1.right = self.mergeTrees(root1.right, root2.right) # 右
+        
+        return root1 # ⚠️ 注意: 本题我们重复使用了题目给出的节点而不是创建新节点. 节省时间, 空间. 
+# (版本二) 递归 - 前序 - 新建root
+class Solution:
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        # 递归终止条件: 
+        #  但凡有一个节点为空, 就立刻返回另外一个. 如果另外一个也为None就直接返回None. 
+        if not root1: 
+            return root2
+        if not root2: 
+            return root1
+        # 上面的递归终止条件保证了代码执行到这里root1, root2都非空. 
+        root = TreeNode() # 创建新节点
+        root.val += root1.val + root2.val# 中
+        root.left = self.mergeTrees(root1.left, root2.left) #左
+        root.right = self.mergeTrees(root1.right, root2.right) # 右
+        
+        return root # ⚠️ 注意: 本题我们创建了新节点. 
+# (版本三) 迭代
+class Solution:
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        if not root1: 
+            return root2
+        if not root2: 
+            return root1
+
+        queue = deque()
+        queue.append(root1)
+        queue.append(root2)
+
+        while queue: 
+            node1 = queue.popleft()
+            node2 = queue.popleft()
+            # 更新queue
+            # 只有两个节点都有左节点时, 再往queue里面放.
+            if node1.left and node2.left: 
+                queue.append(node1.left)
+                queue.append(node2.left)
+            # 只有两个节点都有右节点时, 再往queue里面放.
+            if node1.right and node2.right: 
+                queue.append(node1.right)
+                queue.append(node2.right)
+
+            # 更新当前节点. 同时改变当前节点的左右孩子. 
+            node1.val += node2.val
+            if not node1.left and node2.left: 
+                node1.left = node2.left
+            if not node1.right and node2.right: 
+                node1.right = node2.right
+
+        return root1
+# (版本四) 迭代 + 代码优化
+from collections import deque
+
+class Solution:
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        if not root1:
+            return root2
+        if not root2:
+            return root1
+
+        queue = deque()
+        queue.append((root1, root2))
+
+        while queue:
+            node1, node2 = queue.popleft()
+            node1.val += node2.val
+
+            if node1.left and node2.left:
+                queue.append((node1.left, node2.left))
+            elif not node1.left:
+                node1.left = node2.left
+
+            if node1.right and node2.right:
+                queue.append((node1.right, node2.right))
+            elif not node1.right:
+                node1.right = node2.right
+
+        return root1
 
 
 # 700.二叉搜索树中的搜索
 # 给定二叉搜索树(BST)的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在, 则返回 NULL。
+# （方法一） 递归
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        # 为什么要有返回值: 
+        #   因为搜索到目标节点就要立即return，
+        #   这样才是找到节点就返回（搜索某一条边），如果不加return，就是遍历整棵树了。
 
+        if not root or root.val == val: 
+            return root
 
+        if root.val > val: 
+            return self.searchBST(root.left, val)
 
+        if root.val < val: 
+            return self.searchBST(root.right, val)
+# （方法二）迭代
+class Solution:
+    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
+        while root:
+            if val < root.val: root = root.left
+            elif val > root.val: root = root.right
+            else: return root
+        return None
 
 
 # 98.验证二叉搜索树
@@ -1688,10 +1800,142 @@ class Solution:
                 pre = cur 
                 cur = cur.right
         return True
+# 递归法（版本一）利用中序递增性质，转换成数组
+class Solution:
+    def __init__(self):
+        self.vec = []
+
+    def traversal(self, root):
+        if root is None:
+            return
+        self.traversal(root.left)
+        self.vec.append(root.val)  # 将二叉搜索树转换为有序数组
+        self.traversal(root.right)
+
+    def isValidBST(self, root):
+        self.vec = []  # 清空数组
+        self.traversal(root)
+        for i in range(1, len(self.vec)):
+            # 注意要小于等于，搜索树里不能有相同元素
+            if self.vec[i] <= self.vec[i - 1]:
+                return False
+        return True
+# 递归法（版本二）设定极小值，进行比较
+class Solution:
+    def __init__(self):
+        self.maxVal = float('-inf')  # 因为后台测试数据中有int最小值
+
+    def isValidBST(self, root):
+        if root is None:
+            return True
+
+        left = self.isValidBST(root.left)
+        # 中序遍历，验证遍历的元素是不是从小到大
+        if self.maxVal < root.val:
+            self.maxVal = root.val
+        else:
+            return False
+        right = self.isValidBST(root.right)
+
+        return left and right
+# 递归法（版本三）直接取该树的最小值
+class Solution:
+    def __init__(self):
+        self.pre = None  # 用来记录前一个节点
+
+    def isValidBST(self, root):
+        if root is None:
+            return True
+
+        left = self.isValidBST(root.left)
+
+        if self.pre is not None and self.pre.val >= root.val:
+            return False
+        self.pre = root  # 记录前一个节点
+
+        right = self.isValidBST(root.right)
+        return left and right
+# 迭代法
+class Solution:
+    def isValidBST(self, root):
+        stack = []
+        cur = root
+        pre = None  # 记录前一个节点
+        while cur is not None or len(stack) > 0:
+            if cur is not None:
+                stack.append(cur)
+                cur = cur.left  # 左
+            else:
+                cur = stack.pop()  # 中
+                if pre is not None and cur.val <= pre.val:
+                    return False
+                pre = cur  # 保存前一个访问的结点
+                cur = cur.right  # 右
+        return True
 
 
 # 530.二叉搜索树的最小绝对差
 # 给你一棵所有节点为非负值的二叉搜索树, 请你计算树中任意两节点的差的绝对值的最小值。
+# 递归法（版本一）利用中序递增，结合数组
+class Solution:
+    def __init__(self):
+        self.vec = []
+
+    def traversal(self, root):
+        if root is None:
+            return
+        self.traversal(root.left)
+        self.vec.append(root.val)  # 将二叉搜索树转换为有序数组
+        self.traversal(root.right)
+
+    def getMinimumDifference(self, root):
+        self.vec = []
+        self.traversal(root)
+        if len(self.vec) < 2:
+            return 0
+        result = float('inf')
+        for i in range(1, len(self.vec)):
+            # 统计有序数组的最小差值
+            result = min(result, self.vec[i] - self.vec[i - 1])
+        return result
+# 递归法（版本二）利用中序递增，找到该树最小值
+class Solution:
+    def __init__(self):
+        self.result = float('inf')
+        self.pre = None
+
+    def traversal(self, cur):
+        if cur is None:
+            return
+        self.traversal(cur.left)  # 左
+        if self.pre is not None:  # 中
+            self.result = min(self.result, cur.val - self.pre.val)
+        self.pre = cur  # 记录前一个
+        self.traversal(cur.right)  # 右
+
+    def getMinimumDifference(self, root):
+        self.traversal(root)
+        return self.result
+# 迭代法
+class Solution:
+    def getMinimumDifference(self, root):
+        stack = []
+        cur = root
+        pre = None
+        result = float('inf')
+
+        while cur is not None or len(stack) > 0:
+            if cur is not None:
+                stack.append(cur)  # 将访问的节点放进栈
+                cur = cur.left  # 左
+            else:
+                cur = stack.pop()
+                if pre is not None:  # 中
+                    result = min(result, cur.val - pre.val)
+                pre = cur
+                cur = cur.right  # 右
+
+        return result
 
 
 # 501.二叉搜索树中的众数
@@ -1700,31 +1944,200 @@ class Solution:
 # 结点左子树中所含结点的值小于等于当前结点的值
 # 结点右子树中所含结点的值大于等于当前结点的值
 # 左子树和右子树都是二叉搜索树
+# 递归法（版本一）利用字典
+from collections import defaultdict
+
+class Solution:
+    def searchBST(self, cur, freq_map):
+        if cur is None:
+            return
+        freq_map[cur.val] += 1  # 统计元素频率
+        self.searchBST(cur.left, freq_map)
+        self.searchBST(cur.right, freq_map)
+
+    def findMode(self, root):
+        freq_map = defaultdict(int)  # key:元素，value:出现频率
+        result = []
+        if root is None:
+            return result
+        self.searchBST(root, freq_map)
+        max_freq = max(freq_map.values())
+        for key, freq in freq_map.items():
+            if freq == max_freq:
+                result.append(key)
+        return result
+# 递归法（版本二）利用二叉搜索树性质
+class Solution:
+    def __init__(self):
+        self.maxCount = 0  # 最大频率
+        self.count = 0  # 统计频率
+        self.pre = None
+        self.result = []
+
+    def searchBST(self, cur):
+        if cur is None:
+            return
+
+        self.searchBST(cur.left)  # 左
+        # 中
+        if self.pre is None:  # 第一个节点
+            self.count = 1
+        elif self.pre.val == cur.val:  # 与前一个节点数值相同
+            self.count += 1
+        else:  # 与前一个节点数值不同
+            self.count = 1
+        self.pre = cur  # 更新上一个节点
+
+        if self.count == self.maxCount:  # 如果与最大值频率相同，放进result中
+            self.result.append(cur.val)
+
+        if self.count > self.maxCount:  # 如果计数大于最大值频率
+            self.maxCount = self.count  # 更新最大频率
+            self.result = [cur.val]  # 很关键的一步，不要忘记清空result，之前result里的元素都失效了
+
+        self.searchBST(cur.right)  # 右
+        return
+
+    def findMode(self, root):
+        self.count = 0
+        self.maxCount = 0
+        self.pre = None  # 记录前一个节点
+        self.result = []
+
+        self.searchBST(root)
+        return self.result
+# 迭代法
+class Solution:
+    def findMode(self, root):
+        st = []
+        cur = root
+        pre = None
+        maxCount = 0  # 最大频率
+        count = 0  # 统计频率
+        result = []
+
+        while cur is not None or st:
+            if cur is not None:  # 指针来访问节点，访问到最底层
+                st.append(cur)  # 将访问的节点放进栈
+                cur = cur.left  # 左
+            else:
+                cur = st.pop()
+                if pre is None:  # 第一个节点
+                    count = 1
+                elif pre.val == cur.val:  # 与前一个节点数值相同
+                    count += 1
+                else:  # 与前一个节点数值不同
+                    count = 1
+
+                if count == maxCount:  # 如果和最大值相同，放进result中
+                    result.append(cur.val)
+
+                if count > maxCount:  # 如果计数大于最大值频率
+                    maxCount = count  # 更新最大频率
+                    result = [cur.val]  # 很关键的一步，不要忘记清空result，之前result里的元素都失效了
+
+                pre = cur
+                cur = cur.right  # 右
+
+        return result
 
 
 # 236. 二叉树的最近公共祖先
 # 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
-class Solution:
-    """二叉树的最近公共祖先 递归法"""
+# class Solution:
+#     """二叉树的最近公共祖先 递归法"""
 
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if not root or root == p or root == q:
-            return root
+#     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+#         if not root or root == p or root == q:
+#             return root
         
+#         left = self.lowestCommonAncestor(root.left, p, q)
+#         right = self.lowestCommonAncestor(root.right, p, q)
+        
+#         if left and right:
+#             return root
+#         if left:
+#             return left
+#         return right
+# 递归法（版本一）
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        if root == q or root == p or root is None:
+            return root
+
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
-        
-        if left and right:
+
+        if left is not None and right is not None:
             return root
-        if left:
+
+        if left is None and right is not None:
+            return right
+        elif left is not None and right is None:
             return left
-        return right
+        else: 
+            return None
+# 递归法（版本二）精简
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        if root == q or root == p or root is None:
+            return root
+
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        if left is not None and right is not None:
+            return root
+
+        if left is None:
+            return right
+        return left
 
 
 # 235. 二叉搜索树的最近公共祖先
 # 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
+# 递归法（版本一）
+class Solution:
+    def traversal(self, cur, p, q):
+        if cur is None:
+            return cur
+                                                        # 中
+        if cur.val > p.val and cur.val > q.val:           # 左
+            left = self.traversal(cur.left, p, q)
+            if left is not None:
+                return left
+
+        if cur.val < p.val and cur.val < q.val:           # 右
+            right = self.traversal(cur.right, p, q)
+            if right is not None:
+                return right
+
+        return cur
+
+    def lowestCommonAncestor(self, root, p, q):
+        return self.traversal(root, p, q)
+# 迭代法（版本二）精简
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        if root.val > p.val and root.val > q.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        elif root.val < p.val and root.val < q.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        else:
+            return root
+# 迭代法
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        while root:
+            if root.val > p.val and root.val > q.val:
+                root = root.left
+            elif root.val < p.val and root.val < q.val:
+                root = root.right
+            else:
+                return root
+        return None
 
 
 # 701.二叉搜索树中的插入操作
@@ -1735,63 +2148,280 @@ class Solution:
 #         self.val = val
 #         self.left = left
 #         self.right = right
+# class Solution:
+#     def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+#         # 返回更新后的以当前root为根节点的新树, 方便用于更新上一层的父子节点关系链
+
+#         # Base Case
+#         if not root: return TreeNode(val)
+
+#         # 单层递归逻辑:
+#         if val < root.val: 
+#             # 将val插入至当前root的左子树中合适的位置
+#             # 并更新当前root的左子树为包含目标val的新左子树
+#             root.left = self.insertIntoBST(root.left, val)
+
+#         if root.val < val:
+#             # 将val插入至当前root的右子树中合适的位置
+#             # 并更新当前root的右子树为包含目标val的新右子树
+#             root.right = self.insertIntoBST(root.right, val)
+
+#         # 返回更新后的以当前root为根节点的新树
+#         return root
+# 递归法（版本一）
 class Solution:
-    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
-        # 返回更新后的以当前root为根节点的新树, 方便用于更新上一层的父子节点关系链
+    def __init__(self):
+        self.parent = None
 
-        # Base Case
-        if not root: return TreeNode(val)
+    def traversal(self, cur, val):
+        if cur is None:
+            node = TreeNode(val)
+            if val > self.parent.val:
+                self.parent.right = node
+            else:
+                self.parent.left = node
+            return
 
-        # 单层递归逻辑:
-        if val < root.val: 
-            # 将val插入至当前root的左子树中合适的位置
-            # 并更新当前root的左子树为包含目标val的新左子树
+        self.parent = cur
+        if cur.val > val:
+            self.traversal(cur.left, val)
+        if cur.val < val:
+            self.traversal(cur.right, val)
+
+    def insertIntoBST(self, root, val):
+        self.parent = TreeNode(0)
+        if root is None:
+            return TreeNode(val)
+        self.traversal(root, val)
+        return root
+# 递归法（版本二）
+class Solution:
+    def insertIntoBST(self, root, val):
+        if root is None:
+            return TreeNode(val)
+        parent = None
+        cur = root
+        while cur:
+            parent = cur
+            if val < cur.val:
+                cur = cur.left
+            else:
+                cur = cur.right
+        if val < parent.val:
+            parent.left = TreeNode(val)
+        else:
+            parent.right = TreeNode(val)
+        return root
+# 递归法（版本三）
+class Solution:
+    def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        if root is None or root.val == val:
+            return TreeNode(val)
+        elif root.val > val:
+            if root.left is None:
+                root.left = TreeNode(val)
+            else:
+                self.insertIntoBST(root.left, val)
+        elif root.val < val:
+            if root.right is None:
+                root.right = TreeNode(val)
+            else:
+                self.insertIntoBST(root.right, val)
+        return root
+# 递归法（版本四）
+class Solution:
+    def insertIntoBST(self, root, val):
+        if root is None:
+            node = TreeNode(val)
+            return node
+
+        if root.val > val:
             root.left = self.insertIntoBST(root.left, val)
-
         if root.val < val:
-            # 将val插入至当前root的右子树中合适的位置
-            # 并更新当前root的右子树为包含目标val的新右子树
             root.right = self.insertIntoBST(root.right, val)
 
-        # 返回更新后的以当前root为根节点的新树
+        return root
+# 迭代法
+class Solution:
+    def insertIntoBST(self, root, val):
+        if root is None:  # 如果根节点为空，创建新节点作为根节点并返回
+            node = TreeNode(val)
+            return node
+
+        cur = root
+        parent = root  # 记录上一个节点，用于连接新节点
+        while cur is not None:
+            parent = cur
+            if cur.val > val:
+                cur = cur.left
+            else:
+                cur = cur.right
+
+        node = TreeNode(val)
+        if val < parent.val:
+            parent.left = node  # 将新节点连接到父节点的左子树
+        else:
+            parent.right = node  # 将新节点连接到父节点的右子树
+
         return root
 
 
 # 450.删除二叉搜索树中的节点
 # 给定一个二叉搜索树的根节点 root 和一个值 key, 删除二叉搜索树中的 key 对应的节点, 并保证二叉搜索树的性质不变。返回二叉搜索树(有可能被更新)的根节点的引用。
+# class Solution:
+#     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+#         if not root: return root  #第一种情况：没找到删除的节点, 遍历到空节点直接返回了
+#         if root.val == key:  
+#             if not root.left and not root.right:  #第二种情况：左右孩子都为空(叶子节点), 直接删除节点,  返回NULL为根节点
+#                 del root
+#                 return None
+#             if not root.left and root.right:  #第三种情况：其左孩子为空, 右孩子不为空, 删除节点, 右孩子补位 , 返回右孩子为根节点
+#                 tmp = root
+#                 root = root.right
+#                 del tmp
+#                 return root
+#             if root.left and not root.right:  #第四种情况：其右孩子为空, 左孩子不为空, 删除节点, 左孩子补位, 返回左孩子为根节点
+#                 tmp = root
+#                 root = root.left
+#                 del tmp
+#                 return root
+#             else:  #第五种情况：左右孩子节点都不为空, 则将删除节点的左子树放到删除节点的右子树的最左面节点的左孩子的位置
+#                 v = root.right
+#                 while v.left:
+#                     v = v.left
+#                 v.left = root.left
+#                 tmp = root
+#                 root = root.right
+#                 del tmp
+#                 return root
+#         if root.val > key: root.left = self.deleteNode(root.left,key)  #左递归
+#         if root.val < key: root.right = self.deleteNode(root.right,key)  #右递归
+#         return root
+# 递归法（版本一）
 class Solution:
-    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
-        if not root: return root  #第一种情况：没找到删除的节点, 遍历到空节点直接返回了
-        if root.val == key:  
-            if not root.left and not root.right:  #第二种情况：左右孩子都为空(叶子节点), 直接删除节点,  返回NULL为根节点
-                del root
+    def deleteNode(self, root, key):
+        if root is None:
+            return root
+        if root.val == key:
+            if root.left is None and root.right is None:
                 return None
-            if not root.left and root.right:  #第三种情况：其左孩子为空, 右孩子不为空, 删除节点, 右孩子补位 , 返回右孩子为根节点
-                tmp = root
-                root = root.right
-                del tmp
-                return root
-            if root.left and not root.right:  #第四种情况：其右孩子为空, 左孩子不为空, 删除节点, 左孩子补位, 返回左孩子为根节点
-                tmp = root
-                root = root.left
-                del tmp
-                return root
-            else:  #第五种情况：左右孩子节点都不为空, 则将删除节点的左子树放到删除节点的右子树的最左面节点的左孩子的位置
-                v = root.right
-                while v.left:
-                    v = v.left
-                v.left = root.left
-                tmp = root
-                root = root.right
-                del tmp
-                return root
-        if root.val > key: root.left = self.deleteNode(root.left,key)  #左递归
-        if root.val < key: root.right = self.deleteNode(root.right,key)  #右递归
+            elif root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+            else:
+                cur = root.right
+                while cur.left is not None:
+                    cur = cur.left
+                cur.left = root.left
+                return root.right
+        if root.val > key:
+            root.left = self.deleteNode(root.left, key)
+        if root.val < key:
+            root.right = self.deleteNode(root.right, key)
+        return root
+# 递归法（版本二）
+class Solution:
+    def deleteNode(self, root, key):
+        if root is None:  # 如果根节点为空，直接返回
+            return root
+        if root.val == key:  # 找到要删除的节点
+            if root.right is None:  # 如果右子树为空，直接返回左子树作为新的根节点
+                return root.left
+            cur = root.right
+            while cur.left:  # 找到右子树中的最左节点
+                cur = cur.left
+            root.val, cur.val = cur.val, root.val  # 将要删除的节点值与最左节点值交换
+        root.left = self.deleteNode(root.left, key)  # 在左子树中递归删除目标节点
+        root.right = self.deleteNode(root.right, key)  # 在右子树中递归删除目标节点
+        return root
+# 迭代法
+class Solution:
+    def deleteOneNode(self, target: TreeNode) -> TreeNode:
+        """
+        将目标节点（删除节点）的左子树放到目标节点的右子树的最左面节点的左孩子位置上
+        并返回目标节点右孩子为新的根节点
+        是动画里模拟的过程
+        """
+        if target is None:
+            return target
+        if target.right is None:
+            return target.left
+        cur = target.right
+        while cur.left:
+            cur = cur.left
+        cur.left = target.left
+        return target.right
+
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if root is None:
+            return root
+        cur = root
+        pre = None  # 记录cur的父节点，用来删除cur
+        while cur:
+            if cur.val == key:
+                break
+            pre = cur
+            if cur.val > key:
+                cur = cur.left
+            else:
+                cur = cur.right
+        if pre is None:  # 如果搜索树只有头结点
+            return self.deleteOneNode(cur)
+        # pre 要知道是删左孩子还是右孩子
+        if pre.left and pre.left.val == key:
+            pre.left = self.deleteOneNode(cur)
+        if pre.right and pre.right.val == key:
+            pre.right = self.deleteOneNode(cur)
         return root
 
 
 # 669. 修剪二叉搜索树
 # 给定一个二叉搜索树, 同时给定最小边界L 和最大边界 R。通过修剪二叉搜索树, 使得所有节点的值在[L, R]中 (R>=L) 。你可能需要改变树的根节点, 所以结果应当返回修剪好的二叉搜索树的新的根节点。
+# 递归法（版本一）
+class Solution:
+    def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
+        if root is None:
+            return None
+        if root.val < low:
+            # 寻找符合区间 [low, high] 的节点
+            return self.trimBST(root.right, low, high)
+        if root.val > high:
+            # 寻找符合区间 [low, high] 的节点
+            return self.trimBST(root.left, low, high)
+        root.left = self.trimBST(root.left, low, high)  # root.left 接入符合条件的左孩子
+        root.right = self.trimBST(root.right, low, high)  # root.right 接入符合条件的右孩子
+        return root
+# 迭代法
+class Solution:
+    def trimBST(self, root: TreeNode, L: int, R: int) -> TreeNode:
+        if not root:
+            return None
+        
+        # 处理头结点，让root移动到[L, R] 范围内，注意是左闭右闭
+        while root and (root.val < L or root.val > R):
+            if root.val < L:
+                root = root.right  # 小于L往右走
+            else:
+                root = root.left  # 大于R往左走
+        
+        cur = root
+        
+        # 此时root已经在[L, R] 范围内，处理左孩子元素小于L的情况
+        while cur:
+            while cur.left and cur.left.val < L:
+                cur.left = cur.left.right
+            cur = cur.left
+        
+        cur = root
+        
+        # 此时root已经在[L, R] 范围内，处理右孩子大于R的情况
+        while cur:
+            while cur.right and cur.right.val > R:
+                cur.right = cur.right.left
+            cur = cur.right
+        
+        return root
 
 
 # 108.将有序数组转换为二叉搜索树
@@ -1802,32 +2432,85 @@ class Solution:
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
-    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
-        '''
-        构造二叉树：重点是选取数组最中间元素为分割点, 左侧是递归左区间;右侧是递归右区间
-        必然是平衡树
-        左闭右闭区间
-        '''
-        # 返回根节点
-        root = self.traversal(nums, 0, len(nums)-1)
-        return root
+# class Solution:
+#     def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+#         '''
+#         构造二叉树：重点是选取数组最中间元素为分割点, 左侧是递归左区间;右侧是递归右区间
+#         必然是平衡树
+#         左闭右闭区间
+#         '''
+#         # 返回根节点
+#         root = self.traversal(nums, 0, len(nums)-1)
+#         return root
 
+#     def traversal(self, nums: List[int], left: int, right: int) -> TreeNode:
+#         # Base Case
+#         if left > right:
+#             return None
+        
+#         # 确定左右界的中心, 防越界
+#         mid = left + (right - left) // 2
+#         # 构建根节点
+#         mid_root = TreeNode(nums[mid])
+#         # 构建以左右界的中心为分割点的左右子树
+#         mid_root.left = self.traversal(nums, left, mid-1)
+#         mid_root.right = self.traversal(nums, mid+1, right)
+
+#         # 返回由被传入的左右界定义的某子树的根节点
+#         return mid_root
+# 递归法
+class Solution:
     def traversal(self, nums: List[int], left: int, right: int) -> TreeNode:
-        # Base Case
         if left > right:
             return None
         
-        # 确定左右界的中心, 防越界
         mid = left + (right - left) // 2
-        # 构建根节点
-        mid_root = TreeNode(nums[mid])
-        # 构建以左右界的中心为分割点的左右子树
-        mid_root.left = self.traversal(nums, left, mid-1)
-        mid_root.right = self.traversal(nums, mid+1, right)
+        root = TreeNode(nums[mid])
+        root.left = self.traversal(nums, left, mid - 1)
+        root.right = self.traversal(nums, mid + 1, right)
+        return root
+    
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        root = self.traversal(nums, 0, len(nums) - 1)
+        return root
+# 迭代法
+from collections import deque
 
-        # 返回由被传入的左右界定义的某子树的根节点
-        return mid_root
+class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        if len(nums) == 0:
+            return None
+        
+        root = TreeNode(0)  # 初始根节点
+        nodeQue = deque()   # 放遍历的节点
+        leftQue = deque()   # 保存左区间下标
+        rightQue = deque()  # 保存右区间下标
+        
+        nodeQue.append(root)               # 根节点入队列
+        leftQue.append(0)                  # 0为左区间下标初始位置
+        rightQue.append(len(nums) - 1)     # len(nums) - 1为右区间下标初始位置
+
+        while nodeQue:
+            curNode = nodeQue.popleft()
+            left = leftQue.popleft()
+            right = rightQue.popleft()
+            mid = left + (right - left) // 2
+
+            curNode.val = nums[mid]  # 将mid对应的元素给中间节点
+
+            if left <= mid - 1:  # 处理左区间
+                curNode.left = TreeNode(0)
+                nodeQue.append(curNode.left)
+                leftQue.append(left)
+                rightQue.append(mid - 1)
+
+            if right >= mid + 1:  # 处理右区间
+                curNode.right = TreeNode(0)
+                nodeQue.append(curNode.right)
+                leftQue.append(mid + 1)
+                rightQue.append(right)
+
+        return root
 
 
 # 538.把二叉搜索树转换为累加树
@@ -1840,28 +2523,105 @@ class Solution:
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
-    def __init__(self):
-        self.pre = TreeNode()
+# class Solution:
+#     def __init__(self):
+#         self.pre = TreeNode()
 
-    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        '''
-        倒序累加替换：  
-        [2, 5, 13] -> [[2]+[1]+[0], [2]+[1], [2]] -> [20, 18, 13]
-        '''
+#     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+#         '''
+#         倒序累加替换：  
+#         [2, 5, 13] -> [[2]+[1]+[0], [2]+[1], [2]] -> [20, 18, 13]
+#         '''
+#         self.traversal(root)
+#         return root
+
+#     def traversal(self, root: TreeNode) -> None:
+#         # 因为要遍历整棵树, 所以递归函数不需要返回值
+#         # Base Case
+#         if not root: 
+#             return None
+#         # 单层递归逻辑：中序遍历的反译 - 右中左
+#         self.traversal(root.right)  # 右
+
+#         # 中节点：用当前root的值加上pre的值
+#         root.val += self.pre.val    # 中
+#         self.pre = root             
+
+#         self.traversal(root.left)   # 左
+# 递归法(版本一)
+class Solution:
+    def convertBST(self, root: TreeNode) -> TreeNode:
+        self.pre = 0  # 记录前一个节点的数值
         self.traversal(root)
         return root
+    def traversal(self, cur):
+        if cur is None:
+            return        
+        self.traversal(cur.right)
+        cur.val += self.pre
+        self.pre = cur.val
+        self.traversal(cur.left)
+# 递归法（版本二）
+class Solution:
+    def __init__(self):
+        self.count = 0
 
-    def traversal(self, root: TreeNode) -> None:
-        # 因为要遍历整棵树, 所以递归函数不需要返回值
-        # Base Case
-        if not root: 
-            return None
-        # 单层递归逻辑：中序遍历的反译 - 右中左
-        self.traversal(root.right)  # 右
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if root == None:
+            return 
+        '''
+        倒序累加替换：  
+        '''
+        # 右
+        self.convertBST(root.right)
 
+        # 中
         # 中节点：用当前root的值加上pre的值
-        root.val += self.pre.val    # 中
-        self.pre = root             
+        self.count += root.val
 
-        self.traversal(root.left)   # 左
+        root.val = self.count 
+
+        # 左
+        self.convertBST(root.left)
+
+        return root
+# 迭代法（版本一）
+class Solution:
+    def __init__(self):
+        self.pre = 0  # 记录前一个节点的数值
+    
+    def traversal(self, root):
+        stack = []
+        cur = root
+        while cur or stack:
+            if cur:
+                stack.append(cur)
+                cur = cur.right  # 右
+            else:
+                cur = stack.pop()  # 中
+                cur.val += self.pre
+                self.pre = cur.val
+                cur = cur.left  # 左
+    
+    def convertBST(self, root):
+        self.pre = 0
+        self.traversal(root)
+        return root
+# 迭代法（版本二）
+class Solution:
+    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root: return root
+        stack = []
+        result = []
+        cur = root
+        pre = 0
+        while cur or stack:
+            if cur:
+                stack.append(cur)
+                cur = cur.right
+            else: 
+                cur = stack.pop()
+                cur.val+= pre
+                pre = cur.val
+                cur =cur.left
+        return root
