@@ -768,6 +768,7 @@ class Solution:
             queue.append(rightNode.left) #加入右节点左孩子
         return True
 # 迭代法：使用栈
+# (跟使用队列没有区别,就是data structure变了,但是因为是放两个node,所以没区别)
 class Solution:
     def isSymmetric(self, root: TreeNode) -> bool:
         if not root:
@@ -788,33 +789,33 @@ class Solution:
             st.append(rightNode.left)
         return True
 # 层次遍历
-class Solution:
-    def isSymmetric(self, root: TreeNode) -> bool:
-        if not root:
-            return True
+# class Solution:
+#     def isSymmetric(self, root: TreeNode) -> bool:
+#         if not root:
+#             return True
         
-        queue = collections.deque([root.left, root.right])
+#         queue = collections.deque([root.left, root.right])
         
-        while queue:
-            level_size = len(queue)
+#         while queue:
+#             level_size = len(queue)
             
-            if level_size % 2 != 0:
-                return False
+#             if level_size % 2 != 0:
+#                 return False
             
-            level_vals = []
-            for i in range(level_size):
-                node = queue.popleft()
-                if node:
-                    level_vals.append(node.val)
-                    queue.append(node.left)
-                    queue.append(node.right)
-                else:
-                    level_vals.append(None)
+#             level_vals = []
+#             for i in range(level_size):
+#                 node = queue.popleft()
+#                 if node:
+#                     level_vals.append(node.val)
+#                     queue.append(node.left)
+#                     queue.append(node.right)
+#                 else:
+#                     level_vals.append(None)
                     
-            if level_vals != level_vals[::-1]:
-                return False
+#             if level_vals != level_vals[::-1]:
+#                 return False
             
-        return True
+#         return True
 
 
 #3 104.二叉树的最大深度
