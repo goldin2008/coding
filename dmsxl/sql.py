@@ -6,6 +6,10 @@
 
 # This table may contain duplicates (In other words, there is no primary key for this table in SQL).
 
+# As all of your values are null, count(cola) has to return zero.
+# If you want to count the rows that are null, you need count(*)
+# 580. Count Student Number in Departments
+
 
 1164. Product Price at a Given Date
 
