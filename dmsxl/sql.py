@@ -63,3 +63,22 @@ FROM
     WHERE
       change_date <= '2019-08-16'
   ) AS LastChangedPrice USING (product_id)
+
+# 585. Investments in 2016
+SELECT ROUND(SUM(tiv_2016), 2) AS tiv_2016
+FROM (
+   SELECT *,
+       COUNT(*)OVER(PARTITION BY tiv_2015) AS tiv_2015_cnt,
+       COUNT(*)OVER(PARTITION BY lat, lon) AS loc_cnt
+   FROM Insurance
+   )t0
+WHERE tiv_2015_cnt > 1
+AND loc_cnt = 1
+
+# 1890. The Latest Login in 2020
+SELECT
+    DISTINCT user_id,
+    FIRST_VALUE(time_stamp)OVER(PARTITION BY user_id ORDER BY time_stamp DESC) AS last_stamp
+FROM
+    Logins
+WHERE EXTRACT(Year FROM time_stamp) = 2020;
