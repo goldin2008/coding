@@ -1104,7 +1104,13 @@ class Solution:
 # 110.平衡二叉树
 # 给定一个二叉树, 判断它是否是高度平衡的二叉树。
     # 求深度可以从上到下去查 所以需要前序遍历（中左右），而高度只能从下到上去查，所以只能后序遍历（左右中）
-# 递归法
+    # 都知道回溯法其实就是递归，但是很少人用迭代的方式去实现回溯算法！
+    # 因为对于回溯算法已经是非常复杂的递归了，如果再用迭代的话，就是自己给自己找麻烦，效率也并不一定高。
+
+# 讲了这么多二叉树题目的迭代法，有的同学会疑惑，迭代法中究竟什么时候用队列，什么时候用栈？
+# 如果是模拟前中后序遍历就用栈，如果是适合层序遍历就用队列，当然还是其他情况，那么就是 先用队列试试行不行，不行就用栈。
+
+# *** 递归法
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
         if self.get_height(root) != -1:
@@ -1140,75 +1146,89 @@ class Solution:
             return -1
         return max(left, right) + 1
 # 迭代法
-class Solution:
-    def getDepth(self, cur):
-        st = []
-        if cur is not None:
-            st.append(cur)
-        depth = 0
-        result = 0
-        while st:
-            node = st[-1]
-            if node is not None:
-                st.pop()
-                st.append(node)                           # 中
-                st.append(None)
-                depth += 1
-                if node.right:
-                    st.append(node.right)                 # 右
-                if node.left:
-                    st.append(node.left)                   # 左
+# class Solution:
+#     def getDepth(self, cur):
+#         st = []
+#         if cur is not None:
+#             st.append(cur)
+#         depth = 0
+#         result = 0
+#         while st:
+#             node = st[-1]
+#             if node is not None:
+#                 st.pop()
+#                 st.append(node)                           # 中
+#                 st.append(None)
+#                 depth += 1
+#                 if node.right:
+#                     st.append(node.right)                 # 右
+#                 if node.left:
+#                     st.append(node.left)                   # 左
 
-            else:               
-                node = st.pop()
-                st.pop()
-                depth -= 1
-            result = max(result, depth)
-        return result
+#             else:               
+#                 node = st.pop()
+#                 st.pop()
+#                 depth -= 1
+#             result = max(result, depth)
+#         return result
 
-    def isBalanced(self, root):
-        st = []
-        if root is None:
-            return True
-        st.append(root)
-        while st:
-            node = st.pop()                                 # 中
-            if abs(self.getDepth(node.left) - self.getDepth(node.right)) > 1:
-                return False
-            if node.right:
-                st.append(node.right)                       # 右（空节点不入栈）
-            if node.left:
-                st.append(node.left)                         # 左（空节点不入栈）
-        return True
-# 迭代法精简版
-class Solution:
-    def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        if not root:
-            return True
+#     def isBalanced(self, root):
+#         st = []
+#         if root is None:
+#             return True
+#         st.append(root)
+#         while st:
+#             node = st.pop()                                 # 中
+#             if abs(self.getDepth(node.left) - self.getDepth(node.right)) > 1:
+#                 return False
+#             if node.right:
+#                 st.append(node.right)                       # 右（空节点不入栈）
+#             if node.left:
+#                 st.append(node.left)                         # 左（空节点不入栈）
+#         return True
+# # 迭代法精简版
+# class Solution:
+#     def isBalanced(self, root: Optional[TreeNode]) -> bool:
+#         if not root:
+#             return True
 
-        height_map = {}
-        stack = [root]
-        while stack:
-            node = stack.pop()
-            if node:
-                stack.append(node)
-                stack.append(None)
-                if node.left: stack.append(node.left)
-                if node.right: stack.append(node.right)
-            else:
-                real_node = stack.pop()
-                left, right = height_map.get(real_node.left, 0), height_map.get(real_node.right, 0)
-                if abs(left - right) > 1:
-                    return False
-                height_map[real_node] = 1 + max(left, right)
-        return True
+#         height_map = {}
+#         stack = [root]
+#         while stack:
+#             node = stack.pop()
+#             if node:
+#                 stack.append(node)
+#                 stack.append(None)
+#                 if node.left: stack.append(node.left)
+#                 if node.right: stack.append(node.right)
+#             else:
+#                 real_node = stack.pop()
+#                 left, right = height_map.get(real_node.left, 0), height_map.get(real_node.right, 0)
+#                 if abs(left - right) > 1:
+#                     return False
+#                 height_map[real_node] = 1 + max(left, right)
+#         return True
 
 
 # 257. 二叉树的所有路径
 # 给定一个二叉树, 返回所有从根节点到叶子节点的路径。
-# 递归法+回溯
+    
+# *** 递归法+回溯 (前序遍历)
 # Definition for a binary tree node.
+    # 要知道递归和回溯就是一家的，本题也需要回溯。
+    # 回溯和递归是一一对应的，有一个递归，就要有一个回溯
+    # 所以回溯要和递归永远在一起，世界上最遥远的距离是你在花括号里，而我在花括号外！
+    # 回溯就隐藏在traversal(cur->left, path + "->", result);中的 path + "->"。
+    # 每次函数调用完，path依然是没有加上"->" 的，这就是回溯了。
 class Solution:
+    def binaryTreePaths(self, root):
+        result = []
+        path = []
+        if not root:
+            return result
+        self.traversal(root, path, result)
+        return result
+
     def traversal(self, cur, path, result):
         path.append(cur.val)  # 中
         if not cur.left and not cur.right:  # 到达叶子节点
@@ -1221,14 +1241,6 @@ class Solution:
         if cur.right:  # 右
             self.traversal(cur.right, path, result)
             path.pop()  # 回溯
-
-    def binaryTreePaths(self, root):
-        result = []
-        path = []
-        if not root:
-            return result
-        self.traversal(root, path, result)
-        return result
 # 递归法+隐形回溯（版本一）
 from typing import List, Optional
 
@@ -1272,26 +1284,26 @@ class Solution:
         if cur.right:
             self.traversal(cur.right, path + '->', result)
 # 迭代法
-class Solution:
+# class Solution:
 
-    def binaryTreePaths(self, root: TreeNode) -> List[str]:
-        # 题目中节点数至少为1
-        stack, path_st, result = [root], [str(root.val)], []
+#     def binaryTreePaths(self, root: TreeNode) -> List[str]:
+#         # 题目中节点数至少为1
+#         stack, path_st, result = [root], [str(root.val)], []
 
-        while stack:
-            cur = stack.pop()
-            path = path_st.pop()
-            # 如果当前节点为叶子节点，添加路径到结果中
-            if not (cur.left or cur.right):
-                result.append(path)
-            if cur.right:
-                stack.append(cur.right)
-                path_st.append(path + '->' + str(cur.right.val))
-            if cur.left:
-                stack.append(cur.left)
-                path_st.append(path + '->' + str(cur.left.val))
+#         while stack:
+#             cur = stack.pop()
+#             path = path_st.pop()
+#             # 如果当前节点为叶子节点，添加路径到结果中
+#             if not (cur.left or cur.right):
+#                 result.append(path)
+#             if cur.right:
+#                 stack.append(cur.right)
+#                 path_st.append(path + '->' + str(cur.right.val))
+#             if cur.left:
+#                 stack.append(cur.left)
+#                 path_st.append(path + '->' + str(cur.left.val))
 
-        return result
+#         return result
 
 
 # 404.左叶子之和
