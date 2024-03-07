@@ -10,9 +10,35 @@
 # If you want to count the rows that are null, you need count(*)
 # 580. Count Student Number in Departments
 
+# RegEx provides various functionality, here are a few relevant ones:
+# ^: This represents the start of a string or line.
+# [a-z]: This represents a character range, matching any character from a to z.
+# [0-9]: This represents a character range, matching any character from 0 to 9.
+# [a-zA-Z]: This variant matches any character from a to z or A to Z. Note that there is no limit to the number of character ranges you can specify inside the square brackets -- you can add additional characters or ranges you want to match.
+# [^a-z]: This variant matches any character that is not from a to z. Note that the ^ character is used to negate the character range, which means it has a different meaning inside the square brackets than outside where it means the start.
+# [a-z]*: This represents a character range, matching any character from a to z zero or more times.
+# [a-z]+: This represents a character range, matching any character from a to z one or more times.
+# .: This matches exactly one of any character.
+# \.: This represents a period character. Note that the backslash is used to escape the period character, as the period character has a special meaning in regular expressions. Also note that in many languages, you need to escape the backslash itself, so you need to use \\..
+# The dollar sign: This represents the end of a string or line.
 
-1164. Product Price at a Given Date
+# 1341. Movie Rating
+(SELECT name AS results
+FROM MovieRating JOIN Users USING(user_id)
+GROUP BY name
+ORDER BY COUNT(*) DESC, name
+LIMIT 1)
 
+UNION ALL
+
+(SELECT title AS results
+FROM MovieRating JOIN Movies USING(movie_id)
+WHERE EXTRACT(YEAR_MONTH FROM created_at) = 202002
+GROUP BY title
+ORDER BY AVG(rating) DESC, title
+LIMIT 1)
+
+# 1164. Product Price at a Given Date
 SELECT
   product_id,
   IFNULL (price, 10) AS price
@@ -36,27 +62,4 @@ FROM
       Products
     WHERE
       change_date <= '2019-08-16'
-  ) AS LastChangedPrice USING (product_id);
-
-# RegEx provides various functionality, here are a few relevant ones:
-
-# ^: This represents the start of a string or line.
-
-# [a-z]: This represents a character range, matching any character from a to z.
-
-# [0-9]: This represents a character range, matching any character from 0 to 9.
-
-# [a-zA-Z]: This variant matches any character from a to z or A to Z. Note that there is no limit to the number of character ranges you can specify inside the square brackets -- you can add additional characters or ranges you want to match.
-
-# [^a-z]: This variant matches any character that is not from a to z. Note that the ^ character is used to negate the character range, which means it has a different meaning inside the square brackets than outside where it means the start.
-
-# [a-z]*: This represents a character range, matching any character from a to z zero or more times.
-
-# [a-z]+: This represents a character range, matching any character from a to z one or more times.
-
-# .: This matches exactly one of any character.
-
-# \.: This represents a period character. Note that the backslash is used to escape the period character, as the period character has a special meaning in regular expressions. Also note that in many languages, you need to escape the backslash itself, so you need to use \\..
-
-# The dollar sign: This represents the end of a string or line.
-
+  ) AS LastChangedPrice USING (product_id)

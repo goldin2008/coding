@@ -625,7 +625,7 @@ class Solution:
 
 
 #1 226.翻转二叉树
-## 递归法：前序遍历
+## *** 递归法：前序遍历
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if not root:
@@ -744,7 +744,7 @@ class Solution:
         inside = self.compare(left.right, right.left) #左子树：右、 右子树：左
         isSame = outside and inside #左子树：中、 右子树：中 (逻辑处理)
         return isSame
-# 迭代法: 使用队列
+# *** 迭代法: 使用队列
 import collections
 class Solution:
     def isSymmetric(self, root: TreeNode) -> bool:
@@ -768,7 +768,7 @@ class Solution:
             queue.append(rightNode.left) #加入右节点左孩子
         return True
 # 迭代法：使用栈
-# (跟使用队列没有区别,就是data structure变了,但是因为是放两个node,所以没区别)
+    # (跟使用队列没有区别,就是data structure变了,但是因为是放两个node,所以没区别)
 class Solution:
     def isSymmetric(self, root: TreeNode) -> bool:
         if not root:
@@ -821,7 +821,8 @@ class Solution:
 #3 104.二叉树的最大深度
 # 给定一个二叉树, 找出其最大深度。
 # 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
-# 递归法
+# *** 递归法
+    # 本题可以使用前序（中左右），也可以使用后序遍历（左右中），使用前序求的就是深度，使用后序求的是高度。
 class solution:
     def maxdepth(self, root: treenode) -> int:
         return self.getdepth(root)
@@ -834,12 +835,12 @@ class solution:
         height = 1 + max(leftheight, rightheight) #中
         return height
 # 递归法：精简代码
-class solution:
-    def maxdepth(self, root: treenode) -> int:
-        if not root:
-            return 0
-        return 1 + max(self.maxdepth(root.left), self.maxdepth(root.right))
-# 层序遍历迭代法
+# class solution:
+#     def maxdepth(self, root: treenode) -> int:
+#         if not root:
+#             return 0
+#         return 1 + max(self.maxdepth(root.left), self.maxdepth(root.right))
+# *** 层序遍历迭代法
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
         if not root:
@@ -862,18 +863,29 @@ class Solution:
 
 #4 559.n叉树的最大深度
 # 递归法
-class Solution:
-    def maxDepth(self, root: 'Node') -> int:
-        if not root:
+class solution:
+    def maxdepth(self, root: treenode) -> int:
+        return self.getdepth(root)
+        
+    def getdepth(self, node):
+        if not node:
             return 0
+        leftdepth = self.getdepth(node.left) #左
+        rightdepth = self.getdepth(node.right) #右
+        depth = 1 + max(leftdepth, rightdepth) #中
+        return depth
+# class Solution:
+#     def maxDepth(self, root: 'Node') -> int:
+#         if not root:
+#             return 0
         
-        max_depth = 1
+#         max_depth = 1
         
-        for child in root.children:
-            max_depth = max(max_depth, self.maxDepth(child) + 1)
+#         for child in root.children:
+#             max_depth = max(max_depth, self.maxDepth(child) + 1)
         
-        return max_depth
-# 迭代法
+#         return max_depth
+# *** 迭代法
 class Solution:
     def maxDepth(self, root: TreeNode) -> int:
         if not root:
@@ -890,35 +902,6 @@ class Solution:
                     queue.append(child)
         
         return depth
-# 使用栈
-class Solution:
-    def maxDepth(self, root: 'Node') -> int:
-        if not root:
-            return 0
-        
-        max_depth = 0
-        
-        stack = [(root, 1)]
-        
-        while stack:
-            node, depth = stack.pop()
-            max_depth = max(max_depth, depth)
-            for child in node.children:
-                stack.append((child, depth + 1))
-        
-        return max_depth
-# class solution:
-#     def maxdepth(self, root: treenode) -> int:
-#         return self.getdepth(root)
-        
-#     def getdepth(self, node):
-#         if not node:
-#             return 0
-#         leftdepth = self.getdepth(node.left) #左
-#         rightdepth = self.getdepth(node.right) #右
-#         depth = 1 + max(leftdepth, rightdepth) #中
-#         return depth
-
 # class solution:
 #     def maxdepth(self, root: 'node') -> int:
 #         if not root:
@@ -927,13 +910,32 @@ class Solution:
 #         for i in range(len(root.children)):
 #             depth = max(depth, self.maxdepth(root.children[i]))
 #         return depth + 1
+# 使用栈
+# class Solution:
+#     def maxDepth(self, root: 'Node') -> int:
+#         if not root:
+#             return 0
+        
+#         max_depth = 0
+#         stack = [(root, 1)]
+        
+#         while stack:
+#             node, depth = stack.pop()
+#             max_depth = max(max_depth, depth)
+#             for child in node.children:
+#                 stack.append((child, depth + 1))
+#         return max_depth
 
 
 #5 111.二叉树的最小深度
 # 给定一个二叉树, 找出其最小深度。
 # 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+    # 需要注意的是，只有当左右孩子都为空的时候，才说明遍历到最低点了。如果其中一个孩子不为空则不是最低点
 # 递归法（版本一）
 class Solution:
+    def minDepth(self, root):
+        return self.getDepth(root)
+
     def getDepth(self, node):
         if node is None:
             return 0
@@ -950,10 +952,7 @@ class Solution:
         
         result = 1 + min(leftDepth, rightDepth)
         return result
-
-    def minDepth(self, root):
-        return self.getDepth(root)
-# 递归法（版本二）
+# *** 递归法（版本二）
 class Solution:
     def minDepth(self, root):
         if root is None:
@@ -983,7 +982,7 @@ class Solution:
             return 0
         self.getDepth(root, 1)
         return self.result
-# 迭代法
+# *** 迭代法
 class Solution:
     def minDepth(self, root: TreeNode) -> int:
         if not root:
@@ -1021,8 +1020,8 @@ class Solution:
 #         return min_depth + 1
 
 
-#6 ??? 222.完全二叉树的节点个数
-# 递归法
+#6 222.完全二叉树的节点个数
+# ***  递归法
 class Solution:
     def countNodes(self, root: TreeNode) -> int:
         return self.getNodesNum(root)
@@ -1035,11 +1034,11 @@ class Solution:
         treeNum = leftNum + rightNum + 1 #中
         return treeNum
 # 递归法：精简版
-class Solution:
-    def countNodes(self, root: TreeNode) -> int:
-        if not root:
-            return 0
-        return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+# class Solution:
+#     def countNodes(self, root: TreeNode) -> int:
+#         if not root:
+#             return 0
+#         return 1 + self.countNodes(root.left) + self.countNodes(root.right)
 # 迭代法
 import collections
 class Solution:
@@ -1076,34 +1075,35 @@ class Solution:
         if leftDepth == rightDepth:
             return (2 << leftDepth) - 1 #注意(2<<1) 相当于2^2，所以leftDepth初始为0
         return self.countNodes(root.left) + self.countNodes(root.right) + 1
-# 完全二叉树写法2
-class Solution: # 利用完全二叉树特性
-    def countNodes(self, root: TreeNode) -> int:
-        if not root: return 0
-        count = 1
-        left = root.left; right = root.right
-        while left and right:
-            count+=1
-            left = left.left; right = right.right
-        if not left and not right: # 如果同时到底说明是满二叉树，反之则不是
-            return 2**count-1
-        return 1+self.countNodes(root.left)+self.countNodes(root.right)  
-# 完全二叉树写法3
-class Solution: # 利用完全二叉树特性
-    def countNodes(self, root: TreeNode) -> int:
-        if not root: return 0
-        count = 0
-        left = root.left; right = root.right
-        while left and right:
-            count+=1
-            left = left.left; right = right.right
-        if not left and not right: # 如果同时到底说明是满二叉树，反之则不是
-            return (2<<count)-1
-        return 1+self.countNodes(root.left)+self.countNodes(root.right) 
+# # 完全二叉树写法2
+# class Solution: # 利用完全二叉树特性
+#     def countNodes(self, root: TreeNode) -> int:
+#         if not root: return 0
+#         count = 1
+#         left = root.left; right = root.right
+#         while left and right:
+#             count+=1
+#             left = left.left; right = right.right
+#         if not left and not right: # 如果同时到底说明是满二叉树，反之则不是
+#             return 2**count-1
+#         return 1+self.countNodes(root.left)+self.countNodes(root.right)  
+# # 完全二叉树写法3
+# class Solution: # 利用完全二叉树特性
+#     def countNodes(self, root: TreeNode) -> int:
+#         if not root: return 0
+#         count = 0
+#         left = root.left; right = root.right
+#         while left and right:
+#             count+=1
+#             left = left.left; right = right.right
+#         if not left and not right: # 如果同时到底说明是满二叉树，反之则不是
+#             return (2<<count)-1
+#         return 1+self.countNodes(root.left)+self.countNodes(root.right) 
 
 
 # 110.平衡二叉树
 # 给定一个二叉树, 判断它是否是高度平衡的二叉树。
+    # 求深度可以从上到下去查 所以需要前序遍历（中左右），而高度只能从下到上去查，所以只能后序遍历（左右中）
 # 递归法
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
