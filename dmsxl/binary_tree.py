@@ -1380,24 +1380,24 @@ class Solution:
 #             self.traversal(node.right, depth)
 #             depth -= 1
 # # （版本二）递归法+精简
-# class Solution:
-#     def findBottomLeftValue(self, root: TreeNode) -> int:
-#         self.max_depth = float('-inf')
-#         self.result = None
-#         self.traversal(root, 0)
-#         return self.result
+class Solution:
+    def findBottomLeftValue(self, root: TreeNode) -> int:
+        self.max_depth = float('-inf')
+        self.result = None
+        self.traversal(root, 0)
+        return self.result
     
-#     def traversal(self, node, depth):
-#         if not node.left and not node.right:
-#             if depth > self.max_depth:
-#                 self.max_depth = depth
-#                 self.result = node.val
-#             return
+    def traversal(self, node, depth):
+        if not node.left and not node.right:
+            if depth > self.max_depth:
+                self.max_depth = depth
+                self.result = node.val
+            return
         
-#         if node.left:
-#             self.traversal(node.left, depth+1)
-#         if node.right:
-#             self.traversal(node.right, depth+1)
+        if node.left:
+            self.traversal(node.left, depth+1)
+        if node.right:
+            self.traversal(node.right, depth+1)
 # *** 迭代法
 from collections import deque
 class Solution:
@@ -1422,8 +1422,12 @@ class Solution:
 
 # 112. 路径总和
 # 给定一个二叉树和一个目标和, 判断该树中是否存在根节点到叶子节点的路径, 这条路径上所有节点值相加等于目标和。
-# (版本一) 递归
+# *** (版本一) 递归
 class Solution:
+    def hasPathSum(self, root: TreeNode, sum: int) -> bool:
+        if root is None:
+            return False
+        return self.traversal(root, sum - root.val)
     def traversal(self, cur: TreeNode, count: int) -> bool:
         if not cur.left and not cur.right and count == 0: # 遇到叶子节点，并且计数为0
             return True
@@ -1431,32 +1435,31 @@ class Solution:
             return False
         
         if cur.left: # 左
-            count -= cur.left.val
-            if self.traversal(cur.left, count): # 递归，处理节点
+            # count -= cur.left.val
+            # if self.traversal(cur.left, count): # 递归，处理节点
+            #     return True
+            # count += cur.left.val # 回溯，撤销处理结果
+            if self.traversal(cur.right, count-cur.left.val): # 递归，处理节点
                 return True
-            count += cur.left.val # 回溯，撤销处理结果
-            
+ 
         if cur.right: # 右
-            count -= cur.right.val
-            if self.traversal(cur.right, count): # 递归，处理节点
-                return True
-            count += cur.right.val # 回溯，撤销处理结果
-            
+            # count -= cur.right.val
+            # if self.traversal(cur.right, count): # 递归，处理节点
+            #     return True
+            # count += cur.right.val # 回溯，撤销处理结果
+            if self.traversal(cur.right, count-cur.right.val): # 递归，处理节点
+                return True            
+
         return False
-    
-    def hasPathSum(self, root: TreeNode, sum: int) -> bool:
-        if root is None:
-            return False
-        return self.traversal(root, sum - root.val)  
 # (版本二) 递归 + 精简
-class Solution:
-    def hasPathSum(self, root: TreeNode, sum: int) -> bool:
-        if not root:
-            return False
-        if not root.left and not root.right and sum == root.val:
-            return True
-        return self.hasPathSum(root.left, sum - root.val) or self.hasPathSum(root.right, sum - root.val)
-# (版本三) 迭代
+# class Solution:
+#     def hasPathSum(self, root: TreeNode, sum: int) -> bool:
+#         if not root:
+#             return False
+#         if not root.left and not root.right and sum == root.val:
+#             return True
+#         return self.hasPathSum(root.left, sum - root.val) or self.hasPathSum(root.right, sum - root.val)
+# *** (版本三) 迭代
 class Solution:
     def hasPathSum(self, root: TreeNode, sum: int) -> bool:
         if not root:
@@ -1478,36 +1481,11 @@ class Solution:
 
 
 # 0113.路径总和-ii
-# (版本一) 递归
+# *** (版本一) 递归
 class Solution:
     def __init__(self):
         self.result = []
         self.path = []
-
-    def traversal(self, cur, count):
-        if not cur.left and not cur.right and count == 0: # 遇到了叶子节点且找到了和为sum的路径
-            self.result.append(self.path[:])
-            return
-
-        if not cur.left and not cur.right: # 遇到叶子节点而没有找到合适的边，直接返回
-            return
-
-        if cur.left: # 左 （空节点不遍历）
-            self.path.append(cur.left.val)
-            count -= cur.left.val
-            self.traversal(cur.left, count) # 递归
-            count += cur.left.val # 回溯
-            self.path.pop() # 回溯
-
-        if cur.right: #  右 （空节点不遍历）
-            self.path.append(cur.right.val) 
-            count -= cur.right.val
-            self.traversal(cur.right, count) # 递归
-            count += cur.right.val # 回溯
-            self.path.pop() # 回溯
-
-        return
-
     def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
         self.result.clear()
         self.path.clear()
@@ -1515,25 +1493,53 @@ class Solution:
             return self.result
         self.path.append(root.val) # 把根节点放进路径
         self.traversal(root, sum - root.val)
-        return self.result 
+        return self.result
+    def traversal(self, cur, count):
+        if not cur.left and not cur.right and count == 0: # 遇到了叶子节点且找到了和为sum的路径
+            # update final result
+            self.result.append(self.path[:])
+            return
+
+        if not cur.left and not cur.right: # 遇到叶子节点而没有找到合适的边，直接返回
+            return
+
+        if cur.left: # 左 （空节点不遍历）
+            # update path
+            self.path.append(cur.left.val)
+            # count -= cur.left.val
+            # self.traversal(cur.left, count) # 递归
+            # count += cur.left.val # 回溯
+            self.traversal(cur.left, count-cur.left.val)
+            self.path.pop() # 回溯
+
+        if cur.right: #  右 （空节点不遍历）
+            # update path
+            self.path.append(cur.right.val) 
+            # count -= cur.right.val
+            # self.traversal(cur.right, count) # 递归
+            # count += cur.right.val # 回溯
+            self.traversal(cur.right, count-cur.right.val)
+            self.path.pop() # 回溯
+
+        return
 # (版本二) 递归 + 精简
-class Solution:
-    def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
+# class Solution:
+#     def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
         
-        result = []
-        self.traversal(root, targetSum, [], result)
-        return result
-    def traversal(self,node, count, path, result):
-            if not node:
-                return
-            path.append(node.val)
-            count -= node.val
-            if not node.left and not node.right and count == 0:
-                result.append(list(path))
-            self.traversal(node.left, count, path, result)
-            self.traversal(node.right, count, path, result)
-            path.pop()
-# (版本三) 迭代
+#         result = []
+#         self.traversal(root, targetSum, [], result)
+#         return result
+#     def traversal(self,node, count, path, result):
+#             if not node:
+#                 return
+#             path.append(node.val)
+#             count -= node.val
+#             if not node.left and not node.right and count == 0:
+#                 result.append(list(path))
+#             self.traversal(node.left, count, path, result)
+#             self.traversal(node.right, count, path, result)
+#             path.pop()
+# *** (版本三) 迭代
 class Solution:
     def pathSum(self, root: TreeNode, targetSum: int) -> List[List[int]]:
         if not root:
@@ -1544,10 +1550,10 @@ class Solution:
             node, path = stack.pop()
             if not node.left and not node.right and sum(path) == targetSum:
                 res.append(path)
-            if node.right:
-                stack.append((node.right, path + [node.right.val]))
             if node.left:
                 stack.append((node.left, path + [node.left.val]))
+            if node.right:
+                stack.append((node.right, path + [node.right.val]))
         return res
 
 
