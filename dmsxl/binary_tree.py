@@ -1687,7 +1687,7 @@ class Solution:
 
 # 617.合并二叉树
 # 给定两个二叉树, 想象当你将它们中的一个覆盖到另一个上时, 两个二叉树的一些节点便会重叠。
-# (版本一) 递归 - 前序 - 修改root1
+# *** (版本一) 递归 - 前序 - 修改root1
 class Solution:
     def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
         # 递归终止条件: 
@@ -1703,82 +1703,82 @@ class Solution:
         
         return root1 # ⚠️ 注意: 本题我们重复使用了题目给出的节点而不是创建新节点. 节省时间, 空间. 
 # (版本二) 递归 - 前序 - 新建root
-class Solution:
-    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
-        # 递归终止条件: 
-        #  但凡有一个节点为空, 就立刻返回另外一个. 如果另外一个也为None就直接返回None. 
-        if not root1: 
-            return root2
-        if not root2: 
-            return root1
-        # 上面的递归终止条件保证了代码执行到这里root1, root2都非空. 
-        root = TreeNode() # 创建新节点
-        root.val += root1.val + root2.val# 中
-        root.left = self.mergeTrees(root1.left, root2.left) #左
-        root.right = self.mergeTrees(root1.right, root2.right) # 右
+# class Solution:
+#     def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+#         # 递归终止条件: 
+#         #  但凡有一个节点为空, 就立刻返回另外一个. 如果另外一个也为None就直接返回None. 
+#         if not root1: 
+#             return root2
+#         if not root2: 
+#             return root1
+#         # 上面的递归终止条件保证了代码执行到这里root1, root2都非空. 
+#         root = TreeNode() # 创建新节点
+#         root.val += root1.val + root2.val# 中
+#         root.left = self.mergeTrees(root1.left, root2.left) #左
+#         root.right = self.mergeTrees(root1.right, root2.right) # 右
         
         return root # ⚠️ 注意: 本题我们创建了新节点. 
 # (版本三) 迭代
-class Solution:
-    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
-        if not root1: 
-            return root2
-        if not root2: 
-            return root1
+# class Solution:
+#     def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+#         if not root1: 
+#             return root2
+#         if not root2: 
+#             return root1
 
-        queue = deque()
-        queue.append(root1)
-        queue.append(root2)
+#         queue = deque()
+#         queue.append(root1)
+#         queue.append(root2)
 
-        while queue: 
-            node1 = queue.popleft()
-            node2 = queue.popleft()
-            # 更新queue
-            # 只有两个节点都有左节点时, 再往queue里面放.
-            if node1.left and node2.left: 
-                queue.append(node1.left)
-                queue.append(node2.left)
-            # 只有两个节点都有右节点时, 再往queue里面放.
-            if node1.right and node2.right: 
-                queue.append(node1.right)
-                queue.append(node2.right)
+#         while queue: 
+#             node1 = queue.popleft()
+#             node2 = queue.popleft()
+#             # 更新queue
+#             # 只有两个节点都有左节点时, 再往queue里面放.
+#             if node1.left and node2.left: 
+#                 queue.append(node1.left)
+#                 queue.append(node2.left)
+#             # 只有两个节点都有右节点时, 再往queue里面放.
+#             if node1.right and node2.right: 
+#                 queue.append(node1.right)
+#                 queue.append(node2.right)
 
-            # 更新当前节点. 同时改变当前节点的左右孩子. 
-            node1.val += node2.val
-            if not node1.left and node2.left: 
-                node1.left = node2.left
-            if not node1.right and node2.right: 
-                node1.right = node2.right
+#             # 更新当前节点. 同时改变当前节点的左右孩子. 
+#             node1.val += node2.val
+#             if not node1.left and node2.left: 
+#                 node1.left = node2.left
+#             if not node1.right and node2.right: 
+#                 node1.right = node2.right
 
-        return root1
+#         return root1
 # (版本四) 迭代 + 代码优化
-from collections import deque
+# from collections import deque
 
-class Solution:
-    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
-        if not root1:
-            return root2
-        if not root2:
-            return root1
+# class Solution:
+#     def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+#         if not root1:
+#             return root2
+#         if not root2:
+#             return root1
 
-        queue = deque()
-        queue.append((root1, root2))
+#         queue = deque()
+#         queue.append((root1, root2))
 
-        while queue:
-            node1, node2 = queue.popleft()
-            node1.val += node2.val
+#         while queue:
+#             node1, node2 = queue.popleft()
+#             node1.val += node2.val
 
-            if node1.left and node2.left:
-                queue.append((node1.left, node2.left))
-            elif not node1.left:
-                node1.left = node2.left
+#             if node1.left and node2.left:
+#                 queue.append((node1.left, node2.left))
+#             elif not node1.left:
+#                 node1.left = node2.left
 
-            if node1.right and node2.right:
-                queue.append((node1.right, node2.right))
-            elif not node1.right:
-                node1.right = node2.right
+#             if node1.right and node2.right:
+#                 queue.append((node1.right, node2.right))
+#             elif not node1.right:
+#                 node1.right = node2.right
 
-        return root1
+#         return root1
 
 
 # 700.二叉搜索树中的搜索
@@ -1815,22 +1815,22 @@ class Solution:
 # 节点的右子树只包含大于当前节点的数。
 # 所有左子树和右子树自身必须也是二叉搜索树。
 # 迭代-中序遍历
-class Solution:
-    def isValidBST(self, root: TreeNode) -> bool:
-        stack = []
-        cur = root
-        pre = None
-        while cur or stack:
-            if cur: # 指针来访问节点, 访问到最底层
-                stack.append(cur)
-                cur = cur.left
-            else: # 逐一处理节点
-                cur = stack.pop()
-                if pre and cur.val <= pre.val: # 比较当前节点和前节点的值的大小
-                    return False
-                pre = cur 
-                cur = cur.right
-        return True
+# class Solution:
+#     def isValidBST(self, root: TreeNode) -> bool:
+#         stack = []
+#         cur = root
+#         pre = None # 记录前一个节点
+#         while cur or stack:
+#             if cur: # 指针来访问节点, 访问到最底层
+#                 stack.append(cur)
+#                 cur = cur.left # 左
+#             else: # 逐一处理节点
+#                 cur = stack.pop() # 中
+#                 if pre and cur.val <= pre.val: # 比较当前节点和前节点的值的大小
+#                     return False
+#                 pre = cur # 保存前一个访问的结点
+#                 cur = cur.right  右
+#         return True
 # 递归法（版本一）利用中序递增性质，转换成数组
 class Solution:
     def __init__(self):
@@ -1869,7 +1869,7 @@ class Solution:
         right = self.isValidBST(root.right)
 
         return left and right
-# 递归法（版本三）直接取该树的最小值
+# *** 递归法（版本三）直接取该树的最小值
 class Solution:
     def __init__(self):
         self.pre = None  # 用来记录前一个节点
@@ -1886,23 +1886,6 @@ class Solution:
 
         right = self.isValidBST(root.right)
         return left and right
-# 迭代法
-class Solution:
-    def isValidBST(self, root):
-        stack = []
-        cur = root
-        pre = None  # 记录前一个节点
-        while cur is not None or len(stack) > 0:
-            if cur is not None:
-                stack.append(cur)
-                cur = cur.left  # 左
-            else:
-                cur = stack.pop()  # 中
-                if pre is not None and cur.val <= pre.val:
-                    return False
-                pre = cur  # 保存前一个访问的结点
-                cur = cur.right  # 右
-        return True
 
 
 # 530.二叉搜索树的最小绝对差
