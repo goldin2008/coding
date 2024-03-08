@@ -1308,7 +1308,9 @@ class Solution:
 
 # 404.左叶子之和
 # 计算给定二叉树的所有左叶子之和。
-# 递归
+    # 因为不能判断本节点是不是左叶子节点。
+    # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
+# *** 递归
 class Solution:
     def sumOfLeftLeaves(self, root):
         if root is None:
@@ -1353,49 +1355,50 @@ class Solution:
 
 # 513.找树左下角的值
 # 给定一个二叉树, 在树的最后一行找到最左边的值。
+
 # （版本一）递归法 + 回溯
-class Solution:
-    def findBottomLeftValue(self, root: TreeNode) -> int:
-        self.max_depth = float('-inf')
-        self.result = None
-        self.traversal(root, 0)
-        return self.result
+# class Solution:
+#     def findBottomLeftValue(self, root: TreeNode) -> int:
+#         self.max_depth = float('-inf')
+#         self.result = None
+#         self.traversal(root, 0)
+#         return self.result
     
-    def traversal(self, node, depth):
-        if not node.left and not node.right:
-            if depth > self.max_depth:
-                self.max_depth = depth
-                self.result = node.val
-            return
+#     def traversal(self, node, depth):
+#         if not node.left and not node.right:
+#             if depth > self.max_depth:
+#                 self.max_depth = depth
+#                 self.result = node.val
+#             return
         
-        if node.left:
-            depth += 1
-            self.traversal(node.left, depth)
-            depth -= 1
-        if node.right:
-            depth += 1
-            self.traversal(node.right, depth)
-            depth -= 1
-# （版本二）递归法+精简
-class Solution:
-    def findBottomLeftValue(self, root: TreeNode) -> int:
-        self.max_depth = float('-inf')
-        self.result = None
-        self.traversal(root, 0)
-        return self.result
+#         if node.left:
+#             depth += 1
+#             self.traversal(node.left, depth)
+#             depth -= 1
+#         if node.right:
+#             depth += 1
+#             self.traversal(node.right, depth)
+#             depth -= 1
+# # （版本二）递归法+精简
+# class Solution:
+#     def findBottomLeftValue(self, root: TreeNode) -> int:
+#         self.max_depth = float('-inf')
+#         self.result = None
+#         self.traversal(root, 0)
+#         return self.result
     
-    def traversal(self, node, depth):
-        if not node.left and not node.right:
-            if depth > self.max_depth:
-                self.max_depth = depth
-                self.result = node.val
-            return
+#     def traversal(self, node, depth):
+#         if not node.left and not node.right:
+#             if depth > self.max_depth:
+#                 self.max_depth = depth
+#                 self.result = node.val
+#             return
         
-        if node.left:
-            self.traversal(node.left, depth+1)
-        if node.right:
-            self.traversal(node.right, depth+1)
-# (版本三） 迭代法
+#         if node.left:
+#             self.traversal(node.left, depth+1)
+#         if node.right:
+#             self.traversal(node.right, depth+1)
+# *** 迭代法
 from collections import deque
 class Solution:
     def findBottomLeftValue(self, root):
