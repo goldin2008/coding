@@ -1572,11 +1572,13 @@ class Solution:
         separator_idx = inorder.index(root_val)
 
         # 第四步: 切割inorder数组. 得到inorder数组的左,右半边.
+        # 如下代码中我坚持左闭右开的原则
         inorder_left = inorder[:separator_idx]
         inorder_right = inorder[separator_idx + 1:]
 
         # 第五步: 切割preorder数组. 得到preorder数组的左,右半边.
         # ⭐️ 重点1: 中序数组大小一定跟前序数组大小是相同的.
+        # 如下代码中我坚持左闭右开的原则
         preorder_left = preorder[1:1 + len(inorder_left)]
         preorder_right = preorder[1 + len(inorder_left):]
 
@@ -1603,11 +1605,13 @@ class Solution:
         separator_idx = inorder.index(root_val)
 
         # 第四步: 切割inorder数组. 得到inorder数组的左,右半边.
+        # 如下代码中我坚持左闭右开的原则
         inorder_left = inorder[:separator_idx]
         inorder_right = inorder[separator_idx + 1:]
 
         # 第五步: 切割postorder数组. 得到postorder数组的左,右半边.
         # ⭐️ 重点1: 中序数组大小一定跟后序数组大小是相同的.
+        # 如下代码中我坚持左闭右开的原则
         postorder_left = postorder[:len(inorder_left)]
         postorder_right = postorder[len(inorder_left): len(postorder) - 1]
 
@@ -1624,29 +1628,34 @@ class Solution:
 # 左子树是通过数组中最大值左边部分构造出的最大二叉树。
 # 右子树是通过数组中最大值右边部分构造出的最大二叉树。
 # 通过给定的数组构建最大二叉树, 并且输出这个树的根节点。
+    # 第一版终止条件，是遇到叶子节点就终止，因为空节点不会进入递归。
+    # 第二版相应的终止条件，是遇到空节点，也就是数组区间为0，就终止了。
+    # ??? 如何判断是不是要用叶子还是空节点作为判断依据
+    # 一般情况来说：如果让空节点（空指针）进入递归，就不加if，如果不让空节点进入递归，就加if限制一下， 终止条件也会相应的调整。
+    # 注意类似用数组构造二叉树的题目，每次分隔尽量不要定义新的数组，而是通过下标索引直接在原数组上操作，这样可以节约时间和空间上的开销。
 # (版本一) 基础版
-class Solution:
-    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
-        if len(nums) == 1:
-            return TreeNode(nums[0])
-        node = TreeNode(0)
-        # 找到数组中最大的值和对应的下标
-        maxValue = 0
-        maxValueIndex = 0
-        for i in range(len(nums)):
-            if nums[i] > maxValue:
-                maxValue = nums[i]
-                maxValueIndex = i
-        node.val = maxValue
-        # 最大值所在的下标左区间 构造左子树
-        if maxValueIndex > 0:
-            new_list = nums[:maxValueIndex]
-            node.left = self.constructMaximumBinaryTree(new_list)
-        # 最大值所在的下标右区间 构造右子树
-        if maxValueIndex < len(nums) - 1:
-            new_list = nums[maxValueIndex+1:]
-            node.right = self.constructMaximumBinaryTree(new_list)
-        return node
+# class Solution:
+#     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+#         if len(nums) == 1:
+#             return TreeNode(nums[0])
+#         node = TreeNode(0)
+#         # 找到数组中最大的值和对应的下标
+#         maxValue = 0
+#         maxValueIndex = 0
+#         for i in range(len(nums)):
+#             if nums[i] > maxValue:
+#                 maxValue = nums[i]
+#                 maxValueIndex = i
+#         node.val = maxValue
+#         # 最大值所在的下标左区间 构造左子树
+#         if maxValueIndex > 0:
+#             new_list = nums[:maxValueIndex]
+#             node.left = self.constructMaximumBinaryTree(new_list)
+#         # 最大值所在的下标右区间 构造右子树
+#         if maxValueIndex < len(nums) - 1:
+#             new_list = nums[maxValueIndex+1:]
+#             node.right = self.constructMaximumBinaryTree(new_list)
+#         return node
 # (版本二) 使用下标
 class Solution:
     def traversal(self, nums: List[int], left: int, right: int) -> TreeNode:
@@ -1663,7 +1672,7 @@ class Solution:
 
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
         return self.traversal(nums, 0, len(nums))
-# (版本三) 使用切片
+# *** (版本三) 使用切片
 class Solution:
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
         if not nums:
