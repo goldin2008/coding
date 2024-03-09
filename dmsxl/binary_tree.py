@@ -75,7 +75,7 @@ class TreeNode:
 """
 DFS 深度优先(前中后序遍历) 递归
 """
-# 前序遍历-递归-LC144_二叉树的前序遍历
+#1 前序遍历-递归-LC144_二叉树的前序遍历
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -107,7 +107,7 @@ class Solution:
         return  [root.val] + left +  right
 
 
-# # 中序遍历-递归-LC94_二叉树的中序遍历
+#2 中序遍历-递归-LC94_二叉树的中序遍历
 # class Solution:
 #     def inorderTraversal(self, root: TreeNode) -> List[int]:
 #         result = []
@@ -131,7 +131,7 @@ class Solution:
         return left + [root.val] + right
 
 
-# # 后序遍历-递归-LC145_二叉树的后序遍历
+#3 后序遍历-递归-LC145_二叉树的后序遍历
 # class Solution:
 #     def postorderTraversal(self, root: TreeNode) -> List[int]:
 #         result = []
@@ -232,7 +232,7 @@ class Solution:
 """
 BFS 广度优先(层序遍历) 递归
 """
-# 102.二叉树的层序遍历
+#4 102.二叉树的层序遍历
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         res = []
@@ -308,7 +308,7 @@ class Solution:
 """
 二叉搜索树中的搜索
 """
-# 700.二叉搜索树中的搜索
+#5 700.二叉搜索树中的搜索
 # 递归法 (方法一)
 class Solution:
     def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
@@ -335,7 +335,7 @@ class Solution:
 
 
 
-#(1-10) 107.二叉树的层次遍历 II
+#6 107.二叉树的层次遍历 II
 class Solution:
     """二叉树层序遍历II迭代解法"""
 
@@ -364,7 +364,7 @@ class Solution:
         return result[::-1]
 
 
-# 199.二叉树的右视图
+#7 199.二叉树的右视图
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -396,7 +396,7 @@ class Solution:
         return right_view
 
 
-# 637.二叉树的层平均值
+#8 637.二叉树的层平均值
 class Solution:
     """二叉树层平均值迭代解法"""
 
@@ -431,7 +431,7 @@ class Solution:
         return averages
 
 
-# 429.N叉树的层序遍历
+#9 429.N叉树的层序遍历
 """
 # Definition for a Node.
 class Node:
@@ -464,7 +464,7 @@ class Solution:
         return result
 
 
-# 515.在每个树行中找最大值
+#10 515.在每个树行中找最大值
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -498,7 +498,7 @@ class Solution:
         return result
 
 
-# 116.填充每个节点的下一个右侧节点指针
+#11 116.填充每个节点的下一个右侧节点指针
 """
 # Definition for a Node.
 class Node:
@@ -536,7 +536,7 @@ class Solution:
         return root
 
 
-# 117.填充每个节点的下一个右侧节点指针II
+#12 117.填充每个节点的下一个右侧节点指针II
 # 层序遍历解法
 """
 # Definition for a Node.
@@ -575,7 +575,7 @@ class Solution:
         return root
 
 
-# 104.二叉树的最大深度
+#13 104.二叉树的最大深度
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -602,7 +602,7 @@ class Solution:
         return depth
 
 
-# 111.二叉树的最小深度
+#14 111.二叉树的最小深度
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -633,7 +633,7 @@ class Solution:
         return depth
 
 
-#1 226.翻转二叉树
+#15 226.翻转二叉树
 ## *** 递归法：前序遍历
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
@@ -730,7 +730,7 @@ class Solution:
         return root
 
 
-#2 101. 对称二叉树
+#16 101. 对称二叉树
 # 给定一个二叉树, 检查它是否是镜像对称的。
 # 递归法
 class Solution:
@@ -827,7 +827,7 @@ class Solution:
 #         return True
 
 
-#3 104.二叉树的最大深度
+#17 104.二叉树的最大深度
 # 给定一个二叉树, 找出其最大深度。
 # 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
 # *** 递归法
@@ -870,7 +870,7 @@ class Solution:
         return depth
 
 
-#4 559.n叉树的最大深度
+#18 559.n叉树的最大深度
 # 递归法
 class solution:
     def maxdepth(self, root: treenode) -> int:
@@ -936,7 +936,7 @@ class Solution:
 #         return max_depth
 
 
-#5 111.二叉树的最小深度
+#19 111.二叉树的最小深度
 # 给定一个二叉树, 找出其最小深度。
 # 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
     # 需要注意的是，只有当左右孩子都为空的时候，才说明遍历到最低点了。如果其中一个孩子不为空则不是最低点
@@ -1029,7 +1029,7 @@ class Solution:
 #         return min_depth + 1
 
 
-#6 222.完全二叉树的节点个数
+#20 222.完全二叉树的节点个数
 # ***  递归法
 class Solution:
     def countNodes(self, root: TreeNode) -> int:
@@ -1110,7 +1110,7 @@ class Solution:
 #         return 1+self.countNodes(root.left)+self.countNodes(root.right) 
 
 
-# 110.平衡二叉树
+#21 110.平衡二叉树
 # 给定一个二叉树, 判断它是否是高度平衡的二叉树。
     # 求深度可以从上到下去查 所以需要前序遍历（中左右），而高度只能从下到上去查，所以只能后序遍历（左右中）
     # 都知道回溯法其实就是递归，但是很少人用迭代的方式去实现回溯算法！
@@ -1219,7 +1219,7 @@ class Solution:
 #         return True
 
 
-# 257. 二叉树的所有路径
+#22 257. 二叉树的所有路径
 # 给定一个二叉树, 返回所有从根节点到叶子节点的路径。
     
 # *** 递归法+回溯 (前序遍历)
@@ -1315,7 +1315,7 @@ class Solution:
 #         return result
 
 
-# 404.左叶子之和
+#23 404.左叶子之和
 # 计算给定二叉树的所有左叶子之和。
     # 因为不能判断本节点是不是左叶子节点。
     # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
@@ -1362,7 +1362,7 @@ class Solution:
         return result
 
 
-# 513.找树左下角的值
+#24 513.找树左下角的值
 # 给定一个二叉树, 在树的最后一行找到最左边的值。
 
 # （版本一）递归法 + 回溯
@@ -1429,7 +1429,7 @@ class Solution:
         return result
 
 
-# 112. 路径总和
+#25 112. 路径总和
 # 给定一个二叉树和一个目标和, 判断该树中是否存在根节点到叶子节点的路径, 这条路径上所有节点值相加等于目标和。
 # *** (版本一) 递归
 class Solution:
@@ -1489,7 +1489,7 @@ class Solution:
         return False
 
 
-# 0113.路径总和-ii
+#26 0113.路径总和-ii
 # *** (版本一) 递归
 class Solution:
     def __init__(self):
@@ -1566,7 +1566,7 @@ class Solution:
         return res
 
 
-# 105.从前序与中序遍历序列构造二叉树
+#27 105.从前序与中序遍历序列构造二叉树
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
         # 第一步: 特殊情况讨论: 树为空. 或者说是递归终止条件
@@ -1598,7 +1598,7 @@ class Solution:
         return root
 
 
-# 106.从中序与后序遍历序列构造二叉树
+#28 106.从中序与后序遍历序列构造二叉树
 # 根据一棵树的中序遍历与后序遍历构造二叉树。
 class Solution:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
@@ -1631,7 +1631,7 @@ class Solution:
         return root
 
 
-# 654.最大二叉树
+#29 654.最大二叉树
 # 给定一个不含重复元素的整数数组。一个以此数组构建的最大二叉树定义如下：
 # 二叉树的根是数组中的最大元素。
 # 左子树是通过数组中最大值左边部分构造出的最大二叉树。
@@ -1694,7 +1694,7 @@ class Solution:
         return node
 
 
-# 617.合并二叉树
+#30 617.合并二叉树
 # 给定两个二叉树, 想象当你将它们中的一个覆盖到另一个上时, 两个二叉树的一些节点便会重叠。
 # *** (版本一) 递归 - 前序 - 修改root1
 class Solution:
@@ -1725,8 +1725,7 @@ class Solution:
 #         root.val += root1.val + root2.val# 中
 #         root.left = self.mergeTrees(root1.left, root2.left) #左
 #         root.right = self.mergeTrees(root1.right, root2.right) # 右
-        
-        return root # ⚠️ 注意: 本题我们创建了新节点. 
+#         return root # ⚠️ 注意: 本题我们创建了新节点. 
 # (版本三) 迭代
 # class Solution:
 #     def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
@@ -1817,7 +1816,7 @@ class Solution:
         return None
 
 
-# 98.验证二叉搜索树
+#31 98.验证二叉搜索树
 # 给定一个二叉树, 判断其是否是一个有效的二叉搜索树。
 # 假设一个二叉搜索树具有如下特征：
 # 节点的左子树只包含小于当前节点的数。
@@ -1897,7 +1896,7 @@ class Solution:
         return left and right
 
 
-# 530.二叉搜索树的最小绝对差
+#32 530.二叉搜索树的最小绝对差
 # 给你一棵所有节点为非负值的二叉搜索树, 请你计算树中任意两节点的差的绝对值的最小值。
     # 同时要学会在递归遍历的过程中如何记录前后两个指针，这也是一个小技巧，学会了还是很受用的
 # 递归法（版本一）利用中序递增，结合数组
@@ -1962,7 +1961,7 @@ class Solution:
         return result
 
 
-# 501.二叉搜索树中的众数
+#33 501.二叉搜索树中的众数
 # 给定一个有相同值的二叉搜索树(BST), 找出 BST 中的所有众数(出现频率最高的元素)。
 # 假定 BST 有如下定义：
 # 结点左子树中所含结点的值小于等于当前结点的值
@@ -2068,7 +2067,7 @@ class Solution:
         return result
 
 
-# 236. 二叉树的最近公共祖先
+#34 236. 二叉树的最近公共祖先
 # 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
 # class Solution:
@@ -2121,7 +2120,7 @@ class Solution:
         return left
 
 
-# 235. 二叉搜索树的最近公共祖先
+#35 235. 二叉搜索树的最近公共祖先
 # 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
 # 递归法（版本一）
@@ -2166,7 +2165,7 @@ class Solution:
         return None
 
 
-# 701.二叉搜索树中的插入操作
+#36 701.二叉搜索树中的插入操作
 # 给定二叉搜索树(BST)的根节点和要插入树中的值, 将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据保证, 新值和原始二叉搜索树中的任意节点值都不同。
 # Definition for a binary tree node.
 # class TreeNode:
@@ -2292,7 +2291,7 @@ class Solution:
         return root
 
 
-# 450.删除二叉搜索树中的节点
+#37 450.删除二叉搜索树中的节点
 # 给定一个二叉搜索树的根节点 root 和一个值 key, 删除二叉搜索树中的 key 对应的节点, 并保证二叉搜索树的性质不变。返回二叉搜索树(有可能被更新)的根节点的引用。
 # class Solution:
 #     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
@@ -2402,7 +2401,7 @@ class Solution:
         return root
 
 
-# 669. 修剪二叉搜索树
+#38 669. 修剪二叉搜索树
 # 给定一个二叉搜索树, 同时给定最小边界L 和最大边界 R。通过修剪二叉搜索树, 使得所有节点的值在[L, R]中 (R>=L) 。你可能需要改变树的根节点, 所以结果应当返回修剪好的二叉搜索树的新的根节点。
 # 递归法（版本一）
 class Solution:
@@ -2450,7 +2449,7 @@ class Solution:
         return root
 
 
-# 108.将有序数组转换为二叉搜索树
+#39 108.将有序数组转换为二叉搜索树
 # 将一个按照升序排列的有序数组, 转换为一棵高度平衡二叉搜索树。
 # Definition for a binary tree node.
 # class TreeNode:
@@ -2539,7 +2538,7 @@ class Solution:
         return root
 
 
-# 538.把二叉搜索树转换为累加树
+#40 538.把二叉搜索树转换为累加树
 # 给出二叉 搜索 树的根节点, 该树的节点值各不相同, 请你将其转换为累加树(Greater Sum Tree), 使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
 # 提醒一下, 二叉搜索树满足下列约束条件：
 # 节点的左子树仅包含键 小于 节点键的节点。 节点的右子树仅包含键 大于 节点键的节点。 左右子树也必须是二叉搜索树。
