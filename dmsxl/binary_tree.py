@@ -64,13 +64,13 @@ class TreeNode:
         self.right = right
 
 # 中序遍历代码
-# void searchBST(TreeNode* cur) {
-#     if (cur == NULL) return ;
-#     searchBST(cur->left);       // 左
-#     （处理节点）                // 中
-#     searchBST(cur->right);      // 右
-#     return ;
-# }
+void searchBST(TreeNode* cur) {
+    if (cur == NULL) return ;
+    searchBST(cur->left);       // 左
+    （处理节点）                // 中
+    searchBST(cur->right);      // 右
+    return ;
+}
 
 """
 DFS 深度优先(前中后序遍历) 递归
