@@ -63,6 +63,15 @@ class TreeNode:
         self.left = left
         self.right = right
 
+# 中序遍历代码
+# void searchBST(TreeNode* cur) {
+#     if (cur == NULL) return ;
+#     searchBST(cur->left);       // 左
+#     （处理节点）                // 中
+#     searchBST(cur->right);      // 右
+#     return ;
+# }
+
 """
 DFS 深度优先(前中后序遍历) 递归
 """
@@ -1890,34 +1899,39 @@ class Solution:
 
 # 530.二叉搜索树的最小绝对差
 # 给你一棵所有节点为非负值的二叉搜索树, 请你计算树中任意两节点的差的绝对值的最小值。
+    # 同时要学会在递归遍历的过程中如何记录前后两个指针，这也是一个小技巧，学会了还是很受用的
 # 递归法（版本一）利用中序递增，结合数组
-class Solution:
-    def __init__(self):
-        self.vec = []
+# class Solution:
+#     def __init__(self):
+#         self.vec = []
 
-    def traversal(self, root):
-        if root is None:
-            return
-        self.traversal(root.left)
-        self.vec.append(root.val)  # 将二叉搜索树转换为有序数组
-        self.traversal(root.right)
+#     def traversal(self, root):
+#         if root is None:
+#             return
+#         self.traversal(root.left)
+#         self.vec.append(root.val)  # 将二叉搜索树转换为有序数组
+#         self.traversal(root.right)
 
-    def getMinimumDifference(self, root):
-        self.vec = []
-        self.traversal(root)
-        if len(self.vec) < 2:
-            return 0
-        result = float('inf')
-        for i in range(1, len(self.vec)):
-            # 统计有序数组的最小差值
-            result = min(result, self.vec[i] - self.vec[i - 1])
-        return result
-# 递归法（版本二）利用中序递增，找到该树最小值
+#     def getMinimumDifference(self, root):
+#         self.vec = []
+#         self.traversal(root)
+#         if len(self.vec) < 2:
+#             return 0
+#         result = float('inf')
+#         for i in range(1, len(self.vec)):
+#             # 统计有序数组的最小差值
+#             result = min(result, self.vec[i] - self.vec[i - 1])
+#         return result
+# *** 递归法（版本二）利用中序递增，找到该树最小值
 class Solution:
     def __init__(self):
         self.result = float('inf')
         self.pre = None
 
+    def getMinimumDifference(self, root):
+        self.traversal(root)
+        return self.result
+    
     def traversal(self, cur):
         if cur is None:
             return
@@ -1926,10 +1940,6 @@ class Solution:
             self.result = min(self.result, cur.val - self.pre.val)
         self.pre = cur  # 记录前一个
         self.traversal(cur.right)  # 右
-
-    def getMinimumDifference(self, root):
-        self.traversal(root)
-        return self.result
 # 迭代法
 class Solution:
     def getMinimumDifference(self, root):
@@ -1938,13 +1948,13 @@ class Solution:
         pre = None
         result = float('inf')
 
-        while cur is not None or len(stack) > 0:
-            if cur is not None:
+        while cur or stack:
+            if cur:
                 stack.append(cur)  # 将访问的节点放进栈
                 cur = cur.left  # 左
             else:
                 cur = stack.pop()
-                if pre is not None:  # 中
+                if pre:  # 中
                     result = min(result, cur.val - pre.val)
                 pre = cur
                 cur = cur.right  # 右
@@ -1959,34 +1969,43 @@ class Solution:
 # 结点右子树中所含结点的值大于等于当前结点的值
 # 左子树和右子树都是二叉搜索树
 # 递归法（版本一）利用字典
-from collections import defaultdict
+# from collections import defaultdict
 
-class Solution:
-    def searchBST(self, cur, freq_map):
-        if cur is None:
-            return
-        freq_map[cur.val] += 1  # 统计元素频率
-        self.searchBST(cur.left, freq_map)
-        self.searchBST(cur.right, freq_map)
+# class Solution:
+#     def searchBST(self, cur, freq_map):
+#         if cur is None:
+#             return
+#         freq_map[cur.val] += 1  # 统计元素频率
+#         self.searchBST(cur.left, freq_map)
+#         self.searchBST(cur.right, freq_map)
 
-    def findMode(self, root):
-        freq_map = defaultdict(int)  # key:元素，value:出现频率
-        result = []
-        if root is None:
-            return result
-        self.searchBST(root, freq_map)
-        max_freq = max(freq_map.values())
-        for key, freq in freq_map.items():
-            if freq == max_freq:
-                result.append(key)
-        return result
-# 递归法（版本二）利用二叉搜索树性质
+#     def findMode(self, root):
+#         freq_map = defaultdict(int)  # key:元素，value:出现频率
+#         result = []
+#         if root is None:
+#             return result
+#         self.searchBST(root, freq_map)
+#         max_freq = max(freq_map.values())
+#         for key, freq in freq_map.items():
+#             if freq == max_freq:
+#                 result.append(key)
+#         return result
+# *** 递归法（版本二）利用二叉搜索树性质
 class Solution:
     def __init__(self):
         self.maxCount = 0  # 最大频率
         self.count = 0  # 统计频率
         self.pre = None
         self.result = []
+
+    def findMode(self, root):
+        self.count = 0
+        self.maxCount = 0
+        self.pre = None  # 记录前一个节点
+        self.result = []
+
+        self.searchBST(root)
+        return self.result
 
     def searchBST(self, cur):
         if cur is None:
@@ -2011,16 +2030,8 @@ class Solution:
 
         self.searchBST(cur.right)  # 右
         return
-
-    def findMode(self, root):
-        self.count = 0
-        self.maxCount = 0
-        self.pre = None  # 记录前一个节点
-        self.result = []
-
-        self.searchBST(root)
-        return self.result
 # 迭代法
+    # 二叉搜索树用左中右中序遍历,因为中序遍历能从下到大排列
 class Solution:
     def findMode(self, root):
         st = []
@@ -2030,11 +2041,12 @@ class Solution:
         count = 0  # 统计频率
         result = []
 
-        while cur is not None or st:
-            if cur is not None:  # 指针来访问节点，访问到最底层
+        while cur or st:
+            if cur:  # 指针来访问节点，访问到最底层
                 st.append(cur)  # 将访问的节点放进栈
                 cur = cur.left  # 左
-            else:
+
+            else: # 中
                 cur = st.pop()
                 if pre is None:  # 第一个节点
                     count = 1
@@ -2049,8 +2061,8 @@ class Solution:
                 if count > maxCount:  # 如果计数大于最大值频率
                     maxCount = count  # 更新最大频率
                     result = [cur.val]  # 很关键的一步，不要忘记清空result，之前result里的元素都失效了
-
                 pre = cur
+
                 cur = cur.right  # 右
 
         return result
