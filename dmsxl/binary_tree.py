@@ -2577,71 +2577,70 @@ class Solution:
 #         self.pre = root             
 
 #         self.traversal(root.left)   # 左
-# 递归法(版本一)
+# *** 递归法(版本一)
 class Solution:
     def convertBST(self, root: TreeNode) -> TreeNode:
         self.pre = 0  # 记录前一个节点的数值
         self.traversal(root)
         return root
     def traversal(self, cur):
-        if cur is None:
+        if not cur:
             return        
         self.traversal(cur.right)
         cur.val += self.pre
         self.pre = cur.val
         self.traversal(cur.left)
 # 递归法（版本二）
-class Solution:
-    def __init__(self):
-        self.count = 0
+# class Solution:
+#     def __init__(self):
+#         self.count = 0
 
-    def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        if root == None:
-            return 
-        '''
-        倒序累加替换：  
-        '''
-        # 右
-        self.convertBST(root.right)
+#     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+#         if root == None:
+#             return 
+#         '''
+#         倒序累加替换：  
+#         '''
+#         # 右
+#         self.convertBST(root.right)
 
-        # 中
-        # 中节点：用当前root的值加上pre的值
-        self.count += root.val
+#         # 中
+#         # 中节点：用当前root的值加上pre的值
+#         self.count += root.val
 
-        root.val = self.count 
+#         root.val = self.count 
 
-        # 左
-        self.convertBST(root.left)
+#         # 左
+#         self.convertBST(root.left)
 
-        return root
+#         return root
 # 迭代法（版本一）
-class Solution:
-    def __init__(self):
-        self.pre = 0  # 记录前一个节点的数值
+# class Solution:
+#     def __init__(self):
+#         self.pre = 0  # 记录前一个节点的数值
     
-    def traversal(self, root):
-        stack = []
-        cur = root
-        while cur or stack:
-            if cur:
-                stack.append(cur)
-                cur = cur.right  # 右
-            else:
-                cur = stack.pop()  # 中
-                cur.val += self.pre
-                self.pre = cur.val
-                cur = cur.left  # 左
+#     def traversal(self, root):
+#         stack = []
+#         cur = root
+#         while cur or stack:
+#             if cur:
+#                 stack.append(cur)
+#                 cur = cur.right  # 右
+#             else:
+#                 cur = stack.pop()  # 中
+#                 cur.val += self.pre
+#                 self.pre = cur.val
+#                 cur = cur.left  # 左
     
-    def convertBST(self, root):
-        self.pre = 0
-        self.traversal(root)
-        return root
-# 迭代法（版本二）
+#     def convertBST(self, root):
+#         self.pre = 0
+#         self.traversal(root)
+#         return root
+# *** 迭代法（版本二）
 class Solution:
     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         if not root: return root
         stack = []
-        result = []
         cur = root
         pre = 0
         while cur or stack:
