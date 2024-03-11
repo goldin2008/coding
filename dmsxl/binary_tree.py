@@ -2070,6 +2070,16 @@ class Solution:
 #34 236. 二叉树的最近公共祖先
 # 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
+
+搜索一条边的写法:
+if (递归函数(root->left)) return ;
+if (递归函数(root->right)) return ;
+
+搜索整个树写法:
+left = 递归函数(root->left);  // 左
+right = 递归函数(root->right); // 右
+left与right的逻辑处理;         // 中 
+
 # class Solution:
 #     """二叉树的最近公共祖先 递归法"""
 
@@ -2094,16 +2104,16 @@ class Solution:
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
 
-        if left is not None and right is not None:
+        if left and right:
             return root
 
-        if left is None and right is not None:
+        if not left and right:
             return right
-        elif left is not None and right is None:
+        elif left and not right:
             return left
         else: 
             return None
-# 递归法（版本二）精简
+# *** 递归法（版本二）精简
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         if root == q or root == p or root is None:
@@ -2112,11 +2122,12 @@ class Solution:
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
 
-        if left is not None and right is not None:
+        if left and right:
             return root
 
-        if left is None:
+        if not left:
             return right
+
         return left
 
 
