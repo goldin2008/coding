@@ -2240,24 +2240,6 @@ class Solution:
 #             return TreeNode(val)
 #         self.traversal(root, val)
 #         return root
-# # 递归法（版本二）
-# class Solution:
-#     def insertIntoBST(self, root, val):
-#         if root is None:
-#             return TreeNode(val)
-#         parent = None
-#         cur = root
-#         while cur:
-#             parent = cur
-#             if val < cur.val:
-#                 cur = cur.left
-#             else:
-#                 cur = cur.right
-#         if val < parent.val:
-#             parent.left = TreeNode(val)
-#         else:
-#             parent.right = TreeNode(val)
-#         return root
 # # 递归法（版本三）
 # class Solution:
 #     def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
@@ -2293,23 +2275,21 @@ class Solution:
 class Solution:
     def insertIntoBST(self, root, val):
         if root is None:  # 如果根节点为空，创建新节点作为根节点并返回
-            node = TreeNode(val)
-            return node
+            return TreeNode(val)
 
+        parent = None  # 记录上一个节点，用于连接新节点
         cur = root
-        parent = root  # 记录上一个节点，用于连接新节点
-        while cur is not None:
+        while cur:
             parent = cur
-            if cur.val > val:
+            if val < cur.val:
                 cur = cur.left
             else:
                 cur = cur.right
 
-        node = TreeNode(val)
         if val < parent.val:
-            parent.left = node  # 将新节点连接到父节点的左子树
+            parent.left = TreeNode(val)  # 将新节点连接到父节点的左子树
         else:
-            parent.right = node  # 将新节点连接到父节点的右子树
+            parent.right = TreeNode(val)  # 将新节点连接到父节点的右子树
 
         return root
 
