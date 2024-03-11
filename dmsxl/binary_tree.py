@@ -55,6 +55,15 @@ BFS 广度(迭代)需要额外用queue(FIFO)来存遍历的node, 用while循环�
 有同学会把红黑树和二叉平衡搜索树弄分开了, 其实红黑树就是一种二叉平衡搜索树, 这两个树不是独立的, 所以C++中map、multimap、set、multiset的底层实现机制是二叉平衡搜索树, 再具体一点是红黑树。
 
 morris遍历是二叉树遍历算法的超强进阶算法, morris遍历可以将非递归遍历中的空间复杂度降为O(1), 感兴趣大家就去查一查学习学习, 比较小众, 面试几乎不会考。我其实也没有研究过, 就不做过多介绍了。
+
+
+现在已经讲过了几种二叉树了，二叉树，二叉平衡树，完全二叉树，二叉搜索树，后面还会有平衡二叉搜索树。 那么一些同学难免会有混乱了，我针对如下三个问题，帮大家在捋顺一遍：
+- 1.平衡二叉搜索树是不是二叉搜索树和平衡二叉树的结合？
+是的，是二叉搜索树和平衡二叉树的结合。
+- 2.平衡二叉树与完全二叉树的区别在于底层节点的位置？
+是的，完全二叉树底层必须是从左到右连续的，且次底层是满的。
+- 3.堆是完全二叉树和排序的结合，而不是平衡二叉搜索树？
+堆是一棵完全二叉树，同时保证父子节点的顺序关系（有序）。 但完全二叉树一定是平衡二叉树，堆的排序是父节点大于子节点，而搜索树是父节点大于左孩子，小于右孩子，所以堆不是平衡二叉搜索树。
 """
 # 二叉树节点定义
 class TreeNode:
@@ -1840,44 +1849,45 @@ class Solution:
 #                 cur = cur.right  右
 #         return True
 # 递归法（版本一）利用中序递增性质，转换成数组
-class Solution:
-    def __init__(self):
-        self.vec = []
+# class Solution:
+#     def __init__(self):
+#         self.vec = []
 
-    def traversal(self, root):
-        if root is None:
-            return
-        self.traversal(root.left)
-        self.vec.append(root.val)  # 将二叉搜索树转换为有序数组
-        self.traversal(root.right)
+#     def traversal(self, root):
+#         if root is None:
+#             return
+#         self.traversal(root.left)
+#         self.vec.append(root.val)  # 将二叉搜索树转换为有序数组
+#         self.traversal(root.right)
 
-    def isValidBST(self, root):
-        self.vec = []  # 清空数组
-        self.traversal(root)
-        for i in range(1, len(self.vec)):
-            # 注意要小于等于，搜索树里不能有相同元素
-            if self.vec[i] <= self.vec[i - 1]:
-                return False
-        return True
-# 递归法（版本二）设定极小值，进行比较
-class Solution:
-    def __init__(self):
-        self.maxVal = float('-inf')  # 因为后台测试数据中有int最小值
+#     def isValidBST(self, root):
+#         self.vec = []  # 清空数组
+#         self.traversal(root)
+#         for i in range(1, len(self.vec)):
+#             # 注意要小于等于，搜索树里不能有相同元素
+#             if self.vec[i] <= self.vec[i - 1]:
+#                 return False
+#         return True
+# # 递归法（版本二）设定极小值，进行比较
+# class Solution:
+#     def __init__(self):
+#         self.maxVal = float('-inf')  # 因为后台测试数据中有int最小值
 
-    def isValidBST(self, root):
-        if root is None:
-            return True
+#     def isValidBST(self, root):
+#         if root is None:
+#             return True
 
-        left = self.isValidBST(root.left)
-        # 中序遍历，验证遍历的元素是不是从小到大
-        if self.maxVal < root.val:
-            self.maxVal = root.val
-        else:
-            return False
-        right = self.isValidBST(root.right)
+#         left = self.isValidBST(root.left)
+#         # 中序遍历，验证遍历的元素是不是从小到大
+#         if self.maxVal < root.val:
+#             self.maxVal = root.val
+#         else:
+#             return False
+#         right = self.isValidBST(root.right)
 
-        return left and right
+#         return left and right
 # *** 递归法（版本三）直接取该树的最小值
+    # 同样本题也需要用pre节点记录cur节点的前一个节点。（这种写法一定要掌握）
 class Solution:
     def __init__(self):
         self.pre = None  # 用来记录前一个节点
@@ -2135,26 +2145,26 @@ class Solution:
 # 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
 # 递归法（版本一）
-class Solution:
-    def traversal(self, cur, p, q):
-        if cur is None:
-            return cur
-                                                        # 中
-        if cur.val > p.val and cur.val > q.val:           # 左
-            left = self.traversal(cur.left, p, q)
-            if left is not None:
-                return left
+# class Solution:
+#     def traversal(self, cur, p, q):
+#         if cur is None:
+#             return cur
+#                                                         # 中
+#         if cur.val > p.val and cur.val > q.val:           # 左
+#             left = self.traversal(cur.left, p, q)
+#             if left is not None:
+#                 return left
 
-        if cur.val < p.val and cur.val < q.val:           # 右
-            right = self.traversal(cur.right, p, q)
-            if right is not None:
-                return right
+#         if cur.val < p.val and cur.val < q.val:           # 右
+#             right = self.traversal(cur.right, p, q)
+#             if right is not None:
+#                 return right
 
-        return cur
+#         return cur
 
-    def lowestCommonAncestor(self, root, p, q):
-        return self.traversal(root, p, q)
-# 迭代法（版本二）精简
+#     def lowestCommonAncestor(self, root, p, q):
+#         return self.traversal(root, p, q)
+# *** 迭代法（版本二）精简
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         if root.val > p.val and root.val > q.val:
@@ -2163,7 +2173,7 @@ class Solution:
             return self.lowestCommonAncestor(root.right, p, q)
         else:
             return root
-# 迭代法
+# *** 迭代法
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         while root:
