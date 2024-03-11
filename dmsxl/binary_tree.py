@@ -2215,66 +2215,68 @@ class Solution:
 #         # 返回更新后的以当前root为根节点的新树
 #         return root
 # 递归法（版本一）
-class Solution:
-    def __init__(self):
-        self.parent = None
+# class Solution:
+#     def __init__(self):
+#         self.parent = None
 
-    def traversal(self, cur, val):
-        if cur is None:
-            node = TreeNode(val)
-            if val > self.parent.val:
-                self.parent.right = node
-            else:
-                self.parent.left = node
-            return
+#     def traversal(self, cur, val):
+#         if cur is None:
+#             node = TreeNode(val)
+#             if val > self.parent.val:
+#                 self.parent.right = node
+#             else:
+#                 self.parent.left = node
+#             return
 
-        self.parent = cur
-        if cur.val > val:
-            self.traversal(cur.left, val)
-        if cur.val < val:
-            self.traversal(cur.right, val)
+#         self.parent = cur
+#         if cur.val > val:
+#             self.traversal(cur.left, val)
+#         if cur.val < val:
+#             self.traversal(cur.right, val)
 
-    def insertIntoBST(self, root, val):
-        self.parent = TreeNode(0)
-        if root is None:
-            return TreeNode(val)
-        self.traversal(root, val)
-        return root
-# 递归法（版本二）
-class Solution:
-    def insertIntoBST(self, root, val):
-        if root is None:
-            return TreeNode(val)
-        parent = None
-        cur = root
-        while cur:
-            parent = cur
-            if val < cur.val:
-                cur = cur.left
-            else:
-                cur = cur.right
-        if val < parent.val:
-            parent.left = TreeNode(val)
-        else:
-            parent.right = TreeNode(val)
-        return root
-# 递归法（版本三）
-class Solution:
-    def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
-        if root is None or root.val == val:
-            return TreeNode(val)
-        elif root.val > val:
-            if root.left is None:
-                root.left = TreeNode(val)
-            else:
-                self.insertIntoBST(root.left, val)
-        elif root.val < val:
-            if root.right is None:
-                root.right = TreeNode(val)
-            else:
-                self.insertIntoBST(root.right, val)
-        return root
-# 递归法（版本四）
+#     def insertIntoBST(self, root, val):
+#         self.parent = TreeNode(0)
+#         if root is None:
+#             return TreeNode(val)
+#         self.traversal(root, val)
+#         return root
+# # 递归法（版本二）
+# class Solution:
+#     def insertIntoBST(self, root, val):
+#         if root is None:
+#             return TreeNode(val)
+#         parent = None
+#         cur = root
+#         while cur:
+#             parent = cur
+#             if val < cur.val:
+#                 cur = cur.left
+#             else:
+#                 cur = cur.right
+#         if val < parent.val:
+#             parent.left = TreeNode(val)
+#         else:
+#             parent.right = TreeNode(val)
+#         return root
+# # 递归法（版本三）
+# class Solution:
+#     def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+#         if root is None or root.val == val:
+#             return TreeNode(val)
+#         elif root.val > val:
+#             if root.left is None:
+#                 root.left = TreeNode(val)
+#             else:
+#                 self.insertIntoBST(root.left, val)
+#         elif root.val < val:
+#             if root.right is None:
+#                 root.right = TreeNode(val)
+#             else:
+#                 self.insertIntoBST(root.right, val)
+#         return root
+
+# *** 递归法（版本四）
+    # 通过递归函数返回值完成了新加入节点的父子关系赋值操作了，下一层将加入节点返回，本层用root->left或者root->right将其接住
 class Solution:
     def insertIntoBST(self, root, val):
         if root is None:
