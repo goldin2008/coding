@@ -2271,7 +2271,7 @@ class Solution:
             root.right = self.insertIntoBST(root.right, val)
 
         return root
-# 迭代法
+# *** 迭代法
 class Solution:
     def insertIntoBST(self, root, val):
         if root is None:  # 如果根节点为空，创建新节点作为根节点并返回
@@ -2325,83 +2325,84 @@ class Solution:
 #         if root.val > key: root.left = self.deleteNode(root.left,key)  #左递归
 #         if root.val < key: root.right = self.deleteNode(root.right,key)  #右递归
 #         return root
-# 递归法（版本一）
+# *** 递归法（版本一）
 class Solution:
     def deleteNode(self, root, key):
         if root is None:
             return root
         if root.val == key:
-            if root.left is None and root.right is None:
+            if not root.left and not root.right:
                 return None
-            elif root.left is None:
+            elif not root.left:
                 return root.right
-            elif root.right is None:
+            elif not root.right:
                 return root.left
             else:
                 cur = root.right
-                while cur.left is not None:
+                while cur.left:
                     cur = cur.left
                 cur.left = root.left
                 return root.right
+
         if root.val > key:
             root.left = self.deleteNode(root.left, key)
         if root.val < key:
             root.right = self.deleteNode(root.right, key)
         return root
 # 递归法（版本二）
-class Solution:
-    def deleteNode(self, root, key):
-        if root is None:  # 如果根节点为空，直接返回
-            return root
-        if root.val == key:  # 找到要删除的节点
-            if root.right is None:  # 如果右子树为空，直接返回左子树作为新的根节点
-                return root.left
-            cur = root.right
-            while cur.left:  # 找到右子树中的最左节点
-                cur = cur.left
-            root.val, cur.val = cur.val, root.val  # 将要删除的节点值与最左节点值交换
-        root.left = self.deleteNode(root.left, key)  # 在左子树中递归删除目标节点
-        root.right = self.deleteNode(root.right, key)  # 在右子树中递归删除目标节点
-        return root
-# 迭代法
-class Solution:
-    def deleteOneNode(self, target: TreeNode) -> TreeNode:
-        """
-        将目标节点（删除节点）的左子树放到目标节点的右子树的最左面节点的左孩子位置上
-        并返回目标节点右孩子为新的根节点
-        是动画里模拟的过程
-        """
-        if target is None:
-            return target
-        if target.right is None:
-            return target.left
-        cur = target.right
-        while cur.left:
-            cur = cur.left
-        cur.left = target.left
-        return target.right
+# class Solution:
+#     def deleteNode(self, root, key):
+#         if root is None:  # 如果根节点为空，直接返回
+#             return root
+#         if root.val == key:  # 找到要删除的节点
+#             if root.right is None:  # 如果右子树为空，直接返回左子树作为新的根节点
+#                 return root.left
+#             cur = root.right
+#             while cur.left:  # 找到右子树中的最左节点
+#                 cur = cur.left
+#             root.val, cur.val = cur.val, root.val  # 将要删除的节点值与最左节点值交换
+#         root.left = self.deleteNode(root.left, key)  # 在左子树中递归删除目标节点
+#         root.right = self.deleteNode(root.right, key)  # 在右子树中递归删除目标节点
+#         return root
+# # 迭代法
+# class Solution:
+#     def deleteOneNode(self, target: TreeNode) -> TreeNode:
+#         """
+#         将目标节点（删除节点）的左子树放到目标节点的右子树的最左面节点的左孩子位置上
+#         并返回目标节点右孩子为新的根节点
+#         是动画里模拟的过程
+#         """
+#         if target is None:
+#             return target
+#         if target.right is None:
+#             return target.left
+#         cur = target.right
+#         while cur.left:
+#             cur = cur.left
+#         cur.left = target.left
+#         return target.right
 
-    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
-        if root is None:
-            return root
-        cur = root
-        pre = None  # 记录cur的父节点，用来删除cur
-        while cur:
-            if cur.val == key:
-                break
-            pre = cur
-            if cur.val > key:
-                cur = cur.left
-            else:
-                cur = cur.right
-        if pre is None:  # 如果搜索树只有头结点
-            return self.deleteOneNode(cur)
-        # pre 要知道是删左孩子还是右孩子
-        if pre.left and pre.left.val == key:
-            pre.left = self.deleteOneNode(cur)
-        if pre.right and pre.right.val == key:
-            pre.right = self.deleteOneNode(cur)
-        return root
+#     def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+#         if root is None:
+#             return root
+#         cur = root
+#         pre = None  # 记录cur的父节点，用来删除cur
+#         while cur:
+#             if cur.val == key:
+#                 break
+#             pre = cur
+#             if cur.val > key:
+#                 cur = cur.left
+#             else:
+#                 cur = cur.right
+#         if pre is None:  # 如果搜索树只有头结点
+#             return self.deleteOneNode(cur)
+#         # pre 要知道是删左孩子还是右孩子
+#         if pre.left and pre.left.val == key:
+#             pre.left = self.deleteOneNode(cur)
+#         if pre.right and pre.right.val == key:
+#             pre.right = self.deleteOneNode(cur)
+#         return root
 
 
 #38 669. 修剪二叉搜索树
