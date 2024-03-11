@@ -2407,7 +2407,7 @@ class Solution:
 
 #38 669. 修剪二叉搜索树
 # 给定一个二叉搜索树, 同时给定最小边界L 和最大边界 R。通过修剪二叉搜索树, 使得所有节点的值在[L, R]中 (R>=L) 。你可能需要改变树的根节点, 所以结果应当返回修剪好的二叉搜索树的新的根节点。
-# 递归法（版本一）
+# *** 递归法（版本一）
 class Solution:
     def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
         if root is None:
@@ -2422,35 +2422,35 @@ class Solution:
         root.right = self.trimBST(root.right, low, high)  # root.right 接入符合条件的右孩子
         return root
 # 迭代法
-class Solution:
-    def trimBST(self, root: TreeNode, L: int, R: int) -> TreeNode:
-        if not root:
-            return None
+# class Solution:
+#     def trimBST(self, root: TreeNode, L: int, R: int) -> TreeNode:
+#         if not root:
+#             return None
         
-        # 处理头结点，让root移动到[L, R] 范围内，注意是左闭右闭
-        while root and (root.val < L or root.val > R):
-            if root.val < L:
-                root = root.right  # 小于L往右走
-            else:
-                root = root.left  # 大于R往左走
+#         # 处理头结点，让root移动到[L, R] 范围内，注意是左闭右闭
+#         while root and (root.val < L or root.val > R):
+#             if root.val < L:
+#                 root = root.right  # 小于L往右走
+#             else:
+#                 root = root.left  # 大于R往左走
         
-        cur = root
+#         cur = root
         
-        # 此时root已经在[L, R] 范围内，处理左孩子元素小于L的情况
-        while cur:
-            while cur.left and cur.left.val < L:
-                cur.left = cur.left.right
-            cur = cur.left
+#         # 此时root已经在[L, R] 范围内，处理左孩子元素小于L的情况
+#         while cur:
+#             while cur.left and cur.left.val < L:
+#                 cur.left = cur.left.right
+#             cur = cur.left
         
-        cur = root
+#         cur = root
         
-        # 此时root已经在[L, R] 范围内，处理右孩子大于R的情况
-        while cur:
-            while cur.right and cur.right.val > R:
-                cur.right = cur.right.left
-            cur = cur.right
+#         # 此时root已经在[L, R] 范围内，处理右孩子大于R的情况
+#         while cur:
+#             while cur.right and cur.right.val > R:
+#                 cur.right = cur.right.left
+#             cur = cur.right
         
-        return root
+#         return root
 
 
 #39 108.将有序数组转换为二叉搜索树
@@ -2487,8 +2487,12 @@ class Solution:
 
 #         # 返回由被传入的左右界定义的某子树的根节点
 #         return mid_root
-# 递归法
+# *** 递归法
 class Solution:
+    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+        root = self.traversal(nums, 0, len(nums) - 1)
+        return root
+    
     def traversal(self, nums: List[int], left: int, right: int) -> TreeNode:
         if left > right:
             return None
@@ -2498,48 +2502,44 @@ class Solution:
         root.left = self.traversal(nums, left, mid - 1)
         root.right = self.traversal(nums, mid + 1, right)
         return root
-    
-    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
-        root = self.traversal(nums, 0, len(nums) - 1)
-        return root
 # 迭代法
-from collections import deque
+# from collections import deque
 
-class Solution:
-    def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
-        if len(nums) == 0:
-            return None
+# class Solution:
+#     def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
+#         if len(nums) == 0:
+#             return None
         
-        root = TreeNode(0)  # 初始根节点
-        nodeQue = deque()   # 放遍历的节点
-        leftQue = deque()   # 保存左区间下标
-        rightQue = deque()  # 保存右区间下标
+#         root = TreeNode(0)  # 初始根节点
+#         nodeQue = deque()   # 放遍历的节点
+#         leftQue = deque()   # 保存左区间下标
+#         rightQue = deque()  # 保存右区间下标
         
-        nodeQue.append(root)               # 根节点入队列
-        leftQue.append(0)                  # 0为左区间下标初始位置
-        rightQue.append(len(nums) - 1)     # len(nums) - 1为右区间下标初始位置
+#         nodeQue.append(root)               # 根节点入队列
+#         leftQue.append(0)                  # 0为左区间下标初始位置
+#         rightQue.append(len(nums) - 1)     # len(nums) - 1为右区间下标初始位置
 
-        while nodeQue:
-            curNode = nodeQue.popleft()
-            left = leftQue.popleft()
-            right = rightQue.popleft()
-            mid = left + (right - left) // 2
+#         while nodeQue:
+#             curNode = nodeQue.popleft()
+#             left = leftQue.popleft()
+#             right = rightQue.popleft()
+#             mid = left + (right - left) // 2
 
-            curNode.val = nums[mid]  # 将mid对应的元素给中间节点
+#             curNode.val = nums[mid]  # 将mid对应的元素给中间节点
 
-            if left <= mid - 1:  # 处理左区间
-                curNode.left = TreeNode(0)
-                nodeQue.append(curNode.left)
-                leftQue.append(left)
-                rightQue.append(mid - 1)
+#             if left <= mid - 1:  # 处理左区间
+#                 curNode.left = TreeNode(0)
+#                 nodeQue.append(curNode.left)
+#                 leftQue.append(left)
+#                 rightQue.append(mid - 1)
 
-            if right >= mid + 1:  # 处理右区间
-                curNode.right = TreeNode(0)
-                nodeQue.append(curNode.right)
-                leftQue.append(mid + 1)
-                rightQue.append(right)
+#             if right >= mid + 1:  # 处理右区间
+#                 curNode.right = TreeNode(0)
+#                 nodeQue.append(curNode.right)
+#                 leftQue.append(mid + 1)
+#                 rightQue.append(right)
 
-        return root
+#         return root
 
 
 #40 538.把二叉搜索树转换为累加树
