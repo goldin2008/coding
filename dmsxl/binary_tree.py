@@ -787,25 +787,25 @@ class Solution:
         return True
 # 迭代法：使用栈
     # (跟使用队列没有区别,就是data structure变了,但是因为是放两个node,所以没区别)
-class Solution:
-    def isSymmetric(self, root: TreeNode) -> bool:
-        if not root:
-            return True
-        st = [] #这里改成了栈
-        st.append(root.left)
-        st.append(root.right)
-        while st:
-            rightNode = st.pop()
-            leftNode = st.pop()
-            if not leftNode and not rightNode:
-                continue
-            if not leftNode or not rightNode or leftNode.val != rightNode.val:
-                return False
-            st.append(leftNode.left)
-            st.append(rightNode.right)
-            st.append(leftNode.right)
-            st.append(rightNode.left)
-        return True
+# class Solution:
+#     def isSymmetric(self, root: TreeNode) -> bool:
+#         if not root:
+#             return True
+#         st = [] #这里改成了栈
+#         st.append(root.left)
+#         st.append(root.right)
+#         while st:
+#             rightNode = st.pop()
+#             leftNode = st.pop()
+#             if not leftNode and not rightNode:
+#                 continue
+#             if not leftNode or not rightNode or leftNode.val != rightNode.val:
+#                 return False
+#             st.append(leftNode.left)
+#             st.append(rightNode.right)
+#             st.append(leftNode.right)
+#             st.append(rightNode.left)
+#         return True
 # 层次遍历
 # class Solution:
 #     def isSymmetric(self, root: TreeNode) -> bool:
@@ -1124,10 +1124,8 @@ class Solution:
     # 求深度可以从上到下去查 所以需要前序遍历（中左右），而高度只能从下到上去查，所以只能后序遍历（左右中）
     # 都知道回溯法其实就是递归，但是很少人用迭代的方式去实现回溯算法！
     # 因为对于回溯算法已经是非常复杂的递归了，如果再用迭代的话，就是自己给自己找麻烦，效率也并不一定高。
-
 # 讲了这么多二叉树题目的迭代法，有的同学会疑惑，迭代法中究竟什么时候用队列，什么时候用栈？
 # 如果是模拟前中后序遍历就用栈，如果是适合层序遍历就用队列，当然还是其他情况，那么就是 先用队列试试行不行，不行就用栈。
-
 # *** 递归法
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
