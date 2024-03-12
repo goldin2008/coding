@@ -9,9 +9,13 @@
 本题我把回溯问题抽象为树形结构, 可以直观的看出其搜索的过程: for循环横向遍历, 递归纵向遍历, 回溯不断调整结果集。
 因为回溯法解决的都是在集合中递归查找子集, 集合的大小就构成了树的宽度, 递归的深度, 都构成的树的深度。
 递归就要有终止条件, 所以必然是一棵高度有限的树 (N叉树)
+
+回溯三部曲
 1. 回溯函数模板返回值以及参数
 2. 回溯函数终止条件
 3. 回溯搜索的遍历过程
+
+for循环横向遍历,递归纵向遍历,回溯不断调整结果集
 大家可以从图中看出for循环可以理解是横向遍历, backtracking (递归) 就是纵向遍历, 这样就把这棵树全遍历完了, 一般来说, 搜索叶子节点就是找的其中一个结果了。
 
 回溯算法能解决如下问题:
@@ -21,15 +25,21 @@
 子集问题: 一个N个数的集合里有多少符合条件的子集
 棋盘问题: N皇后, 解数独等等
 """
-
 # 回溯算法模板：
-void backtracking(参数) {
+# 用for循环来横向遍历,递归来进行纵向遍历
+# for循环可以理解为选树的root，然后从root开始递归整个树里面的路径
+vector<vector<int>> result; // 存放符合条件结果的集合
+vector<int> path; // 用来存放符合条件结果
+
+void backtracking(参数) { # 1.回溯函数模板返回值以及参数
+    # 2.回溯函数终止条件
     if (终止条件) {
         存放结果;
         return;
     }
 
-    for (选择: 本层集合中元素（树中节点孩子的数量就是集合的大小）) {
+    # 3.回溯搜索的遍历过程
+    for (选择: 本层集合中元素（树中节点孩子的数量就是集合的大小）) { 
         处理节点;
         backtracking(路径, 选择列表); // 递归
         回溯, 撤销处理结果
@@ -49,6 +59,8 @@ void backtracking(参数) {
 # [1,3],
 # [1,4],
 # ]
+# *** 剪枝优化
+# 剪枝精髓是：for循环在寻找起点的时候要有一个范围，如果这个起点到集合终止之间的元素已经不够 题目要求的k个元素了，就没有必要搜索了。
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         res=[]  #存放符合条件结果的集合
@@ -65,55 +77,40 @@ class Solution:
         backtrack(n,k,1)
         return res
 # 未剪枝优化
-class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
-        result = []  # 存放结果集
-        self.backtracking(n, k, 1, [], result)
-        return result
-    def backtracking(self, n, k, startIndex, path, result):
-        if len(path) == k:
-            result.append(path[:])
-            return
-        for i in range(startIndex, n + 1):  # 需要优化的地方
-            path.append(i)  # 处理节点
-            self.backtracking(n, k, i + 1, path, result)
-            path.pop()  # 回溯，撤销处理的节点
-# 剪枝优化
-class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
-        result = []  # 存放结果集
-        self.backtracking(n, k, 1, [], result)
-        return result
-    def backtracking(self, n, k, startIndex, path, result):
-        if len(path) == k:
-            result.append(path[:])
-            return
-        for i in range(startIndex, n - (k - len(path)) + 2):  # 优化的地方
-            path.append(i)  # 处理节点
-            self.backtracking(n, k, i + 1, path, result)
-            path.pop()  # 回溯，撤销处理的节点
-
-
-#2 77.组合优化
-class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
-        result = []  # 存放结果集
-        self.backtracking(n, k, 1, [], result)
-        return result
-    def backtracking(self, n, k, startIndex, path, result):
-        if len(path) == k:
-            result.append(path[:])
-            return
-        for i in range(startIndex, n - (k - len(path)) + 2):  # 优化的地方
-            path.append(i)  # 处理节点
-            self.backtracking(n, k, i + 1, path, result)
-            path.pop()  # 回溯，撤销处理的节点
+# class Solution:
+#     def combine(self, n: int, k: int) -> List[List[int]]:
+#         result = []  # 存放结果集
+#         self.backtracking(n, k, 1, [], result)
+#         return result
+#     def backtracking(self, n, k, startIndex, path, result):
+#         if len(path) == k:
+#             result.append(path[:])
+#             return
+#         for i in range(startIndex, n + 1):  # 需要优化的地方
+#             path.append(i)  # 处理节点
+#             self.backtracking(n, k, i + 1, path, result)
+#             path.pop()  # 回溯，撤销处理的节点
+# # 剪枝优化
+# class Solution:
+#     def combine(self, n: int, k: int) -> List[List[int]]:
+#         result = []  # 存放结果集
+#         self.backtracking(n, k, 1, [], result)
+#         return result
+#     def backtracking(self, n, k, startIndex, path, result):
+#         if len(path) == k:
+#             result.append(path[:])
+#             return
+#         for i in range(startIndex, n - (k - len(path)) + 2):  # 优化的地方
+#             path.append(i)  # 处理节点
+#             self.backtracking(n, k, i + 1, path, result)
+#             path.pop()  # 回溯，撤销处理的节点
 
 
 #3 216.组合总和III
 # 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数, 并且每种组合中不存在重复的数字。
 # 示例 1: 输入: k = 3, n = 7 输出: [[1,2,4]]
 # 示例 2: 输入: k = 3, n = 9 输出: [[1,2,6], [1,3,5], [2,3,4]]
+    # 本题的剪枝会好想一些，即：已选元素总和如果已经大于n（题中要求的和）了，那么往后遍历就没有意义了，直接剪掉。
 class Solution:
     def __init__(self):
         self.res = []
@@ -137,96 +134,96 @@ class Solution:
             self.backtracking(k, n, i + 1)
             self.path.pop()
             self.sum_now -= i
+# class Solution:
+#     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
+#         result = []  # 存放结果集
+#         self.backtracking(n, k, 0, 1, [], result)
+#         return result
 
-class Solution:
-    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        result = []  # 存放结果集
-        self.backtracking(n, k, 0, 1, [], result)
-        return result
-
-    def backtracking(self, targetSum, k, currentSum, startIndex, path, result):
-        if currentSum > targetSum:  # 剪枝操作
-            return  # 如果path的长度等于k但currentSum不等于targetSum，则直接返回
-        if len(path) == k:
-            if currentSum == targetSum:
-                result.append(path[:])
-            return
-        for i in range(startIndex, 9 - (k - len(path)) + 2):  # 剪枝
-            currentSum += i  # 处理
-            path.append(i)  # 处理
-            self.backtracking(targetSum, k, currentSum, i + 1, path, result)  # 注意i+1调整startIndex
-            currentSum -= i  # 回溯
-            path.pop()  # 回溯
+#     def backtracking(self, targetSum, k, currentSum, startIndex, path, result):
+#         if currentSum > targetSum:  # 剪枝操作
+#             return  # 如果path的长度等于k但currentSum不等于targetSum，则直接返回
+#         if len(path) == k:
+#             if currentSum == targetSum:
+#                 result.append(path[:])
+#             return
+#         for i in range(startIndex, 9 - (k - len(path)) + 2):  # 剪枝
+#             currentSum += i  # 处理
+#             path.append(i)  # 处理
+#             self.backtracking(targetSum, k, currentSum, i + 1, path, result)  # 注意i+1调整startIndex
+#             currentSum -= i  # 回溯
+#             path.pop()  # 回溯
 
 
 #4 17.电话号码的字母组合
 # 给定一个仅包含数字 2-9 的字符串, 返回所有它能表示的字母组合。
 # 示例: 输入："23" 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+    # 因为本题每一个数字代表的是不同集合，也就是求不同集合之间的组合，而回溯算法：求组合问题！ (opens new window)和回溯算法：求组合总和！ (opens new window)都是是求同一个集合中的组合！
 # 回溯
-class Solution:
-    def __init__(self):
-        self.answers: List[str] = []
-        self.answer: str = ''
-        self.letter_map = {
-            '2': 'abc',
-            '3': 'def',
-            '4': 'ghi',
-            '5': 'jkl',
-            '6': 'mno',
-            '7': 'pqrs',
-            '8': 'tuv',
-            '9': 'wxyz'
-        }
+# class Solution:
+#     def __init__(self):
+#         self.answers: List[str] = []
+#         self.answer: str = ''
+#         self.letter_map = {
+#             '2': 'abc',
+#             '3': 'def',
+#             '4': 'ghi',
+#             '5': 'jkl',
+#             '6': 'mno',
+#             '7': 'pqrs',
+#             '8': 'tuv',
+#             '9': 'wxyz'
+#         }
 
-    def letterCombinations(self, digits: str) -> List[str]:
-        self.answers.clear()
-        if not digits: return []
-        self.backtracking(digits, 0)
-        return self.answers
+#     def letterCombinations(self, digits: str) -> List[str]:
+#         self.answers.clear()
+#         if not digits: return []
+#         self.backtracking(digits, 0)
+#         return self.answers
     
-    def backtracking(self, digits: str, index: int) -> None:
-        # 回溯函数没有返回值
-        # Base Case
-        if index == len(digits):    # 当遍历穷尽后的下一层时
-            self.answers.append(self.answer)
-            return 
-        # 单层递归逻辑  
-        letters: str = self.letter_map[digits[index]]
-        for letter in letters:
-            self.answer += letter   # 处理
-            self.backtracking(digits, index + 1)    # 递归至下一层
-            self.answer = self.answer[:-1]  # 回溯
-# 回溯简化
-class Solution:
-    def __init__(self):
-        self.answers: List[str] = []
-        self.letter_map = {
-            '2': 'abc',
-            '3': 'def',
-            '4': 'ghi',
-            '5': 'jkl',
-            '6': 'mno',
-            '7': 'pqrs',
-            '8': 'tuv',
-            '9': 'wxyz'
-        }
+#     def backtracking(self, digits: str, index: int) -> None:
+#         # 回溯函数没有返回值
+#         # Base Case
+#         if index == len(digits):    # 当遍历穷尽后的下一层时
+#             self.answers.append(self.answer)
+#             return 
+#         # 单层递归逻辑  
+#         letters: str = self.letter_map[digits[index]]
+#         for letter in letters:
+#             self.answer += letter   # 处理
+#             self.backtracking(digits, index + 1)    # 递归至下一层
+#             self.answer = self.answer[:-1]  # 回溯
+# # 回溯简化
+# class Solution:
+#     def __init__(self):
+#         self.answers: List[str] = []
+#         self.letter_map = {
+#             '2': 'abc',
+#             '3': 'def',
+#             '4': 'ghi',
+#             '5': 'jkl',
+#             '6': 'mno',
+#             '7': 'pqrs',
+#             '8': 'tuv',
+#             '9': 'wxyz'
+#         }
 
-    def letterCombinations(self, digits: str) -> List[str]:
-        self.answers.clear()
-        if not digits: return []
-        self.backtracking(digits, 0, '')
-        return self.answers
+#     def letterCombinations(self, digits: str) -> List[str]:
+#         self.answers.clear()
+#         if not digits: return []
+#         self.backtracking(digits, 0, '')
+#         return self.answers
     
-    def backtracking(self, digits: str, index: int, answer: str) -> None:
-        # 回溯函数没有返回值
-        # Base Case
-        if index == len(digits):    # 当遍历穷尽后的下一层时
-            self.answers.append(answer)
-            return 
-        # 单层递归逻辑  
-        letters: str = self.letter_map[digits[index]]
-        for letter in letters:
-            self.backtracking(digits, index + 1, answer + letter)    # 递归至下一层 + 回溯
+#     def backtracking(self, digits: str, index: int, answer: str) -> None:
+#         # 回溯函数没有返回值
+#         # Base Case
+#         if index == len(digits):    # 当遍历穷尽后的下一层时
+#             self.answers.append(answer)
+#             return 
+#         # 单层递归逻辑  
+#         letters: str = self.letter_map[digits[index]]
+#         for letter in letters:
+#             self.backtracking(digits, index + 1, answer + letter)    # 递归至下一层 + 回溯
 # 回溯
 class Solution:
     def __init__(self):
@@ -261,7 +258,7 @@ class Solution:
             return self.result
         self.backtracking(digits, 0)
         return self.result
-# 回溯精简（版本一）
+# *** 回溯精简（版本一）
 class Solution:
     def __init__(self):
         self.letterMap = [
@@ -277,7 +274,11 @@ class Solution:
             "wxyz"  # 9
         ]
         self.result = []
-    
+    def letterCombinations(self, digits):
+        if len(digits) == 0:
+            return self.result
+        self.getCombinations(digits, 0, "")
+        return self.result    
     def getCombinations(self, digits, index, s):
         if index == len(digits):
             self.result.append(s)
@@ -286,82 +287,75 @@ class Solution:
         letters = self.letterMap[digit]
         for letter in letters:
             self.getCombinations(digits, index + 1, s + letter)
-    
-    def letterCombinations(self, digits):
-        if len(digits) == 0:
-            return self.result
-        self.getCombinations(digits, 0, "")
-        return self.result
 # 回溯精简（版本二）
-class Solution:
-    def __init__(self):
-        self.letterMap = [
-            "",     # 0
-            "",     # 1
-            "abc",  # 2
-            "def",  # 3
-            "ghi",  # 4
-            "jkl",  # 5
-            "mno",  # 6
-            "pqrs", # 7
-            "tuv",  # 8
-            "wxyz"  # 9
-        ]
-    
-    def getCombinations(self, digits, index, s, result):
-        if index == len(digits):
-            result.append(s)
-            return
-        digit = int(digits[index])
-        letters = self.letterMap[digit]
-        for letter in letters:
-            self.getCombinations(digits, index + 1, s + letter, result)
-    
-    def letterCombinations(self, digits):
-        result = []
-        if len(digits) == 0:
-            return result
-        self.getCombinations(digits, 0, "", result)
-        return result
-# 回溯优化使用列表
-class Solution:
-    def __init__(self):
-        self.letterMap = [
-            "",     # 0
-            "",     # 1
-            "abc",  # 2
-            "def",  # 3
-            "ghi",  # 4
-            "jkl",  # 5
-            "mno",  # 6
-            "pqrs", # 7
-            "tuv",  # 8
-            "wxyz"  # 9
-        ]
-    
-    def getCombinations(self, digits, index, path, result):
-        if index == len(digits):
-            result.append(''.join(path))
-            return
-        digit = int(digits[index])
-        letters = self.letterMap[digit]
-        for letter in letters:
-            path.append(letter)
-            self.getCombinations(digits, index + 1, path, result)
-            path.pop()
-    
-    def letterCombinations(self, digits):
-        result = []
-        if len(digits) == 0:
-            return result
-        self.getCombinations(digits, 0, [], result)
-        return result
+# class Solution:
+#     def __init__(self):
+#         self.letterMap = [
+#             "",     # 0
+#             "",     # 1
+#             "abc",  # 2
+#             "def",  # 3
+#             "ghi",  # 4
+#             "jkl",  # 5
+#             "mno",  # 6
+#             "pqrs", # 7
+#             "tuv",  # 8
+#             "wxyz"  # 9
+#         ]
+#     def letterCombinations(self, digits):
+#         result = []
+#         if len(digits) == 0:
+#             return result
+#         self.getCombinations(digits, 0, "", result)
+#         return result    
+#     def getCombinations(self, digits, index, s, result):
+#         if index == len(digits):
+#             result.append(s)
+#             return
+#         digit = int(digits[index])
+#         letters = self.letterMap[digit]
+#         for letter in letters:
+#             self.getCombinations(digits, index + 1, s + letter, result)
+# # 回溯优化使用列表
+# class Solution:
+#     def __init__(self):
+#         self.letterMap = [
+#             "",     # 0
+#             "",     # 1
+#             "abc",  # 2
+#             "def",  # 3
+#             "ghi",  # 4
+#             "jkl",  # 5
+#             "mno",  # 6
+#             "pqrs", # 7
+#             "tuv",  # 8
+#             "wxyz"  # 9
+#         ]
+#     def letterCombinations(self, digits):
+#         result = []
+#         if len(digits) == 0:
+#             return result
+#         self.getCombinations(digits, 0, [], result)
+#         return result    
+#     def getCombinations(self, digits, index, path, result):
+#         if index == len(digits):
+#             result.append(''.join(path))
+#             return
+#         digit = int(digits[index])
+#         letters = self.letterMap[digit]
+#         for letter in letters:
+#             path.append(letter)
+#             self.getCombinations(digits, index + 1, path, result)
+#             path.pop()
 
 
 #5 39. 组合总和
 # 给定一个无重复元素的数组 candidates 和一个目标数 target , 找出 candidates 中所有可以使数字和为 target 的组合。
 # 示例 1： 输入：candidates = [2,3,6,7], target = 7, 所求解集为： [ [7], [2,2,3] ]
 # 示例 2： 输入：candidates = [2,3,5], target = 8, 所求解集为： [   [2,2,2,2],   [2,3,3],   [3,5] ]
+    # 如果是一个集合来求组合的话，就需要startIndex. 例如：77.组合 (opens new window)，216.组合总和III (opens new window)。
+    # 如果是多个集合取组合，各个集合之间相互不影响，那么就不用startIndex，例如：17.电话号码的字母组合
+# *** 回溯 + 剪枝
 class Solution:
     def __init__(self):
         self.path = []
@@ -371,8 +365,8 @@ class Solution:
         '''
         因为本题没有组合数量限制, 所以只要元素总和大于target就算结束
         '''
-        self.path.clear()
-        self.paths.clear()
+        # self.path.clear()
+        # self.paths.clear()
 
         # 为了剪枝需要提前进行排序
         # 对总集合排序之后, 如果下一层的sum（就是本层的 sum + candidates[i]）已经大于target, 就可以结束本轮for循环的遍历。
@@ -397,47 +391,44 @@ class Solution:
             sum_ -= candidates[i]   # 回溯
             self.path.pop()        # 回溯
 # 回溯（版本一）
-class Solution:
-    def backtracking(self, candidates, target, total, startIndex, path, result):
-        if total > target:
-            return
-        if total == target:
-            result.append(path[:])
-            return
+# class Solution:
+#     def combinationSum(self, candidates, target):
+#         result = []
+#         self.backtracking(candidates, target, 0, 0, [], result)
+#         return result
+#     def backtracking(self, candidates, target, total, startIndex, path, result):
+#         if total > target:
+#             return
+#         if total == target:
+#             result.append(path[:])
+#             return
 
-        for i in range(startIndex, len(candidates)):
-            total += candidates[i]
-            path.append(candidates[i])
-            self.backtracking(candidates, target, total, i, path, result)  # 不用i+1了，表示可以重复读取当前的数
-            total -= candidates[i]
-            path.pop()
+#         for i in range(startIndex, len(candidates)):
+#             total += candidates[i]
+#             path.append(candidates[i])
+#             self.backtracking(candidates, target, total, i, path, result)  # 不用i+1了，表示可以重复读取当前的数
+#             total -= candidates[i]
+#             path.pop()
+# # 回溯剪枝（版本一）
+# class Solution:
+#     def combinationSum(self, candidates, target):
+#         result = []
+#         candidates.sort()  # 需要排序
+#         self.backtracking(candidates, target, 0, 0, [], result)
+#         return result
+#     def backtracking(self, candidates, target, total, startIndex, path, result):
+#         if total == target:
+#             result.append(path[:])
+#             return
 
-    def combinationSum(self, candidates, target):
-        result = []
-        self.backtracking(candidates, target, 0, 0, [], result)
-        return result
-# 回溯剪枝（版本一）
-class Solution:
-
-    def backtracking(self, candidates, target, total, startIndex, path, result):
-        if total == target:
-            result.append(path[:])
-            return
-
-        for i in range(startIndex, len(candidates)):
-            if total + candidates[i] > target:
-                continue
-            total += candidates[i]
-            path.append(candidates[i])
-            self.backtracking(candidates, target, total, i, path, result)
-            total -= candidates[i]
-            path.pop()
-
-    def combinationSum(self, candidates, target):
-        result = []
-        candidates.sort()  # 需要排序
-        self.backtracking(candidates, target, 0, 0, [], result)
-        return result
+#         for i in range(startIndex, len(candidates)):
+#             if total + candidates[i] > target:
+#                 continue
+#             total += candidates[i]
+#             path.append(candidates[i])
+#             self.backtracking(candidates, target, total, i, path, result)
+#             total -= candidates[i]
+#             path.pop()
 # 回溯（版本二）
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
@@ -448,6 +439,7 @@ class Solution:
         if target == 0:
             result.append(path[:])
             return
+        # 对于sum已经大于target的情况，其实是依然进入了下一层递归，只是下一层递归结束判断的时候，会判断sum > target的话就返回
         if target < 0:
             return
         for i in range(startIndex, len(candidates)):
@@ -467,6 +459,8 @@ class Solution:
             return
 
         for i in range(startIndex, len(candidates)):
+            # 其实如果已经知道下一层的sum会大于target，就没有必要进入下一层递归了。
+            # 对总集合排序之后，如果下一层的sum（就是本层的 sum + candidates[i]）已经大于target，就可以结束本轮for循环的遍历。
             if target - candidates[i]  < 0:
                 break
             path.append(candidates[i])
@@ -479,6 +473,7 @@ class Solution:
 # 本题的难点在于区别2中：集合（数组candidates）有重复元素, 但还不能有重复的组合。
 # 示例 1: 输入: candidates = [10,1,2,7,6,1,5], target = 8, 所求解集为: [ [1, 7], [1, 2, 5], [2, 6], [1, 1, 6] ]
 # 示例 2: 输入: candidates = [2,5,2,1,2], target = 5, 所求解集为: [   [1,2,2],   [5] ]
+# *** 回溯优化，不用used
 class Solution:
     def __init__(self):
         self.paths = []
@@ -517,83 +512,78 @@ class Solution:
             self.path.pop()             # 回溯, 为了下一轮for loop
             sum_ -= candidates[i]       # 回溯, 为了下一轮for loop
 # 回溯
-class Solution:
+# class Solution:
+#     def combinationSum2(self, candidates, target):
+#         result = []
+#         candidates.sort()
+#         self.backtracking(candidates, target, 0, 0, [], result)
+#         return result
+#     def backtracking(self, candidates, target, total, startIndex, path, result):
+#         if total == target:
+#             result.append(path[:])
+#             return
 
+#         for i in range(startIndex, len(candidates)):
+#             if i > startIndex and candidates[i] == candidates[i - 1]:
+#                 continue
 
-    def backtracking(self, candidates, target, total, startIndex, path, result):
-        if total == target:
-            result.append(path[:])
-            return
+#             if total + candidates[i] > target:
+#                 break
 
-        for i in range(startIndex, len(candidates)):
-            if i > startIndex and candidates[i] == candidates[i - 1]:
-                continue
+#             total += candidates[i]
+#             path.append(candidates[i])
+#             self.backtracking(candidates, target, total, i + 1, path, result)
+#             total -= candidates[i]
+#             path.pop()
+# # 回溯 使用used
+# class Solution:
+#     def combinationSum2(self, candidates, target):
+#         used = [False] * len(candidates)
+#         result = []
+#         candidates.sort()
+#         self.backtracking(candidates, target, 0, 0, used, [], result)
+#         return result
 
-            if total + candidates[i] > target:
-                break
+#     def backtracking(self, candidates, target, total, startIndex, used, path, result):
+#         if total == target:
+#             result.append(path[:])
+#             return
 
-            total += candidates[i]
-            path.append(candidates[i])
-            self.backtracking(candidates, target, total, i + 1, path, result)
-            total -= candidates[i]
-            path.pop()
+#         for i in range(startIndex, len(candidates)):
+#             # 对于相同的数字，只选择第一个未被使用的数字，跳过其他相同数字
+#             if i > startIndex and candidates[i] == candidates[i - 1] and not used[i - 1]:
+#                 continue
 
-    def combinationSum2(self, candidates, target):
-        result = []
-        candidates.sort()
-        self.backtracking(candidates, target, 0, 0, [], result)
-        return result
-# 回溯 使用used
-class Solution:
+#             if total + candidates[i] > target:
+#                 break
 
+#             total += candidates[i]
+#             path.append(candidates[i])
+#             used[i] = True
+#             self.backtracking(candidates, target, total, i + 1, used, path, result)
+#             used[i] = False
+#             total -= candidates[i]
+#             path.pop()
+# # 回溯优化
+# class Solution:
+#     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+#         candidates.sort()
+#         results = []
+#         self.combinationSumHelper(candidates, target, 0, [], results)
+#         return results
 
-    def backtracking(self, candidates, target, total, startIndex, used, path, result):
-        if total == target:
-            result.append(path[:])
-            return
-
-        for i in range(startIndex, len(candidates)):
-            # 对于相同的数字，只选择第一个未被使用的数字，跳过其他相同数字
-            if i > startIndex and candidates[i] == candidates[i - 1] and not used[i - 1]:
-                continue
-
-            if total + candidates[i] > target:
-                break
-
-            total += candidates[i]
-            path.append(candidates[i])
-            used[i] = True
-            self.backtracking(candidates, target, total, i + 1, used, path, result)
-            used[i] = False
-            total -= candidates[i]
-            path.pop()
-
-    def combinationSum2(self, candidates, target):
-        used = [False] * len(candidates)
-        result = []
-        candidates.sort()
-        self.backtracking(candidates, target, 0, 0, used, [], result)
-        return result
-# 回溯优化
-class Solution:
-    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
-        candidates.sort()
-        results = []
-        self.combinationSumHelper(candidates, target, 0, [], results)
-        return results
-
-    def combinationSumHelper(self, candidates, target, index, path, results):
-        if target == 0:
-            results.append(path[:])
-            return
-        for i in range(index, len(candidates)):
-            if i > index and candidates[i] == candidates[i - 1]:
-                continue  
-            if candidates[i] > target:
-                break  
-            path.append(candidates[i])
-            self.combinationSumHelper(candidates, target - candidates[i], i + 1, path, results)
-            path.pop()
+#     def combinationSumHelper(self, candidates, target, index, path, results):
+#         if target == 0:
+#             results.append(path[:])
+#             return
+#         for i in range(index, len(candidates)):
+#             if i > index and candidates[i] == candidates[i - 1]:
+#                 continue  
+#             if candidates[i] > target:
+#                 break  
+#             path.append(candidates[i])
+#             self.combinationSumHelper(candidates, target - candidates[i], i + 1, path, results)
+#             path.pop()
 
 
 #7 131.分割回文串
@@ -679,66 +669,66 @@ class Solution:
             j -= 1
         return True
 # 回溯 基本版
-class Solution:
+# class Solution:
 
-    def partition(self, s: str) -> List[List[str]]:
-        '''
-        递归用于纵向遍历
-        for循环用于横向遍历
-        当切割线迭代至字符串末尾，说明找到一种方法
-        类似组合问题，为了不重复切割同一位置，需要start_index来做标记下一轮递归的起始位置(切割线)
-        '''
-        result = []
-        self.backtracking(s, 0, [], result)
-        return result
+#     def partition(self, s: str) -> List[List[str]]:
+#         '''
+#         递归用于纵向遍历
+#         for循环用于横向遍历
+#         当切割线迭代至字符串末尾，说明找到一种方法
+#         类似组合问题，为了不重复切割同一位置，需要start_index来做标记下一轮递归的起始位置(切割线)
+#         '''
+#         result = []
+#         self.backtracking(s, 0, [], result)
+#         return result
 
-    def backtracking(self, s, start_index, path, result ):
-        # Base Case
-        if start_index == len(s):
-            result.append(path[:])
-            return
+#     def backtracking(self, s, start_index, path, result ):
+#         # Base Case
+#         if start_index == len(s):
+#             result.append(path[:])
+#             return
         
-        # 单层递归逻辑
-        for i in range(start_index, len(s)):
-            # 此次比其他组合题目多了一步判断：
-            # 判断被截取的这一段子串([start_index, i])是否为回文串
-            if self.is_palindrome(s, start_index, i):
-                path.append(s[start_index:i+1])
-                self.backtracking(s, i+1, path, result)   # 递归纵向遍历：从下一处进行切割，判断其余是否仍为回文串
-                path.pop()             # 回溯
+#         # 单层递归逻辑
+#         for i in range(start_index, len(s)):
+#             # 此次比其他组合题目多了一步判断：
+#             # 判断被截取的这一段子串([start_index, i])是否为回文串
+#             if self.is_palindrome(s, start_index, i):
+#                 path.append(s[start_index:i+1])
+#                 self.backtracking(s, i+1, path, result)   # 递归纵向遍历：从下一处进行切割，判断其余是否仍为回文串
+#                 path.pop()             # 回溯
 
 
-    def is_palindrome(self, s: str, start: int, end: int) -> bool:
-        i: int = start        
-        j: int = end
-        while i < j:
-            if s[i] != s[j]:
-                return False
-            i += 1
-            j -= 1
-        return True 
-# 回溯+优化判定回文函数
-class Solution:
+#     def is_palindrome(self, s: str, start: int, end: int) -> bool:
+#         i: int = start        
+#         j: int = end
+#         while i < j:
+#             if s[i] != s[j]:
+#                 return False
+#             i += 1
+#             j -= 1
+#         return True 
+# # 回溯+优化判定回文函数
+# class Solution:
 
-    def partition(self, s: str) -> List[List[str]]:
-        result = []
-        self.backtracking(s, 0, [], result)
-        return result
+#     def partition(self, s: str) -> List[List[str]]:
+#         result = []
+#         self.backtracking(s, 0, [], result)
+#         return result
 
-    def backtracking(self, s, start_index, path, result ):
-        # Base Case
-        if start_index == len(s):
-            result.append(path[:])
-            return
+#     def backtracking(self, s, start_index, path, result ):
+#         # Base Case
+#         if start_index == len(s):
+#             result.append(path[:])
+#             return
         
-        # 单层递归逻辑
-        for i in range(start_index, len(s)):
-            # 若反序和正序相同，意味着这是回文串
-            if s[start_index: i + 1] == s[start_index: i + 1][::-1]:
-                path.append(s[start_index:i+1])
-                self.backtracking(s, i+1, path, result)   # 递归纵向遍历：从下一处进行切割，判断其余是否仍为回文串
-                path.pop()             # 回溯
-# 回溯+高效判断回文子串
+#         # 单层递归逻辑
+#         for i in range(start_index, len(s)):
+#             # 若反序和正序相同，意味着这是回文串
+#             if s[start_index: i + 1] == s[start_index: i + 1][::-1]:
+#                 path.append(s[start_index:i+1])
+#                 self.backtracking(s, i+1, path, result)   # 递归纵向遍历：从下一处进行切割，判断其余是否仍为回文串
+#                 path.pop()             # 回溯
+# *** 回溯+高效判断回文子串
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         result = []
@@ -769,26 +759,26 @@ class Solution:
                 else:
                     isPalindrome[i][j] = (s[i] == s[j] and isPalindrome[i+1][j-1])
 # 回溯+使用all函数判断回文子串
-class Solution:
-    def partition(self, s: str) -> List[List[str]]:
-        result = []
-        self.partition_helper(s, 0, [], result)
-        return result
+# class Solution:
+#     def partition(self, s: str) -> List[List[str]]:
+#         result = []
+#         self.partition_helper(s, 0, [], result)
+#         return result
 
-    def partition_helper(self, s, start_index, path, result):
-        if start_index == len(s):
-            result.append(path[:])
-            return
+#     def partition_helper(self, s, start_index, path, result):
+#         if start_index == len(s):
+#             result.append(path[:])
+#             return
 
-        for i in range(start_index + 1, len(s) + 1):
-            sub = s[start_index:i]
-            if self.isPalindrome(sub):
-                path.append(sub)
-                self.partition_helper(s, i, path, result)
-                path.pop()
+#         for i in range(start_index + 1, len(s) + 1):
+#             sub = s[start_index:i]
+#             if self.isPalindrome(sub):
+#                 path.append(sub)
+#                 self.partition_helper(s, i, path, result)
+#                 path.pop()
 
-    def isPalindrome(self, s):
-        return all(s[i] == s[len(s) - 1 - i] for i in range(len(s) // 2))
+#     def isPalindrome(self, s):
+#         return all(s[i] == s[len(s) - 1 - i] for i in range(len(s) // 2))
 
 
 #8 93.复原IP地址
@@ -869,7 +859,7 @@ class Solution:
             if num > 255:  # 如果大于255了不合法
                 return False
         return True
-# 回溯（版本二）
+# *** 回溯（版本二）
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
         results = []
