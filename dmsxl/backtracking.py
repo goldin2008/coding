@@ -1354,7 +1354,7 @@ class Solution:
 #                 used[i] = False
 
 
-#15 ??? 332.重新安排行程
+#15 332.重新安排行程
 # 给定一个机票的字符串二维数组 [from, to], 子数组中的两个成员分别表示飞机出发和降落的机场地点, 对该行程进行重新规划排序。所有这些机票都属于一个从 JFK（肯尼迪国际机场）出发的先生, 所以该行程必须从 JFK 开始。
 # 输入：[["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
 # 输出：["JFK", "MUC", "LHR", "SFO", "SJC"]
@@ -1383,11 +1383,10 @@ class Solution:
                 if state:
                     return True  # 只要找到一个可行路径就返回，不继续搜索
 # 回溯 使用字典
-from collections import defaultdict
-
+# from collections import defaultdict
 class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        targets = defaultdict(list)  # 构建机场字典
+        targets = collections.defaultdict(list)  # 构建机场字典
         for ticket in tickets:
             targets[ticket[0]].append(ticket[1])
         for airport in targets:
@@ -1412,11 +1411,10 @@ class Solution:
             path.pop()  # 移除目的地
         return False  # 没有找到有效行程
 # 回溯 使用字典 逆序
-from collections import defaultdict
-
+# from collections import defaultdict
 class Solution:
     def findItinerary(self, tickets):
-        targets = defaultdict(list)  # 创建默认字典，用于存储机场映射关系
+        targets = collections.defaultdict(list)  # 创建默认字典，用于存储机场映射关系
         for ticket in tickets:
             targets[ticket[0]].append(ticket[1])  # 将机票输入到字典中
         
@@ -1434,11 +1432,13 @@ class Solution:
         result.append(airport)  # 将当前机场添加到行程路径中
 
 
-#16 ??? 第51题. N皇后
+#16 第51题. N皇后
 # n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上, 并且使皇后彼此之间不能相互攻击。
 # 输入：n = 4
 # 输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
 # 解释：如上图所示, 4 皇后问题存在两个不同的解法。
+    # 如果从来没有接触过N皇后问题的同学看着这样的题会感觉无从下手，可能知道要用回溯法，但也不知道该怎么去搜。
+    # 这里我明确给出了棋盘的宽度就是for循环的长度，递归的深度就是棋盘的高度，这样就可以套进回溯法的模板里了。
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
         if not n: return []
@@ -1528,7 +1528,7 @@ class Solution:
         return True  # 当前位置合法
 
 
-#17 ??? 37. 解数独
+#17 37. 解数独
 # 编写一个程序, 通过填充空格来解决数独问题。
 # 一个数独的解法需遵循如下规则： 
 # 数字 1-9 在每一行只能出现一次。 
