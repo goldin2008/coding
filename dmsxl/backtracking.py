@@ -941,29 +941,29 @@ class Solution:
 # 给定一个可能包含重复元素的整数数组 nums, 返回该数组所有可能的子集（幂集）。
 # 输入: [1,2,2]
 # 输出: [ [2], [1], [1,2,2], [2,2], [1,2], [] ]
-class Solution:
-    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        res = []
-        path = []
-        nums.sort() # 去重需要先对数组进行排序
+# class Solution:
+#     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+#         res = []
+#         path = []
+#         nums.sort() # 去重需要先对数组进行排序
 
-        def backtracking(nums, startIndex):
-            # 终止条件
-            res.append(path[:])
-            if startIndex == len(nums):
-                return
+#         def backtracking(nums, startIndex):
+#             # 终止条件
+#             res.append(path[:])
+#             if startIndex == len(nums):
+#                 return
             
-            # for循环
-            for i in range(startIndex, len(nums)):
-                # 数层去重
-                if i > startIndex and nums[i] == nums[i-1]: # 去重
-                    continue
-                path.append(nums[i])
-                backtracking(nums, i+1)
-                path.pop()
+#             # for循环
+#             for i in range(startIndex, len(nums)):
+#                 # 数层去重
+#                 if i > startIndex and nums[i] == nums[i-1]: # 去重
+#                     continue
+#                 path.append(nums[i])
+#                 backtracking(nums, i+1)
+#                 path.pop()
         
-        backtracking(nums, 0)
-        return res
+#         backtracking(nums, 0)
+#         return res
 # 回溯 利用used数组去重
 class Solution:
     def subsetsWithDup(self, nums):
@@ -988,25 +988,25 @@ class Solution:
             used[i] = False
             path.pop()
 # 回溯 利用集合去重
-class Solution:
-    def subsetsWithDup(self, nums):
-        result = []
-        path = []
-        nums.sort()  # 去重需要排序
-        self.backtracking(nums, 0, path, result)
-        return result
+# class Solution:
+#     def subsetsWithDup(self, nums):
+#         result = []
+#         path = []
+#         nums.sort()  # 去重需要排序
+#         self.backtracking(nums, 0, path, result)
+#         return result
 
-    def backtracking(self, nums, startIndex, path, result):
-        result.append(path[:])  # 收集子集
-        uset = set()
-        for i in range(startIndex, len(nums)):
-            if nums[i] in uset:
-                continue
-            uset.add(nums[i])
-            path.append(nums[i])
-            self.backtracking(nums, i + 1, path, result)
-            path.pop()
-# 回溯 利用递归的时候下一个startIndex是i+1而不是0去重
+#     def backtracking(self, nums, startIndex, path, result):
+#         result.append(path[:])  # 收集子集
+#         uset = set()
+#         for i in range(startIndex, len(nums)):
+#             if nums[i] in uset:
+#                 continue
+#             uset.add(nums[i])
+#             path.append(nums[i])
+#             self.backtracking(nums, i + 1, path, result)
+#             path.pop()
+# *** 回溯 利用递归的时候下一个startIndex是i+1而不是0去重
 class Solution:
     def subsetsWithDup(self, nums):
         result = []
