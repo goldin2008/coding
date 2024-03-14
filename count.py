@@ -43,13 +43,13 @@ def count_file(files):
 # 字符串 ST | 5
 # 双指针 PP | 9
 # 栈和队列 QU | 7
-# 二叉树 BS| 28
-# 回溯 BT | 16
-# 贪心 GD | 19
+# 二叉树 BS| 29
+# 回溯 BT | 15
+# 贪心 GD | 18
 # 单调栈 MS | 5
-# 动态规划 DP | 38
+# 动态规划 DP | 37
 # 额外 EX | 35
-# 总数 | 182
+# 总数 | 180
 
 if __name__ == "__main__":
     files = get_file_list()
