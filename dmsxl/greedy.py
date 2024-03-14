@@ -275,19 +275,6 @@ class Solution:
 
 
 #8 134. 加油站
-class Solution:
-    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
-        start = 0
-        curSum = 0
-        totalSum = 0
-        for i in range(len(gas)):
-            curSum += gas[i] - cost[i]
-            totalSum += gas[i] - cost[i]
-            if curSum < 0:
-                curSum = 0
-                start = i + 1
-        if totalSum < 0: return -1
-        return start
 # 暴力法
 class Solution:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
@@ -304,31 +291,30 @@ class Solution:
 
         return -1  # 所有起始位置都无法环绕一圈，返回-1
 # 贪心（版本一）
-class Solution:
-    def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
-        curSum = 0  # 当前累计的剩余油量
-        minFuel = float('inf')  # 从起点出发，油箱里的油量最小值
+# class Solution:
+#     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+#         curSum = 0  # 当前累计的剩余油量
+#         minFuel = float('inf')  # 从起点出发，油箱里的油量最小值
         
-        for i in range(len(gas)):
-            rest = gas[i] - cost[i]
-            curSum += rest
-            if curSum < minFuel:
-                minFuel = curSum
+#         for i in range(len(gas)):
+#             rest = gas[i] - cost[i]
+#             curSum += rest
+#             if curSum < minFuel:
+#                 minFuel = curSum
         
-        if curSum < 0:
-            return -1  # 情况1：整个行程的总消耗大于总供给，无法完成一圈
+#         if curSum < 0:
+#             return -1  # 情况1：整个行程的总消耗大于总供给，无法完成一圈
         
-        if minFuel >= 0:
-            return 0  # 情况2：从起点出发到任何一个加油站时油箱的剩余油量都不会小于0，可以从起点出发完成一圈
+#         if minFuel >= 0:
+#             return 0  # 情况2：从起点出发到任何一个加油站时油箱的剩余油量都不会小于0，可以从起点出发完成一圈
         
-        for i in range(len(gas) - 1, -1, -1):
-            rest = gas[i] - cost[i]
-            minFuel += rest
-            if minFuel >= 0:
-                return i  # 情况3：找到一个位置使得从该位置出发油箱的剩余油量不会小于0，返回该位置的索引
-        
-        return -1  # 无法完成一圈
-# 贪心（版本二）
+#         for i in range(len(gas) - 1, -1, -1):
+#             rest = gas[i] - cost[i]
+#             minFuel += rest
+#             if minFuel >= 0:
+#                 return i  # 情况3：找到一个位置使得从该位置出发油箱的剩余油量不会小于0，返回该位置的索引
+#         return -1  # 无法完成一圈
+# *** 贪心（版本二）
 class Solution:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
         curSum = 0  # 当前累计的剩余油量
@@ -349,16 +335,11 @@ class Solution:
 
 
 #9 135. 分发糖果
-class Solution:
-    def candy(self, ratings: List[int]) -> int:
-        candyVec = [1] * len(ratings)
-        for i in range(1, len(ratings)):
-            if ratings[i] > ratings[i - 1]:
-                candyVec[i] = candyVec[i - 1] + 1
-        for j in range(len(ratings) - 2, -1, -1):
-            if ratings[j] > ratings[j + 1]:
-                candyVec[j] = max(candyVec[j], candyVec[j + 1] + 1)
-        return sum(candyVec)
+    # 这在leetcode上是一道困难的题目，其难点就在于贪心的策略，如果在考虑局部的时候想两边兼顾，就会顾此失彼。
+    # 那么本题我采用了两次贪心的策略：
+    # 一次是从左到右遍历，只比较右边孩子评分比左边大的情况。
+    # 一次是从右到左遍历，只比较左边孩子评分比右边大的情况。
+    # 这样从局部最优推出了全局最优，即：相邻的孩子中，评分高的孩子获得更多的糖果。
 class Solution:
     def candy(self, ratings: List[int]) -> int:
         candyVec = [1] * len(ratings)
@@ -383,7 +364,7 @@ class Solution:
     def lemonadeChange(self, bills: List[int]) -> bool:
         five = 0
         ten = 0
-        twenty = 0
+        # twenty = 0
         
         for bill in bills:
             # 情况一：收到5美元
@@ -413,7 +394,7 @@ class Solution:
         return True
     
 
-#11 ?? 406.根据身高重建队列
+#11 406.根据身高重建队列
 class Solution:
     def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
     	# 先按照h维度的身高顺序从高到低排序。确定第一个维度
@@ -426,6 +407,7 @@ class Solution:
         for p in people:
             que.insert(p[1], p)
         return que
+
 
 #12 452. 用最少数量的箭引爆气球
 class Solution:
@@ -708,6 +690,7 @@ class Solution: # 贪心思路
                 minPrice = prices[i] - fee
         return result
 
+
 #18 ??? 968.监控二叉树
 class Solution:
     def minCameraCover(self, root: TreeNode) -> int:
@@ -770,8 +753,6 @@ class Solution:
             result[0] += 1
 
         return result[0]
-
-        
     def traversal(self, cur: TreeNode, result: List[int]) -> int:
         if not cur:
             return 2
