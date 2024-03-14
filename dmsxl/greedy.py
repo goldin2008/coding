@@ -436,7 +436,7 @@ class Solution: # 不改变原数组
         return count
 
 
-#13 435. 无重叠区间
+#13 ??? 435. 无重叠区间
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         if len(intervals) == 0: return 0
@@ -482,38 +482,37 @@ class Solution:
         return len(intervals) - result
 
 
-#14 763.划分字母区间
-class Solution:
-    def partitionLabels(self, s: str) -> List[int]:
-        hash = [0] * 26
-        for i in range(len(s)):
-            hash[ord(s[i]) - ord('a')] = i
-        result = []
-        left = 0
-        right = 0
-        for i in range(len(s)):
-            right = max(right, hash[ord(s[i]) - ord('a')])
-            if i == right:
-                result.append(right - left + 1)
-                left = i + 1
-        return result
+#14 ??? 763.划分字母区间
+# class Solution:
+#     def partitionLabels(self, s: str) -> List[int]:
+#         hash = [0] * 26
+#         for i in range(len(s)):
+#             hash[ord(s[i]) - ord('a')] = i
+#         result = []
+#         left = 0
+#         right = 0
+#         for i in range(len(s)):
+#             right = max(right, hash[ord(s[i]) - ord('a')])
+#             if i == right:
+#                 result.append(right - left + 1)
+#                 left = i + 1
+#         return result
 # 贪心（版本一）
-class Solution:
-    def partitionLabels(self, s: str) -> List[int]:
-        last_occurrence = {}  # 存储每个字符最后出现的位置
-        for i, ch in enumerate(s):
-            last_occurrence[ch] = i
+# class Solution:
+#     def partitionLabels(self, s: str) -> List[int]:
+#         last_occurrence = {}  # 存储每个字符最后出现的位置
+#         for i, ch in enumerate(s):
+#             last_occurrence[ch] = i
 
-        result = []
-        start = 0
-        end = 0
-        for i, ch in enumerate(s):
-            end = max(end, last_occurrence[ch])  # 找到当前字符出现的最远位置
-            if i == end:  # 如果当前位置是最远位置，表示可以分割出一个区间
-                result.append(end - start + 1)
-                start = i + 1
-
-        return result
+#         result = []
+#         start = 0
+#         end = 0
+#         for i, ch in enumerate(s):
+#             end = max(end, last_occurrence[ch])  # 找到当前字符出现的最远位置
+#             if i == end:  # 如果当前位置是最远位置，表示可以分割出一个区间
+#                 result.append(end - start + 1)
+#                 start = i + 1
+#         return result
 # 贪心（版本二）
 # 与452.用最少数量的箭引爆气球 (opens new window)、435.无重叠区间 (opens new window)相同的思路。
 class Solution:
@@ -546,19 +545,21 @@ class Solution:
 
 
 #15 56. 合并区间
-class Solution:
-    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        if len(intervals) == 0: return intervals
-        intervals.sort(key=lambda x: x[0])
-        result = []
-        result.append(intervals[0])
-        for i in range(1, len(intervals)):
-            last = result[-1]
-            if last[1] >= intervals[i][0]:
-                result[-1] = [last[0], max(last[1], intervals[i][1])]
-            else:
-                result.append(intervals[i])
-        return result
+    # 452. 用最少数量的箭引爆气球 (opens new window)和 435. 无重叠区间 (opens new window)都是一个套路。
+    # 这几道题都是判断区间重叠，区别就是判断区间重叠后的逻辑，本题是判断区间重贴后要进行区间合并。
+# class Solution:
+#     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+#         if len(intervals) == 0: return intervals
+#         intervals.sort(key=lambda x: x[0])
+#         result = []
+#         result.append(intervals[0])
+#         for i in range(1, len(intervals)):
+#             last = result[-1]
+#             if last[1] >= intervals[i][0]:
+#                 result[-1] = [last[0], max(last[1], intervals[i][1])]
+#             else:
+#                 result.append(intervals[i])
+#         return result
 class Solution:
     def merge(self, intervals):
         result = []
@@ -575,7 +576,6 @@ class Solution:
                 result[-1][1] = max(result[-1][1], intervals[i][1])
             else:
                 result.append(intervals[i])  # 区间不重叠
-
         return result
 
 
