@@ -1,29 +1,25 @@
 """
+贪心算法一般分为如下四步：
 
+将问题分解为若干个子问题
+找出适合的贪心策略
+求解每一个子问题的最优解
+将局部最优解堆叠成全局最优解
 """
 #1 455.分发饼干
-class Solution:
-    # 思路1：优先考虑胃饼干
-    def findContentChildren(self, g: List[int], s: List[int]) -> int:
-        g.sort()
-        s.sort()
-        res = 0
-        for i in range(len(s)):
-            if res <len(g) and s[i] >= g[res]:  #小饼干先喂饱小胃口
-                res += 1
-        return res
-# 贪心 大饼干优先
-class Solution:
-    def findContentChildren(self, g, s):
-        g.sort()  # 将孩子的贪心因子排序
-        s.sort()  # 将饼干的尺寸排序
-        index = len(s) - 1  # 饼干数组的下标，从最后一个饼干开始
-        result = 0  # 满足孩子的数量
-        for i in range(len(g)-1, -1, -1):  # 遍历胃口，从最后一个孩子开始
-            if index >= 0 and s[index] >= g[i]:  # 遍历饼干
-                result += 1
-                index -= 1
-        return result
+# 注意不可以小胃口优先
+# # 贪心 大饼干优先
+# class Solution:
+#     def findContentChildren(self, g, s):
+#         g.sort()  # 将孩子的贪心因子排序
+#         s.sort()  # 将饼干的尺寸排序
+#         index = len(s) - 1  # 饼干数组的下标，从最后一个饼干开始
+#         result = 0  # 满足孩子的数量
+#         for i in range(len(g)-1, -1, -1):  # 遍历胃口，从最后一个孩子开始
+#             if index >= 0 and s[index] >= g[i]:  # 遍历饼干
+#                 result += 1
+#                 index -= 1
+#         return result
 # 贪心 小饼干优先
 class Solution:
     def findContentChildren(self, g, s):
@@ -113,31 +109,21 @@ class Solution:
 
 
 #3 53. 最大子序和
-class Solution:
-    def maxSubArray(self, nums: List[int]) -> int:
-        result = -float('inf')
-        count = 0
-        for i in range(len(nums)):
-            count += nums[i]
-            if count > result:
-                result = count
-            if count <= 0:
-                count = 0
-        return result
 # 暴力法
+# class Solution:
+#     def maxSubArray(self, nums):
+#         result = float('-inf')  # 初始化结果为负无穷大
+#         count = 0
+#         for i in range(len(nums)):  # 设置起始位置
+#             count = 0
+#             for j in range(i, len(nums)):  # 从起始位置i开始遍历寻找最大值
+#                 count += nums[j]
+#                 result = max(count, result)  # 更新最大值
+#         return result
 class Solution:
     def maxSubArray(self, nums):
-        result = float('-inf')  # 初始化结果为负无穷大
-        count = 0
-        for i in range(len(nums)):  # 设置起始位置
-            count = 0
-            for j in range(i, len(nums)):  # 从起始位置i开始遍历寻找最大值
-                count += nums[j]
-                result = max(count, result)  # 更新最大值
-        return result
-class Solution:
-    def maxSubArray(self, nums):
-        result = float('-inf')  # 初始化结果为负无穷大
+        # result = float('-inf')  # 初始化结果为负无穷大
+        result = nums[0]  # 初始化结果为负无穷大
         count = 0
         for i in range(len(nums)):
             count += nums[i]
@@ -149,12 +135,6 @@ class Solution:
 
 
 #4 122.买卖股票的最佳时机II
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        result = 0
-        for i in range(1, len(prices)):
-            result += max(prices[i] - prices[i - 1], 0)
-        return result
 # 贪心
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -200,21 +180,21 @@ class Solution:
 
 
 #6 45.跳跃游戏II
-class Solution:
-    def jump(self, nums: List[int]) -> int:
-        if len(nums) == 1: return 0
-        ans = 0
-        curDistance = 0
-        nextDistance = 0
-        for i in range(len(nums)):
-            nextDistance = max(i + nums[i], nextDistance)
-            if i == curDistance: 
-                if curDistance != len(nums) - 1:
-                    ans += 1
-                    curDistance = nextDistance
-                    if nextDistance >= len(nums) - 1: break
-        return ans
-# 贪心（版本一）
+# class Solution:
+#     def jump(self, nums: List[int]) -> int:
+#         if len(nums) == 1: return 0
+#         ans = 0
+#         curDistance = 0
+#         nextDistance = 0
+#         for i in range(len(nums)):
+#             nextDistance = max(i + nums[i], nextDistance)
+#             if i == curDistance: 
+#                 if curDistance != len(nums) - 1:
+#                     ans += 1
+#                     curDistance = nextDistance
+#                     if nextDistance >= len(nums) - 1: break
+#         return ans
+# *** 贪心（版本一）
 class Solution:
     def jump(self, nums):
         if len(nums) == 1:
@@ -233,20 +213,19 @@ class Solution:
                     break
         
         return ans
-# 贪心（版本二）
-class Solution:
-    def jump(self, nums):
-        cur_distance = 0  # 当前覆盖的最远距离下标
-        ans = 0  # 记录走的最大步数
-        next_distance = 0  # 下一步覆盖的最远距离下标
+# # 贪心（版本二）
+# class Solution:
+#     def jump(self, nums):
+#         cur_distance = 0  # 当前覆盖的最远距离下标
+#         ans = 0  # 记录走的最大步数
+#         next_distance = 0  # 下一步覆盖的最远距离下标
         
-        for i in range(len(nums) - 1):  # 注意这里是小于len(nums) - 1，这是关键所在
-            next_distance = max(nums[i] + i, next_distance)  # 更新下一步覆盖的最远距离下标
-            if i == cur_distance:  # 遇到当前覆盖的最远距离下标
-                cur_distance = next_distance  # 更新当前覆盖的最远距离下标
-                ans += 1
-        
-        return ans
+#         for i in range(len(nums) - 1):  # 注意这里是小于len(nums) - 1，这是关键所在
+#             next_distance = max(nums[i] + i, next_distance)  # 更新下一步覆盖的最远距离下标
+#             if i == cur_distance:  # 遇到当前覆盖的最远距离下标
+#                 cur_distance = next_distance  # 更新当前覆盖的最远距离下标
+#                 ans += 1
+#         return ans
 # 贪心（版本三） 类似‘55-跳跃游戏’写法
 class Solution:
     def jump(self, nums) -> int:
@@ -278,6 +257,7 @@ class Solution:
 
 
 #7 1005.K次取反后最大化的数组和
+    # 题目中限定了数据范围是正负一百，所以可以使用桶排序.这样时间复杂度就可以优化为$O(n)$了。但可能代码要复杂一些了。
 class Solution:
     def largestSumAfterKNegations(self, A: List[int], K: int) -> int:
         A.sort(key=lambda x: abs(x), reverse=True)  # 第一步：按照绝对值降序排序数组A
