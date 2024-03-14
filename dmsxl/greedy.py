@@ -573,6 +573,7 @@ class Solution:
         for i in range(1, len(intervals)):
             if result[-1][1] >= intervals[i][0]:  # 发现重叠区间
                 # 合并区间，只需要更新结果集最后一个区间的右边界，因为根据排序，左边界已经是最小的
+                # 通过合并，让区间越来越大
                 result[-1][1] = max(result[-1][1], intervals[i][1])
             else:
                 result.append(intervals[i])  # 区间不重叠
@@ -580,78 +581,77 @@ class Solution:
 
 
 #16 738.单调递增的数字
-class Solution:
-    def monotoneIncreasingDigits(self, n: int) -> int:
-        a = list(str(n))
-        for i in range(len(a)-1,0,-1):
-            if int(a[i]) < int(a[i-1]):
-                a[i-1] = str(int(a[i-1]) - 1)
-                a[i:] = '9' * (len(a) - i)  #python不需要设置flag值, 直接按长度给9就好了
-        return int("".join(a)) 
+# class Solution:
+#     def monotoneIncreasingDigits(self, n: int) -> int:
+#         a = list(str(n))
+#         for i in range(len(a)-1,0,-1):
+#             if int(a[i]) < int(a[i-1]):
+#                 a[i-1] = str(int(a[i-1]) - 1)
+#                 a[i:] = '9' * (len(a) - i)  #python不需要设置flag值, 直接按长度给9就好了
+#         return int("".join(a)) 
 # 暴力
-class Solution:
-    def checkNum(self, num):
-        max_digit = 10
-        while num:
-            digit = num % 10
-            if max_digit >= digit:
-                max_digit = digit
-            else:
-                return False
-            num //= 10
-        return True
+# class Solution:
+#     def checkNum(self, num):
+#         max_digit = 10
+#         while num:
+#             digit = num % 10
+#             if max_digit >= digit:
+#                 max_digit = digit
+#             else:
+#                 return False
+#             num //= 10
+#         return True
 
-    def monotoneIncreasingDigits(self, N):
-        for i in range(N, 0, -1):
-            if self.checkNum(i):
-                return i
-        return 0
+#     def monotoneIncreasingDigits(self, N):
+#         for i in range(N, 0, -1):
+#             if self.checkNum(i):
+#                 return i
+#         return 0
 # 贪心（版本一）
-class Solution:
-    def monotoneIncreasingDigits(self, N: int) -> int:
-        # 将整数转换为字符串
-        strNum = str(N)
-        # flag用来标记赋值9从哪里开始
-        # 设置为字符串长度，为了防止第二个for循环在flag没有被赋值的情况下执行
-        flag = len(strNum)
+# class Solution:
+#     def monotoneIncreasingDigits(self, N: int) -> int:
+#         # 将整数转换为字符串
+#         strNum = str(N)
+#         # flag用来标记赋值9从哪里开始
+#         # 设置为字符串长度，为了防止第二个for循环在flag没有被赋值的情况下执行
+#         flag = len(strNum)
         
-        # 从右往左遍历字符串
-        for i in range(len(strNum) - 1, 0, -1):
-            # 如果当前字符比前一个字符小，说明需要修改前一个字符
-            if strNum[i - 1] > strNum[i]:
-                flag = i  # 更新flag的值，记录需要修改的位置
-                # 将前一个字符减1，以保证递增性质
-                strNum = strNum[:i - 1] + str(int(strNum[i - 1]) - 1) + strNum[i:]
+#         # 从右往左遍历字符串
+#         for i in range(len(strNum) - 1, 0, -1):
+#             # 如果当前字符比前一个字符小，说明需要修改前一个字符
+#             if strNum[i - 1] > strNum[i]:
+#                 flag = i  # 更新flag的值，记录需要修改的位置
+#                 # 将前一个字符减1，以保证递增性质
+#                 strNum = strNum[:i - 1] + str(int(strNum[i - 1]) - 1) + strNum[i:]
         
-        # 将flag位置及之后的字符都修改为9，以保证最大的递增数字
-        for i in range(flag, len(strNum)):
-            strNum = strNum[:i] + '9' + strNum[i + 1:]
+#         # 将flag位置及之后的字符都修改为9，以保证最大的递增数字
+#         for i in range(flag, len(strNum)):
+#             strNum = strNum[:i] + '9' + strNum[i + 1:]
         
-        # 将最终的字符串转换回整数并返回
-        return int(strNum)
+#         # 将最终的字符串转换回整数并返回
+#         return int(strNum)
 # 贪心（版本二）
-class Solution:
-    def monotoneIncreasingDigits(self, N: int) -> int:
-        # 将整数转换为字符串
-        strNum = list(str(N))
+# class Solution:
+#     def monotoneIncreasingDigits(self, N: int) -> int:
+#         # 将整数转换为字符串
+#         strNum = list(str(N))
 
-        # 从右往左遍历字符串
-        for i in range(len(strNum) - 1, 0, -1):
-            # 如果当前字符比前一个字符小，说明需要修改前一个字符
-            if strNum[i - 1] > strNum[i]:
-                strNum[i - 1] = str(int(strNum[i - 1]) - 1)  # 将前一个字符减1
-                # 将修改位置后面的字符都设置为9，因为修改前一个字符可能破坏了递增性质
-                for j in range(i, len(strNum)):
-                    strNum[j] = '9'
+#         # 从右往左遍历字符串
+#         for i in range(len(strNum) - 1, 0, -1):
+#             # 如果当前字符比前一个字符小，说明需要修改前一个字符
+#             if strNum[i - 1] > strNum[i]:
+#                 strNum[i - 1] = str(int(strNum[i - 1]) - 1)  # 将前一个字符减1
+#                 # 将修改位置后面的字符都设置为9，因为修改前一个字符可能破坏了递增性质
+#                 for j in range(i, len(strNum)):
+#                     strNum[j] = '9'
 
-        # 将列表转换为字符串，并将字符串转换为整数并返回
-        return int(''.join(strNum))
+#         # 将列表转换为字符串，并将字符串转换为整数并返回
+#         return int(''.join(strNum))
 # 贪心（版本三）
 class Solution:
     def monotoneIncreasingDigits(self, N: int) -> int:
         # 将整数转换为字符串
         strNum = list(str(N))
-
         # 从右往左遍历字符串
         for i in range(len(strNum) - 1, 0, -1):
             # 如果当前字符比前一个字符小，说明需要修改前一个字符
@@ -659,20 +659,19 @@ class Solution:
                 strNum[i - 1] = str(int(strNum[i - 1]) - 1)  # 将前一个字符减1
                 # 将修改位置后面的字符都设置为9，因为修改前一个字符可能破坏了递增性质
                 strNum[i:] = '9' * (len(strNum) - i)
-
         # 将列表转换为字符串，并将字符串转换为整数并返回
         return int(''.join(strNum))
 # 贪心（版本四）精简
-class Solution:
-    def monotoneIncreasingDigits(self, N: int) -> int:
-        strNum = str(N)        
-        for i in range(len(strNum) - 1, 0, -1):
-            # 如果当前字符比前一个字符小，说明需要修改前一个字符
-            if strNum[i - 1] > strNum[i]:
-                # 将前一个字符减1，以保证递增性质
-                # 使用字符串切片操作将修改后的前面部分与后面部分进行拼接
-                strNum = strNum[:i - 1] + str(int(strNum[i - 1]) - 1) + '9' * (len(strNum) - i)       
-        return int(strNum)
+# class Solution:
+#     def monotoneIncreasingDigits(self, N: int) -> int:
+#         strNum = str(N)        
+#         for i in range(len(strNum) - 1, 0, -1):
+#             # 如果当前字符比前一个字符小，说明需要修改前一个字符
+#             if strNum[i - 1] > strNum[i]:
+#                 # 将前一个字符减1，以保证递增性质
+#                 # 使用字符串切片操作将修改后的前面部分与后面部分进行拼接
+#                 strNum = strNum[:i - 1] + str(int(strNum[i - 1]) - 1) + '9' * (len(strNum) - i)       
+#         return int(strNum)
 
 
 #17 ??? 714. 买卖股票的最佳时机含手续费
