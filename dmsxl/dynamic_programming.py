@@ -766,7 +766,6 @@ def test_2_wei_bag_problem1(bag_size, weight, value) -> int:
 				dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - cur_weight]+ cur_val)
 	print(dp)
 
-
 if __name__ == "__main__": 
 	bag_size = 4
 	weight = [1, 3, 4]
@@ -774,56 +773,55 @@ if __name__ == "__main__":
 	test_2_wei_bag_problem1(bag_size, weight, value)
 
 # 无参数版
-def test_2_wei_bag_problem1():
-    weight = [1, 3, 4]
-    value = [15, 20, 30]
-    bagweight = 4
+# def test_2_wei_bag_problem1():
+#     weight = [1, 3, 4]
+#     value = [15, 20, 30]
+#     bagweight = 4
 
-    # 二维数组
-    dp = [[0] * (bagweight + 1) for _ in range(len(weight))]
+#     # 二维数组
+#     dp = [[0] * (bagweight + 1) for _ in range(len(weight))]
 
-    # 初始化
-    for j in range(weight[0], bagweight + 1):
-        dp[0][j] = value[0]
+#     # 初始化
+#     for j in range(weight[0], bagweight + 1):
+#         dp[0][j] = value[0]
 
-    # weight数组的大小就是物品个数
-    for i in range(1, len(weight)):  # 遍历物品
-        for j in range(bagweight + 1):  # 遍历背包容量
-            if j < weight[i]:
-                dp[i][j] = dp[i - 1][j]
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
+#     # weight数组的大小就是物品个数
+#     for i in range(1, len(weight)):  # 遍历物品
+#         for j in range(bagweight + 1):  # 遍历背包容量
+#             if j < weight[i]:
+#                 dp[i][j] = dp[i - 1][j]
+#             else:
+#                 dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
 
-    print(dp[len(weight) - 1][bagweight])
+#     print(dp[len(weight) - 1][bagweight])
 
-test_2_wei_bag_problem1()
+# test_2_wei_bag_problem1()
 # 有参数版
-def test_2_wei_bag_problem1(weight, value, bagweight):
-    # 二维数组
-    dp = [[0] * (bagweight + 1) for _ in range(len(weight))]
+# def test_2_wei_bag_problem1(weight, value, bagweight):
+#     # 二维数组
+#     dp = [[0] * (bagweight + 1) for _ in range(len(weight))]
 
-    # 初始化
-    for j in range(weight[0], bagweight + 1):
-        dp[0][j] = value[0]
+#     # 初始化
+#     for j in range(weight[0], bagweight + 1):
+#         dp[0][j] = value[0]
 
-    # weight数组的大小就是物品个数
-    for i in range(1, len(weight)):  # 遍历物品
-        for j in range(bagweight + 1):  # 遍历背包容量
-            if j < weight[i]:
-                dp[i][j] = dp[i - 1][j]
-            else:
-                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
+#     # weight数组的大小就是物品个数
+#     for i in range(1, len(weight)):  # 遍历物品
+#         for j in range(bagweight + 1):  # 遍历背包容量
+#             if j < weight[i]:
+#                 dp[i][j] = dp[i - 1][j]
+#             else:
+#                 dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
 
-    return dp[len(weight) - 1][bagweight]
+#     return dp[len(weight) - 1][bagweight]
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    weight = [1, 3, 4]
-    value = [15, 20, 30]
-    bagweight = 4
-
-    result = test_2_wei_bag_problem1(weight, value, bagweight)
-    print(result)
+#     weight = [1, 3, 4]
+#     value = [15, 20, 30]
+#     bagweight = 4
+#     result = test_2_wei_bag_problem1(weight, value, bagweight)
+#     print(result)
 
 
 #9 ？？？ 01 背包(滚动数组)
@@ -1058,8 +1056,6 @@ class Solution:
 #12 494.目标和
 # 回溯版
 class Solution:
-
-
     def backtracking(self, candidates, target, total, startIndex, path, result):
         if total == target:
             result.append(path[:])  # 将当前路径的副本添加到结果中
