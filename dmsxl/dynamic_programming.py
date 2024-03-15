@@ -824,11 +824,12 @@ if __name__ == "__main__":
 #     print(result)
 
 
-#9 ？？？ 01 背包(滚动数组)
+#9 01 背包(滚动数组)
 # 把i相关的部分去掉
 # dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 # 二维dp遍历的时候, 背包容量是从小到大, 而一维dp遍历的时候, 背包是从大到小。
 # 倒序遍历是为了保证物品i只被放入一次！。但如果一旦正序遍历了, 那么物品0就会被重复加入多次！
+# 无参版
 def test_1_wei_bag_problem():
     weight = [1, 3, 4]
     value = [15, 20, 30]
@@ -837,48 +838,32 @@ def test_1_wei_bag_problem():
     dp = [0] * (bag_weight + 1)
 
     # 先遍历物品, 再遍历背包容量
-    for i in range(len(weight)):
-        for j in range(bag_weight, weight[i] - 1, -1):
-            # 递归公式
+    for i in range(len(weight)): # 遍历物品
+        for j in range(bag_weight, weight[i] - 1, -1): # 遍历背包容量
             dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 
     print(dp)
 
 test_1_wei_bag_problem()
-# 无参版
-def test_1_wei_bag_problem():
-    weight = [1, 3, 4]
-    value = [15, 20, 30]
-    bagWeight = 4
-
-    # 初始化
-    dp = [0] * (bagWeight + 1)
-    for i in range(len(weight)):  # 遍历物品
-        for j in range(bagWeight, weight[i] - 1, -1):  # 遍历背包容量
-            dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
-
-    print(dp[bagWeight])
-
-test_1_wei_bag_problem()
 # 有参版
-def test_1_wei_bag_problem(weight, value, bagWeight):
-    # 初始化
-    dp = [0] * (bagWeight + 1)
-    for i in range(len(weight)):  # 遍历物品
-        for j in range(bagWeight, weight[i] - 1, -1):  # 遍历背包容量
-            dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
+# def test_1_wei_bag_problem(weight, value, bagWeight):
+#     # 初始化
+#     dp = [0] * (bagWeight + 1)
+#     for i in range(len(weight)):  # 遍历物品
+#         for j in range(bagWeight, weight[i] - 1, -1):  # 遍历背包容量
+#             dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 
-    return dp[bagWeight]
+#     return dp[bagWeight]
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    weight = [1, 3, 4]
-    value = [15, 20, 30]
-    bagweight = 4
+#     weight = [1, 3, 4]
+#     value = [15, 20, 30]
+#     bagweight = 4
 
-    result = test_1_wei_bag_problem(weight, value, bagweight)
-    print(result)
+#     result = test_1_wei_bag_problem(weight, value, bagweight)
+#     print(result)
 
 
 #10 ??? 416. 分割等和子集
