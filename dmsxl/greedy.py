@@ -546,19 +546,6 @@ class Solution:
 #15 56. 合并区间
     # 452. 用最少数量的箭引爆气球 (opens new window)和 435. 无重叠区间 (opens new window)都是一个套路。
     # 这几道题都是判断区间重叠，区别就是判断区间重叠后的逻辑，本题是判断区间重贴后要进行区间合并。
-# class Solution:
-#     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-#         if len(intervals) == 0: return intervals
-#         intervals.sort(key=lambda x: x[0])
-#         result = []
-#         result.append(intervals[0])
-#         for i in range(1, len(intervals)):
-#             last = result[-1]
-#             if last[1] >= intervals[i][0]:
-#                 result[-1] = [last[0], max(last[1], intervals[i][1])]
-#             else:
-#                 result.append(intervals[i])
-#         return result
 class Solution:
     def merge(self, intervals):
         result = []
@@ -566,7 +553,6 @@ class Solution:
             return result  # 区间集合为空直接返回
 
         intervals.sort(key=lambda x: x[0])  # 按照区间的左边界进行排序
-
         result.append(intervals[0])  # 第一个区间可以直接放入结果集中
 
         for i in range(1, len(intervals)):
