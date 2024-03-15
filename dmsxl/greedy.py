@@ -421,49 +421,49 @@ class Solution:
             else:
                 points[i][1] = min(points[i - 1][1], points[i][1]) # 更新重叠气球最小右边界
         return result
-class Solution: # 不改变原数组
-    def findMinArrowShots(self, points: List[List[int]]) -> int:
-        points.sort(key = lambda x: x[0])
-        sl,sr = points[0][0],points[0][1]
-        count = 1
-        for i in points:
-            if i[0]>sr:
-                count+=1
-                sl,sr = i[0],i[1]
-            else:
-                sl = max(sl,i[0])
-                sr = min(sr,i[1])
-        return count
+# class Solution: # 不改变原数组
+#     def findMinArrowShots(self, points: List[List[int]]) -> int:
+#         points.sort(key = lambda x: x[0])
+#         sl,sr = points[0][0],points[0][1]
+#         count = 1
+#         for i in points:
+#             if i[0]>sr:
+#                 count+=1
+#                 sl,sr = i[0],i[1]
+#             else:
+#                 sl = max(sl,i[0])
+#                 sr = min(sr,i[1])
+#         return count
 
 
-#13 ??? 435. 无重叠区间
-class Solution:
-    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
-        if len(intervals) == 0: return 0
-        intervals.sort(key=lambda x: x[1])
-        count = 1 # 记录非交叉区间的个数
-        end = intervals[0][1] # 记录区间分割点
-        for i in range(1, len(intervals)):
-            if end <= intervals[i][0]:
-                count += 1
-                end = intervals[i][1]
-        return len(intervals) - count
-# 贪心 基于左边界
-class Solution:
-    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
-        if not intervals:
-            return 0
+#13 435. 无重叠区间
+# class Solution:
+#     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+#         if len(intervals) == 0: return 0
+#         intervals.sort(key=lambda x: x[1])
+#         count = 1 # 记录非交叉区间的个数
+#         end = intervals[0][1] # 记录区间分割点
+#         for i in range(1, len(intervals)):
+#             if end <= intervals[i][0]:
+#                 count += 1
+#                 end = intervals[i][1]
+#         return len(intervals) - count
+# # 贪心 基于左边界
+# class Solution:
+#     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+#         if not intervals:
+#             return 0
         
-        intervals.sort(key=lambda x: x[0])  # 按照左边界升序排序
-        count = 0  # 记录重叠区间数量
+#         intervals.sort(key=lambda x: x[0])  # 按照左边界升序排序
+#         count = 0  # 记录重叠区间数量
         
-        for i in range(1, len(intervals)):
-            if intervals[i][0] < intervals[i - 1][1]:  # 存在重叠区间
-                intervals[i][1] = min(intervals[i - 1][1], intervals[i][1])  # 更新重叠区间的右边界
-                count += 1
+#         for i in range(1, len(intervals)):
+#             if intervals[i][0] < intervals[i - 1][1]:  # 存在重叠区间
+#                 intervals[i][1] = min(intervals[i - 1][1], intervals[i][1])  # 更新重叠区间的右边界
+#                 count += 1
         
-        return count    
-# 贪心 基于左边界 把452.用最少数量的箭引爆气球代码稍做修改
+#         return count    
+# *** 贪心 基于左边界 把452.用最少数量的箭引爆气球代码稍做修改
 class Solution:
     def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
         if not intervals:
@@ -498,24 +498,37 @@ class Solution:
 #                 left = i + 1
 #         return result
 # 贪心（版本一）
-# class Solution:
-#     def partitionLabels(self, s: str) -> List[int]:
-#         last_occurrence = {}  # 存储每个字符最后出现的位置
-#         for i, ch in enumerate(s):
-#             last_occurrence[ch] = i
+class Solution:
+    def partitionLabels(self, s: str) -> List[int]:
+        last_occurrence = {}  # 存储每个字符最后出现的位置
+        for i, ch in enumerate(s):
+            last_occurrence[ch] = i
 
-#         result = []
-#         start = 0
-#         end = 0
-#         for i, ch in enumerate(s):
-#             end = max(end, last_occurrence[ch])  # 找到当前字符出现的最远位置
-#             if i == end:  # 如果当前位置是最远位置，表示可以分割出一个区间
-#                 result.append(end - start + 1)
-#                 start = i + 1
-#         return result
-# 贪心（版本二）
+        result = []
+        start = 0
+        end = 0
+        for i, ch in enumerate(s):
+            end = max(end, last_occurrence[ch])  # 找到当前字符出现的最远位置
+            if i == end:  # 如果当前位置是最远位置，表示可以分割出一个区间
+                result.append(end - start + 1)
+                start = i + 1
+        return result
+# *** 贪心（版本二）
 # 与452.用最少数量的箭引爆气球 (opens new window)、435.无重叠区间 (opens new window)相同的思路。
 class Solution:
+    def partitionLabels(self, s):
+        res = []
+        hash = self.countLabels(s)
+        hash.sort(key=lambda x: x[0])  # 按左边界从小到大排序
+        leftBoard = 0
+        rightBoard = hash[0][1]  # 记录最大右边界
+        for i in range(1, len(hash)):
+            if hash[i][0] > rightBoard:  # 出现分割点
+                res.append(rightBoard - leftBoard + 1)
+                leftBoard = hash[i][0]
+            rightBoard = max(rightBoard, hash[i][1])
+        res.append(rightBoard - leftBoard + 1)  # 最右端
+        return res
     def countLabels(self, s):
         # 初始化一个长度为26的区间列表，初始值为负无穷
         hash = [[float('-inf'), float('-inf')] for _ in range(26)]
@@ -528,20 +541,6 @@ class Solution:
             if hash[i][0] != float('-inf'):
                 hash_filter.append(hash[i])
         return hash_filter
-
-    def partitionLabels(self, s):
-        res = []
-        hash = self.countLabels(s)
-        hash.sort(key=lambda x: x[0])  # 按左边界从小到大排序
-        rightBoard = hash[0][1]  # 记录最大右边界
-        leftBoard = 0
-        for i in range(1, len(hash)):
-            if hash[i][0] > rightBoard:  # 出现分割点
-                res.append(rightBoard - leftBoard + 1)
-                leftBoard = hash[i][0]
-            rightBoard = max(rightBoard, hash[i][1])
-        res.append(rightBoard - leftBoard + 1)  # 最右端
-        return res
 
 
 #15 56. 合并区间
