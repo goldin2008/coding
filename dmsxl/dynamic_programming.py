@@ -227,15 +227,6 @@ for(int j = 0; j <= bagWeight; j++) { // 遍历背包容量
 """
 #1 509. 斐波那契数
 # 斐波那契数, 通常用 F(n) 表示, 形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始, 后面的每一项数字都是前面两项数字的和。也就是： F(0) = 0, F(1) = 1 F(n) = F(n - 1) + F(n - 2), 其中 n > 1 给你n , 请计算 F(n) 。
-class Solution:
-    def fib(self, n: int) -> int:
-        if n < 2:
-            return n
-        a, b, c = 0, 1, 0
-        for i in range(1, n):
-            c = a + b
-            a, b = b, c
-        return c
 # 递归实现
 class Solution:
     def fib(self, n: int) -> int:
@@ -265,7 +256,7 @@ class Solution:
         
         # 返回答案
         return dp[n]
-# 动态规划（版本二）
+# *** 动态规划（版本二）
 class Solution:
     def fib(self, n: int) -> int:
         if n <= 1:
@@ -280,51 +271,23 @@ class Solution:
         
         return dp[1]
 # 动态规划（版本三）
-class Solution:
-    def fib(self, n: int) -> int:
-        if n <= 1:
-            return n
+# class Solution:
+#     def fib(self, n: int) -> int:
+#         if n <= 1:
+#             return n
         
-        prev1, prev2 = 0, 1
+#         prev1, prev2 = 0, 1
         
-        for _ in range(2, n + 1):
-            curr = prev1 + prev2
-            prev1, prev2 = prev2, curr
-        
-        return prev2
-# 递归（版本一）
-class Solution:
-    def fib(self, n: int) -> int:
-        if n < 2:
-            return n
-        return self.fib(n - 1) + self.fib(n - 2)
+#         for _ in range(2, n + 1):
+#             curr = prev1 + prev2
+#             prev1, prev2 = prev2, curr
+#         return prev2
 
 
 #2 70. 爬楼梯
 # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 # 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
 # 注意：给定 n 是一个正整数。
-# 空间复杂度为O(n)版本
-class Solution:
-    def climbStairs(self, n: int) -> int:
-        # dp[i] 为第 i 阶楼梯有多少种方法爬到楼顶
-        dp=[0]*(n+1)
-        dp[0]=1
-        dp[1]=1
-        for i in range(2,n+1):
-            dp[i]=dp[i-1]+dp[i-2]
-        return dp[n]
-# 空间复杂度为O(1)版本
-class Solution:
-    def climbStairs(self, n: int) -> int:
-        dp=[0]*(n+1)
-        dp[0]=1
-        dp[1]=1
-        for i in range(2,n+1):
-            tmp=dp[0]+dp[1]
-            dp[0]=dp[1]
-            dp[1]=tmp
-        return dp[1]
 # 动态规划（版本一）
 # 空间复杂度为O(n)版本
 class Solution:
@@ -355,27 +318,24 @@ class Solution:
             total = dp[1] + dp[2]
             dp[1] = dp[2]
             dp[2] = total
-        
         return dp[2]
-# 动态规划（版本三）
-# 空间复杂度为O(1)版本
-class Solution:
-    def climbStairs(self, n: int) -> int:
-        if n <= 1:
-            return n
-        
-        prev1 = 1
-        prev2 = 2
-        
-        for i in range(3, n + 1):
-            total = prev1 + prev2
-            prev1 = prev2
-            prev2 = total
-        
-        return prev2
+# 这道题目还可以继续深化，就是一步一个台阶，两个台阶，三个台阶，直到 m个台阶，有多少种方法爬到n阶楼顶。
+class Solution {
+public:
+    int climbStairs(int n) {
+        vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) { // 把m换成2，就可以AC爬楼梯这道题
+                if (i - j >= 0) dp[i] += dp[i - j];
+            }
+        }
+        return dp[n];
+    }
+};
 
 
-#3 ??? 746. 使用最小花费爬楼梯
+#3 746. 使用最小花费爬楼梯
 # 数组的每个下标作为一个阶梯, 第 i 个阶梯对应着一个非负数的体力花费值 cost[i]（下标从 0 开始）。
 # 每当你爬上一个阶梯你都要花费对应的体力值, 一旦支付了相应的体力值, 你就可以选择向上爬一个阶梯或者爬两个阶梯。
 # 请你找出达到楼层顶部的最低花费。在开始时, 你可以选择从下标为 0 或 1 的元素作为初始阶梯。
@@ -417,26 +377,26 @@ class Solution:
             dp1 = dpi  # 更新dp1为当前步的最小花费
         
         return dp1  # 返回到达楼顶的最小花费
-# 动态规划（版本三）
-class Solution:
-    def minCostClimbingStairs(self, cost: List[int]) -> int:
-        dp = [0] * len(cost)
-        dp[0] = cost[0]  # 第一步有花费
-        dp[1] = cost[1]
-        for i in range(2, len(cost)):
-            dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
-        # 注意最后一步可以理解为不用花费，所以取倒数第一步，第二步的最少值
-        return min(dp[-1], dp[-2])
-# 动态规划（版本四）
-class Solution:
-    def minCostClimbingStairs(self, cost: List[int]) -> int:
-        n = len(cost)
-        prev_1 = cost[0]  # 前一步的最小花费
-        prev_2 = cost[1]  # 前两步的最小花费
-        for i in range(2, n):
-            current = min(prev_1, prev_2) + cost[i]  # 当前位置的最小花费
-            prev_1, prev_2 = prev_2, current  # 更新前一步和前两步的最小花费
-        return min(prev_1, prev_2)  # 最后一步可以理解为不用花费，取倒数第一步和第二步的最少值
+# # 动态规划（版本三）
+# class Solution:
+#     def minCostClimbingStairs(self, cost: List[int]) -> int:
+#         dp = [0] * len(cost)
+#         dp[0] = cost[0]  # 第一步有花费
+#         dp[1] = cost[1]
+#         for i in range(2, len(cost)):
+#             dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
+#         # 注意最后一步可以理解为不用花费，所以取倒数第一步，第二步的最少值
+#         return min(dp[-1], dp[-2])
+# # 动态规划（版本四）
+# class Solution:
+#     def minCostClimbingStairs(self, cost: List[int]) -> int:
+#         n = len(cost)
+#         prev_1 = cost[0]  # 前一步的最小花费
+#         prev_2 = cost[1]  # 前两步的最小花费
+#         for i in range(2, n):
+#             current = min(prev_1, prev_2) + cost[i]  # 当前位置的最小花费
+#             prev_1, prev_2 = prev_2, current  # 更新前一步和前两步的最小花费
+#         return min(prev_1, prev_2)  # 最后一步可以理解为不用花费，取倒数第一步和第二步的最少值
 
 
 #4 62.不同路径
@@ -445,19 +405,19 @@ class Solution:
 # 问总共有多少条不同的路径？
 # 输入：m = 3, n = 7
 # 输出：28
-class Solution: # 动态规划
-    def uniquePaths(self, m: int, n: int) -> int:
-        dp = [[1 for i in range(n)] for j in range(m)]
-        for i in range(1, m):
-            for j in range(1, n):
-                dp[i][j] = dp[i][j - 1] + dp[i - 1][j]
-        return dp[m - 1][n - 1]
-# 递归
-class Solution:
-    def uniquePaths(self, m: int, n: int) -> int:
-        if m == 1 or n == 1:
-            return 1
-        return self.uniquePaths(m - 1, n) + self.uniquePaths(m, n - 1)
+# class Solution: # 动态规划
+#     def uniquePaths(self, m: int, n: int) -> int:
+#         dp = [[1 for i in range(n)] for j in range(m)]
+#         for i in range(1, m):
+#             for j in range(1, n):
+#                 dp[i][j] = dp[i][j - 1] + dp[i - 1][j]
+#         return dp[m - 1][n - 1]
+# # 递归
+# class Solution:
+#     def uniquePaths(self, m: int, n: int) -> int:
+#         if m == 1 or n == 1:
+#             return 1
+#         return self.uniquePaths(m - 1, n) + self.uniquePaths(m, n - 1)
 # 动态规划（版本一）
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
@@ -491,20 +451,20 @@ class Solution:
         # 返回右下角单元格的唯一路径数
         return dp[n - 1]
 # 数论
-class Solution:
-    def uniquePaths(self, m: int, n: int) -> int:
-        numerator = 1  # 分子
-        denominator = m - 1  # 分母
-        count = m - 1  # 计数器，表示剩余需要计算的乘积项个数
-        t = m + n - 2  # 初始乘积项
-        while count > 0:
-            numerator *= t  # 计算乘积项的分子部分
-            t -= 1  # 递减乘积项
-            while denominator != 0 and numerator % denominator == 0:
-                numerator //= denominator  # 约简分子
-                denominator -= 1  # 递减分母
-            count -= 1  # 计数器减1，继续下一项的计算
-        return numerator  # 返回最终的唯一路径数
+# class Solution:
+#     def uniquePaths(self, m: int, n: int) -> int:
+#         numerator = 1  # 分子
+#         denominator = m - 1  # 分母
+#         count = m - 1  # 计数器，表示剩余需要计算的乘积项个数
+#         t = m + n - 2  # 初始乘积项
+#         while count > 0:
+#             numerator *= t  # 计算乘积项的分子部分
+#             t -= 1  # 递减乘积项
+#             while denominator != 0 and numerator % denominator == 0:
+#                 numerator //= denominator  # 约简分子
+#                 denominator -= 1  # 递减分母
+#             count -= 1  # 计数器减1，继续下一项的计算
+#         return numerator  # 返回最终的唯一路径数
 
 
 #5 63. 不同路径 II
@@ -519,32 +479,32 @@ class Solution:
 其实只要考虑到, 遇到障碍dp[i][j]保持0就可以了。
 也有一些小细节, 例如: 初始化的部分, 很容易忽略了障碍之后应该都是0的情况。
 """
-class Solution:
-    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
-        # 构造一个DP table
-        row = len(obstacleGrid)
-        col = len(obstacleGrid[0])
-        dp = [[0 for _ in range(col)] for _ in range(row)]
+# class Solution:
+#     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+#         # 构造一个DP table
+#         row = len(obstacleGrid)
+#         col = len(obstacleGrid[0])
+#         dp = [[0 for _ in range(col)] for _ in range(row)]
 
-        dp[0][0] = 1 if obstacleGrid[0][0] != 1 else 0
-        if dp[0][0] == 0: return 0  # 如果第一个格子就是障碍, return 0
-        # 第一行
-        for i in range(1, col):
-            if obstacleGrid[0][i] != 1:
-                dp[0][i] = dp[0][i-1]
+#         dp[0][0] = 1 if obstacleGrid[0][0] != 1 else 0
+#         if dp[0][0] == 0: return 0  # 如果第一个格子就是障碍, return 0
+#         # 第一行
+#         for i in range(1, col):
+#             if obstacleGrid[0][i] != 1:
+#                 dp[0][i] = dp[0][i-1]
 
-        # 第一列
-        for i in range(1, row):
-            if obstacleGrid[i][0] != 1:
-                dp[i][0] = dp[i-1][0]
-        print(dp)
+#         # 第一列
+#         for i in range(1, row):
+#             if obstacleGrid[i][0] != 1:
+#                 dp[i][0] = dp[i-1][0]
+#         print(dp)
 
-        for i in range(1, row):
-            for j in range(1, col):
-                if obstacleGrid[i][j] != 1:
-                    dp[i][j] = dp[i-1][j] + dp[i][j-1]
-        return dp[-1][-1]
-# 动态规划（版本一）
+#         for i in range(1, row):
+#             for j in range(1, col):
+#                 if obstacleGrid[i][j] != 1:
+#                     dp[i][j] = dp[i-1][j] + dp[i][j-1]
+#         return dp[-1][-1]
+# 动态规划（版本一）二维数组
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid):
         m = len(obstacleGrid)
@@ -569,65 +529,64 @@ class Solution:
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
         return dp[m - 1][n - 1]
 # 动态规划（版本二）
-class Solution:
-    def uniquePathsWithObstacles(self, obstacleGrid):
-        m = len(obstacleGrid)  # 网格的行数
-        n = len(obstacleGrid[0])  # 网格的列数
+# class Solution:
+#     def uniquePathsWithObstacles(self, obstacleGrid):
+#         m = len(obstacleGrid)  # 网格的行数
+#         n = len(obstacleGrid[0])  # 网格的列数
         
-        if obstacleGrid[m - 1][n - 1] == 1 or obstacleGrid[0][0] == 1:
-            # 如果起点或终点有障碍物，直接返回0
-            return 0
+#         if obstacleGrid[m - 1][n - 1] == 1 or obstacleGrid[0][0] == 1:
+#             # 如果起点或终点有障碍物，直接返回0
+#             return 0
         
-        dp = [[0] * n for _ in range(m)]  # 创建一个二维列表用于存储路径数
+#         dp = [[0] * n for _ in range(m)]  # 创建一个二维列表用于存储路径数
         
-        # 设置起点的路径数为1
-        dp[0][0] = 1 if obstacleGrid[0][0] == 0 else 0
+#         # 设置起点的路径数为1
+#         dp[0][0] = 1 if obstacleGrid[0][0] == 0 else 0
         
-        # 计算第一列的路径数
-        for i in range(1, m):
-            if obstacleGrid[i][0] == 0:
-                dp[i][0] = dp[i - 1][0]
+#         # 计算第一列的路径数
+#         for i in range(1, m):
+#             if obstacleGrid[i][0] == 0:
+#                 dp[i][0] = dp[i - 1][0]
         
-        # 计算第一行的路径数
-        for j in range(1, n):
-            if obstacleGrid[0][j] == 0:
-                dp[0][j] = dp[0][j - 1]
+#         # 计算第一行的路径数
+#         for j in range(1, n):
+#             if obstacleGrid[0][j] == 0:
+#                 dp[0][j] = dp[0][j - 1]
         
-        # 计算其他位置的路径数
-        for i in range(1, m):
-            for j in range(1, n):
-                if obstacleGrid[i][j] == 1:
-                    continue
-                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
-        
-        return dp[m - 1][n - 1]  # 返回终点的路径数
+#         # 计算其他位置的路径数
+#         for i in range(1, m):
+#             for j in range(1, n):
+#                 if obstacleGrid[i][j] == 1:
+#                     continue
+#                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+#         return dp[m - 1][n - 1]  # 返回终点的路径数
 # 动态规划（版本三）
-class Solution:
-    def uniquePathsWithObstacles(self, obstacleGrid):
-        if obstacleGrid[0][0] == 1:
-            return 0
+# class Solution:
+#     def uniquePathsWithObstacles(self, obstacleGrid):
+#         if obstacleGrid[0][0] == 1:
+#             return 0
         
-        dp = [0] * len(obstacleGrid[0])  # 创建一个一维列表用于存储路径数
+#         dp = [0] * len(obstacleGrid[0])  # 创建一个一维列表用于存储路径数
         
-        # 初始化第一行的路径数
-        for j in range(len(dp)):
-            if obstacleGrid[0][j] == 1:
-                dp[j] = 0
-            elif j == 0:
-                dp[j] = 1
-            else:
-                dp[j] = dp[j - 1]
+#         # 初始化第一行的路径数
+#         for j in range(len(dp)):
+#             if obstacleGrid[0][j] == 1:
+#                 dp[j] = 0
+#             elif j == 0:
+#                 dp[j] = 1
+#             else:
+#                 dp[j] = dp[j - 1]
 
-        # 计算其他行的路径数
-        for i in range(1, len(obstacleGrid)):
-            for j in range(len(dp)):
-                if obstacleGrid[i][j] == 1:
-                    dp[j] = 0
-                elif j != 0:
-                    dp[j] = dp[j] + dp[j - 1]
+#         # 计算其他行的路径数
+#         for i in range(1, len(obstacleGrid)):
+#             for j in range(len(dp)):
+#                 if obstacleGrid[i][j] == 1:
+#                     dp[j] = 0
+#                 elif j != 0:
+#                     dp[j] = dp[j] + dp[j - 1]
         
-        return dp[-1]  # 返回最后一个元素，即终点的路径数
-# 动态规划（版本四）
+#         return dp[-1]  # 返回最后一个元素，即终点的路径数
+# *** 动态规划（版本四）一维数组
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid):
         if obstacleGrid[0][0] == 1:
@@ -655,36 +614,35 @@ class Solution:
         
         return dp[-1]  # 返回最后一个元素，即终点的路径数
 # 动态规划（版本五）
-class Solution:
-    def uniquePathsWithObstacles(self, obstacleGrid):
-        if obstacleGrid[0][0] == 1:
-            return 0
+# class Solution:
+#     def uniquePathsWithObstacles(self, obstacleGrid):
+#         if obstacleGrid[0][0] == 1:
+#             return 0
         
-        m, n = len(obstacleGrid), len(obstacleGrid[0])
+#         m, n = len(obstacleGrid), len(obstacleGrid[0])
         
-        dp = [0] * n  # 创建一个一维列表用于存储路径数
+#         dp = [0] * n  # 创建一个一维列表用于存储路径数
         
-        # 初始化第一行的路径数
-        for j in range(n):
-            if obstacleGrid[0][j] == 1:
-                break
-            dp[j] = 1
+#         # 初始化第一行的路径数
+#         for j in range(n):
+#             if obstacleGrid[0][j] == 1:
+#                 break
+#             dp[j] = 1
 
-        # 计算其他行的路径数
-        for i in range(1, m):
-            if obstacleGrid[i][0] == 1:
-                dp[0] = 0
-            for j in range(1, n):
-                if obstacleGrid[i][j] == 1:
-                    dp[j] = 0
-                    continue
+#         # 计算其他行的路径数
+#         for i in range(1, m):
+#             if obstacleGrid[i][0] == 1:
+#                 dp[0] = 0
+#             for j in range(1, n):
+#                 if obstacleGrid[i][j] == 1:
+#                     dp[j] = 0
+#                     continue
                 
-                dp[j] += dp[j - 1]
-        
-        return dp[-1]  # 返回最后一个元素，即终点的路径数
+#                 dp[j] += dp[j - 1]
+#         return dp[-1]  # 返回最后一个元素，即终点的路径数
 
 
-#6 ??? 343. 整数拆分
+#6 343. 整数拆分
 # 给定一个正整数 n, 将其拆分为至少两个正整数的和, 并使这些整数的乘积最大化。 返回你可以获得的最大乘积。
 # 示例 1:
 # 输入: 2
@@ -695,7 +653,11 @@ class Solution:
 # 输出: 36
 # 解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36。
 # 说明: 你可以假设 n 不小于 2 且不大于 58
-# dp[i] = max(dp[i], dp[i - j] * dp[j])
+# XXX dp[i] = max(dp[i], dp[i - j] * dp[j])
+    # dp[i] = max(dp[i], max((i - j) * j, dp[i - j] * j));
+    # 也可以这么理解，j * (i - j) 是单纯的把整数拆分为两个数相乘，而j * dp[i - j]是拆分成两个以及两个以上的个数相乘。
+    # 那么在取最大值的时候，为什么还要比较dp[i]呢？因为在递推公式推导的过程中，每次计算dp[i]，取最大的而已。
+
 class Solution:
     def integerBreak(self, n: int) -> int:
         dp = [0] * (n + 1)
@@ -708,58 +670,59 @@ class Solution:
                 dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]))
         return dp[n]
 # 动态规划（版本一）
-class Solution:
-         # 假设对正整数 i 拆分出的第一个正整数是 j（1 <= j < i），则有以下两种方案：
-        # 1) 将 i 拆分成 j 和 i−j 的和，且 i−j 不再拆分成多个正整数，此时的乘积是 j * (i-j)
-        # 2) 将 i 拆分成 j 和 i−j 的和，且 i−j 继续拆分成多个正整数，此时的乘积是 j * dp[i-j]
-    def integerBreak(self, n):
-        dp = [0] * (n + 1)   # 创建一个大小为n+1的数组来存储计算结果
-        dp[2] = 1  # 初始化dp[2]为1，因为当n=2时，只有一个切割方式1+1=2，乘积为1
+# class Solution:
+#          # 假设对正整数 i 拆分出的第一个正整数是 j（1 <= j < i），则有以下两种方案：
+#         # 1) 将 i 拆分成 j 和 i−j 的和，且 i−j 不再拆分成多个正整数，此时的乘积是 j * (i-j)
+#         # 2) 将 i 拆分成 j 和 i−j 的和，且 i−j 继续拆分成多个正整数，此时的乘积是 j * dp[i-j]
+#     def integerBreak(self, n):
+#         dp = [0] * (n + 1)   # 创建一个大小为n+1的数组来存储计算结果
+#         dp[2] = 1  # 初始化dp[2]为1，因为当n=2时，只有一个切割方式1+1=2，乘积为1
        
-        # 从3开始计算，直到n
-        for i in range(3, n + 1):
-            # 遍历所有可能的切割点
-            for j in range(1, i // 2 + 1):
+#         # 从3开始计算，直到n
+#         for i in range(3, n + 1):
+#             # 遍历所有可能的切割点
+#                 # 因为拆分一个数n 使之乘积最大，那么一定是拆分成m个近似相同的子数相乘才是最大的。
+#                 # 只不过我们不知道m究竟是多少而已，但可以明确的是m一定大于等于2，既然m大于等于2，也就是 最差也应该是拆成两个相同的 可能是最大值。
+#                 # 那么 j 遍历，只需要遍历到 n/2 就可以，后面就没有必要遍历了，一定不是最大值。
+#             for j in range(1, i // 2 + 1):
 
-                # 计算切割点j和剩余部分(i-j)的乘积，并与之前的结果进行比较取较大值
+#                 # 计算切割点j和剩余部分(i-j)的乘积，并与之前的结果进行比较取较大值
                 
-                dp[i] = max(dp[i], (i - j) * j, dp[i - j] * j)
-        
-        return dp[n]  # 返回最终的计算结果
+#                 dp[i] = max(dp[i], (i - j) * j, dp[i - j] * j)
+#         return dp[n]  # 返回最终的计算结果
 # 动态规划（版本二）
-class Solution:
-    def integerBreak(self, n):
-        if n <= 3:
-            return 1 * (n - 1)  # 对于n小于等于3的情况，返回1 * (n - 1)
+# class Solution:
+#     def integerBreak(self, n):
+#         if n <= 3:
+#             return 1 * (n - 1)  # 对于n小于等于3的情况，返回1 * (n - 1)
 
-        dp = [0] * (n + 1)  # 创建一个大小为n+1的数组来存储最大乘积结果
-        dp[1] = 1  # 当n等于1时，最大乘积为1
-        dp[2] = 2  # 当n等于2时，最大乘积为2
-        dp[3] = 3  # 当n等于3时，最大乘积为3
+#         dp = [0] * (n + 1)  # 创建一个大小为n+1的数组来存储最大乘积结果
+#         dp[1] = 1  # 当n等于1时，最大乘积为1
+#         dp[2] = 2  # 当n等于2时，最大乘积为2
+#         dp[3] = 3  # 当n等于3时，最大乘积为3
 
-        # 从4开始计算，直到n
-        for i in range(4, n + 1):
-            # 遍历所有可能的切割点
-            for j in range(1, i // 2 + 1):
-                # 计算切割点j和剩余部分(i - j)的乘积，并与之前的结果进行比较取较大值
-                dp[i] = max(dp[i], dp[i - j] * dp[j])
-
-        return dp[n]  # 返回整数拆分的最大乘积结果
+#         # 从4开始计算，直到n
+#         for i in range(4, n + 1):
+#             # 遍历所有可能的切割点
+#             for j in range(1, i // 2 + 1):
+#                 # 计算切割点j和剩余部分(i - j)的乘积，并与之前的结果进行比较取较大值
+#                 dp[i] = max(dp[i], dp[i - j] * dp[j])
+#         return dp[n]  # 返回整数拆分的最大乘积结果
 # 贪心
-class Solution:
-    def integerBreak(self, n):
-        if n == 2:  # 当n等于2时，只有一种拆分方式：1+1=2，乘积为1
-            return 1
-        if n == 3:  # 当n等于3时，只有一种拆分方式：1+1+1=3，乘积为1
-            return 2
-        if n == 4:  # 当n等于4时，有两种拆分方式：2+2=4和1+1+1+1=4，乘积都为4
-            return 4
-        result = 1
-        while n > 4:
-            result *= 3  # 每次乘以3，因为3的乘积比其他数字更大
-            n -= 3  # 每次减去3
-        result *= n  # 将剩余的n乘以最后的结果
-        return result
+# class Solution:
+#     def integerBreak(self, n):
+#         if n == 2:  # 当n等于2时，只有一种拆分方式：1+1=2，乘积为1
+#             return 1
+#         if n == 3:  # 当n等于3时，只有一种拆分方式：1+1+1=3，乘积为1
+#             return 2
+#         if n == 4:  # 当n等于4时，有两种拆分方式：2+2=4和1+1+1+1=4，乘积都为4
+#             return 4
+#         result = 1
+#         while n > 4:
+#             result *= 3  # 每次乘以3，因为3的乘积比其他数字更大
+#             n -= 3  # 每次减去3
+#         result *= n  # 将剩余的n乘以最后的结果
+#         return result
 
 
 #7 ??? 96.不同的二叉搜索树
