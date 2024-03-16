@@ -1258,40 +1258,39 @@ class Solution:
 # 1 阶 + 1 阶 + 1 阶段
 # 1 阶 + 2 阶
 # 2 阶 + 1 阶
-
 # 时间复杂度: O(n * m)
 # 空间复杂度: O(n)
 
 
 #17 322. 零钱兑换
 # 先遍历物品 后遍历背包
-class Solution:
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        dp = [float('inf')] * (amount + 1)  # 创建动态规划数组，初始值为正无穷大
-        dp[0] = 0  # 初始化背包容量为0时的最小硬币数量为0
+# class Solution:
+#     def coinChange(self, coins: List[int], amount: int) -> int:
+#         dp = [float('inf')] * (amount + 1)  # 创建动态规划数组，初始值为正无穷大
+#         dp[0] = 0  # 初始化背包容量为0时的最小硬币数量为0
 
-        for coin in coins:  # 遍历硬币列表，相当于遍历物品
-            for i in range(coin, amount + 1):  # 遍历背包容量
-                if dp[i - coin] != float('inf'):  # 如果dp[i - coin]不是初始值，则进行状态转移
-                    dp[i] = min(dp[i - coin] + 1, dp[i])  # 更新最小硬币数量
+#         for coin in coins:  # 遍历硬币列表，相当于遍历物品
+#             for i in range(coin, amount + 1):  # 遍历背包容量
+#                 if dp[i - coin] != float('inf'):  # 如果dp[i - coin]不是初始值，则进行状态转移
+#                     dp[i] = min(dp[i - coin] + 1, dp[i])  # 更新最小硬币数量
 
-        if dp[amount] == float('inf'):  # 如果最终背包容量的最小硬币数量仍为正无穷大，表示无解
-            return -1
-        return dp[amount]  # 返回背包容量为amount时的最小硬币数量
+#         if dp[amount] == float('inf'):  # 如果最终背包容量的最小硬币数量仍为正无穷大，表示无解
+#             return -1
+#         return dp[amount]  # 返回背包容量为amount时的最小硬币数量
 # 先遍历背包 后遍历物品
-class Solution:
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        dp = [float('inf')] * (amount + 1)  # 创建动态规划数组，初始值为正无穷大
-        dp[0] = 0  # 初始化背包容量为0时的最小硬币数量为0
+# class Solution:
+#     def coinChange(self, coins: List[int], amount: int) -> int:
+#         dp = [float('inf')] * (amount + 1)  # 创建动态规划数组，初始值为正无穷大
+#         dp[0] = 0  # 初始化背包容量为0时的最小硬币数量为0
 
-        for i in range(1, amount + 1):  # 遍历背包容量
-            for j in range(len(coins)):  # 遍历硬币列表，相当于遍历物品
-                if i - coins[j] >= 0 and dp[i - coins[j]] != float('inf'):  # 如果dp[i - coins[j]]不是初始值，则进行状态转移
-                    dp[i] = min(dp[i - coins[j]] + 1, dp[i])  # 更新最小硬币数量
+#         for i in range(1, amount + 1):  # 遍历背包容量
+#             for j in range(len(coins)):  # 遍历硬币列表，相当于遍历物品
+#                 if i - coins[j] >= 0 and dp[i - coins[j]] != float('inf'):  # 如果dp[i - coins[j]]不是初始值，则进行状态转移
+#                     dp[i] = min(dp[i - coins[j]] + 1, dp[i])  # 更新最小硬币数量
 
-        if dp[amount] == float('inf'):  # 如果最终背包容量的最小硬币数量仍为正无穷大，表示无解
-            return -1
-        return dp[amount]  # 返回背包容量为amount时的最小硬币数量
+#         if dp[amount] == float('inf'):  # 如果最终背包容量的最小硬币数量仍为正无穷大，表示无解
+#             return -1
+#         return dp[amount]  # 返回背包容量为amount时的最小硬币数量
 # 先遍历物品 后遍历背包（优化版）
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
@@ -1305,34 +1304,33 @@ class Solution:
 
         return dp[amount] if dp[amount] != float('inf') else -1
 # 先遍历背包 后遍历物品（优化版）
-class Solution:
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        dp = [float('inf')] * (amount + 1)
-        dp[0] = 0
+# class Solution:
+#     def coinChange(self, coins: List[int], amount: int) -> int:
+#         dp = [float('inf')] * (amount + 1)
+#         dp[0] = 0
 
-        for i in range(1, amount + 1):  # 遍历背包容量
-            for coin in coins:  # 遍历物品
-                if i - coin >= 0:
-                    # 更新凑成金额 i 所需的最少硬币数量
-                    dp[i] = min(dp[i], dp[i - coin] + 1)
-
-        return dp[amount] if dp[amount] != float('inf') else -1
+#         for i in range(1, amount + 1):  # 遍历背包容量
+#             for coin in coins:  # 遍历物品
+#                 if i - coin >= 0:
+#                     # 更新凑成金额 i 所需的最少硬币数量
+#                     dp[i] = min(dp[i], dp[i - coin] + 1)
+#         return dp[amount] if dp[amount] != float('inf') else -1
 
 
 #18 279.完全平方数
-# 先遍历物品, 再遍历背包
-class Solution:
-    def numSquares(self, n: int) -> int:
-        dp = [float('inf')] * (n + 1)
-        dp[0] = 0
-
-        for i in range(1, n + 1):  # 遍历背包
-            for j in range(1, int(i ** 0.5) + 1):  # 遍历物品
-                # 更新凑成数字 i 所需的最少完全平方数数量
-                dp[i] = min(dp[i], dp[i - j * j] + 1)
-
-        return dp[n]
 # 先遍历背包, 再遍历物品
+# class Solution:
+#     def numSquares(self, n: int) -> int:
+#         dp = [float('inf')] * (n + 1)
+#         dp[0] = 0
+
+#         for i in range(1, n + 1):  # 遍历背包
+#             for j in range(1, int(i ** 0.5) + 1):  # 遍历物品
+#                 # 更新凑成数字 i 所需的最少完全平方数数量
+#                 dp[i] = min(dp[i], dp[i - j * j] + 1)
+
+#         return dp[n]
+# 先遍历物品, 再遍历背包
 class Solution:
     def numSquares(self, n: int) -> int:
         dp = [float('inf')] * (n + 1)
@@ -1345,62 +1343,61 @@ class Solution:
 
         return dp[n]
 # 其他版本
-class Solution:
-    def numSquares(self, n: int) -> int:
-        # 创建动态规划数组，初始值为最大值
-        dp = [float('inf')] * (n + 1)
-        # 初始化已知情况
-        dp[0] = 0
+# class Solution:
+#     def numSquares(self, n: int) -> int:
+#         # 创建动态规划数组，初始值为最大值
+#         dp = [float('inf')] * (n + 1)
+#         # 初始化已知情况
+#         dp[0] = 0
 
-        # 遍历背包容量
-        for i in range(1, n + 1):
-            # 遍历完全平方数作为物品
-            j = 1
-            while j * j <= i:
-                # 更新最少完全平方数的数量
-                dp[i] = min(dp[i], dp[i - j * j] + 1)
-                j += 1
+#         # 遍历背包容量
+#         for i in range(1, n + 1):
+#             # 遍历完全平方数作为物品
+#             j = 1
+#             while j * j <= i:
+#                 # 更新最少完全平方数的数量
+#                 dp[i] = min(dp[i], dp[i - j * j] + 1)
+#                 j += 1
 
-        # 返回结果
-        return dp[n]
+#         # 返回结果
+#         return dp[n]
 
 
 #19 139.单词拆分
 # 回溯
-class Solution:
-    def backtracking(self, s: str, wordSet: set[str], startIndex: int) -> bool:
-        # 边界情况：已经遍历到字符串末尾，返回True
-        if startIndex >= len(s):
-            return True
+# class Solution:
+#     def backtracking(self, s: str, wordSet: set[str], startIndex: int) -> bool:
+#         # 边界情况：已经遍历到字符串末尾，返回True
+#         if startIndex >= len(s):
+#             return True
 
-        # 遍历所有可能的拆分位置
-        for i in range(startIndex, len(s)):
-            word = s[startIndex:i + 1]  # 截取子串
-            if word in wordSet and self.backtracking(s, wordSet, i + 1):
-                # 如果截取的子串在字典中，并且后续部分也可以被拆分成单词，返回True
-                return True
+#         # 遍历所有可能的拆分位置
+#         for i in range(startIndex, len(s)):
+#             word = s[startIndex:i + 1]  # 截取子串
+#             if word in wordSet and self.backtracking(s, wordSet, i + 1):
+#                 # 如果截取的子串在字典中，并且后续部分也可以被拆分成单词，返回True
+#                 return True
 
-        # 无法进行有效拆分，返回False
-        return False
+#         # 无法进行有效拆分，返回False
+#         return False
 
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        wordSet = set(wordDict)  # 转换为哈希集合，提高查找效率
-        return self.backtracking(s, wordSet, 0)
+#     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+#         wordSet = set(wordDict)  # 转换为哈希集合，提高查找效率
+#         return self.backtracking(s, wordSet, 0)
 # DP（版本一）
-class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        wordSet = set(wordDict)
-        n = len(s)
-        dp = [False] * (n + 1)  # dp[i] 表示字符串的前 i 个字符是否可以被拆分成单词
-        dp[0] = True  # 初始状态，空字符串可以被拆分成单词
+# class Solution:
+#     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+#         wordSet = set(wordDict)
+#         n = len(s)
+#         dp = [False] * (n + 1)  # dp[i] 表示字符串的前 i 个字符是否可以被拆分成单词
+#         dp[0] = True  # 初始状态，空字符串可以被拆分成单词
 
-        for i in range(1, n + 1): # 遍历背包
-            for j in range(i): # 遍历单词
-                if dp[j] and s[j:i] in wordSet:
-                    dp[i] = True  # 如果 s[0:j] 可以被拆分成单词，并且 s[j:i] 在单词集合中存在，则 s[0:i] 可以被拆分成单词
-                    break
-
-        return dp[n]
+#         for i in range(1, n + 1): # 遍历背包
+#             for j in range(i): # 遍历单词
+#                 if dp[j] and s[j:i] in wordSet:
+#                     dp[i] = True  # 如果 s[0:j] 可以被拆分成单词，并且 s[j:i] 在单词集合中存在，则 s[0:i] 可以被拆分成单词
+#                     break
+#         return dp[n]
 # DP（版本二）
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
