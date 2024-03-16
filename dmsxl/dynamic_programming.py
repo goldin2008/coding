@@ -866,48 +866,49 @@ test_1_wei_bag_problem()
 #     print(result)
 
 
-#10 ??? 416. 分割等和子集
+#10 416. 分割等和子集
 # 给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集, 使得两个子集的元素和相等。
 # 注意: 每个数组中的元素不会超过 100 数组的大小不会超过 200
 # 示例 1: 输入: [1, 5, 11, 5] 输出: true 解释: 数组可以分割成 [1, 5, 5] 和 [11].
-class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
-        target = sum(nums)
-        if target % 2 == 1: return False
-        target //= 2
-        # // 总和不会大于20000, 背包最大只需要其中一半, 所以10001大小就可以了
-        dp = [0] * 10001
-        for i in range(len(nums)):
-            for j in range(target, nums[i] - 1, -1):
-                dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
-        return target == dp[target]
+# 一维DP
+# class Solution:
+#     def canPartition(self, nums: List[int]) -> bool:
+#         target = sum(nums)
+#         if target % 2 == 1: return False
+#         target //= 2
+#         # // 总和不会大于20000, 背包最大只需要其中一半, 所以10001大小就可以了
+#         dp = [0] * 10001
+#         for i in range(len(nums)):
+#             for j in range(target, nums[i] - 1, -1):
+#                 dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
+#         return target == dp[target]
 # 卡哥版
-class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
-        _sum = 0
+# class Solution:
+#     def canPartition(self, nums: List[int]) -> bool:
+#         _sum = 0
 
-        # dp[i]中的i表示背包内总和
-        # 题目中说：每个数组中的元素不会超过 100，数组的大小不会超过 200
-        # 总和不会大于20000，背包最大只需要其中一半，所以10001大小就可以了
-        dp = [0] * 10001
-        for num in nums:
-            _sum += num
-        # 也可以使用内置函数一步求和
-        # _sum = sum(nums)
-        if _sum % 2 == 1:
-            return False
-        target = _sum // 2
+#         # dp[i]中的i表示背包内总和
+#         # 题目中说：每个数组中的元素不会超过 100，数组的大小不会超过 200
+#         # 总和不会大于20000，背包最大只需要其中一半，所以10001大小就可以了
+#         dp = [0] * 10001
+#         for num in nums:
+#             _sum += num
+#         # 也可以使用内置函数一步求和
+#         # _sum = sum(nums)
+#         if _sum % 2 == 1:
+#             return False
+#         target = _sum // 2
 
-        # 开始 0-1背包
-        for num in nums:
-            for j in range(target, num - 1, -1):  # 每一个元素一定是不可重复放入，所以从大到小遍历
-                dp[j] = max(dp[j], dp[j - num] + num)
+#         # 开始 0-1背包
+#         for num in nums:
+#             for j in range(target, num - 1, -1):  # 每一个元素一定是不可重复放入，所以从大到小遍历
+#                 dp[j] = max(dp[j], dp[j - num] + num)
 
-        # 集合中的元素正好可以凑成总和target
-        if dp[target] == target:
-            return True
-        return False
-# 卡哥版(简化版)
+#         # 集合中的元素正好可以凑成总和target
+#         if dp[target] == target:
+#             return True
+#         return False
+# *** 一维DP 卡哥版(简化版)
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         if sum(nums) % 2 != 0:
@@ -919,123 +920,121 @@ class Solution:
                 dp[j] = max(dp[j], dp[j-num] + num)
         return dp[-1] == target
 # 二维DP版
-class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
+# class Solution:
+#     def canPartition(self, nums: List[int]) -> bool:
         
-        total_sum = sum(nums)
+#         total_sum = sum(nums)
 
-        if total_sum % 2 != 0:
-            return False
+#         if total_sum % 2 != 0:
+#             return False
 
-        target_sum = total_sum // 2
-        dp = [[False] * (target_sum + 1) for _ in range(len(nums) + 1)]
+#         target_sum = total_sum // 2
+#         dp = [[False] * (target_sum + 1) for _ in range(len(nums) + 1)]
 
-        # 初始化第一行（空子集可以得到和为0）
-        for i in range(len(nums) + 1):
-            dp[i][0] = True
+#         # 初始化第一行（空子集可以得到和为0）
+#         for i in range(len(nums) + 1):
+#             dp[i][0] = True
 
-        for i in range(1, len(nums) + 1):
-            for j in range(1, target_sum + 1):
-                if j < nums[i - 1]:
-                    # 当前数字大于目标和时，无法使用该数字
-                    dp[i][j] = dp[i - 1][j]
-                else:
-                    # 当前数字小于等于目标和时，可以选择使用或不使用该数字
-                    dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i - 1]]
+#         for i in range(1, len(nums) + 1):
+#             for j in range(1, target_sum + 1):
+#                 if j < nums[i - 1]:
+#                     # 当前数字大于目标和时，无法使用该数字
+#                     dp[i][j] = dp[i - 1][j]
+#                 else:
+#                     # 当前数字小于等于目标和时，可以选择使用或不使用该数字
+#                     dp[i][j] = dp[i - 1][j] or dp[i - 1][j - nums[i - 1]]
 
-        return dp[len(nums)][target_sum]
+#         return dp[len(nums)][target_sum]
 # 一维DP版
-class Solution:
-    def canPartition(self, nums: List[int]) -> bool:
+# class Solution:
+#     def canPartition(self, nums: List[int]) -> bool:
 
-        total_sum = sum(nums)
+#         total_sum = sum(nums)
 
-        if total_sum % 2 != 0:
-            return False
+#         if total_sum % 2 != 0:
+#             return False
 
-        target_sum = total_sum // 2
-        dp = [False] * (target_sum + 1)
-        dp[0] = True
+#         target_sum = total_sum // 2
+#         dp = [False] * (target_sum + 1)
+#         dp[0] = True
 
-        for num in nums:
-            # 从target_sum逆序迭代到num，步长为-1
-            for i in range(target_sum, num - 1, -1):
-                dp[i] = dp[i] or dp[i - num]
-        return dp[target_sum]
+#         for num in nums:
+#             # 从target_sum逆序迭代到num，步长为-1
+#             for i in range(target_sum, num - 1, -1):
+#                 dp[i] = dp[i] or dp[i - num]
+#         return dp[target_sum]
 
 
 #11 1049.最后一块石头的重量II
 # 卡哥版
-class Solution:
-    def lastStoneWeightII(self, stones: List[int]) -> int:
-        dp = [0] * 15001
-        total_sum = sum(stones)
-        target = total_sum // 2
+# class Solution:
+#     def lastStoneWeightII(self, stones: List[int]) -> int:
+#         dp = [0] * 15001
+#         total_sum = sum(stones)
+#         target = total_sum // 2
 
-        for stone in stones:  # 遍历物品
-            for j in range(target, stone - 1, -1):  # 遍历背包
-                dp[j] = max(dp[j], dp[j - stone] + stone)
+#         for stone in stones:  # 遍历物品
+#             for j in range(target, stone - 1, -1):  # 遍历背包
+#                 dp[j] = max(dp[j], dp[j - stone] + stone)
 
-        return total_sum - dp[target] - dp[target]
+#         return total_sum - dp[target] - dp[target]
 # 卡哥版（简化版）
 class Solution:
     def lastStoneWeightII(self, stones):
         total_sum = sum(stones)
         target = total_sum // 2
         dp = [0] * (target + 1)
-        for stone in stones:
-            for j in range(target, stone - 1, -1):
+        for stone in stones: # 遍历物品
+            for j in range(target, stone - 1, -1): # 遍历背包
                 dp[j] = max(dp[j], dp[j - stone] + stone)
         return total_sum - 2* dp[-1]
 # 二维DP版
-class Solution:
-    def lastStoneWeightII(self, stones: List[int]) -> int:
-        total_sum = sum(stones)
-        target = total_sum // 2
+# class Solution:
+#     def lastStoneWeightII(self, stones: List[int]) -> int:
+#         total_sum = sum(stones)
+#         target = total_sum // 2
         
-        # 创建二维dp数组，行数为石头的数量加1，列数为target加1
-        # dp[i][j]表示前i个石头能否组成总重量为j
-        dp = [[False] * (target + 1) for _ in range(len(stones) + 1)]
+#         # 创建二维dp数组，行数为石头的数量加1，列数为target加1
+#         # dp[i][j]表示前i个石头能否组成总重量为j
+#         dp = [[False] * (target + 1) for _ in range(len(stones) + 1)]
         
-        # 初始化第一列，表示总重量为0时，前i个石头都能组成
-        for i in range(len(stones) + 1):
-            dp[i][0] = True
+#         # 初始化第一列，表示总重量为0时，前i个石头都能组成
+#         for i in range(len(stones) + 1):
+#             dp[i][0] = True
         
-        for i in range(1, len(stones) + 1):
-            for j in range(1, target + 1):
-                # 如果当前石头重量大于当前目标重量j，则无法选择该石头
-                if stones[i - 1] > j:
-                    dp[i][j] = dp[i - 1][j]
-                else:
-                    # 可选择该石头或不选择该石头
-                    dp[i][j] = dp[i - 1][j] or dp[i - 1][j - stones[i - 1]]
+#         for i in range(1, len(stones) + 1):
+#             for j in range(1, target + 1):
+#                 # 如果当前石头重量大于当前目标重量j，则无法选择该石头
+#                 if stones[i - 1] > j:
+#                     dp[i][j] = dp[i - 1][j]
+#                 else:
+#                     # 可选择该石头或不选择该石头
+#                     dp[i][j] = dp[i - 1][j] or dp[i - 1][j - stones[i - 1]]
         
-        # 找到最大的重量i，使得dp[len(stones)][i]为True
-        # 返回总重量减去两倍的最接近总重量一半的重量
-        for i in range(target, -1, -1):
-            if dp[len(stones)][i]:
-                return total_sum - 2 * i
-        
-        return 0
+#         # 找到最大的重量i，使得dp[len(stones)][i]为True
+#         # 返回总重量减去两倍的最接近总重量一半的重量
+#         for i in range(target, -1, -1):
+#             if dp[len(stones)][i]:
+#                 return total_sum - 2 * i
+#         return 0
 # 一维DP版
-class Solution:
-    def lastStoneWeightII(self, stones):
-        total_sum = sum(stones)
-        target = total_sum // 2
-        dp = [False] * (target + 1)
-        dp[0] = True
+# class Solution:
+#     def lastStoneWeightII(self, stones):
+#         total_sum = sum(stones)
+#         target = total_sum // 2
+#         dp = [False] * (target + 1)
+#         dp[0] = True
 
-        for stone in stones:
-            for j in range(target, stone - 1, -1):
-                # 判断当前重量是否可以通过选择之前的石头得到或选择当前石头和之前的石头得到
-                dp[j] = dp[j] or dp[j - stone]
+#         for stone in stones:
+#             for j in range(target, stone - 1, -1):
+#                 # 判断当前重量是否可以通过选择之前的石头得到或选择当前石头和之前的石头得到
+#                 dp[j] = dp[j] or dp[j - stone]
 
-        for i in range(target, -1, -1):
-            if dp[i]:
-                # 返回剩余石头的重量，即总重量减去两倍的最接近总重量一半的重量
-                return total_sum - 2 * i
-
-        return 0
+#         for i in range(target, -1, -1):
+#             if dp[i]:
+#                 # 返回剩余石头的重量，即总重量减去两倍的最接近总重量一半的重量
+#                 return total_sum - 2 * i
+#         return 0
 
 
 #12 494.目标和
