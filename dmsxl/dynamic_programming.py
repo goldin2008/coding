@@ -1433,87 +1433,86 @@ class Solution:
 
         return dp[-1]  # 返回最后一个房屋中可抢劫的最大金额
 # 2维DP
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        if not nums:  # 如果没有房屋，返回0
-            return 0
+# class Solution:
+#     def rob(self, nums: List[int]) -> int:
+#         if not nums:  # 如果没有房屋，返回0
+#             return 0
 
-        n = len(nums)
-        dp = [[0, 0] for _ in range(n)]  # 创建二维动态规划数组，dp[i][0]表示不抢劫第i个房屋的最大金额，dp[i][1]表示抢劫第i个房屋的最大金额
+#         n = len(nums)
+#         dp = [[0, 0] for _ in range(n)]  # 创建二维动态规划数组，dp[i][0]表示不抢劫第i个房屋的最大金额，dp[i][1]表示抢劫第i个房屋的最大金额
 
-        dp[0][1] = nums[0]  # 抢劫第一个房屋的最大金额为第一个房屋的金额
+#         dp[0][1] = nums[0]  # 抢劫第一个房屋的最大金额为第一个房屋的金额
 
-        for i in range(1, n):
-            dp[i][0] = max(dp[i-1][0], dp[i-1][1])  # 不抢劫第i个房屋，最大金额为前一个房屋抢劫和不抢劫的最大值
-            dp[i][1] = dp[i-1][0] + nums[i]  # 抢劫第i个房屋，最大金额为前一个房屋不抢劫的最大金额加上当前房屋的金额
+#         for i in range(1, n):
+#             dp[i][0] = max(dp[i-1][0], dp[i-1][1])  # 不抢劫第i个房屋，最大金额为前一个房屋抢劫和不抢劫的最大值
+#             dp[i][1] = dp[i-1][0] + nums[i]  # 抢劫第i个房屋，最大金额为前一个房屋不抢劫的最大金额加上当前房屋的金额
 
-        return max(dp[n-1][0], dp[n-1][1])  # 返回最后一个房屋中可抢劫的最大金额
-# 优化版
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        if not nums:  # 如果没有房屋，返回0
-            return 0
+#         return max(dp[n-1][0], dp[n-1][1])  # 返回最后一个房屋中可抢劫的最大金额
+# # 优化版
+# class Solution:
+#     def rob(self, nums: List[int]) -> int:
+#         if not nums:  # 如果没有房屋，返回0
+#             return 0
 
-        prev_max = 0  # 上一个房屋的最大金额
-        curr_max = 0  # 当前房屋的最大金额
+#         prev_max = 0  # 上一个房屋的最大金额
+#         curr_max = 0  # 当前房屋的最大金额
 
-        for num in nums:
-            temp = curr_max  # 临时变量保存当前房屋的最大金额
-            curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
-            prev_max = temp  # 更新上一个房屋的最大金额
-
-        return curr_max  # 返回最后一个房屋中可抢劫的最大金额
+#         for num in nums:
+#             temp = curr_max  # 临时变量保存当前房屋的最大金额
+#             curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
+#             prev_max = temp  # 更新上一个房屋的最大金额
+#         return curr_max  # 返回最后一个房屋中可抢劫的最大金额
 
 
 #21 213.打家劫舍II
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        if len(nums) == 0:
-            return 0
-        if len(nums) == 1:
-            return nums[0]
+# class Solution:
+#     def rob(self, nums: List[int]) -> int:
+#         if len(nums) == 0:
+#             return 0
+#         if len(nums) == 1:
+#             return nums[0]
         
-        result1 = self.robRange(nums, 0, len(nums) - 2)  # 情况二
-        result2 = self.robRange(nums, 1, len(nums) - 1)  # 情况三
-        return max(result1, result2)
-    # 198.打家劫舍的逻辑
-    def robRange(self, nums: List[int], start: int, end: int) -> int:
-        if end == start:
-            return nums[start]
+#         result1 = self.robRange(nums, 0, len(nums) - 2)  # 情况二
+#         result2 = self.robRange(nums, 1, len(nums) - 1)  # 情况三
+#         return max(result1, result2)
+#     # 198.打家劫舍的逻辑
+#     def robRange(self, nums: List[int], start: int, end: int) -> int:
+#         if end == start:
+#             return nums[start]
         
-        prev_max = nums[start]
-        curr_max = max(nums[start], nums[start + 1])
+#         prev_max = nums[start]
+#         curr_max = max(nums[start], nums[start + 1])
         
-        for i in range(start + 2, end + 1):
-            temp = curr_max
-            curr_max = max(prev_max + nums[i], curr_max)
-            prev_max = temp
+#         for i in range(start + 2, end + 1):
+#             temp = curr_max
+#             curr_max = max(prev_max + nums[i], curr_max)
+#             prev_max = temp
         
-        return curr_max
-# 2维DP
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        if len(nums) < 3:
-            return max(nums)
+#         return curr_max
+# # 2维DP
+# class Solution:
+#     def rob(self, nums: List[int]) -> int:
+#         if len(nums) < 3:
+#             return max(nums)
 
-        # 情况二：不抢劫第一个房屋
-        result1 = self.robRange(nums[:-1])
+#         # 情况二：不抢劫第一个房屋
+#         result1 = self.robRange(nums[:-1])
 
-        # 情况三：不抢劫最后一个房屋
-        result2 = self.robRange(nums[1:])
+#         # 情况三：不抢劫最后一个房屋
+#         result2 = self.robRange(nums[1:])
 
-        return max(result1, result2)
+#         return max(result1, result2)
 
-    def robRange(self, nums):
-        dp = [[0, 0] for _ in range(len(nums))]
-        dp[0][1] = nums[0]
+#     def robRange(self, nums):
+#         dp = [[0, 0] for _ in range(len(nums))]
+#         dp[0][1] = nums[0]
 
-        for i in range(1, len(nums)):
-            dp[i][0] = max(dp[i - 1])
-            dp[i][1] = dp[i - 1][0] + nums[i]
+#         for i in range(1, len(nums)):
+#             dp[i][0] = max(dp[i - 1])
+#             dp[i][1] = dp[i - 1][0] + nums[i]
 
-        return max(dp[-1])
-# 优化版
+#         return max(dp[-1])
+# # 优化版
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if not nums:  # 如果没有房屋，返回0
@@ -1545,41 +1544,41 @@ class Solution:
 
 #22 337.打家劫舍 III
 # 暴力递归
-class Solution:
-    def rob(self, root: TreeNode) -> int:
-        if root is None:
-            return 0
-        if root.left is None and root.right  is None:
-            return root.val
-        # 偷父节点
-        val1 = root.val
-        if root.left:
-            val1 += self.rob(root.left.left) + self.rob(root.left.right)
-        if root.right:
-            val1 += self.rob(root.right.left) + self.rob(root.right.right)
-        # 不偷父节点
-        val2 = self.rob(root.left) + self.rob(root.right)
-        return max(val1, val2)
-# 记忆化递归
-class Solution:
-    memory = {}
-    def rob(self, root: TreeNode) -> int:
-        if root is None:
-            return 0
-        if root.left is None and root.right  is None:
-            return root.val
-        if self.memory.get(root) is not None:
-            return self.memory[root]
-        # 偷父节点
-        val1 = root.val
-        if root.left:
-            val1 += self.rob(root.left.left) + self.rob(root.left.right)
-        if root.right:
-            val1 += self.rob(root.right.left) + self.rob(root.right.right)
-        # 不偷父节点
-        val2 = self.rob(root.left) + self.rob(root.right)
-        self.memory[root] = max(val1, val2)
-        return max(val1, val2)
+# class Solution:
+#     def rob(self, root: TreeNode) -> int:
+#         if root is None:
+#             return 0
+#         if root.left is None and root.right  is None:
+#             return root.val
+#         # 偷父节点
+#         val1 = root.val
+#         if root.left:
+#             val1 += self.rob(root.left.left) + self.rob(root.left.right)
+#         if root.right:
+#             val1 += self.rob(root.right.left) + self.rob(root.right.right)
+#         # 不偷父节点
+#         val2 = self.rob(root.left) + self.rob(root.right)
+#         return max(val1, val2)
+# # 记忆化递归
+# class Solution:
+#     memory = {}
+#     def rob(self, root: TreeNode) -> int:
+#         if root is None:
+#             return 0
+#         if root.left is None and root.right  is None:
+#             return root.val
+#         if self.memory.get(root) is not None:
+#             return self.memory[root]
+#         # 偷父节点
+#         val1 = root.val
+#         if root.left:
+#             val1 += self.rob(root.left.left) + self.rob(root.left.right)
+#         if root.right:
+#             val1 += self.rob(root.right.left) + self.rob(root.right.right)
+#         # 不偷父节点
+#         val2 = self.rob(root.left) + self.rob(root.right)
+#         self.memory[root] = max(val1, val2)
+#         return max(val1, val2)
 # 动态规划
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
@@ -1610,38 +1609,38 @@ class Solution:
 
 #23 121. 买卖股票的最佳时机
 # 贪心法
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        low = float("inf")
-        result = 0
-        for i in range(len(prices)):
-            low = min(low, prices[i]) #取最左最小价格
-            result = max(result, prices[i] - low) #直接取最大区间利润
-        return result
-# 动态规划：版本一
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        length = len(prices)
-        if len == 0:
-            return 0
-        dp = [[0] * 2 for _ in range(length)]
-        dp[0][0] = -prices[0]
-        dp[0][1] = 0
-        for i in range(1, length):
-            dp[i][0] = max(dp[i-1][0], -prices[i])
-            dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
-        return dp[-1][1]
-# 动态规划：版本二
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        length = len(prices)
-        dp = [[0] * 2 for _ in range(2)] #注意这里只开辟了一个2 * 2大小的二维数组
-        dp[0][0] = -prices[0]
-        dp[0][1] = 0
-        for i in range(1, length):
-            dp[i % 2][0] = max(dp[(i-1) % 2][0], -prices[i])
-            dp[i % 2][1] = max(dp[(i-1) % 2][1], prices[i] + dp[(i-1) % 2][0])
-        return dp[(length-1) % 2][1]
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         low = float("inf")
+#         result = 0
+#         for i in range(len(prices)):
+#             low = min(low, prices[i]) #取最左最小价格
+#             result = max(result, prices[i] - low) #直接取最大区间利润
+#         return result
+# # 动态规划：版本一
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         length = len(prices)
+#         if len == 0:
+#             return 0
+#         dp = [[0] * 2 for _ in range(length)]
+#         dp[0][0] = -prices[0]
+#         dp[0][1] = 0
+#         for i in range(1, length):
+#             dp[i][0] = max(dp[i-1][0], -prices[i])
+#             dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
+#         return dp[-1][1]
+# # 动态规划：版本二
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         length = len(prices)
+#         dp = [[0] * 2 for _ in range(2)] #注意这里只开辟了一个2 * 2大小的二维数组
+#         dp[0][0] = -prices[0]
+#         dp[0][1] = 0
+#         for i in range(1, length):
+#             dp[i % 2][0] = max(dp[(i-1) % 2][0], -prices[i])
+#             dp[i % 2][1] = max(dp[(i-1) % 2][1], prices[i] + dp[(i-1) % 2][0])
+#         return dp[(length-1) % 2][1]
 # 动态规划：版本三
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1680,20 +1679,20 @@ class Solution:
 
 #25 123.买卖股票的最佳时机III
 # 版本一
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        if len(prices) == 0:
-            return 0
-        dp = [[0] * 5 for _ in range(len(prices))]
-        dp[0][1] = -prices[0]
-        dp[0][3] = -prices[0]
-        for i in range(1, len(prices)):
-            dp[i][0] = dp[i-1][0]
-            dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
-            dp[i][2] = max(dp[i-1][2], dp[i-1][1] + prices[i])
-            dp[i][3] = max(dp[i-1][3], dp[i-1][2] - prices[i])
-            dp[i][4] = max(dp[i-1][4], dp[i-1][3] + prices[i])
-        return dp[-1][4]
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         if len(prices) == 0:
+#             return 0
+#         dp = [[0] * 5 for _ in range(len(prices))]
+#         dp[0][1] = -prices[0]
+#         dp[0][3] = -prices[0]
+#         for i in range(1, len(prices)):
+#             dp[i][0] = dp[i-1][0]
+#             dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+#             dp[i][2] = max(dp[i-1][2], dp[i-1][1] + prices[i])
+#             dp[i][3] = max(dp[i-1][3], dp[i-1][2] - prices[i])
+#             dp[i][4] = max(dp[i-1][4], dp[i-1][3] + prices[i])
+#         return dp[-1][4]
 # 版本二
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1712,18 +1711,18 @@ class Solution:
 
 #26 188.买卖股票的最佳时机IV
 # 版本一
-class Solution:
-    def maxProfit(self, k: int, prices: List[int]) -> int:
-        if len(prices) == 0:
-            return 0
-        dp = [[0] * (2*k+1) for _ in range(len(prices))]
-        for j in range(1, 2*k, 2):
-            dp[0][j] = -prices[0]
-        for i in range(1, len(prices)):
-            for j in range(0, 2*k-1, 2):
-                dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j] - prices[i])
-                dp[i][j+2] = max(dp[i-1][j+2], dp[i-1][j+1] + prices[i])
-        return dp[-1][2*k]
+# class Solution:
+#     def maxProfit(self, k: int, prices: List[int]) -> int:
+#         if len(prices) == 0:
+#             return 0
+#         dp = [[0] * (2*k+1) for _ in range(len(prices))]
+#         for j in range(1, 2*k, 2):
+#             dp[0][j] = -prices[0]
+#         for i in range(1, len(prices)):
+#             for j in range(0, 2*k-1, 2):
+#                 dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j] - prices[i])
+#                 dp[i][j+2] = max(dp[i-1][j+2], dp[i-1][j+1] + prices[i])
+#         return dp[-1][2*k]
 # 版本二
 class Solution:
     def maxProfit(self, k: int, prices: List[int]) -> int:
@@ -1743,7 +1742,6 @@ class Solution:
 #27 309.最佳买卖股票时机含冷冻期
 # 版本一
 from typing import List
-
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         n = len(prices)
@@ -1809,27 +1807,26 @@ class Solution:
             result = max(result, dp[i]) #取长的子序列
         return result
 # 贪心
-class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
-        if len(nums) <= 1:
-            return len(nums)
+# class Solution:
+#     def lengthOfLIS(self, nums: List[int]) -> int:
+#         if len(nums) <= 1:
+#             return len(nums)
         
-        tails = [nums[0]]  # 存储递增子序列的尾部元素
-        for num in nums[1:]:
-            if num > tails[-1]:
-                tails.append(num)  # 如果当前元素大于递增子序列的最后一个元素，直接加入到子序列末尾
-            else:
-                # 使用二分查找找到当前元素在递增子序列中的位置，并替换对应位置的元素
-                left, right = 0, len(tails) - 1
-                while left < right:
-                    mid = (left + right) // 2
-                    if tails[mid] < num:
-                        left = mid + 1
-                    else:
-                        right = mid
-                tails[left] = num
-        
-        return len(tails)  # 返回递增子序列的长度
+#         tails = [nums[0]]  # 存储递增子序列的尾部元素
+#         for num in nums[1:]:
+#             if num > tails[-1]:
+#                 tails.append(num)  # 如果当前元素大于递增子序列的最后一个元素，直接加入到子序列末尾
+#             else:
+#                 # 使用二分查找找到当前元素在递增子序列中的位置，并替换对应位置的元素
+#                 left, right = 0, len(tails) - 1
+#                 while left < right:
+#                     mid = (left + right) // 2
+#                     if tails[mid] < num:
+#                         left = mid + 1
+#                     else:
+#                         right = mid
+#                 tails[left] = num
+#         return len(tails)  # 返回递增子序列的长度
 
 
 #30 674. 最长连续递增序列
@@ -1846,61 +1843,61 @@ class Solution:
             result = max(result, dp[i+1])
         return result
 # DP(优化版)
-class Solution:
-    def findLengthOfLCIS(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
+# class Solution:
+#     def findLengthOfLCIS(self, nums: List[int]) -> int:
+#         if not nums:
+#             return 0
 
-        max_length = 1
-        current_length = 1
+#         max_length = 1
+#         current_length = 1
 
-        for i in range(1, len(nums)):
-            if nums[i] > nums[i - 1]:
-                current_length += 1
-                max_length = max(max_length, current_length)
-            else:
-                current_length = 1
+#         for i in range(1, len(nums)):
+#             if nums[i] > nums[i - 1]:
+#                 current_length += 1
+#                 max_length = max(max_length, current_length)
+#             else:
+#                 current_length = 1
 
-        return max_length
-# 贪心
-class Solution:
-    def findLengthOfLCIS(self, nums: List[int]) -> int:
-        if len(nums) == 0:
-            return 0
-        result = 1 #连续子序列最少也是1
-        count = 1
-        for i in range(len(nums)-1):
-            if nums[i+1] > nums[i]: #连续记录
-                count += 1
-            else: #不连续，count从头开始
-                count = 1
-            result = max(result, count)
-        return result
+#         return max_length
+# # 贪心
+# class Solution:
+#     def findLengthOfLCIS(self, nums: List[int]) -> int:
+#         if len(nums) == 0:
+#             return 0
+#         result = 1 #连续子序列最少也是1
+#         count = 1
+#         for i in range(len(nums)-1):
+#             if nums[i+1] > nums[i]: #连续记录
+#                 count += 1
+#             else: #不连续，count从头开始
+#                 count = 1
+#             result = max(result, count)
+#         return result
 
 
 #31 718. 最长重复子数组
 # 2维DP
-class Solution:
-    def findLength(self, nums1: List[int], nums2: List[int]) -> int:
-        # 创建一个二维数组 dp，用于存储最长公共子数组的长度
-        dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
-        # 记录最长公共子数组的长度
-        result = 0
+# class Solution:
+#     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+#         # 创建一个二维数组 dp，用于存储最长公共子数组的长度
+#         dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
+#         # 记录最长公共子数组的长度
+#         result = 0
 
-        # 遍历数组 nums1
-        for i in range(1, len(nums1) + 1):
-            # 遍历数组 nums2
-            for j in range(1, len(nums2) + 1):
-                # 如果 nums1[i-1] 和 nums2[j-1] 相等
-                if nums1[i - 1] == nums2[j - 1]:
-                    # 在当前位置上的最长公共子数组长度为前一个位置上的长度加一
-                    dp[i][j] = dp[i - 1][j - 1] + 1
-                # 更新最长公共子数组的长度
-                if dp[i][j] > result:
-                    result = dp[i][j]
+#         # 遍历数组 nums1
+#         for i in range(1, len(nums1) + 1):
+#             # 遍历数组 nums2
+#             for j in range(1, len(nums2) + 1):
+#                 # 如果 nums1[i-1] 和 nums2[j-1] 相等
+#                 if nums1[i - 1] == nums2[j - 1]:
+#                     # 在当前位置上的最长公共子数组长度为前一个位置上的长度加一
+#                     dp[i][j] = dp[i - 1][j - 1] + 1
+#                 # 更新最长公共子数组的长度
+#                 if dp[i][j] > result:
+#                     result = dp[i][j]
 
-        # 返回最长公共子数组的长度
-        return result
+#         # 返回最长公共子数组的长度
+#         return result
 # 1维DP
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
@@ -1933,54 +1930,54 @@ class Solution:
         # 返回最长公共子数组的长度
         return result
 # 2维DP 扩展
-class Solution:
-    def findLength(self, nums1: List[int], nums2: List[int]) -> int:
-        # 创建一个二维数组 dp，用于存储最长公共子数组的长度
-        dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
-        # 记录最长公共子数组的长度
-        result = 0
+# class Solution:
+#     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+#         # 创建一个二维数组 dp，用于存储最长公共子数组的长度
+#         dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
+#         # 记录最长公共子数组的长度
+#         result = 0
 
-        # 对第一行和第一列进行初始化
-        for i in range(len(nums1)):
-            if nums1[i] == nums2[0]:
-                dp[i + 1][1] = 1
-        for j in range(len(nums2)):
-            if nums1[0] == nums2[j]:
-                dp[1][j + 1] = 1
+#         # 对第一行和第一列进行初始化
+#         for i in range(len(nums1)):
+#             if nums1[i] == nums2[0]:
+#                 dp[i + 1][1] = 1
+#         for j in range(len(nums2)):
+#             if nums1[0] == nums2[j]:
+#                 dp[1][j + 1] = 1
 
-        # 填充dp数组
-        for i in range(1, len(nums1) + 1):
-            for j in range(1, len(nums2) + 1):
-                if nums1[i - 1] == nums2[j - 1]:
-                    # 如果 nums1[i-1] 和 nums2[j-1] 相等，则当前位置的最长公共子数组长度为左上角位置的值加一
-                    dp[i][j] = dp[i - 1][j - 1] + 1
-                if dp[i][j] > result:
-                    # 更新最长公共子数组的长度
-                    result = dp[i][j]
+#         # 填充dp数组
+#         for i in range(1, len(nums1) + 1):
+#             for j in range(1, len(nums2) + 1):
+#                 if nums1[i - 1] == nums2[j - 1]:
+#                     # 如果 nums1[i-1] 和 nums2[j-1] 相等，则当前位置的最长公共子数组长度为左上角位置的值加一
+#                     dp[i][j] = dp[i - 1][j - 1] + 1
+#                 if dp[i][j] > result:
+#                     # 更新最长公共子数组的长度
+#                     result = dp[i][j]
 
-        # 返回最长公共子数组的长度
-        return result
+#         # 返回最长公共子数组的长度
+#         return result
 
 
 #32 1143.最长公共子序列
 # 2维DP
-class Solution:
-    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
-        # 创建一个二维数组 dp，用于存储最长公共子序列的长度
-        dp = [[0] * (len(text2) + 1) for _ in range(len(text1) + 1)]
+# class Solution:
+#     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+#         # 创建一个二维数组 dp，用于存储最长公共子序列的长度
+#         dp = [[0] * (len(text2) + 1) for _ in range(len(text1) + 1)]
         
-        # 遍历 text1 和 text2，填充 dp 数组
-        for i in range(1, len(text1) + 1):
-            for j in range(1, len(text2) + 1):
-                if text1[i - 1] == text2[j - 1]:
-                    # 如果 text1[i-1] 和 text2[j-1] 相等，则当前位置的最长公共子序列长度为左上角位置的值加一
-                    dp[i][j] = dp[i - 1][j - 1] + 1
-                else:
-                    # 如果 text1[i-1] 和 text2[j-1] 不相等，则当前位置的最长公共子序列长度为上方或左方的较大值
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+#         # 遍历 text1 和 text2，填充 dp 数组
+#         for i in range(1, len(text1) + 1):
+#             for j in range(1, len(text2) + 1):
+#                 if text1[i - 1] == text2[j - 1]:
+#                     # 如果 text1[i-1] 和 text2[j-1] 相等，则当前位置的最长公共子序列长度为左上角位置的值加一
+#                     dp[i][j] = dp[i - 1][j - 1] + 1
+#                 else:
+#                     # 如果 text1[i-1] 和 text2[j-1] 不相等，则当前位置的最长公共子序列长度为上方或左方的较大值
+#                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
         
-        # 返回最长公共子序列的长度
-        return dp[len(text1)][len(text2)]
+#         # 返回最长公共子序列的长度
+#         return dp[len(text1)][len(text2)]
 # 1维DP
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
