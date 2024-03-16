@@ -1038,58 +1038,59 @@ class Solution:
 
 
 #12 494.目标和
+    # 大家也可以记住，在求装满背包有几种方法的情况下，递推公式一般为：dp[j] += dp[j - nums[i]];
 # 回溯版
-class Solution:
-    def backtracking(self, candidates, target, total, startIndex, path, result):
-        if total == target:
-            result.append(path[:])  # 将当前路径的副本添加到结果中
-        # 如果 sum + candidates[i] > target，则停止遍历
-        for i in range(startIndex, len(candidates)):
-            if total + candidates[i] > target:
-                break
-            total += candidates[i]
-            path.append(candidates[i])
-            self.backtracking(candidates, target, total, i + 1, path, result)
-            total -= candidates[i]
-            path.pop()
+# class Solution:
+#     def backtracking(self, candidates, target, total, startIndex, path, result):
+#         if total == target:
+#             result.append(path[:])  # 将当前路径的副本添加到结果中
+#         # 如果 sum + candidates[i] > target，则停止遍历
+#         for i in range(startIndex, len(candidates)):
+#             if total + candidates[i] > target:
+#                 break
+#             total += candidates[i]
+#             path.append(candidates[i])
+#             self.backtracking(candidates, target, total, i + 1, path, result)
+#             total -= candidates[i]
+#             path.pop()
 
-    def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        total = sum(nums)
-        if target > total:
-            return 0  # 此时没有方案
-        if (target + total) % 2 != 0:
-            return 0  # 此时没有方案，两个整数相加时要注意数值溢出的问题
-        bagSize = (target + total) // 2  # 转化为组合总和问题，bagSize就是目标和
+#     def findTargetSumWays(self, nums: List[int], target: int) -> int:
+#         total = sum(nums)
+#         if target > total:
+#             return 0  # 此时没有方案
+#         if (target + total) % 2 != 0:
+#             return 0  # 此时没有方案，两个整数相加时要注意数值溢出的问题
+#         bagSize = (target + total) // 2  # 转化为组合总和问题，bagSize就是目标和
 
-        # 以下是回溯法代码
-        result = []
-        nums.sort()  # 需要对nums进行排序
-        self.backtracking(nums, bagSize, 0, 0, [], result)
-        return len(result)
-# 二维DP
-class Solution:
-    def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        total_sum = sum(nums)  # 计算nums的总和
-        if abs(target) > total_sum:
-            return 0  # 此时没有方案
-        if (target + total_sum) % 2 == 1:
-            return 0  # 此时没有方案
-        target_sum = (target + total_sum) // 2  # 目标和
+#         # 以下是回溯法代码
+#         result = []
+#         nums.sort()  # 需要对nums进行排序
+#         self.backtracking(nums, bagSize, 0, 0, [], result)
+#         return len(result)
+# # 二维DP
+# class Solution:
+#     def findTargetSumWays(self, nums: List[int], target: int) -> int:
+#         total_sum = sum(nums)  # 计算nums的总和
+#         if abs(target) > total_sum:
+#             return 0  # 此时没有方案
+#         if (target + total_sum) % 2 == 1:
+#             return 0  # 此时没有方案
+#         target_sum = (target + total_sum) // 2  # 目标和
 
-        # 创建二维动态规划数组，行表示选取的元素数量，列表示累加和
-        dp = [[0] * (target_sum + 1) for _ in range(len(nums) + 1)]
+#         # 创建二维动态规划数组，行表示选取的元素数量，列表示累加和
+#         dp = [[0] * (target_sum + 1) for _ in range(len(nums) + 1)]
 
-        # 初始化状态
-        dp[0][0] = 1
+#         # 初始化状态
+#         dp[0][0] = 1
 
-        # 动态规划过程
-        for i in range(1, len(nums) + 1):
-            for j in range(target_sum + 1):
-                dp[i][j] = dp[i - 1][j]  # 不选取当前元素
-                if j >= nums[i - 1]:
-                    dp[i][j] += dp[i - 1][j - nums[i - 1]]  # 选取当前元素
+#         # 动态规划过程
+#         for i in range(1, len(nums) + 1):
+#             for j in range(target_sum + 1):
+#                 dp[i][j] = dp[i - 1][j]  # 不选取当前元素
+#                 if j >= nums[i - 1]:
+#                     dp[i][j] += dp[i - 1][j - nums[i - 1]]  # 选取当前元素
 
-        return dp[len(nums)][target_sum]  # 返回达到目标和的方案数
+#         return dp[len(nums)][target_sum]  # 返回达到目标和的方案数
 # 一维DP
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
@@ -1109,16 +1110,16 @@ class Solution:
 
 #13 474.一和零
 # DP（版本一）
-class Solution:
-    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
-        dp = [[0] * (n + 1) for _ in range(m + 1)]  # 创建二维动态规划数组，初始化为0
-        for s in strs:  # 遍历物品
-            zeroNum = s.count('0')  # 统计0的个数
-            oneNum = len(s) - zeroNum  # 统计1的个数
-            for i in range(m, zeroNum - 1, -1):  # 遍历背包容量且从后向前遍历
-                for j in range(n, oneNum - 1, -1):
-                    dp[i][j] = max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1)  # 状态转移方程
-        return dp[m][n]
+# class Solution:
+#     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+#         dp = [[0] * (n + 1) for _ in range(m + 1)]  # 创建二维动态规划数组，初始化为0
+#         for s in strs:  # 遍历物品
+#             zeroNum = s.count('0')  # 统计0的个数
+#             oneNum = len(s) - zeroNum  # 统计1的个数
+#             for i in range(m, zeroNum - 1, -1):  # 遍历背包容量且从后向前遍历
+#                 for j in range(n, oneNum - 1, -1):
+#                     dp[i][j] = max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1)  # 状态转移方程
+#         return dp[m][n]
 # DP（版本二）
 class Solution:
     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
@@ -1135,6 +1136,11 @@ class Solution:
 
 
 #14 动态规划：完全背包理论基础
+    # 我们知道01背包内嵌的循环是从大到小遍历，为了保证每个物品仅被添加一次。
+    # 而完全背包的物品是可以添加多次的，所以要从小到大去遍历
+    # 01背包中二维dp数组的两个for遍历的先后循序是可以颠倒了
+    # 一维dp数组的两个for循环先后循序一定是先遍历物品，再遍历背包容量。
+    # 在完全背包中，对于一维dp数组来说，其实两个for循环嵌套顺序是无所谓的！
 # 先遍历物品，再遍历背包（无参版）
 def test_CompletePack():
     weight = [1, 3, 4]
@@ -1196,6 +1202,9 @@ if __name__ == "__main__":
 
 
 #15 518.零钱兑换II
+    # 在求装满背包有几种方案的时候，认清遍历顺序是非常关键的。
+    # 如果求组合数就是外层for循环遍历物品，内层for遍历背包。
+    # 如果求排列数就是外层for遍历背包，内层for循环遍历物品。
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         dp = [0]*(amount + 1)
@@ -1209,16 +1218,20 @@ class Solution:
 
 
 #16 377. 组合总和 Ⅳ
+    # 如果把遍历nums（物品）放在外循环，遍历target的作为内循环的话
+    # 举一个例子：计算dp[4]的时候，结果集只有 {1,3} 这样的集合，不会有{3,1}这样的集合
+    # 因为nums遍历放在外层，3只能出现在1后面！
+    # 所以本题遍历顺序最终遍历顺序：target（背包）放在外循环，将nums（物品）放在内循环，内循环从前到后遍历。
 # 卡哥版
-class Solution:
-    def combinationSum4(self, nums: List[int], target: int) -> int:
-        dp = [0] * (target + 1)
-        dp[0] = 1
-        for i in range(1, target + 1):  # 遍历背包
-            for j in range(len(nums)):  # 遍历物品
-                if i - nums[j] >= 0:
-                    dp[i] += dp[i - nums[j]]
-        return dp[target]
+# class Solution:
+#     def combinationSum4(self, nums: List[int], target: int) -> int:
+#         dp = [0] * (target + 1)
+#         dp[0] = 1
+#         for i in range(1, target + 1):  # 遍历背包
+#             for j in range(len(nums)):  # 遍历物品
+#                 if i - nums[j] >= 0:
+#                     dp[i] += dp[i - nums[j]]
+#         return dp[target]
 # 优化版
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
@@ -1231,6 +1244,23 @@ class Solution:
                     dp[i] += dp[i - j]  # 更新组合总数
 
         return dp[-1]  # 返回背包容量为target时的组合总数
+# 70. 爬楼梯（进阶版）
+# 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+# 每次你可以爬至多m (1 <= m < n)个台阶。你有多少种不同的方法可以爬到楼顶呢？
+# 注意：给定 n 是一个正整数。
+# 输入描述：输入共一行，包含两个正整数，分别表示n, m
+# 输出描述：输出一个整数，表示爬到楼顶的方法数。
+# 输入示例：3 2
+# 输出示例：3
+# 提示：
+# 当 m = 2，n = 3 时，n = 3 这表示一共有三个台阶，m = 2 代表你每次可以爬一个台阶或者两个台阶。
+# 此时你有三种方法可以爬到楼顶。
+# 1 阶 + 1 阶 + 1 阶段
+# 1 阶 + 2 阶
+# 2 阶 + 1 阶
+
+# 时间复杂度: O(n * m)
+# 空间复杂度: O(n)
 
 
 #17 322. 零钱兑换
