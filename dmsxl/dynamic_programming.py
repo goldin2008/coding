@@ -1656,6 +1656,8 @@ class Solution:
     # dp数组的含义：
     # dp[i][0] 表示第i天持有股票所得现金。
     # dp[i][1] 表示第i天不持有股票所得最多现金
+    # 注意这里说的是“持有”，“持有”不代表就是当天“买入”！也有可能是昨天就买入了，今天保持持有的状态
+    # 很多同学把“持有”和“买入”没区分清楚。
 # 贪心法
 # class Solution:
 #     def maxProfit(self, prices: List[int]) -> int:
@@ -1678,7 +1680,7 @@ class Solution:
             dp[i][0] = max(dp[i-1][0], -prices[i])
             dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
         return dp[-1][1]
-# *** 动态规划:版本二
+# 动态规划:版本二
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         length = len(prices)
@@ -1689,15 +1691,15 @@ class Solution:
             dp[i % 2][0] = max(dp[(i-1) % 2][0], -prices[i])
             dp[i % 2][1] = max(dp[(i-1) % 2][1], prices[i] + dp[(i-1) % 2][0])
         return dp[(length-1) % 2][1]
-# *** 动态规划:版本三
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        length = len(prices)
-        dp0, dp1 = -prices[0], 0 #注意这里只维护两个常量,因为dp0的更新不受dp1的影响
-        for i in range(1, length):
-            dp1 = max(dp1, dp0 + prices[i])
-            dp0 = max(dp0, -prices[i])
-        return dp1
+# 动态规划:版本三
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         length = len(prices)
+#         dp0, dp1 = -prices[0], 0 #注意这里只维护两个常量,因为dp0的更新不受dp1的影响
+#         for i in range(1, length):
+#             dp1 = max(dp1, dp0 + prices[i])
+#             dp0 = max(dp0, -prices[i])
+#         return dp1
 
 
 #24 122.买卖股票的最佳时机II
@@ -1726,6 +1728,13 @@ class Solution:
 
 
 #25 123.买卖股票的最佳时机III
+    # 确定dp数组以及下标的含义
+    # 一天一共就有五个状态，
+    # 没有操作 （其实我们也可以不设置这个状态）
+    # 第一次持有股票
+    # 第一次不持有股票
+    # 第二次持有股票
+    # 第二次不持有股票
 # *** 版本一
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1758,7 +1767,7 @@ class Solution:
 
 
 #26 188.买卖股票的最佳时机IV
-# *** 版本一
+# *** 版本一 2D
 class Solution:
     def maxProfit(self, k: int, prices: List[int]) -> int:
         if len(prices) == 0:
@@ -1771,20 +1780,20 @@ class Solution:
                 dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j] - prices[i])
                 dp[i][j+2] = max(dp[i-1][j+2], dp[i-1][j+1] + prices[i])
         return dp[-1][2*k]
-# 版本二
-# class Solution:
-#     def maxProfit(self, k: int, prices: List[int]) -> int:
-#         if len(prices) == 0: return 0
-#         dp = [0] * (2*k + 1)
-#         for i in range(1,2*k,2):
-#             dp[i] = -prices[0]
-#         for i in range(1,len(prices)):
-#             for j in range(1,2*k + 1):
-#                 if j % 2:
-#                     dp[j] = max(dp[j],dp[j-1]-prices[i])
-#                 else:
-#                     dp[j] = max(dp[j],dp[j-1]+prices[i])
-#         return dp[2*k]
+# 版本二 1D
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        if len(prices) == 0: return 0
+        dp = [0] * (2*k + 1)
+        for i in range(1,2*k,2):
+            dp[i] = -prices[0]
+        for i in range(1,len(prices)):
+            for j in range(1,2*k + 1):
+                if j % 2:
+                    dp[j] = max(dp[j],dp[j-1]-prices[i])
+                else:
+                    dp[j] = max(dp[j],dp[j-1]+prices[i])
+        return dp[2*k]
 
 
 #27 309.最佳买卖股票时机含冷冻期
@@ -1802,6 +1811,20 @@ class Solution:
             dp[i][2] = dp[i-1][0] + prices[i]  # 当前不持有股票且不处于冷冻期的最大利润等于前一天不持有股票的最大利润或者前一天处于冷冻期的最大利润
             dp[i][3] = dp[i-1][2]  # 当前不持有股票且当天卖出后处于冷冻期的最大利润等于前一天不持有股票且不处于冷冻期的最大利润
         return max(dp[n-1][3], dp[n-1][1], dp[n-1][2])  # 返回最后一天不持有股票的最大利润
+# 优化
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        if n == 0:
+            return 0
+        dp = [[0] * 4 for _ in range(2)]  # 创建动态规划数组,4个状态分别表示持有股票、不持有股票且处于冷冻期、不持有股票且不处于冷冻期、不持有股票且当天卖出后处于冷冻期
+        dp[0][0] = -prices[0]  # 初始状态:第一天持有股票的最大利润为买入股票的价格
+        for i in range(1, n):
+            dp[i%2][0] = max(dp[((i-1)%2)%2][0], max(dp[(i-1)%2][3], dp[(i-1)%2][1]) - prices[i])  # 当前持有股票的最大利润等于前一天持有股票的最大利润或者前一天不持有股票且不处于冷冻期的最大利润减去当前股票的价格
+            dp[i%2][1] = max(dp[(i-1)%2][1], dp[(i-1)%2][3])  # 当前不持有股票且处于冷冻期的最大利润等于前一天持有股票的最大利润加上当前股票的价格
+            dp[i%2][2] = dp[(i-1)%2][0] + prices[i]  # 当前不持有股票且不处于冷冻期的最大利润等于前一天不持有股票的最大利润或者前一天处于冷冻期的最大利润
+            dp[i%2][3] = dp[(i-1)%2][2]  # 当前不持有股票且当天卖出后处于冷冻期的最大利润等于前一天不持有股票且不处于冷冻期的最大利润
+        return max(dp[(n-1)%2][3], dp[(n-1)%2][1], dp[(n-1)%2][2])  # 返回最后一天不持有股票的最大利润
 # 版本二
 # class Solution:
 #     def maxProfit(self, prices: List[int]) -> int:
