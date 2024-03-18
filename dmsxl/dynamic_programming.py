@@ -1511,31 +1511,30 @@ class Solution:
 #         return curr_max  # 返回最后一个房屋中可抢劫的最大金额
 
 
-#21 213.打家劫舍II
-# class Solution:
-#     def rob(self, nums: List[int]) -> int:
-#         if len(nums) == 0:
-#             return 0
-#         if len(nums) == 1:
-#             return nums[0]
+#21 ??? 213.打家劫舍II
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
         
-#         result1 = self.robRange(nums, 0, len(nums) - 2)  # 情况二
-#         result2 = self.robRange(nums, 1, len(nums) - 1)  # 情况三
-#         return max(result1, result2)
-#     # 198.打家劫舍的逻辑
-#     def robRange(self, nums: List[int], start: int, end: int) -> int:
-#         if end == start:
-#             return nums[start]
+        result1 = self.robRange(nums, 0, len(nums) - 2)  # 情况二
+        result2 = self.robRange(nums, 1, len(nums) - 1)  # 情况三
+        return max(result1, result2)
+    # 198.打家劫舍的逻辑
+    def robRange(self, nums: List[int], start: int, end: int) -> int:
+        if end == start:
+            return nums[start]
         
-#         prev_max = nums[start]
-#         curr_max = max(nums[start], nums[start + 1])
+        prev_max = nums[start]
+        curr_max = max(nums[start], nums[start + 1])
         
-#         for i in range(start + 2, end + 1):
-#             temp = curr_max
-#             curr_max = max(prev_max + nums[i], curr_max)
-#             prev_max = temp
-        
-#         return curr_max
+        for i in range(start + 2, end + 1):
+            temp = curr_max
+            curr_max = max(prev_max + nums[i], curr_max)
+            prev_max = temp
+        return curr_max
 # # 2维DP
 # class Solution:
 #     def rob(self, nums: List[int]) -> int:
@@ -1560,33 +1559,32 @@ class Solution:
 
 #         return max(dp[-1])
 # # 优化版
-class Solution:
-    def rob(self, nums: List[int]) -> int:
-        if not nums:  # 如果没有房屋,返回0
-            return 0
+# class Solution:
+#     def rob(self, nums: List[int]) -> int:
+#         if not nums:  # 如果没有房屋,返回0
+#             return 0
 
-        if len(nums) == 1:  # 如果只有一个房屋,返回该房屋的金额
-            return nums[0]
+#         if len(nums) == 1:  # 如果只有一个房屋,返回该房屋的金额
+#             return nums[0]
 
-        # 情况二:不抢劫第一个房屋
-        prev_max = 0  # 上一个房屋的最大金额
-        curr_max = 0  # 当前房屋的最大金额
-        for num in nums[1:]:
-            temp = curr_max  # 临时变量保存当前房屋的最大金额
-            curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
-            prev_max = temp  # 更新上一个房屋的最大金额
-        result1 = curr_max
+#         # 情况二:不抢劫第一个房屋
+#         prev_max = 0  # 上一个房屋的最大金额
+#         curr_max = 0  # 当前房屋的最大金额
+#         for num in nums[1:]:
+#             temp = curr_max  # 临时变量保存当前房屋的最大金额
+#             curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
+#             prev_max = temp  # 更新上一个房屋的最大金额
+#         result1 = curr_max
 
-        # 情况三:不抢劫最后一个房屋
-        prev_max = 0  # 上一个房屋的最大金额
-        curr_max = 0  # 当前房屋的最大金额
-        for num in nums[:-1]:
-            temp = curr_max  # 临时变量保存当前房屋的最大金额
-            curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
-            prev_max = temp  # 更新上一个房屋的最大金额
-        result2 = curr_max
-
-        return max(result1, result2)
+#         # 情况三:不抢劫最后一个房屋
+#         prev_max = 0  # 上一个房屋的最大金额
+#         curr_max = 0  # 当前房屋的最大金额
+#         for num in nums[:-1]:
+#             temp = curr_max  # 临时变量保存当前房屋的最大金额
+#             curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
+#             prev_max = temp  # 更新上一个房屋的最大金额
+#         result2 = curr_max
+#         return max(result1, result2)
 
 
 #22 337.打家劫舍 III
