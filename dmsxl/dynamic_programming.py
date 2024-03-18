@@ -1587,7 +1587,7 @@ class Solution:
 #         return max(result1, result2)
 
 
-#22 337.打家劫舍 III
+#22 ??? 337.打家劫舍 III
 # 暴力递归
 # class Solution:
 #     def rob(self, root: TreeNode) -> int:
@@ -1648,7 +1648,6 @@ class Solution:
 
         # 偷当前节点, 不偷子节点
         val_1 = node.val + left[0] + right[0]
-
         return (val_0, val_1)
 
 
