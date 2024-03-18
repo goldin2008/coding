@@ -1652,6 +1652,9 @@ class Solution:
 
 
 #23 121. 买卖股票的最佳时机
+    # dp数组的含义：
+    # dp[i][0] 表示第i天持有股票所得现金。
+    # dp[i][1] 表示第i天不持有股票所得最多现金
 # 贪心法
 # class Solution:
 #     def maxProfit(self, prices: List[int]) -> int:
@@ -1661,19 +1664,19 @@ class Solution:
 #             low = min(low, prices[i]) #取最左最小价格
 #             result = max(result, prices[i] - low) #直接取最大区间利润
 #         return result
-# # 动态规划:版本一
-# class Solution:
-#     def maxProfit(self, prices: List[int]) -> int:
-#         length = len(prices)
-#         if len == 0:
-#             return 0
-#         dp = [[0] * 2 for _ in range(length)]
-#         dp[0][0] = -prices[0]
-#         dp[0][1] = 0
-#         for i in range(1, length):
-#             dp[i][0] = max(dp[i-1][0], -prices[i])
-#             dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
-#         return dp[-1][1]
+# *** 动态规划:版本一
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        length = len(prices)
+        if len == 0:
+            return 0
+        dp = [[0] * 2 for _ in range(length)]
+        dp[0][0] = -prices[0]
+        dp[0][1] = 0
+        for i in range(1, length):
+            dp[i][0] = max(dp[i-1][0], -prices[i])
+            dp[i][1] = max(dp[i-1][1], prices[i] + dp[i-1][0])
+        return dp[-1][1]
 # # 动态规划:版本二
 # class Solution:
 #     def maxProfit(self, prices: List[int]) -> int:
@@ -1685,7 +1688,7 @@ class Solution:
 #             dp[i % 2][0] = max(dp[(i-1) % 2][0], -prices[i])
 #             dp[i % 2][1] = max(dp[(i-1) % 2][1], prices[i] + dp[(i-1) % 2][0])
 #         return dp[(length-1) % 2][1]
-# 动态规划:版本三
+# *** 动态规划:版本三
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         length = len(prices)
@@ -1697,7 +1700,7 @@ class Solution:
 
 
 #24 122.买卖股票的最佳时机II
-# 版本一
+# *** 版本一
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         length = len(prices)
@@ -1709,34 +1712,34 @@ class Solution:
             dp[i][1] = max(dp[i-1][1], dp[i-1][0] + prices[i])
         return dp[-1][1]
 # 版本二
-class Solution:
-    def maxProfit(self, prices: List[int]) -> int:
-        length = len(prices)
-        dp = [[0] * 2 for _ in range(2)] #注意这里只开辟了一个2 * 2大小的二维数组
-        dp[0][0] = -prices[0]
-        dp[0][1] = 0
-        for i in range(1, length):
-            dp[i % 2][0] = max(dp[(i-1) % 2][0], dp[(i-1) % 2][1] - prices[i])
-            dp[i % 2][1] = max(dp[(i-1) % 2][1], dp[(i-1) % 2][0] + prices[i])
-        return dp[(length-1) % 2][1]
+# class Solution:
+#     def maxProfit(self, prices: List[int]) -> int:
+#         length = len(prices)
+#         dp = [[0] * 2 for _ in range(2)] #注意这里只开辟了一个2 * 2大小的二维数组
+#         dp[0][0] = -prices[0]
+#         dp[0][1] = 0
+#         for i in range(1, length):
+#             dp[i % 2][0] = max(dp[(i-1) % 2][0], dp[(i-1) % 2][1] - prices[i])
+#             dp[i % 2][1] = max(dp[(i-1) % 2][1], dp[(i-1) % 2][0] + prices[i])
+#         return dp[(length-1) % 2][1]
 
 
 #25 123.买卖股票的最佳时机III
-# 版本一
-# class Solution:
-#     def maxProfit(self, prices: List[int]) -> int:
-#         if len(prices) == 0:
-#             return 0
-#         dp = [[0] * 5 for _ in range(len(prices))]
-#         dp[0][1] = -prices[0]
-#         dp[0][3] = -prices[0]
-#         for i in range(1, len(prices)):
-#             dp[i][0] = dp[i-1][0]
-#             dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
-#             dp[i][2] = max(dp[i-1][2], dp[i-1][1] + prices[i])
-#             dp[i][3] = max(dp[i-1][3], dp[i-1][2] - prices[i])
-#             dp[i][4] = max(dp[i-1][4], dp[i-1][3] + prices[i])
-#         return dp[-1][4]
+# *** 版本一
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if len(prices) == 0:
+            return 0
+        dp = [[0] * 5 for _ in range(len(prices))]
+        dp[0][1] = -prices[0]
+        dp[0][3] = -prices[0]
+        for i in range(1, len(prices)):
+            dp[i][0] = dp[i-1][0]
+            dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+            dp[i][2] = max(dp[i-1][2], dp[i-1][1] + prices[i])
+            dp[i][3] = max(dp[i-1][3], dp[i-1][2] - prices[i])
+            dp[i][4] = max(dp[i-1][4], dp[i-1][3] + prices[i])
+        return dp[-1][4]
 # 版本二
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1754,33 +1757,33 @@ class Solution:
 
 
 #26 188.买卖股票的最佳时机IV
-# 版本一
-# class Solution:
-#     def maxProfit(self, k: int, prices: List[int]) -> int:
-#         if len(prices) == 0:
-#             return 0
-#         dp = [[0] * (2*k+1) for _ in range(len(prices))]
-#         for j in range(1, 2*k, 2):
-#             dp[0][j] = -prices[0]
-#         for i in range(1, len(prices)):
-#             for j in range(0, 2*k-1, 2):
-#                 dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j] - prices[i])
-#                 dp[i][j+2] = max(dp[i-1][j+2], dp[i-1][j+1] + prices[i])
-#         return dp[-1][2*k]
-# 版本二
+# *** 版本一
 class Solution:
     def maxProfit(self, k: int, prices: List[int]) -> int:
-        if len(prices) == 0: return 0
-        dp = [0] * (2*k + 1)
-        for i in range(1,2*k,2):
-            dp[i] = -prices[0]
-        for i in range(1,len(prices)):
-            for j in range(1,2*k + 1):
-                if j % 2:
-                    dp[j] = max(dp[j],dp[j-1]-prices[i])
-                else:
-                    dp[j] = max(dp[j],dp[j-1]+prices[i])
-        return dp[2*k]
+        if len(prices) == 0:
+            return 0
+        dp = [[0] * (2*k+1) for _ in range(len(prices))]
+        for j in range(1, 2*k, 2):
+            dp[0][j] = -prices[0]
+        for i in range(1, len(prices)):
+            for j in range(0, 2*k-1, 2):
+                dp[i][j+1] = max(dp[i-1][j+1], dp[i-1][j] - prices[i])
+                dp[i][j+2] = max(dp[i-1][j+2], dp[i-1][j+1] + prices[i])
+        return dp[-1][2*k]
+# 版本二
+# class Solution:
+#     def maxProfit(self, k: int, prices: List[int]) -> int:
+#         if len(prices) == 0: return 0
+#         dp = [0] * (2*k + 1)
+#         for i in range(1,2*k,2):
+#             dp[i] = -prices[0]
+#         for i in range(1,len(prices)):
+#             for j in range(1,2*k + 1):
+#                 if j % 2:
+#                     dp[j] = max(dp[j],dp[j-1]-prices[i])
+#                 else:
+#                     dp[j] = max(dp[j],dp[j-1]+prices[i])
+#         return dp[2*k]
 
 
 #27 309.最佳买卖股票时机含冷冻期
