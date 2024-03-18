@@ -1948,6 +1948,7 @@ class Solution:
 
 
 #31 718. 最长重复子数组
+    # 注意题目中说的子数组，其实就是连续子序列。
 # 2维DP
 # class Solution:
 #     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
@@ -2032,6 +2033,8 @@ class Solution:
 
 
 #32 1143.最长公共子序列
+    # 本题和动态规划：718. 最长重复子数组 (opens new window)区别在于这里不要求是连续的了，
+    # 但要有相对顺序，即："ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。
 # 2维DP
 # class Solution:
 #     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
