@@ -1496,23 +1496,23 @@ class Solution:
 #             dp[i][1] = dp[i-1][0] + nums[i]  # 抢劫第i个房屋,最大金额为前一个房屋不抢劫的最大金额加上当前房屋的金额
 
 #         return max(dp[n-1][0], dp[n-1][1])  # 返回最后一个房屋中可抢劫的最大金额
-# # 优化版
-# class Solution:
-#     def rob(self, nums: List[int]) -> int:
-#         if not nums:  # 如果没有房屋,返回0
-#             return 0
+# *** 优化版
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        if not nums:  # 如果没有房屋,返回0
+            return 0
 
-#         prev_max = 0  # 上一个房屋的最大金额
-#         curr_max = 0  # 当前房屋的最大金额
+        prev_max = 0  # 上一个房屋的最大金额
+        curr_max = 0  # 当前房屋的最大金额
 
-#         for num in nums:
-#             temp = curr_max  # 临时变量保存当前房屋的最大金额
-#             curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
-#             prev_max = temp  # 更新上一个房屋的最大金额
-#         return curr_max  # 返回最后一个房屋中可抢劫的最大金额
+        for num in nums:
+            temp = curr_max  # 临时变量保存当前房屋的最大金额
+            curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
+            prev_max = temp  # 更新上一个房屋的最大金额
+        return curr_max  # 返回最后一个房屋中可抢劫的最大金额
 
 
-#21 ??? 213.打家劫舍II
+#21 213.打家劫舍II
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if len(nums) == 0:
@@ -1588,7 +1588,7 @@ class Solution:
 #         return max(result1, result2)
 
 
-#22 ??? 337.打家劫舍 III
+#22 337.打家劫舍 III
 # 暴力递归
 # class Solution:
 #     def rob(self, root: TreeNode) -> int:
