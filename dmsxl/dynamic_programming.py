@@ -1796,7 +1796,7 @@ class Solution:
         return dp[2*k]
 
 
-#27 309.最佳买卖股票时机含冷冻期
+#27 ??? 309.最佳买卖股票时机含冷冻期
 # 版本一
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -1851,6 +1851,8 @@ class Solution:
 
 
 #28 714.买卖股票的最佳时机含手续费
+    # 注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+    # 卖出的时刻才需要交fee
 class Solution:
     def maxProfit(self, prices: List[int], fee: int) -> int:
         n = len(prices)
