@@ -73,6 +73,50 @@ dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
 这样在递归公式dp[j] = max(dp[j], dp[j - weights[i]] + values[i])中dp[j]才不会初始值所覆盖。
 因为如果按照二维dp数组那样来初始化第一row, 那么背包容量后序遍历的时候, 同一个物品i会放两次。
 """
+"""
+遍历顺序
+#01背包
+在动态规划：关于01背包问题，你该了解这些！ (opens new window)中我们讲解二维dp数组01背包先遍历物品还是先遍历背包都是可以的，且第二层for循环是从小到大遍历。
+和动态规划：关于01背包问题，你该了解这些！（滚动数组） (opens new window)中，我们讲解一维dp数组01背包只能先遍历物品再遍历背包容量，且第二层for循环是从大到小遍历。
+一维dp数组的背包在遍历顺序上和二维dp数组实现的01背包其实是有很大差异的，大家需要注意！
+
+完全背包
+说完01背包，再看看完全背包。
+
+在动态规划：关于完全背包，你该了解这些！ (opens new window)中，讲解了纯完全背包的一维dp数组实现，先遍历物品还是先遍历背包都是可以的，且第二层for循环是从小到大遍历。
+但是仅仅是纯完全背包的遍历顺序是这样的，题目稍有变化，两个for循环的先后顺序就不一样了。
+
+如果求组合数就是外层for循环遍历物品，内层for遍历背包。
+如果求排列数就是外层for遍历背包，内层for循环遍历物品。
+
+相关题目如下：
+
+求组合数：动态规划：518.零钱兑换II(opens new window)
+求排列数：动态规划：377. 组合总和 Ⅳ (opens new window)、动态规划：70. 爬楼梯进阶版（完全背包）(opens new window)
+如果求最小数，那么两层for循环的先后顺序就无所谓了，相关题目如下：
+求最小数：动态规划：322. 零钱兑换 (opens new window)、动态规划：279.完全平方数(opens new window)
+对于背包问题，其实递推公式算是容易的，难是难在遍历顺序上，如果把遍历顺序搞透，才算是真正理解了。
+"""
+
+# 背包递推公式
+# 问能否能装满背包（或者最多装多少）：dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]); ，对应题目如下：
+
+# 动态规划：416.分割等和子集(opens new window)
+# 动态规划：1049.最后一块石头的重量 II(opens new window)
+# 问装满背包有几种方法：dp[j] += dp[j - nums[i]] ，对应题目如下：
+
+# 动态规划：494.目标和(opens new window)
+# 动态规划：518. 零钱兑换 II(opens new window)
+# 动态规划：377.组合总和Ⅳ(opens new window)
+# 动态规划：70. 爬楼梯进阶版（完全背包）(opens new window)
+# 问背包装满最大价值：dp[j] = max(dp[j], dp[j - weight[i]] + value[i]); ，对应题目如下：
+
+# 动态规划：474.一和零(opens new window)
+# 问装满背包所有物品的最小个数：dp[j] = min(dp[j - coins[i]] + 1, dp[j]); ，对应题目如下：
+
+# 动态规划：322.零钱兑换(opens new window)
+# 动态规划：279.完全平方数
+
 
 # 二维dp
 def test_2_wei_bag_problem1(bag_size, weight, value) -> int: 
@@ -1364,6 +1408,9 @@ class Solution:
 
 
 #19 139.单词拆分
+    # 求组合数：动态规划：518.零钱兑换II (opens new window)
+    # 求排列数：动态规划：377. 组合总和 Ⅳ (opens new window)、动态规划：70. 爬楼梯进阶版（完全背包） (opens new window)
+    # 求最小数：动态规划：322. 零钱兑换 (opens new window)、动态规划：279.完全平方数
 # 回溯
 # class Solution:
 #     def backtracking(self, s: str, wordSet: set[str], startIndex: int) -> bool:
