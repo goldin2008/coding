@@ -2215,6 +2215,14 @@ class Solution:
 
 
 #38 72. 编辑距离
+"""
+    if (word1[i - 1] == word2[j - 1])
+        不操作
+    if (word1[i - 1] != word2[j - 1])
+        增
+        删
+        换
+"""
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
@@ -2227,6 +2235,12 @@ class Solution:
                 if word1[i-1] == word2[j-1]:
                     dp[i][j] = dp[i-1][j-1]
                 else:
+                    # if (word1[i - 1] != word2[j - 1])
+                    # 操作一：word1删除一个元素 即 dp[i][j] = dp[i - 1][j] + 1
+                    # 操作二：word2删除一个元素 即 dp[i][j] = dp[i][j - 1] + 1
+                    # 操作三：替换元素，word1替换word1[i - 1]，使其与word2[j - 1]相同
+                    # 此时不用增删加元素。即 dp[i][j] = dp[i - 1][j - 1] + 1
+                    # 综合三种操作，取最小就是
                     dp[i][j] = min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
         return dp[-1][-1]
 
