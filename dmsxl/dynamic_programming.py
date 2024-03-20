@@ -2246,6 +2246,9 @@ class Solution:
 
 
 #39 647. 回文子串
+    # 回文子串是要连续的，回文子序列可不是连续的！
+    # 647.回文子串
+    # 5.最长回文子串
 # 动态规划
 class Solution:
     def countSubstrings(self, s: str) -> int:
@@ -2291,6 +2294,7 @@ class Solution:
 
 
 #40 516.最长回文子序列
+    # 回文子串是要连续的，回文子序列可不是连续的！
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
         dp = [[0] * len(s) for _ in range(len(s))]
