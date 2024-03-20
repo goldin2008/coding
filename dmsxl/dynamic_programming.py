@@ -14,10 +14,10 @@
 一维dp数组的背包在遍历顺序上和二维dp数组实现的01背包其实是有很大差异的, 需要注意!
 
 完全背包:
-纯完全背包（求是否能装满背包）
+纯完全背包(求是否能装满背包)
 先遍历物品, 再遍历背包 与 先遍历背包, 再遍历物品都是可以的, 都要从小到大去遍历
 
-非纯完全背包（求装满背包有几种方法）
+非纯完全背包(求装满背包有几种方法)
 一维数组 (组合问题), 外层物品, 内层容量, 都是从小到大, 遍历不可交换
 一维数组 (排列问题), 外层容量, 内层物品, 都是从小到大, 遍历不可交换
 (DP方法求的是排列总和, 而且仅仅是求排列总和的个数, 并不是把所有的排列都列出来。
@@ -25,7 +25,7 @@
 如果求最小数, 那么两层循环的先后顺序就无所谓了
 
 递推公式场景:
-问能否能装满背包（或者最多装多少）: dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
+问能否能装满背包(或者最多装多少): dp[j] = max(dp[j], dp[j - nums[i]] + nums[i])
 问背包装满最大价值: dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 问装满背包所有物品的最小个数: dp[j] = min(dp[j - coins[i]] + 1, dp[j])
 问装满背包有几种方法: dp[j] += dp[j - nums[i]]
@@ -43,14 +43,14 @@
 dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
 其实可以发现如果把dp[i - 1]那一层拷贝到dp[i]上, 表达式完全可以是: 
 dp[i][j] = max(dp[i][j], dp[i][j - weight[i]] + value[i]);
-与其把dp[i - 1]这一层拷贝到dp[i]上, 不如只用一个一维数组了, 只用dp[j]（一维数组, 也可以理解是一个滚动数组）。
+与其把dp[i - 1]这一层拷贝到dp[i]上, 不如只用一个一维数组了, 只用dp[j](一维数组, 也可以理解是一个滚动数组)。
 这就是滚动数组的由来, 需要满足的条件是上一层可以重复利用, 直接拷贝到当前层。
 读到这里估计大家都忘了 dp[i][j]里的i和j表达的是什么了, i是物品, j是背包容量。
 dp[i][j] 表示从下标为[0-i]的物品里任意取, 放进容量为j的背包, 价值总和最大是多少
 
 dp[j]可以通过dp[j - weight[i]]推导出来, dp[j - weight[i]]表示容量为j - weight[i]的背包所背的最大价值。
 dp[j - weight[i]] + value[i] 表示 容量为 j - 物品i重量 的背包 加上 物品i的价值。
-也就是容量为j的背包, 放入物品i了之后的价值即:dp[j]）、
+也就是容量为j的背包, 放入物品i了之后的价值即:dp[j])、
 此时dp[j]有两个选择, 一个是取自己dp[j] 相当于 二维dp数组中的dp[i-1][j], 即不放物品i
 一个是取dp[j - weight[i]] + value[i], 即放物品i, 指定是取最大的, 毕竟是求最大价值, 
 dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
@@ -77,44 +77,44 @@ dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
 """
 遍历顺序
 #01背包
-在动态规划:关于01背包问题,你该了解这些！ (opens new window)中我们讲解二维dp数组01背包先遍历物品还是先遍历背包都是可以的,且第二层for循环是从小到大遍历。
-和动态规划:关于01背包问题,你该了解这些！（滚动数组） (opens new window)中,我们讲解一维dp数组01背包只能先遍历物品再遍历背包容量,且第二层for循环是从大到小遍历。
-一维dp数组的背包在遍历顺序上和二维dp数组实现的01背包其实是有很大差异的,大家需要注意！
+在动态规划:关于01背包问题,你该了解这些! 中我们讲解二维dp数组01背包先遍历物品还是先遍历背包都是可以的,且第二层for循环是从小到大遍历。
+和动态规划:关于01背包问题,你该了解这些!(滚动数组) 中,我们讲解一维dp数组01背包只能先遍历物品再遍历背包容量,且第二层for循环是从大到小遍历。
+一维dp数组的背包在遍历顺序上和二维dp数组实现的01背包其实是有很大差异的,大家需要注意!
 
 完全背包
 说完01背包,再看看完全背包。
 
-在动态规划:关于完全背包,你该了解这些！ (opens new window)中,讲解了纯完全背包的一维dp数组实现,先遍历物品还是先遍历背包都是可以的,且第二层for循环是从小到大遍历。
+在动态规划:关于完全背包,你该了解这些! 中,讲解了纯完全背包的一维dp数组实现,先遍历物品还是先遍历背包都是可以的,且第二层for循环是从小到大遍历。
 但是仅仅是纯完全背包的遍历顺序是这样的,题目稍有变化,两个for循环的先后顺序就不一样了。
 
 如果求组合数就是外层for循环遍历物品,内层for遍历背包。
 如果求排列数就是外层for遍历背包,内层for循环遍历物品。
 
 相关题目如下:
-求组合数:动态规划:518.零钱兑换II(opens new window)
-求排列数:动态规划:377. 组合总和 Ⅳ (opens new window)、动态规划:70. 爬楼梯进阶版（完全背包）(opens new window)
+求组合数:动态规划:518.零钱兑换II
+求排列数:动态规划:377. 组合总和 Ⅳ 、动态规划:70. 爬楼梯进阶版(完全背包)
 如果求最小数,那么两层for循环的先后顺序就无所谓了,相关题目如下:
-求最小数:动态规划:322. 零钱兑换 (opens new window)、动态规划:279.完全平方数(opens new window)
+求最小数:动态规划:322. 零钱兑换 、动态规划:279.完全平方数
 对于背包问题,其实递推公式算是容易的,难是难在遍历顺序上,如果把遍历顺序搞透,才算是真正理解了。
 """
 
 # 背包递推公式
-# 问能否能装满背包（或者最多装多少）:dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]); ,对应题目如下:
+# 问能否能装满背包(或者最多装多少):dp[j] = max(dp[j], dp[j - nums[i]] + nums[i]); ,对应题目如下:
 
-# 动态规划:416.分割等和子集(opens new window)
-# 动态规划:1049.最后一块石头的重量 II(opens new window)
+# 动态规划:416.分割等和子集
+# 动态规划:1049.最后一块石头的重量 II
 # 问装满背包有几种方法:dp[j] += dp[j - nums[i]] ,对应题目如下:
 
-# 动态规划:494.目标和(opens new window)
-# 动态规划:518. 零钱兑换 II(opens new window)
-# 动态规划:377.组合总和Ⅳ(opens new window)
-# 动态规划:70. 爬楼梯进阶版（完全背包）(opens new window)
+# 动态规划:494.目标和
+# 动态规划:518. 零钱兑换 II
+# 动态规划:377.组合总和Ⅳ
+# 动态规划:70. 爬楼梯进阶版(完全背包)
 # 问背包装满最大价值:dp[j] = max(dp[j], dp[j - weight[i]] + value[i]); ,对应题目如下:
 
-# 动态规划:474.一和零(opens new window)
+# 动态规划:474.一和零
 # 问装满背包所有物品的最小个数:dp[j] = min(dp[j - coins[i]] + 1, dp[j]); ,对应题目如下:
 
-# 动态规划:322.零钱兑换(opens new window)
+# 动态规划:322.零钱兑换
 # 动态规划:279.完全平方数
 
 
@@ -245,7 +245,68 @@ for(int j = 0; j <= bagWeight; j++) { // 遍历背包容量
     cout << endl;
 }
 
+"""
+动态规划基础
+关于动态规划,你该了解这些!
+动态规划:斐波那契数
+动态规划:爬楼梯
+动态规划:使用最小花费爬楼梯
+动态规划:不同路径
+动态规划:不同路径还不够,要有障碍!
+动态规划:整数拆分,你要怎么拆？
+动态规划:不同的二叉搜索树
 
+背包问题系列
+动态规划:关于01背包问题,你该了解这些!
+动态规划:关于01背包问题,你该了解这些!(滚动数组)
+动态规划:分割等和子集可以用01背包!
+动态规划:最后一块石头的重量 II
+动态规划:目标和!
+动态规划:一和零!
+动态规划:关于完全背包,你该了解这些!
+动态规划:给你一些零钱,你要怎么凑？
+动态规划:Carl称它为排列总和!
+动态规划:以前我没得选,现在我选择再爬一次!
+动态规划: 给我个机会,我再兑换一次零钱
+动态规划:一样的套路,再求一次完全平方数
+动态规划:单词拆分
+动态规划:关于多重背包,你该了解这些!
+听说背包问题很难？ 这篇总结篇来拯救你了
+
+打家劫舍系列
+动态规划:开始打家劫舍!
+动态规划:继续打家劫舍!
+动态规划:还要打家劫舍!
+
+股票系列
+动态规划:买卖股票的最佳时机
+动态规划:本周我们都讲了这些(系列六)
+动态规划:买卖股票的最佳时机II
+动态规划:买卖股票的最佳时机III
+动态规划:买卖股票的最佳时机IV
+动态规划:最佳买卖股票时机含冷冻期
+动态规划:本周我们都讲了这些(系列七)
+动态规划:买卖股票的最佳时机含手续费
+动态规划:股票系列总结篇
+
+子序列系列
+动态规划:最长递增子序列
+动态规划:最长连续递增序列
+动态规划:最长重复子数组
+动态规划:最长公共子序列
+动态规划:不相交的线
+动态规划:最大子序和
+动态规划:判断子序列
+动态规划:不同的子序列
+动态规划:两个字符串的删除操作
+动态规划:编辑距离
+为了绝杀编辑距离,我做了三步铺垫,你都知道么？
+动态规划:回文子串
+动态规划:最长回文子序列
+
+关于动规,还有 树形DP(打家劫舍系列里有一道),数位DP,区间DP ,概率型DP,博弈型DP,状态压缩dp等等等,这些我就不去做讲解了,面试中出现的概率非常低。
+能把本篇中列举的题目都研究通透的话,你的动规水平就已经非常高了。 对付面试已经足够!
+"""
 
 
 """
@@ -277,7 +338,7 @@ class Solution:
         if n < 2:
             return n
         return self.fib(n - 1) + self.fib(n - 2)
-# 动态规划（版本一）
+# 动态规划(版本一)
 class Solution:
     def fib(self, n: int) -> int:
        
@@ -300,7 +361,7 @@ class Solution:
         
         # 返回答案
         return dp[n]
-# *** 动态规划（版本二）
+# *** 动态规划(版本二)
 class Solution:
     def fib(self, n: int) -> int:
         if n <= 1:
@@ -314,7 +375,7 @@ class Solution:
             dp[1] = total
         
         return dp[1]
-# 动态规划（版本三）
+# 动态规划(版本三)
 # class Solution:
 #     def fib(self, n: int) -> int:
 #         if n <= 1:
@@ -332,7 +393,7 @@ class Solution:
 # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 # 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
 # 注意:给定 n 是一个正整数。
-# 动态规划（版本一）
+# 动态规划(版本一)
 # 空间复杂度为O(n)版本
 class Solution:
     def climbStairs(self, n: int) -> int:
@@ -347,7 +408,7 @@ class Solution:
             dp[i] = dp[i - 1] + dp[i - 2]
         
         return dp[n]
-# 动态规划（版本二）
+# 动态规划(版本二)
 # 空间复杂度为O(3)版本
 class Solution:
     def climbStairs(self, n: int) -> int:
@@ -380,7 +441,7 @@ public:
 
 
 #3 746. 使用最小花费爬楼梯
-# 数组的每个下标作为一个阶梯, 第 i 个阶梯对应着一个非负数的体力花费值 cost[i]（下标从 0 开始）。
+# 数组的每个下标作为一个阶梯, 第 i 个阶梯对应着一个非负数的体力花费值 cost[i](下标从 0 开始)。
 # 每当你爬上一个阶梯你都要花费对应的体力值, 一旦支付了相应的体力值, 你就可以选择向上爬一个阶梯或者爬两个阶梯。
 # 请你找出达到楼层顶部的最低花费。在开始时, 你可以选择从下标为 0 或 1 的元素作为初始阶梯。
 # 示例 1:输入:cost = [10, 15, 20] 输出:15 解释:最低花费是从 cost[1] 开始, 然后走两步即可到阶梯顶, 一共花费 15 。
@@ -393,7 +454,7 @@ class Solution:
         for i in range(2, len(cost)):
             dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
         return min(dp[len(cost) - 1], dp[len(cost) - 2])
-# 动态规划（版本一）
+# 动态规划(版本一)
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         dp = [0] * (len(cost) + 1)
@@ -401,19 +462,19 @@ class Solution:
         dp[1] = 0  # 初始值,表示经过第一步不需要花费体力
         
         for i in range(2, len(cost) + 1):
-            # 在第i步,可以选择从前一步（i-1）花费体力到达当前步,或者从前两步（i-2）花费体力到达当前步
+            # 在第i步,可以选择从前一步(i-1)花费体力到达当前步,或者从前两步(i-2)花费体力到达当前步
             # 选择其中花费体力较小的路径,加上当前步的花费,更新dp数组
             dp[i] = min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
         
         return dp[len(cost)]  # 返回到达楼顶的最小花费
-# 动态规划（版本二）
+# 动态规划(版本二)
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         dp0 = 0  # 初始值,表示从起点开始不需要花费体力
         dp1 = 0  # 初始值,表示经过第一步不需要花费体力
         
         for i in range(2, len(cost) + 1):
-            # 在第i步,可以选择从前一步（i-1）花费体力到达当前步,或者从前两步（i-2）花费体力到达当前步
+            # 在第i步,可以选择从前一步(i-1)花费体力到达当前步,或者从前两步(i-2)花费体力到达当前步
             # 选择其中花费体力较小的路径,加上当前步的花费,得到当前步的最小花费
             dpi = min(dp1 + cost[i - 1], dp0 + cost[i - 2])
             
@@ -421,7 +482,7 @@ class Solution:
             dp1 = dpi  # 更新dp1为当前步的最小花费
         
         return dp1  # 返回到达楼顶的最小花费
-# # 动态规划（版本三）
+# # 动态规划(版本三)
 # class Solution:
 #     def minCostClimbingStairs(self, cost: List[int]) -> int:
 #         dp = [0] * len(cost)
@@ -431,7 +492,7 @@ class Solution:
 #             dp[i] = min(dp[i - 1], dp[i - 2]) + cost[i]
 #         # 注意最后一步可以理解为不用花费,所以取倒数第一步,第二步的最少值
 #         return min(dp[-1], dp[-2])
-# # 动态规划（版本四）
+# # 动态规划(版本四)
 # class Solution:
 #     def minCostClimbingStairs(self, cost: List[int]) -> int:
 #         n = len(cost)
@@ -444,8 +505,8 @@ class Solution:
 
 
 #4 62.不同路径
-# 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
-# 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+# 一个机器人位于一个 m x n 网格的左上角 (起始点在下图中标记为 “Start” )。
+# 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角(在下图中标记为 “Finish” )。
 # 问总共有多少条不同的路径？
 # 输入:m = 3, n = 7
 # 输出:28
@@ -462,7 +523,7 @@ class Solution:
 #         if m == 1 or n == 1:
 #             return 1
 #         return self.uniquePaths(m - 1, n) + self.uniquePaths(m, n - 1)
-# 动态规划（版本一）
+# 动态规划(版本一)
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
         # 创建一个二维列表用于存储唯一路径数
@@ -481,7 +542,7 @@ class Solution:
         
         # 返回右下角单元格的唯一路径数
         return dp[m - 1][n - 1]
-# 动态规划（版本二）
+# 动态规划(版本二)
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
         # 创建一个一维列表用于存储每列的唯一路径数
@@ -512,8 +573,8 @@ class Solution:
 
 
 #5 63. 不同路径 II
-# 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
-# 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+# 一个机器人位于一个 m x n 网格的左上角 (起始点在下图中标记为“Start” )。
+# 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角(在下图中标记为“Finish”)。
 # 现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
 # 网格中的障碍物和空位置分别用 1 和 0 来表示。
 # 输入:obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
@@ -548,7 +609,7 @@ class Solution:
 #                 if obstacleGrid[i][j] != 1:
 #                     dp[i][j] = dp[i-1][j] + dp[i][j-1]
 #         return dp[-1][-1]
-# 动态规划（版本一）二维数组
+# 动态规划(版本一)二维数组
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid):
         m = len(obstacleGrid)
@@ -572,7 +633,7 @@ class Solution:
                     continue
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
         return dp[m - 1][n - 1]
-# 动态规划（版本二）
+# 动态规划(版本二)
 # class Solution:
 #     def uniquePathsWithObstacles(self, obstacleGrid):
 #         m = len(obstacleGrid)  # 网格的行数
@@ -604,7 +665,7 @@ class Solution:
 #                     continue
 #                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
 #         return dp[m - 1][n - 1]  # 返回终点的路径数
-# 动态规划（版本三）
+# 动态规划(版本三)
 # class Solution:
 #     def uniquePathsWithObstacles(self, obstacleGrid):
 #         if obstacleGrid[0][0] == 1:
@@ -630,7 +691,7 @@ class Solution:
 #                     dp[j] = dp[j] + dp[j - 1]
         
 #         return dp[-1]  # 返回最后一个元素,即终点的路径数
-# *** 动态规划（版本四）一维数组
+# *** 动态规划(版本四)一维数组
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid):
         if obstacleGrid[0][0] == 1:
@@ -657,7 +718,7 @@ class Solution:
                     dp[j] += dp[j - 1]
         
         return dp[-1]  # 返回最后一个元素,即终点的路径数
-# 动态规划（版本五）
+# 动态规划(版本五)
 # class Solution:
 #     def uniquePathsWithObstacles(self, obstacleGrid):
 #         if obstacleGrid[0][0] == 1:
@@ -707,15 +768,15 @@ class Solution:
         dp = [0] * (n + 1)
         dp[2] = 1
         for i in range(3, n + 1):
-            # 假设对正整数 i 拆分出的第一个正整数是 j（1 <= j < i）, 则有以下两种方案:
+            # 假设对正整数 i 拆分出的第一个正整数是 j(1 <= j < i), 则有以下两种方案:
             # 1) 将 i 拆分成 j 和 i−j 的和, 且 i−j 不再拆分成多个正整数, 此时的乘积是 j * (i-j)
             # 2) 将 i 拆分成 j 和 i−j 的和, 且 i−j 继续拆分成多个正整数, 此时的乘积是 j * dp[i-j]
             for j in range(1, i - 1):
                 dp[i] = max(dp[i], max(j * (i - j), j * dp[i - j]))
         return dp[n]
-# 动态规划（版本一）
+# 动态规划(版本一)
 # class Solution:
-#          # 假设对正整数 i 拆分出的第一个正整数是 j（1 <= j < i）,则有以下两种方案:
+#          # 假设对正整数 i 拆分出的第一个正整数是 j(1 <= j < i),则有以下两种方案:
 #         # 1) 将 i 拆分成 j 和 i−j 的和,且 i−j 不再拆分成多个正整数,此时的乘积是 j * (i-j)
 #         # 2) 将 i 拆分成 j 和 i−j 的和,且 i−j 继续拆分成多个正整数,此时的乘积是 j * dp[i-j]
 #     def integerBreak(self, n):
@@ -734,7 +795,7 @@ class Solution:
                 
 #                 dp[i] = max(dp[i], (i - j) * j, dp[i - j] * j)
 #         return dp[n]  # 返回最终的计算结果
-# 动态规划（版本二）
+# 动态规划(版本二)
 # class Solution:
 #     def integerBreak(self, n):
 #         if n <= 3:
@@ -785,7 +846,7 @@ class Solution:
 #8 01 背包
 # 有n件物品和一个最多能背重量为w 的背包。第i件物品的重量是weight[i], 得到的价值是value[i] 。每件物品只能用一次, 求解将哪些物品装入背包里物品价值总和最大。
 # dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
-# 大家可以看出, 虽然两个for循环遍历的次序不同, 但是dp[i][j]所需要的数据就是左上角, 根本不影响dp[i][j]公式的推导！
+# 大家可以看出, 虽然两个for循环遍历的次序不同, 但是dp[i][j]所需要的数据就是左上角, 根本不影响dp[i][j]公式的推导!
 # 其实背包问题里, 两个for循环的先后循序是非常有讲究的, 理解遍历顺序其实比理解推导公式难多了。
 def test_2_wei_bag_problem1(bag_size, weight, value) -> int: 
 	rows, cols = len(weight), bag_size + 1
@@ -872,7 +933,7 @@ if __name__ == "__main__":
 # 把i相关的部分去掉
 # dp[j] = max(dp[j], dp[j - weight[i]] + value[i])
 # 二维dp遍历的时候, 背包容量是从小到大, 而一维dp遍历的时候, 背包是从大到小。
-# 倒序遍历是为了保证物品i只被放入一次！。但如果一旦正序遍历了, 那么物品0就会被重复加入多次！
+# 倒序遍历是为了保证物品i只被放入一次!。但如果一旦正序遍历了, 那么物品0就会被重复加入多次!
 # 无参版
 def test_1_wei_bag_problem():
     weight = [1, 3, 4]
@@ -975,7 +1036,7 @@ class Solution:
 #         target_sum = total_sum // 2
 #         dp = [[False] * (target_sum + 1) for _ in range(len(nums) + 1)]
 
-#         # 初始化第一行（空子集可以得到和为0）
+#         # 初始化第一行(空子集可以得到和为0)
 #         for i in range(len(nums) + 1):
 #             dp[i][0] = True
 
@@ -1022,7 +1083,7 @@ class Solution:
 #                 dp[j] = max(dp[j], dp[j - stone] + stone)
 
 #         return total_sum - dp[target] - dp[target]
-# 卡哥版（简化版）
+# 卡哥版(简化版)
 class Solution:
     def lastStoneWeightII(self, stones):
         total_sum = sum(stones)
@@ -1153,7 +1214,7 @@ class Solution:
 
 
 #13 474.一和零
-# DP（版本一）
+# DP(版本一)
 # class Solution:
 #     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
 #         dp = [[0] * (n + 1) for _ in range(m + 1)]  # 创建二维动态规划数组,初始化为0
@@ -1164,7 +1225,7 @@ class Solution:
 #                 for j in range(n, oneNum - 1, -1):
 #                     dp[i][j] = max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1)  # 状态转移方程
 #         return dp[m][n]
-# DP（版本二）
+# DP(版本二)
 class Solution:
     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
         dp = [[0] * (n + 1) for _ in range(m + 1)]  # 创建二维动态规划数组,初始化为0
@@ -1184,8 +1245,8 @@ class Solution:
     # 而完全背包的物品是可以添加多次的,所以要从小到大去遍历
     # 01背包中二维dp数组的两个for遍历的先后循序是可以颠倒了
     # 一维dp数组的两个for循环先后循序一定是先遍历物品,再遍历背包容量。
-    # 在完全背包中,对于一维dp数组来说,其实两个for循环嵌套顺序是无所谓的！
-# 先遍历物品,再遍历背包（无参版）
+    # 在完全背包中,对于一维dp数组来说,其实两个for循环嵌套顺序是无所谓的!
+# 先遍历物品,再遍历背包(无参版)
 def test_CompletePack():
     weight = [1, 3, 4]
     value = [15, 20, 30]
@@ -1197,7 +1258,7 @@ def test_CompletePack():
     print(dp[bagWeight])
 
 test_CompletePack()
-# 先遍历物品,再遍历背包（有参版）
+# 先遍历物品,再遍历背包(有参版)
 def test_CompletePack(weight, value, bagWeight):
     dp = [0] * (bagWeight + 1)
     for i in range(len(weight)):  # 遍历物品
@@ -1211,7 +1272,7 @@ if __name__ == "__main__":
     bagWeight = 4
     result = test_CompletePack(weight, value, bagWeight)
     print(result)
-# 先遍历背包,再遍历物品（无参版）
+# 先遍历背包,再遍历物品(无参版)
 def test_CompletePack():
     weight = [1, 3, 4]
     value = [15, 20, 30]
@@ -1227,7 +1288,7 @@ def test_CompletePack():
     print(dp[bagWeight])
 
 test_CompletePack()
-# 先遍历背包,再遍历物品（有参版）
+# 先遍历背包,再遍历物品(有参版)
 def test_CompletePack(weight, value, bagWeight):
     dp = [0] * (bagWeight + 1)
     for j in range(bagWeight + 1):  # 遍历背包容量
@@ -1262,10 +1323,10 @@ class Solution:
 
 
 #16 377. 组合总和 Ⅳ
-    # 如果把遍历nums（物品）放在外循环,遍历target的作为内循环的话
+    # 如果把遍历nums(物品)放在外循环,遍历target的作为内循环的话
     # 举一个例子:计算dp[4]的时候,结果集只有 {1,3} 这样的集合,不会有{3,1}这样的集合
-    # 因为nums遍历放在外层,3只能出现在1后面！
-    # 所以本题遍历顺序最终遍历顺序:target（背包）放在外循环,将nums（物品）放在内循环,内循环从前到后遍历。
+    # 因为nums遍历放在外层,3只能出现在1后面!
+    # 所以本题遍历顺序最终遍历顺序:target(背包)放在外循环,将nums(物品)放在内循环,内循环从前到后遍历。
 # 卡哥版
 # class Solution:
 #     def combinationSum4(self, nums: List[int], target: int) -> int:
@@ -1288,7 +1349,7 @@ class Solution:
                     dp[i] += dp[i - j]  # 更新组合总数
 
         return dp[-1]  # 返回背包容量为target时的组合总数
-# 70. 爬楼梯（进阶版）
+# 70. 爬楼梯(进阶版)
 # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 # 每次你可以爬至多m (1 <= m < n)个台阶。你有多少种不同的方法可以爬到楼顶呢？
 # 注意:给定 n 是一个正整数。
@@ -1335,7 +1396,7 @@ class Solution:
 #         if dp[amount] == float('inf'):  # 如果最终背包容量的最小硬币数量仍为正无穷大,表示无解
 #             return -1
 #         return dp[amount]  # 返回背包容量为amount时的最小硬币数量
-# 先遍历物品 后遍历背包（优化版）
+# 先遍历物品 后遍历背包(优化版)
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         dp = [float('inf')] * (amount + 1)
@@ -1347,7 +1408,7 @@ class Solution:
                 dp[i] = min(dp[i], dp[i - coin] + 1)
 
         return dp[amount] if dp[amount] != float('inf') else -1
-# 先遍历背包 后遍历物品（优化版）
+# 先遍历背包 后遍历物品(优化版)
 # class Solution:
 #     def coinChange(self, coins: List[int], amount: int) -> int:
 #         dp = [float('inf')] * (amount + 1)
@@ -1408,9 +1469,9 @@ class Solution:
 
 
 #19 139.单词拆分
-    # 求组合数:动态规划:518.零钱兑换II (opens new window)
-    # 求排列数:动态规划:377. 组合总和 Ⅳ (opens new window)、动态规划:70. 爬楼梯进阶版（完全背包） (opens new window)
-    # 求最小数:动态规划:322. 零钱兑换 (opens new window)、动态规划:279.完全平方数
+    # 求组合数:动态规划:518.零钱兑换II 
+    # 求排列数:动态规划:377. 组合总和 Ⅳ 、动态规划:70. 爬楼梯进阶版(完全背包) 
+    # 求最小数:动态规划:322. 零钱兑换 、动态规划:279.完全平方数
 # 回溯
 # class Solution:
 #     def backtracking(self, s: str, wordSet: set[str], startIndex: int) -> bool:
@@ -1431,7 +1492,7 @@ class Solution:
 #     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
 #         wordSet = set(wordDict)  # 转换为哈希集合,提高查找效率
 #         return self.backtracking(s, wordSet, 0)
-# DP（版本一）
+# DP(版本一)
 # class Solution:
 #     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
 #         wordSet = set(wordDict)
@@ -1445,7 +1506,7 @@ class Solution:
 #                     dp[i] = True  # 如果 s[0:j] 可以被拆分成单词,并且 s[j:i] 在单词集合中存在,则 s[0:i] 可以被拆分成单词
 #                     break
 #         return dp[n]
-# DP（版本二）
+# DP(版本二)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         dp = [False]*(len(s) + 1)
@@ -1476,7 +1537,7 @@ class Solution:
         # 遍历剩余的房屋
         for i in range(2, len(nums)):
             # 对于每个房屋,选择抢劫当前房屋和抢劫前一个房屋的最大金额
-            # 注意这里是考虑，并不是一定要偷i-1,i-2房，这是很多同学容易混淆的点
+            # 注意这里是考虑,并不是一定要偷i-1,i-2房,这是很多同学容易混淆的点
             dp[i] = max(dp[i - 2] + nums[i], dp[i - 1])
 
         return dp[-1]  # 返回最后一个房屋中可抢劫的最大金额
@@ -1628,7 +1689,7 @@ class Solution:
 # 动态规划
 class Solution:
     def rob(self, root: Optional[TreeNode]) -> int:
-        # dp数组（dp table）以及下标的含义:
+        # dp数组(dp table)以及下标的含义:
         # 1. 下标为 0 记录 **不偷该节点** 所得到的的最大金钱
         # 2. 下标为 1 记录 **偷该节点** 所得到的的最大金钱
         dp = self.traversal(root)
@@ -1653,10 +1714,10 @@ class Solution:
 
 
 #23 121. 买卖股票的最佳时机
-    # dp数组的含义：
+    # dp数组的含义:
     # dp[i][0] 表示第i天持有股票所得现金。
     # dp[i][1] 表示第i天不持有股票所得最多现金
-    # 注意这里说的是“持有”，“持有”不代表就是当天“买入”！也有可能是昨天就买入了，今天保持持有的状态
+    # 注意这里说的是“持有”,“持有”不代表就是当天“买入”!也有可能是昨天就买入了,今天保持持有的状态
     # 很多同学把“持有”和“买入”没区分清楚。
 # 贪心法
 # class Solution:
@@ -1729,8 +1790,8 @@ class Solution:
 
 #25 123.买卖股票的最佳时机III
     # 确定dp数组以及下标的含义
-    # 一天一共就有五个状态，
-    # 没有操作 （其实我们也可以不设置这个状态）
+    # 一天一共就有五个状态,
+    # 没有操作 (其实我们也可以不设置这个状态)
     # 第一次持有股票
     # 第一次不持有股票
     # 第二次持有股票
@@ -1851,7 +1912,7 @@ class Solution:
 
 
 #28 714.买卖股票的最佳时机含手续费
-    # 注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+    # 注意:这里的一笔交易指买入持有并卖出股票的整个过程,每笔交易你只需要为支付一次手续费。
     # 卖出的时刻才需要交fee
 class Solution:
     def maxProfit(self, prices: List[int], fee: int) -> int:
@@ -1948,7 +2009,7 @@ class Solution:
 
 
 #31 718. 最长重复子数组
-    # 注意题目中说的子数组，其实就是连续子序列。
+    # 注意题目中说的子数组,其实就是连续子序列。
 # 2维DP
 # class Solution:
 #     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
@@ -2033,8 +2094,8 @@ class Solution:
 
 
 #32 1143.最长公共子序列
-    # 本题和动态规划：718. 最长重复子数组 (opens new window)区别在于这里不要求是连续的了，
-    # 但要有相对顺序，即："ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。
+    # 本题和动态规划:718. 最长重复子数组 区别在于这里不要求是连续的了,
+    # 但要有相对顺序,即:"ace" 是 "abcde" 的子序列,但 "aec" 不是 "abcde" 的子序列。
 # 2维DP
 # class Solution:
 #     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -2115,7 +2176,7 @@ class Solution:
 
 
 #36 115.不同的子序列
-    # 这道题目如果不是子序列，而是要求连续序列的，那就可以考虑用KMP。
+    # 这道题目如果不是子序列,而是要求连续序列的,那就可以考虑用KMP。
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
         dp = [[0] * (len(t)+1) for _ in range(len(s)+1)]
@@ -2126,14 +2187,14 @@ class Solution:
         for i in range(1, len(s)+1):
             for j in range(1, len(t)+1):
                 if s[i-1] == t[j-1]:
-                    # 当s[i - 1] 与 t[j - 1]相等时，dp[i][j]可以有两部分组成。
-                    # 一部分是用s[i - 1]来匹配，那么个数为dp[i - 1][j - 1]。
-                    # 即不需要考虑当前s子串和t子串的最后一位字母，所以只需要 dp[i-1][j-1]。
-                    # 一部分是不用s[i - 1]来匹配，个数为dp[i - 1][j]。
+                    # 当s[i - 1] 与 t[j - 1]相等时,dp[i][j]可以有两部分组成。
+                    # 一部分是用s[i - 1]来匹配,那么个数为dp[i - 1][j - 1]。
+                    # 即不需要考虑当前s子串和t子串的最后一位字母,所以只需要 dp[i-1][j-1]。
+                    # 一部分是不用s[i - 1]来匹配,个数为dp[i - 1][j]。
                     dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
                 else:
-                    # 当s[i - 1] 与 t[j - 1]不相等时，dp[i][j]只有一部分组成，
-                    # 不用s[i - 1]来匹配（就是模拟在s中删除这个元素），即：dp[i - 1][j]
+                    # 当s[i - 1] 与 t[j - 1]不相等时,dp[i][j]只有一部分组成,
+                    # 不用s[i - 1]来匹配(就是模拟在s中删除这个元素),即:dp[i - 1][j]
                     dp[i][j] = dp[i-1][j]
         return dp[-1][-1]
 
@@ -2142,7 +2203,7 @@ class SolutionDP2:
     既然dp[i]只用到dp[i - 1]的状态,
     我们可以通过缓存dp[i - 1]的状态来对dp进行压缩,
     减少空间复杂度。
-    （原理等同同于滚动数组）
+    (原理等同同于滚动数组)
     """
     
     def numDistinct(self, s: str, t: str) -> int:
@@ -2183,31 +2244,31 @@ class Solution:
                 if word1[i-1] == word2[j-1]:
                     dp[i][j] = dp[i-1][j-1]
                 else:
-                    # 因为 dp[i][j - 1] + 1 = dp[i - 1][j - 1] + 2，
-                    # 所以递推公式可简化为：dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
-                    # 这里可能不少录友有点迷糊，从字面上理解 就是 当 同时删word1[i - 1]和word2[j - 1]，
-                    # dp[i][j-1] 本来就不考虑 word2[j - 1]了，那么我在删 word1[i - 1]，
-                    # 是不是就达到两个元素都删除的效果，即 dp[i][j-1] + 1。
+                    # 因为 dp[i][j - 1] + 1 = dp[i - 1][j - 1] + 2,
+                    # 所以递推公式可简化为:dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+                    # 这里可能不少录友有点迷糊,从字面上理解 就是 当 同时删word1[i - 1]和word2[j - 1],
+                    # dp[i][j-1] 本来就不考虑 word2[j - 1]了,那么我在删 word1[i - 1],
+                    # 是不是就达到两个元素都删除的效果,即 dp[i][j-1] + 1。
                     dp[i][j] = min(dp[i-1][j-1] + 2, dp[i-1][j] + 1, dp[i][j-1] + 1)
                     # dp[i][j] = min(dp[i-1][j] + 1, dp[i][j-1] + 1)
         return dp[-1][-1]
 # 动态规划二
-    # 本题和动态规划：1143.最长公共子序列 (opens new window)基本相同，
-    # 只要求出两个字符串的最长公共子序列长度即可，那么除了最长公共子序列之外的字符都是必须删除的，
+    # 本题和动态规划:1143.最长公共子序列 基本相同,
+    # 只要求出两个字符串的最长公共子序列长度即可,那么除了最长公共子序列之外的字符都是必须删除的,
     # 最后用两个字符串的总长度减去两个最长公共子序列的长度就是删除的最少步数。
 class Solution:
     def minDistance(self, text1: str, text2: str) -> int:
-        # 创建一个二维数组 dp，用于存储最长公共子序列的长度
+        # 创建一个二维数组 dp,用于存储最长公共子序列的长度
         dp = [[0] * (len(text2) + 1) for _ in range(len(text1) + 1)]
         
-        # 遍历 text1 和 text2，填充 dp 数组
+        # 遍历 text1 和 text2,填充 dp 数组
         for i in range(1, len(text1) + 1):
             for j in range(1, len(text2) + 1):
                 if text1[i - 1] == text2[j - 1]:
-                    # 如果 text1[i-1] 和 text2[j-1] 相等，则当前位置的最长公共子序列长度为左上角位置的值加一
+                    # 如果 text1[i-1] 和 text2[j-1] 相等,则当前位置的最长公共子序列长度为左上角位置的值加一
                     dp[i][j] = dp[i - 1][j - 1] + 1
                 else:
-                    # 如果 text1[i-1] 和 text2[j-1] 不相等，则当前位置的最长公共子序列长度为上方或左方的较大值
+                    # 如果 text1[i-1] 和 text2[j-1] 不相等,则当前位置的最长公共子序列长度为上方或左方的较大值
                     dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
         
         # 返回最长公共子序列的长度
@@ -2236,17 +2297,17 @@ class Solution:
                     dp[i][j] = dp[i-1][j-1]
                 else:
                     # if (word1[i - 1] != word2[j - 1])
-                    # 操作一：word1删除一个元素 即 dp[i][j] = dp[i - 1][j] + 1
-                    # 操作二：word2删除一个元素 即 dp[i][j] = dp[i][j - 1] + 1
-                    # 操作三：替换元素，word1替换word1[i - 1]，使其与word2[j - 1]相同
+                    # 操作一:word1删除一个元素 即 dp[i][j] = dp[i - 1][j] + 1
+                    # 操作二:word2删除一个元素 即 dp[i][j] = dp[i][j - 1] + 1
+                    # 操作三:替换元素,word1替换word1[i - 1],使其与word2[j - 1]相同
                     # 此时不用增删加元素。即 dp[i][j] = dp[i - 1][j - 1] + 1
-                    # 综合三种操作，取最小就是
+                    # 综合三种操作,取最小就是
                     dp[i][j] = min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + 1
         return dp[-1][-1]
 
 
 #39 647. 回文子串
-    # 回文子串是要连续的，回文子序列可不是连续的！
+    # 回文子串是要连续的,回文子序列可不是连续的!
     # 647.回文子串
     # 5.最长回文子串
 # 动态规划
@@ -2294,7 +2355,7 @@ class Solution:
 
 
 #40 516.最长回文子序列
-    # 回文子串是要连续的，回文子序列可不是连续的！
+    # 回文子串是要连续的,回文子序列可不是连续的!
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
         dp = [[0] * len(s) for _ in range(len(s))]
