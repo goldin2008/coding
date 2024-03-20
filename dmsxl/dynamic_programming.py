@@ -2170,6 +2170,7 @@ class SolutionDP2:
 
 
 #37 583. 两个字符串的删除操作
+# 动态规划一
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
@@ -2182,8 +2183,35 @@ class Solution:
                 if word1[i-1] == word2[j-1]:
                     dp[i][j] = dp[i-1][j-1]
                 else:
+                    # 因为 dp[i][j - 1] + 1 = dp[i - 1][j - 1] + 2，
+                    # 所以递推公式可简化为：dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+                    # 这里可能不少录友有点迷糊，从字面上理解 就是 当 同时删word1[i - 1]和word2[j - 1]，
+                    # dp[i][j-1] 本来就不考虑 word2[j - 1]了，那么我在删 word1[i - 1]，
+                    # 是不是就达到两个元素都删除的效果，即 dp[i][j-1] + 1。
                     dp[i][j] = min(dp[i-1][j-1] + 2, dp[i-1][j] + 1, dp[i][j-1] + 1)
+                    # dp[i][j] = min(dp[i-1][j] + 1, dp[i][j-1] + 1)
         return dp[-1][-1]
+# 动态规划二
+    # 本题和动态规划：1143.最长公共子序列 (opens new window)基本相同，
+    # 只要求出两个字符串的最长公共子序列长度即可，那么除了最长公共子序列之外的字符都是必须删除的，
+    # 最后用两个字符串的总长度减去两个最长公共子序列的长度就是删除的最少步数。
+class Solution:
+    def minDistance(self, text1: str, text2: str) -> int:
+        # 创建一个二维数组 dp，用于存储最长公共子序列的长度
+        dp = [[0] * (len(text2) + 1) for _ in range(len(text1) + 1)]
+        
+        # 遍历 text1 和 text2，填充 dp 数组
+        for i in range(1, len(text1) + 1):
+            for j in range(1, len(text2) + 1):
+                if text1[i - 1] == text2[j - 1]:
+                    # 如果 text1[i-1] 和 text2[j-1] 相等，则当前位置的最长公共子序列长度为左上角位置的值加一
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    # 如果 text1[i-1] 和 text2[j-1] 不相等，则当前位置的最长公共子序列长度为上方或左方的较大值
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        
+        # 返回最长公共子序列的长度
+        return len(text1)+len(text2)-dp[len(text1)][len(text2)]*2
 
 
 #38 72. 编辑距离
