@@ -2434,6 +2434,7 @@ class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         if len(nums) <= 1:
             return len(nums)
+        # dp[i]表示i之前包括i的以nums[i]结尾的最长递增子序列的长度
         dp = [1] * len(nums)
         result = 1
         for i in range(1, len(nums)):
@@ -2487,6 +2488,7 @@ class Solution:
         if len(nums) == 0:
             return 0
         result = 1
+        # dp[i]：以下标i为结尾的连续递增的子序列长度为dp[i]。
         dp = [1] * len(nums)
         for i in range(len(nums)-1):
             if nums[i+1] > nums[i]: #连续记录
@@ -2546,6 +2548,7 @@ class Solution:
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         # 创建一个二维数组 dp,用于存储最长公共子数组的长度
+        # dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]
         dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
         # 记录最长公共子数组的长度
         result = 0
@@ -2692,6 +2695,7 @@ class Solution:
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         m, n = len(text1), len(text2)
+        # dp[i][j]：长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j]
         dp = [0] * (n + 1)  # 初始化一维DP数组
         
         for i in range(1, m + 1):
@@ -2743,6 +2747,7 @@ class Solution:
 # 根据dp[i]的定义，很明显dp[0]应为nums[0]即dp[0] = nums[0]。
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
+        # dp[i]：包括下标i（以nums[i]为结尾），所以长度为len(nums)
         dp = [0] * len(nums)
         dp[0] = nums[0]
         result = dp[0]
@@ -2767,6 +2772,7 @@ class Solution:
 # 其实这里 大家可以发现和 1143.最长公共子序列 (opens new window)的递推公式基本那就是一样的，区别就是 本题 如果删元素一定是字符串t，而 1143.最长公共子序列 是两个字符串都可以删元素。
 class Solution:
     def isSubsequence(self, s: str, t: str) -> bool:
+        # dp[i][j]对应的是i-1和j-1，所以要到i+1，j+1
         dp = [[0] * (len(t)+1) for _ in range(len(s)+1)]
         for i in range(1, len(s)+1):
             for j in range(1, len(t)+1):
@@ -2810,6 +2816,7 @@ class Solution:
 # dp[0][0]应该是1，空字符串s，可以删除0个元素，变成空字符串t。
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
+        # dp[i][j]对应的是i-1和j-1，所以要到i+1，j+1
         dp = [[0] * (len(t)+1) for _ in range(len(s)+1)]
         for i in range(len(s)):
             dp[i][0] = 1
@@ -2886,6 +2893,7 @@ class SolutionDP2:
 # 动态规划一
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
+        # dp[i][j]对应的是i-1和j-1，所以要到i+1，j+1
         dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
         for i in range(len(word1)+1):
             dp[i][0] = i
@@ -2911,6 +2919,7 @@ class Solution:
 class Solution:
     def minDistance(self, text1: str, text2: str) -> int:
         # 创建一个二维数组 dp,用于存储最长公共子序列的长度
+        # dp[i][j]对应的是i-1和j-1，所以要到i+1，j+1
         dp = [[0] * (len(text2) + 1) for _ in range(len(text1) + 1)]
         
         # 遍历 text1 和 text2,填充 dp 数组
@@ -2964,6 +2973,7 @@ class Solution:
 # 综上，当 if (word1[i - 1] != word2[j - 1]) 时取最小的，即：dp[i][j] = min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]}) + 1;
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
+        # dp[i][j]对应的是i-1和j-1，所以要到i+1，j+1
         dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
         for i in range(len(word1)+1):
             dp[i][0] = i
