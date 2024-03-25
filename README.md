@@ -37,6 +37,8 @@
 
 <img src="pic/dp_graph.png" width=50% height=50%>
 
+<img src="pic/背包问题1.jpeg" width=50% height=50%>
+
 ## Note
 
 
