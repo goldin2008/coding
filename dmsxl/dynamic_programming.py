@@ -2424,7 +2424,11 @@ class Solution:
     # 输出：1
 # 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序
 # dp[i]表示i之前包括i的以nums[i]结尾的最长递增子序列的长度
-# 为什么一定表示 “以nums[i]结尾的最长递增子序” ，因为我们在 做 递增比较的时候，如果比较 nums[j] 和 nums[i] 的大小，那么两个递增子序列一定分别以nums[j]为结尾 和 nums[i]为结尾， 要不然这个比较就没有意义了，不是尾部元素的比较那么 如何算递增呢。
+# 为什么一定表示 “以nums[i]结尾的最长递增子序” ，因为我们在 做 递增比较的时候，如果比较 nums[j] 和 nums[i] 的大小，
+# 那么两个递增子序列一定分别以nums[j]为结尾 和 nums[i]为结尾， 要不然这个比较就没有意义了，不是尾部元素的比较那么 如何算递增呢。
+# 位置i的最长升序子序列等于j从0到i-1各个位置的最长升序子序列 + 1 的最大值。
+# 所以：if (nums[i] > nums[j]) dp[i] = max(dp[i], dp[j] + 1)
+# 注意这里不是要dp[i] 与 dp[j] + 1进行比较，而是我们要取dp[j] + 1的最大值。
 # DP
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
@@ -2472,6 +2476,11 @@ class Solution:
     # 输入：nums = [2,2,2,2,2]
     # 输出：1
     # 解释：最长连续递增序列是 [2], 长度为1。
+# dp[i]：以下标i为结尾的连续递增的子序列长度为dp[i]。
+# 注意这里的定义，一定是以下标i为结尾，并不是说一定以下标0为起始位置。
+# 如果 nums[i] > nums[i - 1]，那么以 i 为结尾的连续递增的子序列长度 一定等于 以i - 1为结尾的连续递增的子序列长度 + 1 。
+# 即：dp[i] = dp[i - 1] + 1;
+# 概括来说：不连续递增子序列的跟前0-i 个状态有关，连续递增的子序列只跟前一个状态有关
 # DP
 class Solution:
     def findLengthOfLCIS(self, nums: List[int]) -> int:
@@ -2525,60 +2534,81 @@ class Solution:
     # B: [3,2,1,4,7]
     # 输出：3
     # 解释：长度最长的公共子数组是 [3, 2, 1] 。
+# dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]。 （特别注意： “以下标i - 1为结尾的A” 标明一定是 以A[i-1]为结尾的字符串 ）
+# 此时细心的同学应该发现，那dp[0][0]是什么含义呢？总不能是以下标-1为结尾的A数组吧。
+# 其实dp[i][j]的定义也就决定着，我们在遍历dp[i][j]的时候i 和 j都要从1开始。
+# 那有同学问了，我就定义dp[i][j]为 以下标i为结尾的A，和以下标j 为结尾的B，最长重复子数组长度。不行么？
+# 行倒是行！ 但实现起来就麻烦一点，需要单独处理初始化部分，在本题解下面的拓展内容里，我给出了 第二种 dp数组的定义方式所对应的代码和讲解，大家比较一下就了解了。
+# 根据dp[i][j]的定义，dp[i][j]的状态只能由dp[i - 1][j - 1]推导出来。
+# 即当A[i - 1] 和B[j - 1]相等的时候，dp[i][j] = dp[i - 1][j - 1] + 1;
 # 注意题目中说的子数组,其实就是连续子序列。
 # 2维DP
-# class Solution:
-#     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
-#         # 创建一个二维数组 dp,用于存储最长公共子数组的长度
-#         dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
-#         # 记录最长公共子数组的长度
-#         result = 0
-
-#         # 遍历数组 nums1
-#         for i in range(1, len(nums1) + 1):
-#             # 遍历数组 nums2
-#             for j in range(1, len(nums2) + 1):
-#                 # 如果 nums1[i-1] 和 nums2[j-1] 相等
-#                 if nums1[i - 1] == nums2[j - 1]:
-#                     # 在当前位置上的最长公共子数组长度为前一个位置上的长度加一
-#                     dp[i][j] = dp[i - 1][j - 1] + 1
-#                 # 更新最长公共子数组的长度
-#                 if dp[i][j] > result:
-#                     result = dp[i][j]
-
-#         # 返回最长公共子数组的长度
-#         return result
-# 1维DP
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
-        # 创建一个一维数组 dp,用于存储最长公共子数组的长度
-        dp = [0] * (len(nums2) + 1)
+        # 创建一个二维数组 dp,用于存储最长公共子数组的长度
+        dp = [[0] * (len(nums2) + 1) for _ in range(len(nums1) + 1)]
         # 记录最长公共子数组的长度
         result = 0
 
         # 遍历数组 nums1
         for i in range(1, len(nums1) + 1):
-            # 用于保存上一个位置的值
-            prev = 0
             # 遍历数组 nums2
             for j in range(1, len(nums2) + 1):
-                # 保存当前位置的值,因为会在后面被更新
-                current = dp[j]
                 # 如果 nums1[i-1] 和 nums2[j-1] 相等
                 if nums1[i - 1] == nums2[j - 1]:
-                    # 在当前位置上的最长公共子数组长度为上一个位置的长度加一
-                    dp[j] = prev + 1
-                    # 更新最长公共子数组的长度
-                    if dp[j] > result:
-                        result = dp[j]
-                else:
-                    # 如果不相等,将当前位置的值置为零
-                    dp[j] = 0
-                # 更新 prev 变量为当前位置的值,供下一次迭代使用
-                prev = current
+                    # 在当前位置上的最长公共子数组长度为前一个位置上的长度加一
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                # 更新最长公共子数组的长度
+                if dp[i][j] > result:
+                    result = dp[i][j]
 
         # 返回最长公共子数组的长度
         return result
+# *** 1维DP
+class Solution:
+    def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+        dp = [0] * (len(nums2) + 1)
+        result = 0
+
+        for i in range(1, len(nums1) + 1):
+            for j in range(1, len(nums2) + 1):
+                if nums1[i - 1] == nums2[j - 1]:
+                    dp[j] = dp[j - 1] + 1
+                if dp[j] > result:
+                    result = dp[j]
+
+        # 返回最长公共子数组的长度
+        return result
+# class Solution:
+#     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+#         # 创建一个一维数组 dp,用于存储最长公共子数组的长度
+#         dp = [0] * (len(nums2) + 1)
+#         # 记录最长公共子数组的长度
+#         result = 0
+
+#         # 遍历数组 nums1
+#         for i in range(1, len(nums1) + 1):
+#             # 用于保存上一个位置的值
+#             prev = 0
+#             # 遍历数组 nums2
+#             for j in range(1, len(nums2) + 1):
+#                 # 保存当前位置的值,因为会在后面被更新
+#                 current = dp[j]
+#                 # 如果 nums1[i-1] 和 nums2[j-1] 相等
+#                 if nums1[i - 1] == nums2[j - 1]:
+#                     # 在当前位置上的最长公共子数组长度为上一个位置的长度加一
+#                     dp[j] = prev + 1
+#                     # 更新最长公共子数组的长度
+#                     if dp[j] > result:
+#                         result = dp[j]
+#                 else:
+#                     # 如果不相等,将当前位置的值置为零
+#                     dp[j] = 0
+#                 # 更新 prev 变量为当前位置的值,供下一次迭代使用
+#                 prev = current
+
+#         # 返回最长公共子数组的长度
+#         return result
 # 2维DP 扩展
 # class Solution:
 #     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
