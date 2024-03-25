@@ -2571,11 +2571,13 @@ class Solution:
         result = 0
 
         for i in range(1, len(nums1) + 1):
-            for j in range(1, len(nums2) + 1):
+            # for j in range(1, len(nums2) + 1):
+            for j in range(len(nums2), 0, -1):
                 if nums1[i - 1] == nums2[j - 1]:
                     dp[j] = dp[j - 1] + 1
-                if dp[j] > result:
-                    result = dp[j]
+                else:
+                    dp[j] = 0 #注意这里不相等的时候要有赋0的操作
+                result = max(result, dp[j])
 
         # 返回最长公共子数组的长度
         return result
