@@ -2581,36 +2581,36 @@ class Solution:
 
         # 返回最长公共子数组的长度
         return result
-# class Solution:
-#     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
-#         # 创建一个一维数组 dp,用于存储最长公共子数组的长度
-#         dp = [0] * (len(nums2) + 1)
-#         # 记录最长公共子数组的长度
-#         result = 0
+class Solution:
+    def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+        # 创建一个一维数组 dp,用于存储最长公共子数组的长度
+        dp = [0] * (len(nums2) + 1)
+        # 记录最长公共子数组的长度
+        result = 0
 
-#         # 遍历数组 nums1
-#         for i in range(1, len(nums1) + 1):
-#             # 用于保存上一个位置的值
-#             prev = 0
-#             # 遍历数组 nums2
-#             for j in range(1, len(nums2) + 1):
-#                 # 保存当前位置的值,因为会在后面被更新
-#                 current = dp[j]
-#                 # 如果 nums1[i-1] 和 nums2[j-1] 相等
-#                 if nums1[i - 1] == nums2[j - 1]:
-#                     # 在当前位置上的最长公共子数组长度为上一个位置的长度加一
-#                     dp[j] = prev + 1
-#                     # 更新最长公共子数组的长度
-#                     if dp[j] > result:
-#                         result = dp[j]
-#                 else:
-#                     # 如果不相等,将当前位置的值置为零
-#                     dp[j] = 0
-#                 # 更新 prev 变量为当前位置的值,供下一次迭代使用
-#                 prev = current
+        # 遍历数组 nums1
+        for i in range(1, len(nums1) + 1):
+            # 用于保存上一个位置的值
+            prev = 0
+            # 遍历数组 nums2
+            for j in range(1, len(nums2) + 1):
+                # 保存当前位置的值,因为会在后面被更新
+                current = dp[j]
+                # 如果 nums1[i-1] 和 nums2[j-1] 相等
+                if nums1[i - 1] == nums2[j - 1]:
+                    # 在当前位置上的最长公共子数组长度为上一个位置的长度加一
+                    dp[j] = prev + 1
+                    # 更新最长公共子数组的长度
+                    if dp[j] > result:
+                        result = dp[j]
+                else:
+                    # 如果不相等,将当前位置的值置为零
+                    dp[j] = 0
+                # 更新 prev 变量为当前位置的值,供下一次迭代使用
+                prev = current
 
-#         # 返回最长公共子数组的长度
-#         return result
+        # 返回最长公共子数组的长度
+        return result
 # 2维DP 扩展
 # class Solution:
 #     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
