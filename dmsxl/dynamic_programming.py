@@ -2564,7 +2564,7 @@ class Solution:
 
         # 返回最长公共子数组的长度
         return result
-# *** 1维DP
+# 1维DP
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         dp = [0] * (len(nums2) + 1)
@@ -2581,6 +2581,7 @@ class Solution:
 
         # 返回最长公共子数组的长度
         return result
+# *** 1维DP 用prev, curr指针
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         # 创建一个一维数组 dp,用于存储最长公共子数组的长度
