@@ -2526,7 +2526,7 @@ class Solution:
 #         return result
 
 
-#32 718. 最长重复子数组
+#32 *** 718. 最长重复子数组
     # 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组的长度。
     # 示例：
     # 输入：
@@ -2564,7 +2564,7 @@ class Solution:
 
         # 返回最长公共子数组的长度
         return result
-# 1维DP
+# 1维DP，内层遍历需要从后向前
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         dp = [0] * (len(nums2) + 1)
@@ -2581,7 +2581,7 @@ class Solution:
 
         # 返回最长公共子数组的长度
         return result
-# *** 1维DP 用prev, curr指针
+# *** 1维DP 用prev, curr指针，内层遍历就不用从后向前了
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         # 创建一个一维数组 dp,用于存储最长公共子数组的长度
@@ -2661,6 +2661,15 @@ class Solution:
     # 解释：两个字符串没有公共子序列，返回 0。
 # 本题和动态规划:718. 最长重复子数组 区别在于这里不要求是连续的了,
 # 但要有相对顺序,即:"ace" 是 "abcde" 的子序列,但 "aec" 不是 "abcde" 的子序列。
+# dp[i][j]：长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j]
+# 有同学会问：为什么要定义长度为[0, i - 1]的字符串text1，定义为长度为[0, i]的字符串text1不香么？
+# 这样定义是为了后面代码实现方便，如果非要定义为长度为[0, i]的字符串text1也可以，
+# 我在 动态规划：718. 最长重复子数组中的「拓展」里 详细讲解了区别所在，其实就是简化了dp数组第一行和第一列的初始化逻辑。
+
+# 主要就是两大情况： text1[i - 1] 与 text2[j - 1]相同，text1[i - 1] 与 text2[j - 1]不相同
+# 如果text1[i - 1] 与 text2[j - 1]相同，那么找到了一个公共元素，所以dp[i][j] = dp[i - 1][j - 1] + 1;
+# 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看text1[0, i - 2]与text2[0, j - 1]的最长公共子序列 和 text1[0, i - 1]与text2[0, j - 2]的最长公共子序列，取最大的。
+# 即：dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
 # 2维DP
 # class Solution:
 #     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -2694,7 +2703,8 @@ class Solution:
                     dp[j] = prev + 1
                 else:
                     # 如果当前字符不相等,则选择保留前一个位置的最长公共子序列长度中的较大值
-                    dp[j] = max(dp[j], dp[j - 1])
+                    # 这里dp[j]对应dp[i - 1][j], dp[j-1]对应dp[i][j - 1]
+                    dp[j] = max(dp[j], dp[j - 1]) 
                 prev = curr  # 更新上一个位置的最长公共子序列长度
         
         return dp[n]  # 返回最后一个位置的最长公共子序列长度作为结果
@@ -2704,6 +2714,7 @@ class Solution:
     # 我们在两条独立的水平线上按给定的顺序写下 A 和 B 中的整数。
     # 现在，我们可以绘制一些连接两个数字 A[i] 和 B[j] 的直线，只要 A[i] == B[j]，且我们绘制的直线不与任何其他连线（非水平线）相交。
     # 以这种方法绘制线条，并返回我们可以绘制的最大连线数。
+# 本题说是求绘制的最大连线数，其实就是求两个字符串的最长公共子序列的长度！
 class Solution:
     def maxUncrossedLines(self, A: List[int], B: List[int]) -> int:
         dp = [[0] * (len(B)+1) for _ in range(len(A)+1)]
@@ -2722,6 +2733,14 @@ class Solution:
     # 输入: [-2,1,-3,4,-1,2,1,-5,4]
     # 输出: 6
     # 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+# dp[i]：包括下标i（以nums[i]为结尾）的最大连续子序列和为dp[i]。
+# dp[i]只有两个方向可以推出来：
+# dp[i - 1] + nums[i]，即：nums[i]加入当前连续子序列和
+# nums[i]，即：从头开始计算当前连续子序列和
+# 一定是取最大的，所以dp[i] = max(dp[i - 1] + nums[i], nums[i]);
+# 从递推公式可以看出来dp[i]是依赖于dp[i - 1]的状态，dp[0]就是递推公式的基础。
+# dp[0]应该是多少呢?
+# 根据dp[i]的定义，很明显dp[0]应为nums[0]即dp[0] = nums[0]。
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         dp = [0] * len(nums)
@@ -2742,6 +2761,10 @@ class Solution:
     # 示例 2：
     # 输入：s = "axc", t = "ahbgdc"
     # 输出：false
+# dp[i][j] 表示以下标i-1为结尾的字符串s，和以下标j-1为结尾的字符串t，相同子序列的长度为dp[i][j]。
+# if (s[i - 1] == t[j - 1])，那么dp[i][j] = dp[i - 1][j - 1] + 1;，因为找到了一个相同的字符，相同子序列长度自然要在dp[i-1][j-1]的基础上加1（如果不理解，在回看一下dp[i][j]的定义）
+# if (s[i - 1] != t[j - 1])，此时相当于t要删除元素，t如果把当前元素t[j - 1]删除，那么dp[i][j] 的数值就是 看s[i - 1]与 t[j - 2]的比较结果了，即：dp[i][j] = dp[i][j - 1];
+# 其实这里 大家可以发现和 1143.最长公共子序列 (opens new window)的递推公式基本那就是一样的，区别就是 本题 如果删元素一定是字符串t，而 1143.最长公共子序列 是两个字符串都可以删元素。
 class Solution:
     def isSubsequence(self, s: str, t: str) -> bool:
         dp = [[0] * (len(t)+1) for _ in range(len(s)+1)]
@@ -2756,11 +2779,35 @@ class Solution:
         return False
 
 
-#37 115.不同的子序列
+#37 *** 115.不同的子序列
     # 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
     # 字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
     # 题目数据保证答案符合 32 位带符号整数范围。
 # 这道题目如果不是子序列,而是要求连续序列的,那就可以考虑用KMP。
+# dp[i][j]：以i-1为结尾的s子序列中出现以j-1为结尾的t的个数为dp[i][j]。
+# 这一类问题，基本是要分析两种情况
+# s[i - 1] 与 t[j - 1]相等
+# s[i - 1] 与 t[j - 1] 不相等
+# 当s[i - 1] 与 t[j - 1]相等时，dp[i][j]可以有两部分组成。
+# 一部分是用s[i - 1]来匹配，那么个数为dp[i - 1][j - 1]。即不需要考虑当前s子串和t子串的最后一位字母，所以只需要 dp[i-1][j-1]。
+# 一部分是不用s[i - 1]来匹配，个数为dp[i - 1][j]。
+# 这里可能有录友不明白了，为什么还要考虑 不用s[i - 1]来匹配，都相同了指定要匹配啊。
+# 例如： s：bagg 和 t：bag ，s[3] 和 t[2]是相同的，但是字符串s也可以不用s[3]来匹配，即用s[0]s[1]s[2]组成的bag。
+# 当然也可以用s[3]来匹配，即：s[0]s[1]s[3]组成的bag。
+# 所以当s[i - 1] 与 t[j - 1]相等时，dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+# 当s[i - 1] 与 t[j - 1]不相等时，dp[i][j]只有一部分组成，不用s[i - 1]来匹配（就是模拟在s中删除这个元素），即：dp[i - 1][j]
+# 所以递推公式为：dp[i][j] = dp[i - 1][j];
+# 这里可能有录友还疑惑，为什么只考虑 “不用s[i - 1]来匹配” 这种情况， 不考虑 “不用t[j - 1]来匹配” 的情况呢。
+# 这里大家要明确，我们求的是 s 中有多少个 t，而不是 求t中有多少个s，所以只考虑 s中删除元素的情况，即 不用s[i - 1]来匹配 的情况。
+    
+# 每次当初始化的时候，都要回顾一下dp[i][j]的定义，不要凭感觉初始化。
+# dp[i][0]表示什么呢？
+# dp[i][0] 表示：以i-1为结尾的s可以随便删除元素，出现空字符串的个数。
+# 那么dp[i][0]一定都是1，因为也就是把以i-1为结尾的s，删除所有元素，出现空字符串的个数就是1。
+# 再来看dp[0][j]，dp[0][j]：空字符串s可以随便删除元素，出现以j-1为结尾的字符串t的个数。
+# 那么dp[0][j]一定都是0，s如论如何也变成不了t。
+# 最后就要看一个特殊位置了，即：dp[0][0] 应该是多少。
+# dp[0][0]应该是1，空字符串s，可以删除0个元素，变成空字符串t。
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
         dp = [[0] * (len(t)+1) for _ in range(len(s)+1)]
@@ -2820,6 +2867,22 @@ class SolutionDP2:
     # 输入: "sea", "eat"
     # 输出: 2
     # 解释: 第一步将"sea"变为"ea"，第二步将"eat"变为"ea"
+# dp[i][j]：以i-1为结尾的字符串word1，和以j-1位结尾的字符串word2，想要达到相等，所需要删除元素的最少次数。
+# 当word1[i - 1] 与 word2[j - 1]相同的时候
+# 当word1[i - 1] 与 word2[j - 1]不相同的时候
+# 当word1[i - 1] 与 word2[j - 1]相同的时候，dp[i][j] = dp[i - 1][j - 1];
+# 当word1[i - 1] 与 word2[j - 1]不相同的时候，有三种情况：
+# 情况一：删word1[i - 1]，最少操作次数为dp[i - 1][j] + 1
+# 情况二：删word2[j - 1]，最少操作次数为dp[i][j - 1] + 1
+# 情况三：同时删word1[i - 1]和word2[j - 1]，操作的最少次数为dp[i - 1][j - 1] + 2
+# 那最后当然是取最小值，所以当word1[i - 1] 与 word2[j - 1]不相同的时候，递推公式：dp[i][j] = min({dp[i - 1][j - 1] + 2, dp[i - 1][j] + 1, dp[i][j - 1] + 1});
+# 因为 dp[i][j - 1] + 1 = dp[i - 1][j - 1] + 2，所以递推公式可简化为：dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+
+# 从递推公式中，可以看出来，dp[i][0] 和 dp[0][j]是一定要初始化的。
+# dp[i][0]：word2为空字符串，以i-1为结尾的字符串word1要删除多少个元素，才能和word2相同呢，很明显dp[i][0] = i。
+# dp[0][j]的话同理
+
+# ??? 这里可能不少录友有点迷糊，从字面上理解 就是 当 同时删word1[i - 1]和word2[j - 1]，dp[i][j-1] 本来就不考虑 word2[j - 1]了，那么我在删 word1[i - 1]，是不是就达到两个元素都删除的效果，即 dp[i][j-1] + 1。
 # 动态规划一
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
@@ -2878,6 +2941,7 @@ class Solution:
     # 输入：word1 = "intention", word2 = "execution"
     # 输出：5
     # 解释： intention -> inention (删除 't') inention -> enention (将 'i' 替换为 'e') enention -> exention (将 'n' 替换为 'x') exention -> exection (将 'n' 替换为 'c') exection -> execution (插入 'u')
+# dp[i][j] 表示以下标i-1为结尾的字符串word1，和以下标j-1为结尾的字符串word2，最近编辑距离为dp[i][j]。
 """
     if (word1[i - 1] == word2[j - 1])
         不操作
@@ -2886,6 +2950,18 @@ class Solution:
         删
         换
 """
+# if (word1[i - 1] == word2[j - 1]) 那么说明不用任何编辑，dp[i][j] 就应该是 dp[i - 1][j - 1]，即dp[i][j] = dp[i - 1][j - 1];
+# if (word1[i - 1] != word2[j - 1])，此时就需要编辑了，如何编辑呢？
+# 操作一：word1删除一个元素，那么就是以下标i - 2为结尾的word1 与 j-1为结尾的word2的最近编辑距离 再加上一个操作。
+# 即 dp[i][j] = dp[i - 1][j] + 1;
+# 操作二：word2删除一个元素，那么就是以下标i - 1为结尾的word1 与 j-2为结尾的word2的最近编辑距离 再加上一个操作。
+# 即 dp[i][j] = dp[i][j - 1] + 1;
+# 这里有同学发现了，怎么都是删除元素，添加元素去哪了。
+# 操作三：替换元素，word1替换word1[i - 1]，使其与word2[j - 1]相同，此时不用增删加元素。
+# 可以回顾一下，if (word1[i - 1] == word2[j - 1])的时候我们的操作 是 dp[i][j] = dp[i - 1][j - 1] 对吧。
+# 那么只需要一次替换的操作，就可以让 word1[i - 1] 和 word2[j - 1] 相同。
+# 所以 dp[i][j] = dp[i - 1][j - 1] + 1;
+# 综上，当 if (word1[i - 1] != word2[j - 1]) 时取最小的，即：dp[i][j] = min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]}) + 1;
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
         dp = [[0] * (len(word2)+1) for _ in range(len(word1)+1)]
