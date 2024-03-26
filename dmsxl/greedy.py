@@ -56,54 +56,66 @@ class Solution:
     # 示例 3:
     # 输入: [1,2,3,4,5,6,7,8,9]
     # 输出: 2
+# 考虑用动态规划的思想来解决这个问题。
+# 很容易可以发现，对于我们当前考虑的这个数，要么是作为山峰（即 nums[i] > nums[i-1]），要么是作为山谷（即 nums[i] < nums[i - 1]）。
+# 设 dp 状态dp[i][0]，表示考虑前 i 个数，第 i 个数作为山峰的摆动子序列的最长长度
+# 设 dp 状态dp[i][1]，表示考虑前 i 个数，第 i 个数作为山谷的摆动子序列的最长长度
+# 则转移方程为：
+# dp[i][0] = max(dp[i][0], dp[j][1] + 1)，其中0 < j < i且nums[j] < nums[i]，表示将 nums[i]接到前面某个山谷后面，作为山峰。
+# dp[i][1] = max(dp[i][1], dp[j][0] + 1)，其中0 < j < i且nums[j] > nums[i]，表示将 nums[i]接到前面某个山峰后面，作为山谷。
+# 初始状态：
+# 由于一个数可以接到前面的某个数后面，也可以以自身为子序列的起点，所以初始状态为：dp[0][0] = dp[0][1] = 1。
 # 贪心（版本一）
-class Solution:
-    def wiggleMaxLength(self, nums):
-        if len(nums) <= 1:
-            return len(nums)  # 如果数组长度为0或1，则返回数组长度
-        curDiff = 0  # 当前一对元素的差值
-        preDiff = 0  # 前一对元素的差值
-        result = 1  # 记录峰值的个数，初始为1（默认最右边的元素被视为峰值）
-        for i in range(len(nums) - 1):
-            curDiff = nums[i + 1] - nums[i]  # 计算下一个元素与当前元素的差值
-            # 如果遇到一个峰值
-            if (preDiff <= 0 and curDiff > 0) or (preDiff >= 0 and curDiff < 0):
-                result += 1  # 峰值个数加1
-                preDiff = curDiff  # 注意这里，只在摆动变化的时候更新preDiff
-        return result  # 返回最长摆动子序列的长度
-# 贪心（版本二）
-class Solution:
-    def wiggleMaxLength(self, nums: List[int]) -> int:
-        if len(nums) <= 1:
-            return len(nums)  # 如果数组长度为0或1，则返回数组长度
-        preDiff,curDiff ,result  = 0,0,1  #题目里nums长度大于等于1，当长度为1时，其实到不了for循环里去，所以不用考虑nums长度
-        for i in range(len(nums) - 1):
-            curDiff = nums[i + 1] - nums[i]
-            if curDiff * preDiff <= 0 and curDiff !=0:  #差值为0时，不算摆动
-                result += 1
-                preDiff = curDiff  #如果当前差值和上一个差值为一正一负时，才需要用当前差值替代上一个差值
-        return result
-# 动态规划（版本一）
-class Solution:
-    def wiggleMaxLength(self, nums: List[int]) -> int:
-        # 0 i 作为波峰的最大长度
-        # 1 i 作为波谷的最大长度
-        # dp是一个列表，列表中每个元素是长度为 2 的列表
-        dp = []
-        for i in range(len(nums)):
-            # 初始为[1, 1]
-            dp.append([1, 1])
-            for j in range(i):
-                # nums[i] 为波谷
-                if nums[j] > nums[i]:
-                    dp[i][1] = max(dp[i][1], dp[j][0] + 1)
-                # nums[i] 为波峰
-                if nums[j] < nums[i]:
-                    dp[i][0] = max(dp[i][0], dp[j][1] + 1)
-        return max(dp[-1][0], dp[-1][1])
+# class Solution:
+#     def wiggleMaxLength(self, nums):
+#         if len(nums) <= 1:
+#             return len(nums)  # 如果数组长度为0或1，则返回数组长度
+#         curDiff = 0  # 当前一对元素的差值
+#         preDiff = 0  # 前一对元素的差值
+#         result = 1  # 记录峰值的个数，初始为1（默认最右边的元素被视为峰值）
+#         for i in range(len(nums) - 1):
+#             curDiff = nums[i + 1] - nums[i]  # 计算下一个元素与当前元素的差值
+#             # 如果遇到一个峰值
+#             if (preDiff <= 0 and curDiff > 0) or (preDiff >= 0 and curDiff < 0):
+#                 result += 1  # 峰值个数加1
+#                 preDiff = curDiff  # 注意这里，只在摆动变化的时候更新preDiff
+#         return result  # 返回最长摆动子序列的长度
+# # 贪心（版本二）
+# class Solution:
+#     def wiggleMaxLength(self, nums: List[int]) -> int:
+#         if len(nums) <= 1:
+#             return len(nums)  # 如果数组长度为0或1，则返回数组长度
+#         preDiff,curDiff ,result  = 0,0,1  #题目里nums长度大于等于1，当长度为1时，其实到不了for循环里去，所以不用考虑nums长度
+#         for i in range(len(nums) - 1):
+#             curDiff = nums[i + 1] - nums[i]
+#             if curDiff * preDiff <= 0 and curDiff !=0:  #差值为0时，不算摆动
+#                 result += 1
+#                 preDiff = curDiff  #如果当前差值和上一个差值为一正一负时，才需要用当前差值替代上一个差值
+#         return result
+# # 动态规划（版本一）
+# class Solution:
+#     def wiggleMaxLength(self, nums: List[int]) -> int:
+#         # 0 i 作为波峰的最大长度
+#         # 1 i 作为波谷的最大长度
+#         # dp是一个列表，列表中每个元素是长度为 2 的列表
+#         dp = []
+#         for i in range(len(nums)):
+#             # 初始为[1, 1]
+#             dp.append([1, 1])
+#             for j in range(i):
+#                 # nums[i] 为波谷
+#                 if nums[j] > nums[i]:
+#                     dp[i][1] = max(dp[i][1], dp[j][0] + 1)
+#                 # nums[i] 为波峰
+#                 if nums[j] < nums[i]:
+#                     dp[i][0] = max(dp[i][0], dp[j][1] + 1)
+#         return max(dp[-1][0], dp[-1][1])
 # 动态规划（版本二）
 class Solution:
     def wiggleMaxLength(self, nums):
+        # 0 i 作为波峰的最大长度
+        # 1 i 作为波谷的最大长度
+        # dp是一个列表，列表中每个元素是长度为 2 的列表
         dp = [[0, 0] for _ in range(len(nums))]  # 创建二维dp数组，用于记录摆动序列的最大长度
         dp[0][0] = dp[0][1] = 1  # 初始条件，序列中的第一个元素默认为峰值，最小长度为1
         for i in range(1, len(nums)):
@@ -116,19 +128,28 @@ class Solution:
                     dp[i][0] = max(dp[i][0], dp[j][1] + 1)  # 如果前一个数比当前数小，可以形成一个下降峰值，更新dp[i][0]
         return max(dp[-1][0], dp[-1][1])  # 返回最大的摆动序列长度
 # 动态规划（版本三）优化
+# class Solution:
+#     def wiggleMaxLength(self, nums):
+#         if len(nums) <= 1:
+#             return len(nums)  # 如果数组长度为0或1，则返回数组长度
+        
+#         up = down = 1  # 记录上升和下降摆动序列的最大长度
+#         for i in range(1, len(nums)):
+#             if nums[i] > nums[i-1]:
+#                 up = down + 1  # 如果当前数比前一个数大，则可以形成一个上升峰值
+#             elif nums[i] < nums[i-1]:
+#                 down = up + 1  # 如果当前数比前一个数小，则可以形成一个下降峰值
+        
+#         return max(up, down)  # 返回上升和下降摆动序列的最大长度
 class Solution:
-    def wiggleMaxLength(self, nums):
-        if len(nums) <= 1:
-            return len(nums)  # 如果数组长度为0或1，则返回数组长度
-        
-        up = down = 1  # 记录上升和下降摆动序列的最大长度
-        for i in range(1, len(nums)):
-            if nums[i] > nums[i-1]:
-                up = down + 1  # 如果当前数比前一个数大，则可以形成一个上升峰值
-            elif nums[i] < nums[i-1]:
-                down = up + 1  # 如果当前数比前一个数小，则可以形成一个下降峰值
-        
-        return max(up, down)  # 返回上升和下降摆动序列的最大长度
+    def wiggleMaxLength(self, nums: List[int]) -> int:
+        preC,curC,res = 0,0,1  #题目里nums长度大于等于1，当长度为1时，其实到不了for循环里去，所以不用考虑nums长度
+        for i in range(len(nums) - 1):
+            curC = nums[i + 1] - nums[i]
+            if curC * preC <= 0 and curC !=0:  #差值为0时，不算摆动
+                res += 1
+                preC = curC  #如果当前差值和上一个差值为一正一负时，才需要用当前差值替代上一个差值
+        return res
 
 
 #3 53. 最大子序和
@@ -178,6 +199,9 @@ class Solution:
     # 输入: [7,6,4,3,1]
     # 输出: 0
     # 解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+# 第一天当然没有利润，至少要第二天才会有利润，所以利润的序列比股票序列少一天！
+# 从图中可以发现，其实我们需要收集每天的正利润就可以，收集正利润的区间，就是股票买卖的区间，而我们只需要关注最终利润，不需要记录区间。
+# 那么只收集正利润就是贪心所贪的地方！
 # 贪心
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
@@ -210,6 +234,12 @@ class Solution:
     # 输入: [3,2,1,0,4]
     # 输出: false
     # 解释: 无论怎样，你总会到达索引为 3 的位置。但该位置的最大跳跃长度是 0 ， 所以你永远不可能到达最后一个位置。
+# 这道题目关键点在于：不用拘泥于每次究竟跳几步，而是看覆盖范围，覆盖范围内一定是可以跳过来的，不用管是怎么跳的。
+# 贪心算法局部最优解：每次取最大跳跃步数（取最大覆盖范围），整体最优解：最后得到整体最大覆盖范围，看是否能到终点。
+# i 每次移动只能在 cover 的范围内移动，每移动一个元素，cover 得到该元素数值（新的覆盖范围）的补充，让 i 继续移动下去。
+# 而 cover 每次只取 max(该元素数值补充后的范围, cover 本身范围)。
+# 如果 cover 大于等于了终点下标，直接 return true 就可以了。
+## *** while循环
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
         cover = 0
@@ -242,6 +272,9 @@ class Solution:
     # 输出: 2
     # 解释: 跳到最后一个位置的最小跳跃数是 2。从下标为 0 跳到下标为 1 的位置，跳  1  步，然后跳  3  步到达数组的最后一个位置。
     # 说明: 假设你总是可以到达数组的最后一个位置。
+# 真正解题的时候，要从覆盖范围出发，不管怎么跳，覆盖范围内一定是可以跳到的，以最小的步数增加覆盖范围，覆盖范围一旦覆盖了终点，得到的就是最少步数！
+# 这里需要统计两个覆盖范围，当前这一步的最大覆盖和下一步最大覆盖。
+# 理解本题的关键在于：以最小的步数增加最大的覆盖范围，直到覆盖范围覆盖了终点，这个范围内最少步数一定可以跳到，不用管具体是怎么跳的，不纠结于一步究竟跳一个单位还是两个单位。
 # class Solution:
 #     def jump(self, nums: List[int]) -> int:
 #         if len(nums) == 1: return 0
@@ -256,26 +289,26 @@ class Solution:
 #                     curDistance = nextDistance
 #                     if nextDistance >= len(nums) - 1: break
 #         return ans
-# *** 贪心（版本一）
-class Solution:
-    def jump(self, nums):
-        if len(nums) == 1:
-            return 0
+# 贪心（版本一）
+# class Solution:
+#     def jump(self, nums):
+#         if len(nums) == 1:
+#             return 0
         
-        cur_distance = 0  # 当前覆盖最远距离下标
-        ans = 0  # 记录走的最大步数
-        next_distance = 0  # 下一步覆盖最远距离下标
+#         cur_distance = 0  # 当前覆盖最远距离下标
+#         ans = 0  # 记录走的最大步数
+#         next_distance = 0  # 下一步覆盖最远距离下标
         
-        for i in range(len(nums)):
-            next_distance = max(nums[i] + i, next_distance)  # 更新下一步覆盖最远距离下标
-            if i == cur_distance:  # 遇到当前覆盖最远距离下标
-                ans += 1  # 需要走下一步
-                cur_distance = next_distance  # 更新当前覆盖最远距离下标（相当于加油了）
-                if next_distance >= len(nums) - 1:  # 当前覆盖最远距离达到数组末尾，不用再做ans++操作，直接结束
-                    break
+#         for i in range(len(nums)):
+#             next_distance = max(nums[i] + i, next_distance)  # 更新下一步覆盖最远距离下标
+#             if i == cur_distance:  # 遇到当前覆盖最远距离下标
+#                 ans += 1  # 需要走下一步
+#                 cur_distance = next_distance  # 更新当前覆盖最远距离下标（相当于加油了）
+#                 if next_distance >= len(nums) - 1:  # 当前覆盖最远距离达到数组末尾，不用再做ans++操作，直接结束
+#                     break
         
-        return ans
-# # 贪心（版本二）
+#         return ans
+# # # 贪心（版本二）
 # class Solution:
 #     def jump(self, nums):
 #         cur_distance = 0  # 当前覆盖的最远距离下标
@@ -288,7 +321,7 @@ class Solution:
 #                 cur_distance = next_distance  # 更新当前覆盖的最远距离下标
 #                 ans += 1
 #         return ans
-# 贪心（版本三） 类似‘55-跳跃游戏’写法
+# *** 贪心（版本三） 类似‘55-跳跃游戏’写法
 class Solution:
     def jump(self, nums) -> int:
         if len(nums)==1:  # 如果数组只有一个元素，不需要跳跃，步数为0
@@ -305,17 +338,17 @@ class Solution:
                     return count+1
             count += 1  # 每一轮遍历结束后，步数+1
 # 动态规划
-class Solution:
-    def jump(self, nums: List[int]) -> int:
-        result = [10**4+1] * len(nums)  # 初始化结果数组，初始值为一个较大的数
-        result[0] = 0  # 起始位置的步数为0
+# class Solution:
+#     def jump(self, nums: List[int]) -> int:
+#         result = [10**4+1] * len(nums)  # 初始化结果数组，初始值为一个较大的数
+#         result[0] = 0  # 起始位置的步数为0
 
-        for i in range(len(nums)):  # 遍历数组
-            for j in range(nums[i] + 1):  # 在当前位置能够跳跃的范围内遍历
-                if i + j < len(nums):  # 确保下一跳的位置不超过数组范围
-                    result[i + j] = min(result[i + j], result[i] + 1)  # 更新到达下一跳位置的最少步数
+#         for i in range(len(nums)):  # 遍历数组
+#             for j in range(nums[i] + 1):  # 在当前位置能够跳跃的范围内遍历
+#                 if i + j < len(nums):  # 确保下一跳的位置不超过数组范围
+#                     result[i + j] = min(result[i + j], result[i] + 1)  # 更新到达下一跳位置的最少步数
 
-        return result[-1]  # 返回到达最后一个位置的最少步数
+#         return result[-1]  # 返回到达最后一个位置的最少步数
 
 
 #7 1005.K次取反后最大化的数组和
