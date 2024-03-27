@@ -40,7 +40,7 @@ def count_file(files):
 #01 数组 AR | 5 (5)
 #02 链表 LL | 7 (7)
 #03 哈希表 HM | 8 (8)
-#04 字符串 ST | 5
+#04 字符串 ST | 5 (7)
 #05 双指针 PP | 9
 #06 栈和队列 QU | 7
 
@@ -50,8 +50,9 @@ def count_file(files):
 #10 动态规划 DP | 37 (41)
 
 #11 单调栈 MS | 5 (5)
-#12 额外 EX | 35
-#13 总数 | 180
+#12 图 GR | ()
+#13 额外 EX | 35
+#14 总数 | 180
 
 if __name__ == "__main__":
     files = get_file_list()
