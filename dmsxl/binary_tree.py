@@ -841,7 +841,6 @@ class Solution:
         isSame = outside and inside #左子树：中、 右子树：中 (逻辑处理)
         return isSame
 # *** 迭代法: 使用队列
-import collections
 class Solution:
     def isSymmetric(self, root: TreeNode) -> bool:
         if not root:
