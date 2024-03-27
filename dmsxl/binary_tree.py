@@ -262,7 +262,7 @@ class Solution:
 
 
 """
-BFS 广度优先(层序遍历) 递归
+*** BFS 广度优先(层序遍历) 递归
 """
 #4 102.二叉树的层序遍历
     # 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
@@ -357,7 +357,6 @@ class Solution:
 
         if root.val < val: 
             return self.searchBST(root.right, val)
-
 # 迭代法 (方法二)
 class Solution:
     def searchBST(self, root: TreeNode, val: int) -> TreeNode:
@@ -372,7 +371,6 @@ class Solution:
     # 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
 class Solution:
     """二叉树层序遍历II迭代解法"""
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -435,7 +433,6 @@ class Solution:
     # 给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
 class Solution:
     """二叉树层平均值迭代解法"""
-
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -480,7 +477,6 @@ class Node:
         self.val = val
         self.children = children
 """
-
 class Solution:
     def levelOrder(self, root: 'Node') -> List[List[int]]:
         if not root:
