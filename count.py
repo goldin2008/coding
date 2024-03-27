@@ -37,7 +37,7 @@ def count_file(files):
     
     print('Total: ', tot)
 
-# 数组 AR | 5
+# 数组 AR | 5 (5)
 # 链表 LL | 7
 # 哈希表 HM | 8
 # 字符串 ST | 5
