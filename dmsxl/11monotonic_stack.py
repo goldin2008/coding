@@ -2,7 +2,7 @@
 
 
 """
-# 739. 每日温度
+#1 739. 每日温度
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         answer = [0]*len(temperatures)
@@ -21,7 +21,7 @@ class Solution:
         return answer
 
 
-# 496.下一个更大元素 I
+#2 496.下一个更大元素 I
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         result = [-1]*len(nums1)
@@ -41,7 +41,7 @@ class Solution:
         return result
 
 
-# 503.下一个更大元素II
+#3 503.下一个更大元素II
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
         dp = [-1] * len(nums)
@@ -54,7 +54,7 @@ class Solution:
         return dp
 
 
-# 42. 接雨水
+#4 42. 接雨水
 class Solution:
     def trap(self, height: List[int]) -> int:
         # 单调栈
@@ -117,7 +117,7 @@ class Solution:
         return result
 
 
-# 84.柱状图中最大的矩形
+#5 84.柱状图中最大的矩形
 # 单调栈
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
