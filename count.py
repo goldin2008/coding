@@ -50,9 +50,9 @@ def count_file(files):
 #10 动态规划 DP | 37 (41)
 
 #11 单调栈 MS | 5 (5)
-#12 图 GR | ()
-#13 额外 EX | 35
-#14 总数 | 180
+#12 图 GR | (15)
+#13 额外 EX | 35 (36)
+#14 总数 | 180 (214)
 
 if __name__ == "__main__":
     files = get_file_list()
