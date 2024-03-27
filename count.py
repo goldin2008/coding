@@ -38,8 +38,8 @@ def count_file(files):
     print('Total: ', tot)
 
 # 数组 AR | 5 (5)
-# 链表 LL | 7
-# 哈希表 HM | 8
+# 链表 LL | 7 (7)
+# 哈希表 HM | 8 (8)
 # 字符串 ST | 5
 # 双指针 PP | 9
 # 栈和队列 QU | 7
