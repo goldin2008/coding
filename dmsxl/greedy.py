@@ -719,6 +719,8 @@ class Solution:
     # 提示：
     # S的长度在[1, 500]之间。
     # S只包含小写字母 'a' 到 'z' 。
+# 这里提供一种与452.用最少数量的箭引爆气球 、435.无重叠区间 相同的思路。
+# 统计字符串中所有字符的起始和结束位置，记录这些区间(实际上也就是435.无重叠区间 题目里的输入)，将区间按左边界从小到大排序，找到边界将区间划分成组，互不重叠。找到的边界就是答案。
 # class Solution:
 #     def partitionLabels(self, s: str) -> List[int]:
 #         hash = [0] * 26
@@ -750,7 +752,7 @@ class Solution:
                 start = i + 1
         return result
 # *** 贪心（版本二）
-# 与452.用最少数量的箭引爆气球 (opens new window)、435.无重叠区间 (opens new window)相同的思路。
+# 与452.用最少数量的箭引爆气球 、435.无重叠区间 相同的思路。
 class Solution:
     def partitionLabels(self, s):
         res = []
@@ -920,6 +922,16 @@ class Solution:
     # 给定一个二叉树，我们在树的节点上安装摄像头。
     # 节点上的每个摄影头都可以监视其父对象、自身及其直接子对象。
     # 计算监控树的所有节点所需的最小摄像头数量。
+# 来看看这个状态应该如何转移，先来看看每个节点可能有几种状态：
+# 有如下三种：
+# 该节点无覆盖
+# 本节点有摄像头
+# 本节点有覆盖
+# 我们分别有三个数字来表示：
+# 0：该节点无覆盖
+# 1：本节点有摄像头
+# 2：本节点有覆盖
+# 大家应该找不出第四个节点的状态了。
 class Solution:
     def minCameraCover(self, root: TreeNode) -> int:
         # Greedy Algo:
