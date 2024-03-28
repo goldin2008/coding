@@ -920,7 +920,7 @@ class Solution:
     # 示例： 给定二叉树 [3,9,20,null,null,15,7]，
     # 返回它的最大深度 3
 # *** 递归法
-    # 本题可以使用前序（中左右），也可以使用后序遍历（左右中），使用前序求的就是深度，使用后序求的是高度。
+# 本题可以使用前序（中左右），也可以使用**后序遍历**（左右中），使用前序求的就是深度，使用后序求的是高度。
 class solution:
     def maxdepth(self, root: treenode) -> int:
         return self.getdepth(root)
@@ -960,7 +960,7 @@ class Solution:
 
 
 #18 559.n叉树的最大深度
-# 递归法
+# 递归法, 后序遍历
 class solution:
     def maxdepth(self, root: treenode) -> int:
         return self.getdepth(root)
@@ -1026,10 +1026,10 @@ class Solution:
 
 
 #19 111.二叉树的最小深度
-# 给定一个二叉树, 找出其最小深度。
-# 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
-    # 需要注意的是，只有当左右孩子都为空的时候，才说明遍历到最低点了。如果其中一个孩子不为空则不是最低点
-# 递归法（版本一）
+    # 给定一个二叉树, 找出其最小深度。
+    # 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+# 需要注意的是，只有当左右孩子都为空的时候，才说明遍历到最低点了。如果其中一个孩子不为空则不是最低点
+# 递归法（版本一）后序遍历
 class Solution:
     def minDepth(self, root):
         return self.getDepth(root)
@@ -1061,25 +1061,25 @@ class Solution:
             return 1 + self.minDepth(root.left)
         return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 # 递归法（版本三）前序
-class Solution:
-    def __init__(self):
-        self.result = float('inf')
+# class Solution:
+#     def __init__(self):
+#         self.result = float('inf')
 
-    def getDepth(self, node, depth):
-        if node is None:
-            return
-        if node.left is None and node.right is None:
-            self.result = min(self.result, depth)
-        if node.left:
-            self.getDepth(node.left, depth + 1)
-        if node.right:
-            self.getDepth(node.right, depth + 1)
+#     def getDepth(self, node, depth):
+#         if node is None:
+#             return
+#         if node.left is None and node.right is None:
+#             self.result = min(self.result, depth)
+#         if node.left:
+#             self.getDepth(node.left, depth + 1)
+#         if node.right:
+#             self.getDepth(node.right, depth + 1)
 
-    def minDepth(self, root):
-        if root is None:
-            return 0
-        self.getDepth(root, 1)
-        return self.result
+#     def minDepth(self, root):
+#         if root is None:
+#             return 0
+#         self.getDepth(root, 1)
+#         return self.result
 # *** 迭代法
 class Solution:
     def minDepth(self, root: TreeNode) -> int:
@@ -1129,7 +1129,7 @@ class Solution:
     # 示例 3：
     # 输入：root = [1]
     # 输出：1
-# ***  递归法
+# 递归法
 class Solution:
     def countNodes(self, root: TreeNode) -> int:
         return self.getNodesNum(root)
@@ -1141,14 +1141,13 @@ class Solution:
         rightNum = self.getNodesNum(cur.right) #右
         treeNum = leftNum + rightNum + 1 #中
         return treeNum
-# 递归法：精简版
-# class Solution:
-#     def countNodes(self, root: TreeNode) -> int:
-#         if not root:
-#             return 0
-#         return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+# *** 递归法：精简版
+class Solution:
+    def countNodes(self, root: TreeNode) -> int:
+        if not root:
+            return 0
+        return self.countNodes(root.left) + self.countNodes(root.right) +1
 # 迭代法
-import collections
 class Solution:
     def countNodes(self, root: TreeNode) -> int:
         queue = collections.deque()
@@ -1166,23 +1165,23 @@ class Solution:
                     queue.append(node.right)
         return result
 # 完全二叉树
-class Solution:
-    def countNodes(self, root: TreeNode) -> int:
-        if not root:
-            return 0
-        left = root.left
-        right = root.right
-        leftDepth = 0 #这里初始为0是有目的的，为了下面求指数方便
-        rightDepth = 0
-        while left: #求左子树深度
-            left = left.left
-            leftDepth += 1
-        while right: #求右子树深度
-            right = right.right
-            rightDepth += 1
-        if leftDepth == rightDepth:
-            return (2 << leftDepth) - 1 #注意(2<<1) 相当于2^2，所以leftDepth初始为0
-        return self.countNodes(root.left) + self.countNodes(root.right) + 1
+# class Solution:
+#     def countNodes(self, root: TreeNode) -> int:
+#         if not root:
+#             return 0
+#         left = root.left
+#         right = root.right
+#         leftDepth = 0 #这里初始为0是有目的的，为了下面求指数方便
+#         rightDepth = 0
+#         while left: #求左子树深度
+#             left = left.left
+#             leftDepth += 1
+#         while right: #求右子树深度
+#             right = right.right
+#             rightDepth += 1
+#         if leftDepth == rightDepth:
+#             return (2 << leftDepth) - 1 #注意(2<<1) 相当于2^2，所以leftDepth初始为0
+#         return self.countNodes(root.left) + self.countNodes(root.right) + 1
 # # 完全二叉树写法2
 # class Solution: # 利用完全二叉树特性
 #     def countNodes(self, root: TreeNode) -> int:
