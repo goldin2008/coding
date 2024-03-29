@@ -1222,7 +1222,7 @@ class Solution:
 # 因为对于回溯算法已经是非常复杂的递归了，如果再用迭代的话，就是自己给自己找麻烦，效率也并不一定高。
 # 讲了这么多二叉树题目的迭代法，有的同学会疑惑，迭代法中究竟什么时候用队列，什么时候用栈？
 # 如果是模拟前中后序遍历就用栈，如果是适合层序遍历就用队列，当然还是其他情况，那么就是 先用队列试试行不行，不行就用栈。
-# *** 递归法
+# 递归法
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
         if self.get_height(root) != -1:
@@ -1245,7 +1245,7 @@ class Solution:
             return -1
         else:
             return 1 + max(left_height, right_height)
-# 递归法精简版, 后序遍历
+# *** 递归法精简版, 后序遍历
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
         return self.get_hight(root) != -1
@@ -1325,56 +1325,56 @@ class Solution:
 #22 257. 二叉树的所有路径
     # 给定一个二叉树, 返回所有从根节点到叶子节点的路径。
     # 说明: 叶子节点是指没有子节点的节点。
-# *** 递归法+回溯 (前序遍历)
 # Definition for a binary tree node.
-    # 要知道递归和回溯就是一家的，本题也需要回溯。
-    # 回溯和递归是一一对应的，有一个递归，就要有一个回溯
-    # 所以回溯要和递归永远在一起，世界上最遥远的距离是你在花括号里，而我在花括号外！
-    # 回溯就隐藏在traversal(cur->left, path + "->", result);中的 path + "->"。
-    # 每次函数调用完，path依然是没有加上"->" 的，这就是回溯了。
-class Solution:
-    def binaryTreePaths(self, root):
-        result = []
-        path = []
-        if not root:
-            return result
-        self.traversal(root, path, result)
-        return result
+# 要知道递归和回溯就是一家的，本题也需要回溯。
+# 回溯和递归是一一对应的，有一个递归，就要有一个回溯
+# 所以回溯要和递归永远在一起，世界上最遥远的距离是你在花括号里，而我在花括号外！
+# 回溯就隐藏在traversal(cur->left, path + "->", result);中的 path + "->"。
+# 每次函数调用完，path依然是没有加上"->" 的，这就是回溯了。
+# 所有路径不需要返回值，因为要记录所有的路径
+# 递归法+回溯 (前序遍历)
+# class Solution:
+#     def binaryTreePaths(self, root):
+#         result = []
+#         path = []
+#         if not root:
+#             return result
+#         self.traversal(root, path, result)
+#         return result
 
-    def traversal(self, cur, path, result):
-        path.append(cur.val)  # 中
-        if not cur.left and not cur.right:  # 到达叶子节点
-            sPath = '->'.join(map(str, path))
-            result.append(sPath)
-            return
-        if cur.left:  # 左
-            self.traversal(cur.left, path, result)
-            path.pop()  # 回溯
-        if cur.right:  # 右
-            self.traversal(cur.right, path, result)
-            path.pop()  # 回溯
+#     def traversal(self, cur, path, result):
+#         path.append(cur.val)  # 中
+#         if not cur.left and not cur.right:  # 到达叶子节点
+#             sPath = '->'.join(map(str, path))
+#             result.append(sPath)
+#             return
+#         if cur.left:  # 左
+#             self.traversal(cur.left, path, result)
+#             path.pop()  # 回溯
+#         if cur.right:  # 右
+#             self.traversal(cur.right, path, result)
+#             path.pop()  # 回溯
 # 递归法+隐形回溯（版本一）
-from typing import List, Optional
-
-class Solution:
-    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
-        if not root:
-            return []
-        result = []
-        self.traversal(root, [], result)
-        return result
+# from typing import List, Optional
+# class Solution:
+#     def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+#         if not root:
+#             return []
+#         result = []
+#         self.traversal(root, [], result)
+#         return result
     
-    def traversal(self, cur: TreeNode, path: List[int], result: List[str]) -> None:
-        if not cur:
-            return
-        path.append(cur.val)
-        if not cur.left and not cur.right:
-            result.append('->'.join(map(str, path)))
-        if cur.left:
-            self.traversal(cur.left, path[:], result)
-        if cur.right:
-            self.traversal(cur.right, path[:], result)
-# 递归法+隐形回溯（版本二）
+#     def traversal(self, cur: TreeNode, path: List[int], result: List[str]) -> None:
+#         if not cur:
+#             return
+#         path.append(cur.val)
+#         if not cur.left and not cur.right:
+#             result.append('->'.join(map(str, path)))
+#         if cur.left:
+#             self.traversal(cur.left, path[:], result)
+#         if cur.right:
+#             self.traversal(cur.right, path[:], result)
+# *** 递归法+隐形回溯（版本二）前序遍历
 class Solution:
     def binaryTreePaths(self, root: TreeNode) -> List[str]:
         path = ''
@@ -1422,7 +1422,7 @@ class Solution:
     # 计算给定二叉树的所有左叶子之和。
 # 因为不能判断本节点是不是左叶子节点。
 # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
-# *** 递归
+# *** 递归，后序遍历
 class Solution:
     def sumOfLeftLeaves(self, root):
         if root is None:
@@ -2445,7 +2445,6 @@ class Solution:
 #             else:
 #                 self.insertIntoBST(root.right, val)
 #         return root
-
 # *** 递归法（版本四）
     # 通过递归函数返回值完成了新加入节点的父子关系赋值操作了，下一层将加入节点返回，本层用root->left或者root->right将其接住
 class Solution:
@@ -2696,7 +2695,6 @@ class Solution:
         return root
 # 迭代法
 # from collections import deque
-
 # class Solution:
 #     def sortedArrayToBST(self, nums: List[int]) -> TreeNode:
 #         if len(nums) == 0:
@@ -2730,7 +2728,6 @@ class Solution:
 #                 nodeQue.append(curNode.right)
 #                 leftQue.append(mid + 1)
 #                 rightQue.append(right)
-
 #         return root
 
 
