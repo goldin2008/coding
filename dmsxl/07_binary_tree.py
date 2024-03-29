@@ -1418,7 +1418,7 @@ class Solution:
 #         return result
 
 
-#23 404.左叶子之和
+#23 ??? 404.左叶子之和
     # 计算给定二叉树的所有左叶子之和。
 # 因为不能判断本节点是不是左叶子节点。
 # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
@@ -1490,7 +1490,7 @@ class Solution:
 #             depth += 1
 #             self.traversal(node.right, depth)
 #             depth -= 1
-# # （版本二）递归法+精简
+# # （版本二）递归法+精简，层序遍历
 class Solution:
     def findBottomLeftValue(self, root: TreeNode) -> int:
         self.max_depth = float('-inf')
@@ -1553,7 +1553,7 @@ class Solution:
             # if self.traversal(cur.left, count): # 递归，处理节点
             #     return True
             # count += cur.left.val # 回溯，撤销处理结果
-            if self.traversal(cur.right, count-cur.left.val): # 递归，处理节点
+            if self.traversal(cur.left, count-cur.left.val): # 递归，处理节点
                 return True
  
         if cur.right: # 右
