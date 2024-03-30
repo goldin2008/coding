@@ -1422,22 +1422,22 @@ class Solution:
     # 计算给定二叉树的所有左叶子之和。
 # 因为不能判断本节点是不是左叶子节点。
 # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
-# *** 递归，后序遍历
-class Solution:
-    def sumOfLeftLeaves(self, root):
-        if root is None:
-            return 0
-        if root.left is None and root.right is None:
-            return 0
+# 递归，后序遍历
+# class Solution:
+#     def sumOfLeftLeaves(self, root):
+#         if root is None:
+#             return 0
+#         if root.left is None and root.right is None:
+#             return 0
         
-        leftValue = self.sumOfLeftLeaves(root.left)  # 左
-        if root.left and not root.left.left and not root.left.right:  # 左子树是左叶子的情况
-            leftValue = root.left.val
+#         leftValue = self.sumOfLeftLeaves(root.left)  # 左
+#         if root.left and not root.left.left and not root.left.right:  # 左子树是左叶子的情况
+#             leftValue = root.left.val
             
-        rightValue = self.sumOfLeftLeaves(root.right)  # 右
+#         rightValue = self.sumOfLeftLeaves(root.right)  # 右
 
-        sum_val = leftValue + rightValue  # 中
-        return sum_val
+#         sum_val = leftValue + rightValue  # 中
+#         return sum_val
 # 递归精简版
 class Solution:
     def sumOfLeftLeaves(self, root):
@@ -1447,7 +1447,7 @@ class Solution:
         if root.left is not None and root.left.left is None and root.left.right is None:
             leftValue = root.left.val
         return leftValue + self.sumOfLeftLeaves(root.left) + self.sumOfLeftLeaves(root.right)
-# 迭代法
+# *** 迭代法
 class Solution:
     def sumOfLeftLeaves(self, root):
         if root is None:
@@ -1585,12 +1585,12 @@ class Solution:
             # 如果该节点是叶子节点了，同时该节点的路径数值等于sum，那么就返回true
             if not node.left and not node.right and path_sum == sum:
                 return True
-            # 右节点，压进去一个节点的时候，将该节点的路径数值也记录下来
-            if node.right:
-                st.append((node.right, path_sum + node.right.val))
             # 左节点，压进去一个节点的时候，将该节点的路径数值也记录下来
             if node.left:
                 st.append((node.left, path_sum + node.left.val))
+            # 右节点，压进去一个节点的时候，将该节点的路径数值也记录下来
+            if node.right:
+                st.append((node.right, path_sum + node.right.val))
         return False
 
 
@@ -1798,6 +1798,9 @@ class Solution:
 #         return node
 # (版本二) 使用下标
 class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        return self.traversal(nums, 0, len(nums))
+
     def traversal(self, nums: List[int], left: int, right: int) -> TreeNode:
         if left >= right:
             return None
@@ -1809,9 +1812,6 @@ class Solution:
         root.left = self.traversal(nums, left, maxValueIndex)
         root.right = self.traversal(nums, maxValueIndex + 1, right)
         return root
-
-    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
-        return self.traversal(nums, 0, len(nums))
 # *** (版本三) 使用切片
 class Solution:
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
@@ -1893,8 +1893,6 @@ class Solution:
 
 #         return root1
 # (版本四) 迭代 + 代码优化
-# from collections import deque
-
 # class Solution:
 #     def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
 #         if not root1:
@@ -1902,7 +1900,7 @@ class Solution:
 #         if not root2:
 #             return root1
 
-#         queue = deque()
+#         queue = collections.deque()
 #         queue.append((root1, root2))
 
 #         while queue:
@@ -1940,14 +1938,13 @@ class Solution:
 迭代：模拟中序，逻辑相同
 """
 # 700.二叉搜索树中的搜索
-# 给定二叉搜索树(BST)的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在, 则返回 NULL。
+    # 给定二叉搜索树(BST)的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在, 则返回 NULL。
 # （方法一） 递归
 class Solution:
     def searchBST(self, root: TreeNode, val: int) -> TreeNode:
         # 为什么要有返回值: 
         #   因为搜索到目标节点就要立即return，
-        #   这样才是找到节点就返回（搜索某一条边），如果不加return，就是遍历整棵树了。
-
+        #   这样才是找到节点就返回（搜索某一条边），如果不加return，就是遍历整棵树了.
         if not root or root.val == val: 
             return root
 
@@ -2027,7 +2024,7 @@ class Solution:
 #         right = self.isValidBST(root.right)
 
 #         return left and right
-# *** 递归法（版本三）直接取该树的最小值
+# *** 递归法（版本三）直接取该树的最小值，中序遍历
     # 同样本题也需要用pre节点记录cur节点的前一个节点。（这种写法一定要掌握）
 class Solution:
     def __init__(self):
@@ -2037,13 +2034,13 @@ class Solution:
         if root is None:
             return True
 
-        left = self.isValidBST(root.left)
+        left = self.isValidBST(root.left) # 左
 
-        if self.pre is not None and self.pre.val >= root.val:
+        if self.pre is not None and self.pre.val >= root.val: # 中
             return False
         self.pre = root  # 记录前一个节点
 
-        right = self.isValidBST(root.right)
+        right = self.isValidBST(root.right) # 右
         return left and right
 
 
@@ -2073,7 +2070,7 @@ class Solution:
 #             # 统计有序数组的最小差值
 #             result = min(result, self.vec[i] - self.vec[i - 1])
 #         return result
-# *** 递归法（版本二）利用中序递增，找到该树最小值
+# *** 递归法（版本二）利用中序递增，找到该树最小值，中序遍历
 class Solution:
     def __init__(self):
         self.result = float('inf')
@@ -2091,7 +2088,7 @@ class Solution:
             self.result = min(self.result, cur.val - self.pre.val)
         self.pre = cur  # 记录前一个
         self.traversal(cur.right)  # 右
-# 迭代法
+# ??? 迭代法
 class Solution:
     def getMinimumDifference(self, root):
         stack = []
