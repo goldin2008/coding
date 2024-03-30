@@ -2834,7 +2834,7 @@ class Solution:
 #         self.pre = 0
 #         self.traversal(root)
 #         return root
-# *** 迭代法（版本二）
+# 迭代法（版本二）
 class Solution:
     def convertBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         if not root: return root
