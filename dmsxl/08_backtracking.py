@@ -400,10 +400,13 @@ class Solution:
         # 对总集合排序之后, 如果下一层的sum（就是本层的 sum + candidates[i]）已经大于target, 就可以结束本轮for循环的遍历。
         for i in range(start_index, len(candidates)):
             if sum_ + candidates[i] > target: 
-                return 
+                return
+
             sum_ += candidates[i]
             self.path.append(candidates[i])
+
             self.backtracking(candidates, target, sum_, i)  # 因为无限制重复选取, 所以不是i+1
+
             sum_ -= candidates[i]   # 回溯
             self.path.pop()        # 回溯
 # 回溯（版本一）
