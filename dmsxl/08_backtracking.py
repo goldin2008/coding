@@ -403,7 +403,7 @@ class Solution:
                 return 
             sum_ += candidates[i]
             self.path.append(candidates[i])
-            self.backtracking(candidates, target, sum_, i)  # 因为无限制重复选取, 所以不是i-1
+            self.backtracking(candidates, target, sum_, i)  # 因为无限制重复选取, 所以不是i+1
             sum_ -= candidates[i]   # 回溯
             self.path.pop()        # 回溯
 # 回溯（版本一）
