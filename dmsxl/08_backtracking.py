@@ -527,7 +527,7 @@ class Solution:
             
             sum_ += candidates[i]
             self.path.append(candidates[i])
-            self.backtracking(candidates, target, sum_, i+1)
+            self.backtracking(candidates, target, sum_, i+1) # 用i+1，表示不可以重复读取当前的数
             self.path.pop()             # 回溯, 为了下一轮for loop
             sum_ -= candidates[i]       # 回溯, 为了下一轮for loop
 # 回溯
@@ -743,7 +743,7 @@ class Solution:
 #                 path.append(s[start_index:i+1])
 #                 self.backtracking(s, i+1, path, result)   # 递归纵向遍历：从下一处进行切割，判断其余是否仍为回文串
 #                 path.pop()             # 回溯
-# *** 回溯+高效判断回文子串
+# *** 回溯+高效判断回文子串，动态规划
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
         result = []
@@ -756,7 +756,6 @@ class Solution:
         if startIndex >= len(s):
             result.append(path[:])
             return
-
         for i in range(startIndex, len(s)):
             if isPalindrome[startIndex][i]:   # 是回文子串
                 substring = s[startIndex:i + 1]
@@ -945,7 +944,7 @@ class Solution:
         result.append(path[:])  # 收集子集，要放在终止添加的上面，否则会漏掉自己
         # if startIndex >= len(nums):  # 终止条件可以不加
         #     return
-        # 从startIndex而不是从0开始,是因为不能子集不能重复
+        # 从startIndex而不是从0开始,是因为子集不能重复
         for i in range(startIndex, len(nums)):
             path.append(nums[i])
             self.backtracking(nums, i + 1, path, result) # 注意从i+1开始，元素不重复取
@@ -1225,6 +1224,7 @@ class Solution:
 #             self.backtracking(nums)
 #             self.path.pop()
 # *** 回溯 使用used
+# 使用used因为每次都是从第一个item遍历，这样才能保证所有item都考虑到了。因为没有用start index
 class Solution:
     def permute(self, nums):
         result = []
