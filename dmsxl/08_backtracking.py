@@ -1373,6 +1373,37 @@ class Solution:
     # 给定一个机票的字符串二维数组 [from, to], 子数组中的两个成员分别表示飞机出发和降落的机场地点, 对该行程进行重新规划排序。所有这些机票都属于一个从 JFK（肯尼迪国际机场）出发的先生, 所以该行程必须从 JFK 开始。
     # 输入：[["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
     # 输出：["JFK", "MUC", "LHR", "SFO", "SJC"]
+# class Solution:
+#     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+#         # defaultdic(list) 是为了方便直接append
+#         tickets_dict = defaultdict(list)
+#         for item in tickets:
+#             tickets_dict[item[0]].append(item[1])
+# 	# 给每一个机场的到达机场排序，小的在前面，在回溯里首先被pop(0）出去
+# 	# 这样最先找的的path就是排序最小的答案，直接返回
+#         for airport in tickets_dict: tickets_dict[airport].sort()
+#         '''
+#         tickets_dict里面的内容是这样的
+#         {'JFK': ['ATL', 'SFO'], 'SFO': ['ATL'], 'ATL': ['JFK', 'SFO']})
+#         '''
+#         path = ["JFK"]
+#         def backtracking(start_point):
+#             # 终止条件
+#             if len(path) == len(tickets) + 1:
+#                 return True
+#             for _ in tickets_dict[start_point]:
+#                 #必须及时删除，避免出现死循环
+#                 end_point = tickets_dict[start_point].pop(0)
+#                 path.append(end_point)
+#                 # 只要找到一个就可以返回了
+#                 # print(backtracking(end_point))
+#                 if backtracking(end_point):
+#                     return True
+#                 path.pop()
+#                 tickets_dict[start_point].append(end_point)
+
+#         backtracking("JFK")
+#         return path
 # 回溯 使用used数组
 class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
@@ -1392,11 +1423,13 @@ class Solution:
             if ticket[0] == cur and used[i] == 0:  # 找到起始机场为cur且未使用过的机票
                 used[i] = 1  # 标记该机票为已使用
                 path.append(ticket[1])  # 将到达机场添加到路径中
-                state = self.backtracking(tickets, used, path, ticket[1], results)  # 递归搜索
+
+                if self.backtracking(tickets, used, path, ticket[1], results):  # 递归搜索
+                    return True  # 只要找到一个可行路径就返回，不继续搜索
+                
                 path.pop()  # 回溯，移除最后添加的到达机场
                 used[i] = 0  # 标记该机票为未使用
-                if state:
-                    return True  # 只要找到一个可行路径就返回，不继续搜索
+        return False
 # 回溯 使用字典
 # from collections import defaultdict
 class Solution:
