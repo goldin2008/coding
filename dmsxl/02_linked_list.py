@@ -31,6 +31,7 @@ node数目为奇数的时候,用两种方法slow的停留点都一样, 没有影
 #         self.next = next
 class Solution:
     def removeElements(self, head: ListNode, val: int) -> ListNode:
+        # 设置一个虚拟头结点在进行删除操作,虚拟节点指向头结点
         dummy_head = ListNode(next=head) #添加一个虚拟节点
         cur = dummy_head
         while(cur.next!=None):
@@ -220,7 +221,7 @@ class MyLinkedList:
 #3 206. Reverse Linked List
     # 题意：反转一个单链表。
     # 示例: 输入: 1->2->3->4->5->NULL 输出: 5->4->3->2->1->NULL
-# （版本一）双指针法
+# ***（版本一）双指针法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -277,6 +278,7 @@ class Solution:
         pre.next = self.swapPairs(next) # 将以next为head的后续链表两两交换
          
         return cur
+# *** 双指针法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
