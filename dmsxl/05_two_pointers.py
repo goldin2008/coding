@@ -23,17 +23,17 @@ class Solution:
             fast += 1
         return slow
 # （版本二）暴力法
-class Solution:
-    def removeElement(self, nums: List[int], val: int) -> int:
-        i, l = 0, len(nums)
-        while i < l:
-            if nums[i] == val: # 找到等于目标值的节点
-                for j in range(i+1, l): # 移除该元素，并将后面元素向前平移
-                    nums[j - 1] = nums[j]
-                l -= 1
-                i -= 1
-            i += 1
-        return l
+# class Solution:
+#     def removeElement(self, nums: List[int], val: int) -> int:
+#         i, l = 0, len(nums)
+#         while i < l:
+#             if nums[i] == val: # 找到等于目标值的节点
+#                 for j in range(i+1, l): # 移除该元素，并将后面元素向前平移
+#                     nums[j - 1] = nums[j]
+#                 l -= 1
+#                 i -= 1
+#             i += 1
+#         return l
 
 
 #2 344.反转字符串
@@ -61,54 +61,54 @@ class Solution:
             left += 1
             right -= 1
 # （版本二） 使用栈
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        stack = []
-        for char in s:
-            stack.append(char)
-        for i in range(len(s)):
-            s[i] = stack.pop()
-# （版本三） 使用range
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        n = len(s)
-        for i in range(n // 2):
-            s[i], s[n - i - 1] = s[n - i - 1], s[i]
-# （版本四） 使用reversed
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        s[:] = reversed(s)
-# （版本五） 使用切片
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        s[:] = s[::-1]
-# （版本六） 使用列表推导
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        s[:] = [s[i] for i in range(len(s) - 1, -1, -1)]
-# （版本七） 使用reverse()
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        # 原地反转,无返回值
-        s.reverse()
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         stack = []
+#         for char in s:
+#             stack.append(char)
+#         for i in range(len(s)):
+#             s[i] = stack.pop()
+# # （版本三） 使用range
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         n = len(s)
+#         for i in range(n // 2):
+#             s[i], s[n - i - 1] = s[n - i - 1], s[i]
+# # （版本四） 使用reversed
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         s[:] = reversed(s)
+# # （版本五） 使用切片
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         s[:] = s[::-1]
+# # （版本六） 使用列表推导
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         s[:] = [s[i] for i in range(len(s) - 1, -1, -1)]
+# # （版本七） 使用reverse()
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         # 原地反转,无返回值
+#         s.reverse()
 
 
 #3 替换数字
@@ -194,15 +194,15 @@ class Solution:
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
-        return self.reverse(head, None)
-    def reverse(self, cur: ListNode, pre: ListNode) -> ListNode:
-        if cur == None:
-            return pre
-        temp = cur.next
-        cur.next = pre
-        return self.reverse(temp, cur)
+# class Solution:
+#     def reverseList(self, head: ListNode) -> ListNode:
+#         return self.reverse(head, None)
+#     def reverse(self, cur: ListNode, pre: ListNode) -> ListNode:
+#         if cur == None:
+#             return pre
+#         temp = cur.next
+#         cur.next = pre
+#         return self.reverse(temp, cur)
 
 
 #6 19.删除链表的倒数第N个节点
@@ -451,29 +451,29 @@ class Solution:
                     
         return result
 # （版本二） 使用字典
-class Solution:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
-        result = []
-        nums.sort()
-        # 找出a + b + c = 0
-        # a = nums[i], b = nums[j], c = -(a + b)
-        for i in range(len(nums)):
-            # 排序之后如果第一个元素已经大于零，那么不可能凑成三元组
-            if nums[i] > 0:
-                break
-            if i > 0 and nums[i] == nums[i - 1]: #三元组元素a去重
-                continue
-            d = {}
-            for j in range(i + 1, len(nums)):
-                if j > i + 2 and nums[j] == nums[j-1] == nums[j-2]: # 三元组元素b去重
-                    continue
-                c = 0 - (nums[i] + nums[j])
-                if c in d:
-                    result.append([nums[i], nums[j], c])
-                    d.pop(c) # 三元组元素c去重
-                else:
-                    d[nums[j]] = j
-        return result
+# class Solution:
+#     def threeSum(self, nums: List[int]) -> List[List[int]]:
+#         result = []
+#         nums.sort()
+#         # 找出a + b + c = 0
+#         # a = nums[i], b = nums[j], c = -(a + b)
+#         for i in range(len(nums)):
+#             # 排序之后如果第一个元素已经大于零，那么不可能凑成三元组
+#             if nums[i] > 0:
+#                 break
+#             if i > 0 and nums[i] == nums[i - 1]: #三元组元素a去重
+#                 continue
+#             d = {}
+#             for j in range(i + 1, len(nums)):
+#                 if j > i + 2 and nums[j] == nums[j-1] == nums[j-2]: # 三元组元素b去重
+#                     continue
+#                 c = 0 - (nums[i] + nums[j])
+#                 if c in d:
+#                     result.append([nums[i], nums[j], c])
+#                     d.pop(c) # 三元组元素c去重
+#                 else:
+#                     d[nums[j]] = j
+#         return result
 
 
 #10 第18题. 四数之和
@@ -514,28 +514,28 @@ class Solution:
                         right -= 1
         return result
 # (版本二) 使用字典
-class Solution(object):
-    def fourSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
-        # 创建一个字典来存储输入列表中每个数字的频率
-        freq = {}
-        for num in nums:
-            freq[num] = freq.get(num, 0) + 1
+# class Solution(object):
+#     def fourSum(self, nums, target):
+#         """
+#         :type nums: List[int]
+#         :type target: int
+#         :rtype: List[List[int]]
+#         """
+#         # 创建一个字典来存储输入列表中每个数字的频率
+#         freq = {}
+#         for num in nums:
+#             freq[num] = freq.get(num, 0) + 1
         
-        # 创建一个集合来存储最终答案，并遍历4个数字的所有唯一组合
-        ans = set()
-        for i in range(len(nums)):
-            for j in range(i + 1, len(nums)):
-                for k in range(j + 1, len(nums)):
-                    val = target - (nums[i] + nums[j] + nums[k])
-                    if val in freq:
-                        # 确保没有重复
-                        count = (nums[i] == val) + (nums[j] == val) + (nums[k] == val)
-                        if freq[val] > count:
-                            ans.add(tuple(sorted([nums[i], nums[j], nums[k], val])))
+#         # 创建一个集合来存储最终答案，并遍历4个数字的所有唯一组合
+#         ans = set()
+#         for i in range(len(nums)):
+#             for j in range(i + 1, len(nums)):
+#                 for k in range(j + 1, len(nums)):
+#                     val = target - (nums[i] + nums[j] + nums[k])
+#                     if val in freq:
+#                         # 确保没有重复
+#                         count = (nums[i] == val) + (nums[j] == val) + (nums[k] == val)
+#                         if freq[val] > count:
+#                             ans.add(tuple(sorted([nums[i], nums[j], nums[k], val])))
         
-        return [list(x) for x in ans]
+#         return [list(x) for x in ans]
