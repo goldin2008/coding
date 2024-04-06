@@ -1,5 +1,14 @@
 """
+双指针法将时间复杂度: O(n^2)的解法优化为 O(n)的解法。也就是降一个数量级，题目如下：
+27.移除元素
+15.三数之和
+18.四数之和
 
+链表相关双指针题目：
+206.反转链表
+19.删除链表的倒数第N个节点
+面试题 02.07. 链表相交
+142题.环形链表II
 """
 #1 242.有效的字母异位词
     # 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
@@ -423,29 +432,29 @@ class Solution:
                     
         return result
 # （版本二） 使用字典
-class Solution:
-    def threeSum(self, nums: List[int]) -> List[List[int]]:
-        result = []
-        nums.sort()
-        # 找出a + b + c = 0
-        # a = nums[i], b = nums[j], c = -(a + b)
-        for i in range(len(nums)):
-            # 排序之后如果第一个元素已经大于零，那么不可能凑成三元组
-            if nums[i] > 0:
-                break
-            if i > 0 and nums[i] == nums[i - 1]: #三元组元素a去重
-                continue
-            d = {}
-            for j in range(i + 1, len(nums)):
-                if j > i + 2 and nums[j] == nums[j-1] == nums[j-2]: # 三元组元素b去重
-                    continue
-                c = 0 - (nums[i] + nums[j])
-                if c in d:
-                    result.append([nums[i], nums[j], c])
-                    d.pop(c) # 三元组元素c去重
-                else:
-                    d[nums[j]] = j
-        return result
+# class Solution:
+#     def threeSum(self, nums: List[int]) -> List[List[int]]:
+#         result = []
+#         nums.sort()
+#         # 找出a + b + c = 0
+#         # a = nums[i], b = nums[j], c = -(a + b)
+#         for i in range(len(nums)):
+#             # 排序之后如果第一个元素已经大于零，那么不可能凑成三元组
+#             if nums[i] > 0:
+#                 break
+#             if i > 0 and nums[i] == nums[i - 1]: #三元组元素a去重
+#                 continue
+#             d = {}
+#             for j in range(i + 1, len(nums)):
+#                 if j > i + 2 and nums[j] == nums[j-1] == nums[j-2]: # 三元组元素b去重
+#                     continue
+#                 c = 0 - (nums[i] + nums[j])
+#                 if c in d:
+#                     result.append([nums[i], nums[j], c])
+#                     d.pop(c) # 三元组元素c去重
+#                 else:
+#                     d[nums[j]] = j
+#         return result
 
 
 #8 第18题. 四数之和
@@ -453,6 +462,15 @@ class Solution:
     # 注意：
     # 答案中不可以包含重复的四元组。
     # 示例： 给定数组 nums = [1, 0, -1, 0, -2, 2]，和 target = 0。 满足要求的四元组集合为： [ [-1, 0, 0, 1], [-2, -1, 1, 2], [-2, 0, 0, 2] ]
+# 不要判断nums[k] > target 就返回了，三数之和 可以通过 nums[i] > 0 就返回了，因为 0 已经是确定的数了，四数之和这道题目 target是任意值。
+# 比如：数组是[-4, -3, -2, -1]，target是-10，不能因为-4 > -10而跳过。
+# 但是我们依旧可以去做剪枝，逻辑变成nums[i] > target && (nums[i] >=0 || target >= 0)就可以了。
+    
+# 15.三数之和 的双指针解法是一层for循环num[i]为确定值，然后循环内有left和right下标作为双指针，找到nums[i] + nums[left] + nums[right] == 0。
+# 四数之和的双指针解法是两层for循环nums[k] + nums[i]为确定值，依然是循环内有left和right下标作为双指针，
+# 找出nums[k] + nums[i] + nums[left] + nums[right] == target的情况，三数之和的时间复杂度是O(n^2)，四数之和的时间复杂度是O(n^3) 。
+# 那么一样的道理，五数之和、六数之和等等都采用这种解法。
+# 对于15.三数之和 双指针法就是将原本暴力O(n^3)的解法，降为O(n^2)的解法，四数之和的双指针解法就是将原本暴力O(n^4)的解法，降为O(n^3)的解法。
 # (版本一) 双指针
 class Solution:
     def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
@@ -464,11 +482,13 @@ class Solution:
                 break
             if i > 0 and nums[i] == nums[i-1]:# 去重
                 continue
+
             for j in range(i+1, n):
                 if nums[i] + nums[j] > target and target > 0: #剪枝（可省）
                     break
                 if j > i+1 and nums[j] == nums[j-1]: # 去重
                     continue
+
                 left, right = j+1, n-1
                 while left < right:
                     s = nums[i] + nums[j] + nums[left] + nums[right]
@@ -486,28 +506,28 @@ class Solution:
                         right -= 1
         return result
 # (版本二) 使用字典
-class Solution(object):
-    def fourSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
-        # 创建一个字典来存储输入列表中每个数字的频率
-        freq = {}
-        for num in nums:
-            freq[num] = freq.get(num, 0) + 1
+# class Solution(object):
+#     def fourSum(self, nums, target):
+#         """
+#         :type nums: List[int]
+#         :type target: int
+#         :rtype: List[List[int]]
+#         """
+#         # 创建一个字典来存储输入列表中每个数字的频率
+#         freq = {}
+#         for num in nums:
+#             freq[num] = freq.get(num, 0) + 1
         
-        # 创建一个集合来存储最终答案，并遍历4个数字的所有唯一组合
-        ans = set()
-        for i in range(len(nums)):
-            for j in range(i + 1, len(nums)):
-                for k in range(j + 1, len(nums)):
-                    val = target - (nums[i] + nums[j] + nums[k])
-                    if val in freq:
-                        # 确保没有重复
-                        count = (nums[i] == val) + (nums[j] == val) + (nums[k] == val)
-                        if freq[val] > count:
-                            ans.add(tuple(sorted([nums[i], nums[j], nums[k], val])))
+#         # 创建一个集合来存储最终答案，并遍历4个数字的所有唯一组合
+#         ans = set()
+#         for i in range(len(nums)):
+#             for j in range(i + 1, len(nums)):
+#                 for k in range(j + 1, len(nums)):
+#                     val = target - (nums[i] + nums[j] + nums[k])
+#                     if val in freq:
+#                         # 确保没有重复
+#                         count = (nums[i] == val) + (nums[j] == val) + (nums[k] == val)
+#                         if freq[val] > count:
+#                             ans.add(tuple(sorted([nums[i], nums[j], nums[k], val])))
         
-        return [list(x) for x in ans]
+#         return [list(x) for x in ans]
