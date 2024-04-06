@@ -126,7 +126,16 @@ def bfs(grid, visited, x, y):
     # 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
     # 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
     # 此外，你可以假设该网格的四条边均被水包围。
-# DFS 版本一
+# 本题思路，是用遇到一个没有遍历过的节点陆地，计数器就加一，然后把该节点陆地所能遍历到的陆地都标记上。
+# 在遇到标记过的陆地节点和海洋节点的时候直接跳过。 这样计数器就是最终岛屿的数量。
+# 那么如果把节点陆地所能遍历到的陆地都标记上呢，就可以使用 DFS，BFS或者并查集。
+
+# 这里大家应该能看出区别了，无疑就是版本一中 调用dfs 的条件判断 放在了 版本二 的 终止条件位置上。
+# 版本一的写法是 ：下一个节点是否能合法已经判断完了，只要调用dfs就是可以合法的节点。
+# 版本二的写法是：不管节点是否合法，上来就dfs，然后在终止条件的地方进行判断，不合法再return。
+# 理论上来讲，版本一的效率更高一些，因为避免了 没有意义的递归调用，在调用dfs之前，就做合法性判断。 但从写法来说，可能版本二 更利于理解一些。（不过其实都差不太多）
+# 很多同学看了同一道题目，都是dfs，写法却不一样，有时候有终止条件，有时候连终止条件都没有，其实这就是根本原因，两种写法而已。
+# *** DFS 版本一
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         m, n = len(grid), len(grid[0])
@@ -183,6 +192,16 @@ class Solution:
 # 1 代表陆地
 # 2 代表已经访问的陆地
 class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        res = 0
+
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == "1":
+                    res += 1
+                    self.traversal(grid, i, j)
+        return res
+
     def traversal(self, grid, i, j):
         m = len(grid)
         n = len(grid[0])
@@ -198,20 +217,12 @@ class Solution:
         self.traversal(grid, i, j - 1) # 往左走
         self.traversal(grid, i, j + 1) # 往右走
 
-    def numIslands(self, grid: List[List[str]]) -> int:
-        res = 0
 
-
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == "1":
-                    res += 1
-                    self.traversal(grid, i, j)
-
-        return res
-
-
-#4 BFS solution
+#4 200. 岛屿数量 BFS solution
+# 不少同学用广搜做这道题目的时候，超时了。 这里有一个广搜中很重要的细节：
+# 根本原因是只要 加入队列就代表 走过，就需要标记，而不是从队列拿出来的时候再去标记走过。
+# 很多同学可能感觉这有区别吗？
+# 如果从队列拿出节点，再去标记这个节点走过，就会发生下图所示的结果，会导致很多节点重复加入队列
 class Solution:
     def __init__(self):
         self.dirs = [[0, 1], [1, 0], [-1, 0], [0, -1]] 
@@ -234,6 +245,7 @@ class Solution:
         visited[i][j] = True
         while q:
             x, y = q.popleft()
+            # visited[next_i][next_j] = True // 从队列中取出在标记走过，错误，会导致很多节点重复加入队列
             for k in range(4):
                 next_i = x + self.dirs[k][0]
                 next_j = y + self.dirs[k][1]
@@ -247,7 +259,7 @@ class Solution:
                 if grid[next_i][next_j] == '0':
                     continue
                 q.append((next_i, next_j))
-                visited[next_i][next_j] = True
+                visited[next_i][next_j] = True # 只要加入队列立刻标记
 
 
 #5 695. 岛屿的最大面积
@@ -296,6 +308,12 @@ class Solution:
                     self.count += 1
                     queue.append((new_x, new_y))
 #DFS
+# 大家通过注释可以发现，两种写法，版本一，在主函数遇到陆地就计数为1，接下来的相邻陆地都在dfs中计算。 版本二 在主函数遇到陆地 计数为0，也就是不计数，陆地数量都去dfs里做计算。
+# 这也是为什么大家看了很多，dfs的写法，发现写法怎么都不一样呢？ 其实这就是根本原因。
+# 这里其实涉及到dfs的两种写法。
+# 写法一，dfs只处理下一个节点，即在主函数遇到岛屿就计数为1，dfs处理接下来的相邻陆地
+
+# 写法二，dfs处理当前节点，即即在主函数遇到岛屿就计数为0，dfs处理接下来的全部陆地
 class Solution:
     def __init__(self):
         self.count = 0
@@ -341,18 +359,6 @@ class Solution:
     def __init__(self):
         self.position = [[-1, 0], [0, 1], [1, 0], [0, -1]]	# 四个方向
 
-    # 深度优先遍历，把可以通向边缘部分的 1 全部标记成 true
-    def dfs(self, grid: List[List[int]], row: int, col: int, visited: List[List[bool]]) -> None:
-        for current in self.position:
-            newRow, newCol = row + current[0], col + current[1]
-            # 索引下标越界
-            if newRow < 0 or newRow >= len(grid) or newCol < 0 or newCol >= len(grid[0]): 
-                continue
-            # 当前位置值不是 1 或者已经被访问过了
-            if grid[newRow][newCol] == 0 or visited[newRow][newCol]: continue
-            visited[newRow][newCol] = True
-            self.dfs(grid, newRow, newCol, visited)
-
     def numEnclaves(self, grid: List[List[int]]) -> int:
         rowSize, colSize, ans = len(grid), len(grid[0]), 0
         # 标记数组记录每个值为 1 的位置是否可以到达边界，可以为 True，反之为 False
@@ -379,24 +385,24 @@ class Solution:
                 if grid[row][col] == 1 and not visited[row][col]:
                     ans += 1
         return ans
+
+    # 深度优先遍历，把可以通向边缘部分的 1 全部标记成 true
+    def dfs(self, grid: List[List[int]], row: int, col: int, visited: List[List[bool]]) -> None:
+        for current in self.position:
+            newRow, newCol = row + current[0], col + current[1]
+            # 索引下标越界
+            if newRow < 0 or newRow >= len(grid) or newCol < 0 or newCol >= len(grid[0]): 
+                continue
+            # 当前位置值不是 1 或者已经被访问过了
+            if grid[newRow][newCol] == 0 or visited[newRow][newCol]: continue
+
+            visited[newRow][newCol] = True
+            self.dfs(grid, newRow, newCol, visited)
+
 # BFS 广度优先遍历
 class Solution:
     def __init__(self):
         self.position = [[-1, 0], [0, 1], [1, 0], [0, -1]]	# 四个方向
-
-    # 广度优先遍历，把可以通向边缘部分的 1 全部标记成 true
-    def bfs(self, grid: List[List[int]], queue: deque, visited: List[List[bool]]) -> None:
-        while queue:
-            curPos = queue.popleft()
-            for current in self.position:
-                row, col = curPos[0] + current[0], curPos[1] + current[1]
-                # 索引下标越界
-                if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]): continue
-                # 当前位置值不是 1 或者已经被访问过了
-                if grid[row][col] == 0 or visited[row][col]: continue
-                visited[row][col] = True
-                queue.append([row, col])
-
 
     def numEnclaves(self, grid: List[List[int]]) -> int:
         rowSize, colSize, ans = len(grid), len(grid[0]), 0
@@ -419,13 +425,29 @@ class Solution:
             if grid[rowSize - 1][col] == 1:
                 visited[rowSize - 1][col] = True
                 queue.append([rowSize - 1, col])
+
         self.bfs(grid, queue, visited)	# 广度优先遍历
+
         # 找出矩阵中值为 1 但是没有被标记过的位置，记录答案
         for row in range(rowSize):
             for col in range(colSize):
                 if grid[row][col] == 1 and not visited[row][col]:
                     ans += 1
         return ans
+
+    # 广度优先遍历，把可以通向边缘部分的 1 全部标记成 true
+    def bfs(self, grid: List[List[int]], queue: deque, visited: List[List[bool]]) -> None:
+        while queue:
+            curPos = queue.popleft()
+            for current in self.position:
+                row, col = curPos[0] + current[0], curPos[1] + current[1]
+                # 索引下标越界
+                if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]): continue
+                # 当前位置值不是 1 或者已经被访问过了
+                if grid[row][col] == 0 or visited[row][col]: continue
+
+                visited[row][col] = True
+                queue.append([row, col])
 
 
 #7 130. 被围绕的区域
