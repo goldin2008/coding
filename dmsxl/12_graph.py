@@ -455,9 +455,12 @@ class Solution:
     # 输入：board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
     # 输出：[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
     # 解释：被围绕的区间不会存在于边界上，换句话说，任何边界上的 'O' 都不会被填充为 'X'。 任何不在边界上，或不与边界上的 'O' 相连的 'O' 最终都会被填充为 'X'。如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。
+# 步骤一：深搜或者广搜将地图周边的'O'全部改成'A'
+# 步骤二：在遍历地图，将'O'全部改成'X'（地图中间的'O'改成了'X'），将'A'改回'O'（保留的地图周边的'O'）
 # DFS 深度优先遍历
 class Solution:
     dir_list = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
     def solve(self, board: List[List[str]]) -> None:
         """
         Do not return anything, modify board in-place instead.
@@ -487,7 +490,6 @@ class Solution:
                 elif board[i][j] == "O":
                     board[i][j] = "X"
 
-    
     def dfs(self, board, x, y, visited):
         if visited[x][y] or board[x][y] == "X":
             return
