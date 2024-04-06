@@ -3,14 +3,14 @@ python的string为不可变, 需要开辟同样大小的list空间来修改
 res = list(s)
 return ''.join(res)
 
-344.反转字符串 (opens new window):
+344.反转字符串:
 第一次讲到反转一个字符串应该怎么做, 使用了双指针法。
-541. 反转字符串II (opens new window):
+541. 反转字符串II:
 这里开始给反转加上了一些条件, 当需要固定规律一段一段去处理字符串的时候, 要想想在for循环的表达式上做做文章。
-151.翻转字符串里的单词 (opens new window):
+151.翻转字符串里的单词:
 要对一句话里的单词顺序进行反转, 发现先整体反转再局部反转 是一个很妙的思路。
 左旋转字符串:
-是先局部反转再 整体反转, 与151.翻转字符串里的单词 (opens new window)类似, 但是也是一种新的思路。
+是先局部反转再 整体反转, 与151.翻转字符串里的单词类似, 但是也是一种新的思路。
 """
 class Solution:
     #1.去除多余的空格
@@ -68,7 +68,7 @@ class Solution:
     # 示例 2：
     # 输入：["H","a","n","n","a","h"]
     # 输出：["h","a","n","n","a","H"]
-# （版本一） 双指针
+# ***（版本一） 双指针
 class Solution:
     def reverseString(self, s: List[str]) -> None:
         """
@@ -83,54 +83,54 @@ class Solution:
             left += 1
             right -= 1
 # （版本二） 使用栈
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        stack = []
-        for char in s:
-            stack.append(char)
-        for i in range(len(s)):
-            s[i] = stack.pop()
-# （版本三） 使用range
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        n = len(s)
-        for i in range(n // 2):
-            s[i], s[n - i - 1] = s[n - i - 1], s[i]
-# （版本四） 使用reversed
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        s[:] = reversed(s)
-# （版本五） 使用切片
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        s[:] = s[::-1]
-# （版本六） 使用列表推导
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        s[:] = [s[i] for i in range(len(s) - 1, -1, -1)]
-# （版本七） 使用reverse()
-class Solution:
-    def reverseString(self, s: List[str]) -> None:
-        """
-        Do not return anything, modify s in-place instead.
-        """
-        # 原地反转,无返回值
-        s.reverse()
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         stack = []
+#         for char in s:
+#             stack.append(char)
+#         for i in range(len(s)):
+#             s[i] = stack.pop()
+# # （版本三） 使用range
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         n = len(s)
+#         for i in range(n // 2):
+#             s[i], s[n - i - 1] = s[n - i - 1], s[i]
+# # （版本四） 使用reversed
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         s[:] = reversed(s)
+# # （版本五） 使用切片
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         s[:] = s[::-1]
+# # （版本六） 使用列表推导
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         s[:] = [s[i] for i in range(len(s) - 1, -1, -1)]
+# # （版本七） 使用reverse()
+# class Solution:
+#     def reverseString(self, s: List[str]) -> None:
+#         """
+#         Do not return anything, modify s in-place instead.
+#         """
+#         # 原地反转,无返回值
+#         s.reverse()
 
 
 #2 541. 反转字符串II
@@ -144,7 +144,7 @@ class Solution:
     def reverseStr(self, s: str, k: int) -> str:
         """
         1. 使用range(start, end, step)来确定需要调换的初始位置
-        2. 对于字符串s = 'abc'，如果使用s[0:999] ===> 'abc'。字符串末尾如果超过最大长度，则会返回至字符串最后一个值，这个特性可以避免一些边界条件的处理。
+        2. 对于字符串s = 'abc', 如果使用s[0:999] ===> 'abc'。字符串末尾如果超过最大长度，则会返回至字符串最后一个值，这个特性可以避免一些边界条件的处理。
         3. 用切片整体替换，而不是一个个替换.
         """
         def reverse_substring(text):
@@ -161,16 +161,16 @@ class Solution:
             res[cur: cur + k] = reverse_substring(res[cur: cur + k])
         
         return ''.join(res)
-class Solution:
-    def reverseStr(self, s: str, k: int) -> str:
-        # Two pointers. Another is inside the loop.
-        p = 0
-        while p < len(s):
-            p2 = p + k
-            # Written in this could be more pythonic.
-            s = s[:p] + s[p: p2][::-1] + s[p2:]
-            p = p + 2 * k
-        return s
+# class Solution:
+#     def reverseStr(self, s: str, k: int) -> str:
+#         # Two pointers. Another is inside the loop.
+#         p = 0
+#         while p < len(s):
+#             p2 = p + k
+#             # Written in this could be more pythonic.
+#             s = s[:p] + s[p: p2][::-1] + s[p2:]
+#             p = p + 2 * k
+#         return s
 
 
 #3 替换数字
@@ -257,16 +257,6 @@ print(s)
     # 说明: 当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。 对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
 # （版本一）前缀表（减一）
 class Solution:
-    def getNext(self, next, s):
-        j = -1
-        next[0] = j
-        for i in range(1, len(s)):
-            while j >= 0 and s[i] != s[j+1]:
-                j = next[j]
-            if s[i] == s[j+1]:
-                j += 1
-            next[i] = j
-    
     def strStr(self, haystack: str, needle: str) -> int:
         if not needle:
             return 0
@@ -281,6 +271,16 @@ class Solution:
             if j == len(needle) - 1:
                 return i - len(needle) + 1
         return -1
+
+    def getNext(self, next, s):
+        j = -1
+        next[0] = j
+        for i in range(1, len(s)):
+            while j >= 0 and s[i] != s[j+1]:
+                j = next[j]
+            if s[i] == s[j+1]:
+                j += 1
+            next[i] = j
 # （版本二）前缀表（不减一）
 class Solution:
     def getNext(self, next: List[int], s: str) -> None:
