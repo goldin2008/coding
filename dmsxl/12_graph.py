@@ -1,4 +1,5 @@
 """
+DFS
 正是因为dfs搜索可一个方向，并需要回溯，所以用递归的方式来实现是最方便的。
 1. 确认递归函数，参数
 通常我们递归的时候，我们递归搜索需要了解哪些参数，其实也可以在写递归函数的时候，发现需要什么参数，再去补充就可以。
@@ -22,6 +23,11 @@ for (选择：本节点所连接的其他节点) {
     dfs(图，选择的节点); // 递归
     回溯，撤销处理结果
 }
+
+BFS
+广搜的搜索方式就适合于解决两个点之间的最短路径问题。
+因为广搜是从起点出发，以起始点为中心一圈一圈进行搜索，一旦遇到终点，记录之前走过的节点就是一条最短路。
+当然，也有一些问题是广搜 和 深搜都可以解决的，例如岛屿问题，这类问题的特征就是不涉及具体的遍历方式，只要能把相邻且相同属性的节点标记上就行。
 
 """
 # 回溯算法
@@ -60,6 +66,8 @@ void dfs(参数) {
     # graph[i][j] != i（即不存在自环）
     # graph[i] 中的所有元素 互不相同
     # 保证输入为 有向无环图（DAG）
+# 本题是比较基础的深度优先搜索模板题，这种有向图路径问题，最合适使用深搜，当然本题也可以使用广搜，但广搜相对来说就麻烦了一些，需要记录一下路径。
+# 而深搜和广搜都适合解决颜色类的问题，例如岛屿系列，其实都是 遍历+标记，所以使用哪种遍历都是可以的。
 class Solution:
     def __init__(self):
         self.result = []
@@ -83,31 +91,35 @@ class Solution:
             self.dfs(graph, node)
             self.path.pop() # 回溯
 
-# 2
-from collections import deque
+# 2 广搜的使用场景，广搜的过程以及广搜的代码框架
+    # 其实，我们仅仅需要一个容器，能保存我们要遍历过的元素就可以，那么用队列，还是用栈，甚至用数组，都是可以的。
+    # 用队列的话，就是保证每一圈都是一个方向去转，例如统一顺时针或者逆时针。
+    # 因为队列是先进先出，加入元素和弹出元素的顺序是没有改变的。
+    # 如果用栈的话，就是第一圈顺时针遍历，第二圈逆时针遍历，第三圈有顺时针遍历。
+    # 因为栈是先进后出，加入元素和弹出元素的顺序改变了。
+    # 那么广搜需要注意 转圈搜索的顺序吗？ 不需要！
+    # 所以用队列，还是用栈都是可以的，但大家都习惯用队列了，所以下面的讲解用我也用队列来讲，只不过要给大家说清楚，并不是非要用队列，用栈也可以。
+# from collections import deque
 
 dir = [(0, 1), (1, 0), (-1, 0), (0, -1)] # 创建方向元素
 
 def bfs(grid, visited, x, y):
+    queue = collections.deque() # 初始化队列
+    queue.append((x, y)) # 放入第一个元素/起点
+    visited[x][y] = True # 标记为访问过的节点
   
-  queue = deque() # 初始化队列
-  queue.append((x, y)) # 放入第一个元素/起点
-  visited[x][y] = True # 标记为访问过的节点
-  
-  while queue: # 遍历队列里的元素
-  
-    curx, cury = queue.popleft() # 取出第一个元素
-    
-    for dx, dy in dir: # 遍历四个方向
-    
-      nextx, nexty = curx + dx, cury + dy
-      
-      if nextx < 0 or nextx >= len(grid) or nexty < 0 or nexty >= len(grid[0]): # 越界了，直接跳过
-        continue
+    while queue: # 遍历队列里的元素
+        curx, cury = queue.popleft() # 取出第一个元素
         
-      if not visited[nextx][nexty]: # 如果节点没被访问过  
-        queue.append((nextx, nexty)) # 加入队列
-        visited[nextx][nexty] = True # 标记为访问过的节点
+        for dx, dy in dir: # 遍历四个方向
+            nextx, nexty = curx + dx, cury + dy
+        
+            if nextx < 0 or nextx >= len(grid) or nexty < 0 or nexty >= len(grid[0]): # 越界了，直接跳过
+                continue
+                
+            if not visited[nextx][nexty]: # 如果节点没被访问过  
+                queue.append((nextx, nexty)) # 加入队列
+                visited[nextx][nexty] = True # 标记为访问过的节点
 
 
 #3 200. 岛屿数量
