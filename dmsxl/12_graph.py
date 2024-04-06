@@ -519,6 +519,16 @@ class Solution:
     # n == heights[r].length
     # 1 <= m, n <= 200
     # 0 <= heights[r][c] <= 10^5
+# 那么我们可以 反过来想，从太平洋边上的节点 逆流而上，将遍历过的节点都标记上。 
+# 从大西洋的边上节点 逆流而长，将遍历过的节点也标记上。 
+# 然后两方都标记过的节点就是既可以流太平洋也可以流大西洋的节点。
+
+# 所以 调用dfs函数，只要参数传入的是 数组pacific，那么地图中 每一个节点其实就遍历一次，无论你调用多少次。
+# 同理，调用 dfs函数，只要 参数传入的是 数组atlantic，地图中每个节点也只会遍历一次。
+# 所以，以下这段代码的时间复杂度是 2 * n * m。 地图用每个节点就遍历了两次，参数传入pacific的时候遍历一次，参数传入atlantic的时候遍历一次。
+# 那么本题整体的时间复杂度其实是： 2 * n * m + n * m ，所以最终时间复杂度为 O(n * m) 。
+# 空间复杂度为：O(n * m) 这个就不难理解了。开了几个 n * m 的数组。
+
 # DFS 深度优先遍历
 class Solution:
     def __init__(self):
@@ -543,11 +553,13 @@ class Solution:
         # 假设太平洋的标记为 1，大西洋为 0
         # ans 用来保存满足条件的答案
         ans, visited = [], [[[False for _ in range(2)] for _ in range(colSize)] for _ in range(rowSize)]
+        # 第一列和最后一列
         for row in range(rowSize):
             visited[row][0][1] = True
             visited[row][colSize - 1][0] = True
             self.dfs(heights, row, 0, 1, visited)
             self.dfs(heights, row, colSize - 1, 0, visited)
+        # 第一行和最后一行
         for col in range(0, colSize):
             visited[0][col][1] = True
             visited[rowSize - 1][col][0] = True
@@ -596,7 +608,9 @@ class Solution:
             visited[rowSize - 1][col][0] = True
             queue.append([0, col, 1])
             queue.append([rowSize - 1, col, 0])
+
         self.bfs(heights, queue, visited)	# 广度优先遍历
+
         for row in range(rowSize):
             for col in range(colSize):
                 # 如果该位置即可以到太平洋又可以到大西洋，就放入答案数组
