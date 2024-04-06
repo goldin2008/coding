@@ -20,25 +20,25 @@ class Solution:
                 return False
         return True
 # Python写法二（没有使用数组作为哈希表，只是介绍defaultdict这样一种解题思路）：
-class Solution:
-    def isAnagram(self, s: str, t: str) -> bool:
-        from collections import defaultdict
+# class Solution:
+#     def isAnagram(self, s: str, t: str) -> bool:
+#         from collections import defaultdict
         
-        s_dict = defaultdict(int)
-        t_dict = defaultdict(int)
-        for x in s:
-            s_dict[x] += 1
+#         s_dict = defaultdict(int)
+#         t_dict = defaultdict(int)
+#         for x in s:
+#             s_dict[x] += 1
         
-        for x in t:
-            t_dict[x] += 1
-        return s_dict == t_dict
-# Python写法三(没有使用数组作为哈希表，只是介绍Counter这种更方便的解题思路)：
-class Solution(object):
-    def isAnagram(self, s: str, t: str) -> bool:
-        from collections import Counter
-        a_count = Counter(s)
-        b_count = Counter(t)
-        return a_count == b_count
+#         for x in t:
+#             t_dict[x] += 1
+#         return s_dict == t_dict
+# # Python写法三(没有使用数组作为哈希表，只是介绍Counter这种更方便的解题思路)：
+# class Solution(object):
+#     def isAnagram(self, s: str, t: str) -> bool:
+#         from collections import Counter
+#         a_count = Counter(s)
+#         b_count = Counter(t)
+#         return a_count == b_count
 
 
 #2 349. 两个数组的交集
@@ -185,7 +185,7 @@ class Solution:
     # 给定 nums = [2, 7, 11, 15], target = 9
     # 因为 nums[0] + nums[1] = 2 + 7 = 9
     # 所以返回 [0, 1]
-# （版本一） 使用字典
+# ***（版本一） 使用字典
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         records = dict()
@@ -196,46 +196,46 @@ class Solution:
             records[value] = index    # 如果没找到匹配对，就把访问过的元素和下标加入到map中
         return []
 # （版本二）使用集合
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        #创建一个集合来存储我们目前看到的数字
-        seen = set()             
-        for i, num in enumerate(nums):
-            complement = target - num
-            if complement in seen:
-                return [nums.index(complement), i]
-            seen.add(num)
-# （版本三）使用双指针
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        # 对输入列表进行排序
-        nums_sorted = sorted(nums)
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#         #创建一个集合来存储我们目前看到的数字
+#         seen = set()             
+#         for i, num in enumerate(nums):
+#             complement = target - num
+#             if complement in seen:
+#                 return [nums.index(complement), i]
+#             seen.add(num)
+# # （版本三）使用双指针
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#         # 对输入列表进行排序
+#         nums_sorted = sorted(nums)
         
-        # 使用双指针
-        left = 0
-        right = len(nums_sorted) - 1
-        while left < right:
-            current_sum = nums_sorted[left] + nums_sorted[right]
-            if current_sum == target:
-                # 如果和等于目标数，则返回两个数的下标
-                left_index = nums.index(nums_sorted[left])
-                right_index = nums.index(nums_sorted[right])
-                if left_index == right_index:
-                    right_index = nums[left_index+1:].index(nums_sorted[right]) + left_index + 1
-                return [left_index, right_index]
-            elif current_sum < target:
-                # 如果总和小于目标，则将左侧指针向右移动
-                left += 1
-            else:
-                # 如果总和大于目标值，则将右指针向左移动
-                right -= 1
-# （版本四）暴力法
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:
-        for i in range(len(nums)):
-            for j in range(i+1, len(nums)):
-                if nums[i] + nums[j] == target:
-                    return [i,j]
+#         # 使用双指针
+#         left = 0
+#         right = len(nums_sorted) - 1
+#         while left < right:
+#             current_sum = nums_sorted[left] + nums_sorted[right]
+#             if current_sum == target:
+#                 # 如果和等于目标数，则返回两个数的下标
+#                 left_index = nums.index(nums_sorted[left])
+#                 right_index = nums.index(nums_sorted[right])
+#                 if left_index == right_index:
+#                     right_index = nums[left_index+1:].index(nums_sorted[right]) + left_index + 1
+#                 return [left_index, right_index]
+#             elif current_sum < target:
+#                 # 如果总和小于目标，则将左侧指针向右移动
+#                 left += 1
+#             else:
+#                 # 如果总和大于目标值，则将右指针向左移动
+#                 right -= 1
+# # （版本四）暴力法
+# class Solution:
+#     def twoSum(self, nums: List[int], target: int) -> List[int]:
+#         for i in range(len(nums)):
+#             for j in range(i+1, len(nums)):
+#                 if nums[i] + nums[j] == target:
+#                     return [i,j]
 
 
 #5 第454题.四数相加II
@@ -312,7 +312,7 @@ class Solution:
     # canConstruct("a", "b") -> false
     # canConstruct("aa", "ab") -> false
     # canConstruct("aa", "aab") -> true
-# （版本一）使用数组
+# ***（版本一）使用数组
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
         ransom_count = [0] * 26
@@ -323,24 +323,24 @@ class Solution:
             magazine_count[ord(c) - ord('a')] += 1
         return all(ransom_count[i] <= magazine_count[i] for i in range(26))
 # （版本二）使用defaultdict
-from collections import defaultdict
+# from collections import defaultdict
 
-class Solution:
-    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+# class Solution:
+#     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
 
-        hashmap = defaultdict(int)
+#         hashmap = defaultdict(int)
 
-        for x in magazine:
-            hashmap[x] += 1
+#         for x in magazine:
+#             hashmap[x] += 1
 
-        for x in ransomNote:
-            value = hashmap.get(x)
-            if not value or not value:
-                return False
-            else:
-                hashmap[x] -= 1
+#         for x in ransomNote:
+#             value = hashmap.get(x)
+#             if not value or not value:
+#                 return False
+#             else:
+#                 hashmap[x] -= 1
 
-        return True
+#         return True
 # （版本三）使用字典
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
@@ -353,24 +353,24 @@ class Solution:
             counts[c] -= 1
         return True
 # （版本四）使用Counter
-from collections import Counter
+# from collections import Counter
 
-class Solution:
-    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-        return not Counter(ransomNote) - Counter(magazine)
-# （版本五）使用count
-class Solution:
-    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-        return all(ransomNote.count(c) <= magazine.count(c) for c in set(ransomNote))
-# (版本六）使用count(简单易懂)
-class Solution:
-    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-        for char in ransomNote:
-            if char in magazine and ransomNote.count(char) <= magazine.count(char):
-                continue
-            else:
-                return False
-        return True
+# class Solution:
+#     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+#         return not Counter(ransomNote) - Counter(magazine)
+# # （版本五）使用count
+# class Solution:
+#     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+#         return all(ransomNote.count(c) <= magazine.count(c) for c in set(ransomNote))
+# # (版本六）使用count(简单易懂)
+# class Solution:
+#     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+#         for char in ransomNote:
+#             if char in magazine and ransomNote.count(char) <= magazine.count(char):
+#                 continue
+#             else:
+#                 return False
+#         return True
 
 
 #7 第15题. 三数之和
@@ -379,7 +379,12 @@ class Solution:
     # 示例：
     # 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
     # 满足要求的三元组集合为： [ [-1, 0, 1], [-1, -1, 2] ]
-# （版本一） 双指针
+# 两数之和 就不能使用双指针法，因为1.两数之和 要求返回的是索引下标， 而双指针法一定要排序，一旦排序之后原数组的索引就被改变了。
+# 如果1.两数之和 要求返回的是数值的话，就可以使用双指针法了。
+
+# 说到去重，其实主要考虑三个数的去重。 a, b ,c, 对应的就是 nums[i]，nums[left]，nums[right]
+# a 如果重复了怎么办，a是nums里遍历的元素，那么应该直接跳过去。
+# ***（版本一） 双指针
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         result = []
@@ -390,7 +395,7 @@ class Solution:
             if nums[i] > 0:
                 return result
             
-            # 跳过相同的元素以避免重复
+            # a去重, 跳过相同的元素以避免重复
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
                 
@@ -407,7 +412,7 @@ class Solution:
                 else:
                     result.append([nums[i], nums[left], nums[right]])
                     
-                    # 跳过相同的元素以避免重复
+                    # b,c去重, 跳过相同的元素以避免重复
                     while right > left and nums[right] == nums[right - 1]:
                         right -= 1
                     while right > left and nums[left] == nums[left + 1]:
