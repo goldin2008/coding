@@ -739,7 +739,7 @@ class Solution:
         return 0
 
 
-#11 841.钥匙和房间
+#11 ??? 841.钥匙和房间
     # 有 N 个房间，开始时你位于 0 号房间。每个房间有不同的号码：0，1，2，...，N-1，并且房间里可能有一些钥匙能使你进入下一个房间。
     # 在形式上，对于每个房间 i 都有一个钥匙列表 rooms[i]，每个钥匙 rooms[i][j] 由 [0,1，...，N-1] 中的一个整数表示，其中 N = rooms.length。 钥匙 rooms[i][j] = v 可以打开编号为 v 的房间。
     # 最初，除 0 号房间外的其余所有房间都被锁住。
@@ -753,6 +753,7 @@ class Solution:
     # 输入：[[1,3],[3,0,1],[2],[0]]
     # 输出：false
     # 解释：我们不能进入 2 号房间。
+# 本题是一个有向图搜索全路径的问题。 只能用深搜（DFS）或者广搜（BFS）来搜。不能用并查集的方式去解决。
 # DFS 深度搜索优先
 class Solution:
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
@@ -817,6 +818,44 @@ class Solution:
     # col == grid[i].length
     # 1 <= row, col <= 100
     # grid[i][j] 为 0 或 1
+# 解法一：遍历每一个空格，遇到岛屿，计算其上下左右的情况，遇到水域或者出界的情况，就可以计算边了。
+class Solution:
+    def __init__(self):
+        self.direction = [[0, 1], [1, 0], [-1, 0], [0, -1]]
+
+    def islandPerimeter(self, grid):
+        result = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    for k in range(4):  # Four directions: up, down, left, right
+                        x = i + self.direction[k][0]
+                        y = j + self.direction[k][1]  # Calculate adjacent coordinates x,y
+                        if (x < 0                      # i is on the boundary
+                                or x >= len(grid)      # i is on the boundary
+                                or y < 0               # j is on the boundary
+                                or y >= len(grid[0])   # j is on the boundary
+                                or grid[x][y] == 0):  # Position x,y is water
+                            result += 1
+        return result
+# 解法二：计算出总的岛屿数量，因为有一对相邻两个陆地，边的总数就减2，那么在计算出相邻岛屿的数量就可以了。result = 岛屿数量 * 4 - cover * 2;
+class Solution:
+    def islandPerimeter(self, grid):
+        land_count = 0  # Number of land cells
+        neighbor_count = 0  # Number of neighboring land cells
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    land_count += 1
+                    # Count neighboring land cells above
+                    if i - 1 >= 0 and grid[i - 1][j] == 1:
+                        neighbor_count += 1
+                    # Count neighboring land cells to the left
+                    if j - 1 >= 0 and grid[i][j - 1] == 1:
+                        neighbor_count += 1
+                    # Why not count cells below and to the right? To avoid duplicate counting
+        return land_count * 4 - neighbor_count * 2
+# *** 
 # 扫描每个cell,如果当前位置为岛屿 grid[i][j] == 1， 从当前位置判断四边方向，如果边界或者是水域，证明有边界存在，res矩阵的对应cell加一。
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
@@ -833,14 +872,15 @@ class Solution:
                 if grid[i][j] == 0:
                     res[i][j] = 0
                 # 如果当前位置为陆地，往四个方向判断，update res[i][j]
+                # 只要上下左右四个边，都会有一个边
                 elif grid[i][j] == 1:
-                    if i == 0 or (i > 0 and grid[i-1][j] == 0):
+                    if i == 0 or (i > 0 and grid[i-1][j] == 0): # 上边
                         res[i][j] += 1
-                    if j == 0 or (j >0 and grid[i][j-1] == 0):
+                    if j == 0 or (j >0 and grid[i][j-1] == 0): # 左边
                         res[i][j] += 1
-                    if i == m-1 or (i < m-1 and grid[i+1][j] == 0):
+                    if i == m-1 or (i < m-1 and grid[i+1][j] == 0): # 下边
                         res[i][j] += 1
-                    if j == n-1 or (j < n-1 and grid[i][j+1] == 0):
+                    if j == n-1 or (j < n-1 and grid[i][j+1] == 0): # 右边
                         res[i][j] += 1
 
         # 最后求和res矩阵，这里其实不一定需要矩阵记录，可以设置一个variable res 记录边长，舍矩阵无非是更加形象而已
