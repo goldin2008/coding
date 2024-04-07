@@ -619,7 +619,7 @@ class Solution:
         return ans
 
 
-#9 827.最大人工岛
+#9 ??? 827.最大人工岛
     # 给你一个大小为 n x n 二进制矩阵 grid 。最多 只能将一格 0 变成 1 。
     # 返回执行此操作后，grid 中最大的岛屿面积是多少？
     # 岛屿 由一组上、下、左、右四个方向相连的 1 形成。
@@ -710,6 +710,12 @@ class Solution:
     # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
     # 输出：0
     # 解释：endWord "cog" 不在字典中，所以无法进行转换。
+# 首先题目中并没有给出点与点之间的连线，而是要我们自己去连，条件是字符只能差一个，所以判断点与点之间的关系，要自己判断是不是差一个字符，如果差一个字符，那就是有链接。
+# 然后就是求起点和终点的最短路径长度，这里无向图求最短路，广搜最为合适，广搜只要搜到了终点，那么一定是最短的路径。因为广搜就是以起点中心向四周扩散的搜索。
+# 本题如果用深搜，会比较麻烦，要在到达终点的不同路径中选则一条最短路。 而广搜只要达到终点，一定是最短路。
+# 另外需要有一个注意点：
+# 本题是一个无向图，需要用标记位，标记着节点是否走过，否则就会死循环！
+# 本题给出集合是数组型的，可以转成set结构，查找更快一些
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
         wordSet = set(wordList)
@@ -749,15 +755,6 @@ class Solution:
     # 解释：我们不能进入 2 号房间。
 # DFS 深度搜索优先
 class Solution:
-    def dfs(self, key: int, rooms: List[List[int]]  , visited : List[bool] ) :
-        if visited[key] :
-            return
-        visited[key] = True
-        keys = rooms[key]
-        for i in range(len(keys)) :
-            # 深度优先搜索遍历
-            self.dfs(keys[i], rooms, visited)
-
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
         visited = [False for i in range(len(rooms))]
 
@@ -768,6 +765,15 @@ class Solution:
             if not visited[i] :
                 return False
         return True
+
+    def dfs(self, key: int, rooms: List[List[int]]  , visited : List[bool] ) :
+        if visited[key] :
+            return
+        visited[key] = True
+        keys = rooms[key]
+        for i in range(len(keys)) :
+            # 深度优先搜索遍历
+            self.dfs(keys[i], rooms, visited)
 # BFS 广度搜索优先
 class Solution:
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
@@ -777,7 +783,6 @@ class Solution:
         for room in visited:
             if room == False:
                 return False
-        
         return True
     
     def bfs(self, rooms, index, visited):
