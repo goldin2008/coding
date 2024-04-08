@@ -889,6 +889,50 @@ class Solution:
         return ans
 
 
+# // 并查集初始化
+void init() {
+    for (int i = 0; i < n; ++i) {
+        father[i] = i;
+    }
+}
+
+# // 并查集里寻根的过程
+int find(int u) {
+    if (u == father[u]) return u; // 如果根就是自己，直接返回
+    else return find(father[u]); // 如果根不是自己，就根据数组下标一层一层向下找
+}
+# // 并查集里寻根的过程
+int find(int u) {
+    if (u == father[u]) return u;
+    else return father[u] = find(father[u]); // 路径压缩
+}
+
+# // 判断 u 和 v是否找到同一个根
+bool isSame(int u, int v) {
+    u = find(u);
+    v = find(v);
+    return u == v;
+}
+
+# // 将v，u 这条边加入并查集
+void join(int u, int v) {
+    u = find(u); // 寻找u的根
+    v = find(v); // 寻找v的根
+    if (u == v) return; // 如果发现根相同，则说明在一个集合，不用两个节点相连直接返回
+    father[v] = u;
+}
+
+# // 将v->u 这条边加入并查集
+void join(int u, int v) {
+    u = find(u); // 寻找u的根
+    v = find(v); // 寻找v的根
+
+    if (rank[u] <= rank[v]) father[u] = v; // rank小的树合入到rank大的树
+    else father[v] = u;
+
+    if (rank[u] == rank[v] && u != v) rank[v]++; // 如果两棵树高度相同，则v的高度+1因为，方面 if (rank[u] <= rank[v]) father[u] = v; 注意是 <=
+}
+
 #13 1971. 寻找图中是否存在路径
     # 有一个具有 n个顶点的 双向 图，其中每个顶点标记从 0 到 n - 1（包含 0 和 n - 1）。图中的边用一个二维整数数组 edges 表示，其中 edges[i] = [ui, vi] 表示顶点 ui 和顶点 vi 之间的双向边。 每个顶点对由 最多一条 边连接，并且没有顶点存在与自身相连的边。
     # 请你确定是否存在从顶点 start 开始，到顶点 end 结束的 有效路径 。
@@ -967,7 +1011,7 @@ class Solution:
             p[find(u)] = find(v)
 
 
-#15 685.冗余连接II
+#15 ??? 685.冗余连接II
     # 在本问题中，有根树指满足以下条件的 有向 图。该树只有一个根节点，所有其他节点都是该根节点的后继。该树除了根节点之外的每一个节点都有且只有一个父节点，而根节点没有父节点。
     # 输入一个有向图，该图由一个有着 n 个节点（节点值不重复，从 1 到 n）的树及一条附加的有向边构成。附加的边包含在 1 到 n 中的两个不同顶点间，这条附加的边不属于树中已存在的边。
     # 结果图是一个以边组成的二维数组 edges 。 每个元素是一对 [ui, vi]，用以表示 有向 图中连接顶点 ui 和顶点 vi 的边，其中 ui 是 vi 的一个父节点。
