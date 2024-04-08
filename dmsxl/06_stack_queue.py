@@ -148,7 +148,7 @@ class MyStack:
         因为只有in存了数据,只要判断in是不是有数即可
         """
         return len(self.queue_in) == 0
-# 优化,使用一个队列实现
+# *** 优化,使用一个队列实现
 class MyStack:
     def __init__(self):
         self.que = deque()
@@ -203,7 +203,7 @@ class MyStack:
     # 示例 5:
     # 输入: "{[]}"
     # 输出: true
-# 方法一,仅使用栈,更省空间
+# *** 方法一,仅使用栈,更省空间
 class Solution:
     def isValid(self, s: str) -> bool:
         stack = []
@@ -248,7 +248,7 @@ class Solution:
     # 输入："abbaca"
     # 输出："ca"
     # 解释：例如,在 "abbaca" 中,我们可以删除 "bb" 由于两字母相邻且相同,这是此时唯一可以执行删除操作的重复项。之后我们得到字符串 "aaca",其中又只有 "aa" 可以执行重复项删除操作,所以最后的字符串为 "ca"。
-# 方法一,使用栈
+# *** 方法一,使用栈
 class Solution:
     def removeDuplicates(self, s: str) -> str:
         res = list()
@@ -339,7 +339,7 @@ class Solution:
         return int(stack.pop()) # 如果一开始只有一个数,那么会是字符串形式的
 
 
-#6 239. 滑动窗口最大值
+#6 ??? 239. 滑动窗口最大值
     # 给定一个数组 nums,有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
     # 返回滑动窗口中的最大值。
     # 进阶：
@@ -349,15 +349,15 @@ class MyQueue: #单调队列(从大到小
     def __init__(self):
         self.queue = deque() #这里需要使用deque实现单调队列,直接使用list会超时
     
+    def pop(self, value):
     #每次弹出的时候,比较当前要弹出的数值是否等于队列出口元素的数值,如果相等则弹出。
     #同时pop之前判断队列当前是否为空。
-    def pop(self, value):
         if self.queue and value == self.queue[0]:
             self.queue.popleft()#list.pop()时间复杂度为O(n),这里需要使用collections.deque()
             
+    def push(self, value):
     #如果push的数值大于入口元素的数值,那么就将队列后端的数值弹出,直到push的数值小于等于队列入口元素的数值为止。
     #这样就保持了队列里的数值是单调从大到小的了。
-    def push(self, value):
         while self.queue and value > self.queue[-1]:
             self.queue.pop()
         self.queue.append(value)
@@ -380,7 +380,7 @@ class Solution:
         return result
 
 
-#7 347.前 K 个高频元素
+#7 ??? 347.前 K 个高频元素
     # 给定一个非空的整数数组,返回其中出现频率前 k 高的元素。
     # 示例 1:
     # 输入: nums = [1,1,1,2,2,3], k = 2

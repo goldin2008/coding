@@ -390,26 +390,26 @@ class Solution:
             nxt[i] = j
         return nxt
 # （版本三） 使用 find
-class Solution:
-    def repeatedSubstringPattern(self, s: str) -> bool:
-        n = len(s)
-        if n <= 1:
-            return False
-        ss = s[1:] + s[:-1] 
-        print(ss.find(s))              
-        return ss.find(s) != -1
-# （版本四） 暴力法
-class Solution:
-    def repeatedSubstringPattern(self, s: str) -> bool:
-        n = len(s)
-        if n <= 1:
-            return False
+# class Solution:
+#     def repeatedSubstringPattern(self, s: str) -> bool:
+#         n = len(s)
+#         if n <= 1:
+#             return False
+#         ss = s[1:] + s[:-1] 
+#         print(ss.find(s))              
+#         return ss.find(s) != -1
+# # （版本四） 暴力法
+# class Solution:
+#     def repeatedSubstringPattern(self, s: str) -> bool:
+#         n = len(s)
+#         if n <= 1:
+#             return False
         
-        substr = ""
-        for i in range(1, n//2 + 1):
-            if n % i == 0:
-                substr = s[:i]
-                if substr * (n//i) == s:
-                    return True
+#         substr = ""
+#         for i in range(1, n//2 + 1):
+#             if n % i == 0:
+#                 substr = s[:i]
+#                 if substr * (n//i) == s:
+#                     return True
                 
-        return False
+#         return False
