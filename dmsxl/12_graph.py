@@ -896,12 +896,16 @@ void init() {
     }
 }
 
+# # // 并查集里寻根的过程
+# int find(int u) {
+#     if (u == father[u]) return u; // 如果根就是自己，直接返回
+#     else return find(father[u]); // 如果根不是自己，就根据数组下标一层一层向下找
+# }
 # // 并查集里寻根的过程
-int find(int u) {
-    if (u == father[u]) return u; // 如果根就是自己，直接返回
-    else return find(father[u]); // 如果根不是自己，就根据数组下标一层一层向下找
-}
-# // 并查集里寻根的过程
+# 除了根节点其他所有节点都挂载根节点下，这样我们在寻根的时候就很快，只需要一步，
+# 如果我们想达到这样的效果，就需要 路径压缩，将非根节点的所有节点直接指向根节点。 那么在代码层面如何实现呢？
+# 我们只需要在递归的过程中，让 father[u] 接住 递归函数 find(father[u]) 的返回结果。
+# 因为 find 函数向上寻找根节点，father[u] 表述 u 的父节点，那么让 father[u] 直接获取 find函数 返回的根节点，这样就让节点 u 的父节点 变成根节点。
 int find(int u) {
     if (u == father[u]) return u;
     else return father[u] = find(father[u]); // 路径压缩
@@ -941,10 +945,12 @@ void join(int u, int v) {
 class Solution:
     def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
         p = [i for i in range(n)]
+
         def find(i):
             if p[i] != i:
                 p[i] = find(p[i])
             return p[i]
+
         for u, v in edges:
             p[find(u)] = find(v)
         return find(source) == find(destination)
