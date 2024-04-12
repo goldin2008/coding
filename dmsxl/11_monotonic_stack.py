@@ -11,7 +11,7 @@
 # 情况一：当前遍历的元素T[i]小于栈顶元素T[st.top()]的情况
 # 情况二：当前遍历的元素T[i]等于栈顶元素T[st.top()]的情况
 # 情况三：当前遍历的元素T[i]大于栈顶元素T[st.top()]的情况
-# *** 未精简版本
+# 未精简版本
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         answer = [0]*len(temperatures)
@@ -28,17 +28,17 @@ class Solution:
                 stack.append(i)
             
         return answer
-# 精简版本
-# class Solution:
-#     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-#         answer = [0]*len(temperatures)
-#         stack = []
-#         for i in range(len(temperatures)):
-#             while len(stack)>0 and temperatures[i] > temperatures[stack[-1]]:
-#                 answer[stack[-1]] = i - stack[-1]
-#                 stack.pop()
-#             stack.append(i)
-#         return answer
+# *** 精简版本
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        answer = [0]*len(temperatures)
+        stack = []
+        for i in range(len(temperatures)):
+            while len(stack)>0 and temperatures[i] > temperatures[stack[-1]]:
+                answer[stack[-1]] = i - stack[-1]
+                stack.pop()
+            stack.append(i)
+        return answer
 
 
 #2 496.下一个更大元素 I
@@ -79,6 +79,22 @@ class Solution:
                         result[index]=nums2[i]
                     stack.pop()                 
                 stack.append(i)
+        return result
+# *** 精简版本
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        result = [-1]*len(nums1)
+        stack = [0]
+        for i in range(1,len(nums2)):
+            # 情况三
+            while len(stack)!=0 and nums2[i]>nums2[stack[-1]]:
+                if nums2[stack[-1]] in nums1:
+                    index = nums1.index(nums2[stack[-1]])
+                    result[index]=nums2[i]
+                stack.pop()
+            
+            # 情况一情况二  
+            stack.append(i)
         return result
 
 
