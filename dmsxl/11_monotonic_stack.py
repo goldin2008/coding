@@ -6,6 +6,12 @@
     # 请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。如果气温在这之后都不会升高，请在该位置用 0 来代替。
     # 例如，给定一个列表 temperatures = [73, 74, 75, 71, 69, 72, 76, 73]，你的输出应该是 [1, 1, 4, 2, 1, 1, 0, 0]。
     # 提示：气温 列表长度的范围是 [1, 30000]。每个气温的值的均为华氏度，都是在 [30, 100] 范围内的整数。
+# 首先想到的当然是暴力解法，两层for循环，把至少需要等待的天数就搜出来了。时间复杂度是O(n^2)
+# 通常是一维数组，要寻找任一个元素的右边或者左边第一个比自己大或者小的元素的位置，此时我们就要想到可以用单调栈了。时间复杂度为O(n)。
+# 情况一：当前遍历的元素T[i]小于栈顶元素T[st.top()]的情况
+# 情况二：当前遍历的元素T[i]等于栈顶元素T[st.top()]的情况
+# 情况三：当前遍历的元素T[i]大于栈顶元素T[st.top()]的情况
+# *** 未精简版本
 class Solution:
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         answer = [0]*len(temperatures)
@@ -23,16 +29,16 @@ class Solution:
             
         return answer
 # 精简版本
-class Solution:
-    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
-        answer = [0]*len(temperatures)
-        stack = []
-        for i in range(len(temperatures)):
-            while len(stack)>0 and temperatures[i] > temperatures[stack[-1]]:
-                answer[stack[-1]] = i - stack[-1]
-                stack.pop()
-            stack.append(i)
-        return answer
+# class Solution:
+#     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+#         answer = [0]*len(temperatures)
+#         stack = []
+#         for i in range(len(temperatures)):
+#             while len(stack)>0 and temperatures[i] > temperatures[stack[-1]]:
+#                 answer[stack[-1]] = i - stack[-1]
+#                 stack.pop()
+#             stack.append(i)
+#         return answer
 
 
 #2 496.下一个更大元素 I
