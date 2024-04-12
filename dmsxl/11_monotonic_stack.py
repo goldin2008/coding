@@ -148,6 +148,8 @@ class Solution:
     # 示例 2：
     # 输入：height = [4,2,0,3,2,5]
     # 输出：9
+# 通常是一维数组，要寻找任一个元素的右边或者左边第一个比自己大或者小的元素的位置，此时我们就要想到可以用单调栈了。
+# 而接雨水这道题目，我们正需要寻找一个元素，右边最大元素以及左边最大元素，来计算雨水面积。
 # 暴力解法
 # class Solution:
 #     def trap(self, height: List[int]) -> int:
@@ -184,6 +186,13 @@ class Solution:
 #             result += summ
 #         return result
 # 单调栈
+# 从栈头（元素从栈头弹出）到栈底的顺序应该是从小到大的顺序。
+# 因为一旦发现添加的柱子高度大于栈头元素了，此时就出现凹槽了，
+# 栈头元素就是凹槽底部的柱子，栈头第二个元素就是凹槽左边的柱子，而添加的元素就是凹槽右边的柱子。
+# 情况一：当前遍历的元素（柱子）高度小于栈顶元素的高度 height[i] < height[st.top()]
+# 情况二：当前遍历的元素（柱子）高度等于栈顶元素的高度 height[i] == height[st.top()]
+# 情况三：当前遍历的元素（柱子）高度大于栈顶元素的高度 height[i] > height[st.top()]
+# *** 单调栈非压缩版 
 class Solution:
     def trap(self, height: List[int]) -> int:
         # 单调栈
@@ -192,7 +201,7 @@ class Solution:
         从栈顶到栈底的顺序：从小到大
         通过三个元素来接水：栈顶，栈顶的下一个元素，以及即将入栈的元素
         雨水高度是 min(凹槽左边高度, 凹槽右边高度) - 凹槽底部高度
-        雨水的宽度是 凹槽右边的下标 - 凹槽左边的下标 - 1（因为只求中间宽度）
+        雨水的宽度是 凹槽右边的下标 - 凹槽左边的下标 - 1 (因为只求中间宽度)
         '''
         # stack储存index，用于计算对应的柱子高度
         stack = [0]
@@ -309,9 +318,7 @@ class Solution:
 #         for i in range(size):
 #             area = heights[i] * (min_right_index[i] - min_left_index[i] - 1)
 #             result = max(area, result)
-        
 #         return result
-
 # 单调栈
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
