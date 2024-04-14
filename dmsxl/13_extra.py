@@ -2,16 +2,122 @@
 
 """
 #1 1365.有多少小于当前数字的数字
-# 给你一个数组 nums, 对于其中每个元素 nums[i], 请你统计数组中比它小的所有数字的数目。
+    # 给你一个数组 nums, 对于其中每个元素 nums[i], 请你统计数组中比它小的所有数字的数目。
+    # 换而言之，对于每个 nums[i] 你必须计算出有效的 j 的数量，其中 j 满足 j != i 且 nums[j] < nums[i] 。
+    # 以数组形式返回答案。
+    # 示例 1：
+    # 输入：nums = [8,1,2,2,3]
+    # 输出：[4,0,1,1,3]
+    # 解释： 对于 nums[0]=8 存在四个比它小的数字：（1，2，2 和 3）。
+    # 对于 nums[1]=1 不存在比它小的数字。
+    # 对于 nums[2]=2 存在一个比它小的数字：（1）。
+    # 对于 nums[3]=2 存在一个比它小的数字：（1）。
+    # 对于 nums[4]=3 存在三个比它小的数字：（1，2 和 2）。
+    # 示例 2：
+    # 输入：nums = [6,5,4,8]
+    # 输出：[2,1,0,3]
+    # 示例 3：
+    # 输入：nums = [7,7,7,7]
+    # 输出：[0,0,0,0]
+# 可以排序之后加哈希，时间复杂度为$O(n\log n)$
+class Solution:
+    def smallerNumbersThanCurrent(self, nums: List[int]) -> List[int]:
+        res = nums[:]
+        hash = dict()
+        res.sort() # 从小到大排序之后，元素下标就是小于当前数字的数字
+        for i, num in enumerate(res):
+            if num  not in hash.keys(): # 遇到了相同的数字，那么不需要更新该 number 的情况
+                hash[num] = i       
+        for i, num in enumerate(nums):
+            res[i] = hash[num]
+        return res
 
 
 #2 941.有效的山脉数组
-# 给定一个整数数组 arr, 如果它是有效的山脉数组就返回 true, 否则返回 false。
+    # 给定一个整数数组 arr, 如果它是有效的山脉数组就返回 true, 否则返回 false。
+    # 让我们回顾一下，如果 A 满足下述条件，那么它是一个山脉数组：
+    # arr.length >= 3
+    # 在 0 < i < arr.length - 1 条件下，存在 i 使得：
+    # arr[0] < arr[1] < ... arr[i-1] < arr[i]
+    # arr[i] > arr[i+1] > ... > arr[arr.length - 1]
+    # 示例 1：
+    # 输入：arr = [2,1]
+    # 输出：false
+    # 示例 2：
+    # 输入：arr = [3,5,5]
+    # 输出：false
+    # 示例 3：
+    # 输入：arr = [0,3,2,1]
+    # 输出：true
+class Solution:
+    def validMountainArray(self, arr: List[int]) -> bool:
+        left, right = 0, len(arr)-1
+        
+        while left < len(arr)-1 and arr[left+1] > arr[left]:
+            left += 1
+        
+        while right > 0 and arr[right-1] > arr[right]:
+            right -= 1
+        
+        return left == right and right != 0 and left != len(arr)-1
 
 
 #3 1207.独一无二的出现次数
-# 给你一个整数数组 arr, 请你帮忙统计数组中每个数的出现次数。
-# 如果每个数的出现次数都是独一无二的, 就返回 true；否则返回 false。
+    # 给你一个整数数组 arr, 请你帮忙统计数组中每个数的出现次数。
+    # 如果每个数的出现次数都是独一无二的, 就返回 true；否则返回 false。
+    # 示例 1：
+    # 输入：arr = [1,2,2,1,1,3]
+    # 输出：true
+    # 解释：在该数组中，1 出现了 3 次，2 出现了 2 次，3 只出现了 1 次。没有两个数的出现次数相同。
+    # 示例 2：
+    # 输入：arr = [1,2]
+    # 输出：false
+    # 示例 3：
+    # 输入：arr = [-3,0,1,-3,1,1,1,-3,10,0]
+    # 输出：true
+    # 提示：
+    # 1 <= arr.length <= 1000
+    # -1000 <= arr[i] <= 1000
+# 方法 1: 数组在哈西法的应用
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        count = [0] * 2002
+        for i in range(len(arr)):
+            count[arr[i] + 1000] += 1 # 防止负数作为下标
+        freq = [False] * 1002 # 标记相同频率是否重复出现
+        for i in range(2001):
+            if count[i] > 0:
+                if freq[count[i]] == False:
+                    freq[count[i]] = True
+                else:
+                    return False
+        return True
+# 方法 2： map 在哈西法的应用
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        ref = dict()
+
+        for i in range(len(arr)):
+            ref[arr[i]] = ref.get(arr[i], 0) + 1
+
+        value_list = sorted(ref.values())
+
+        for i in range(len(value_list) - 1):
+            if value_list[i + 1] == value_list[i]:
+                return False 
+        return True 
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        res = [0] * 2001
+        freq = [0] * 1001
+        for a in arr:
+            res[a+1000] += 1
+
+        for r in res:
+            if freq[r]==1 and r != 0:
+                return False
+            freq[r] += 1
+        return True
 
 
 #4 283. 移动零
