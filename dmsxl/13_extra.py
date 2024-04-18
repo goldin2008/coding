@@ -157,16 +157,192 @@ class Solution:
     # 输入：nums = [-1,-100,3,99], k = 2
     # 输出：[3,99,-1,-100]
     # 解释: 向右旋转 1 步: [99,-1,-100,3]。 向右旋转 2 步: [3,99,-1,-100]。
+# 在字符串：剑指Offer58-II.左旋转字符串 (opens new window)中，我们提到，如下步骤就可以坐旋转字符串：
+# 反转区间为前n的子串
+# 反转区间为n到末尾的子串
+# 反转整个字符串
+# 本题是右旋转，其实就是反转的顺序改动一下，优先反转整个字符串，步骤如下：
+# 反转整个字符串
+# 反转区间为前k的子串
+# 反转区间为k到末尾的子串
+# 方法一：局部翻转 + 整体翻转
+class Solution:
+    def rotate(self, A: List[int], k: int) -> None:
+        def reverse(i, j):
+            while i < j:
+                A[i], A[j] = A[j], A[i]
+                i += 1
+                j -= 1
+        n = len(A)
+        k %= n
+        reverse(0, n - 1)
+        reverse(0, k - 1)
+        reverse(k, n - 1)
+# 方法二：利用余数
+class Solution:
+    def rotate(self, nums: List[int], k: int) -> None:
+        copy = nums[:]
 
+        for i in range(len(nums)):
+            nums[(i + k) % len(nums)] = copy[i]
+        
+        return nums
+        # 备注：这个方法会导致空间复杂度变成 O(n) 因为我们要创建一个 copy 数组。但是不失为一种思路。
 
 
 #6 724.寻找数组的中心下标
-# 给你一个整数数组 nums , 请计算数组的 中心下标 。
+    # 给你一个整数数组 nums , 请计算数组的 中心下标 。
+    # 数组 中心下标 是数组的一个下标，其左侧所有元素相加的和等于右侧所有元素相加的和。
+    # 如果中心下标位于数组最左端，那么左侧数之和视为 0 ，因为在下标的左侧不存在元素。这一点对于中心下标位于数组最右端同样适用。
+    # 如果数组有多个中心下标，应该返回 最靠近左边 的那一个。如果数组不存在中心下标，返回 -1 。
+    # 示例 1：
+    # 输入：nums = [1, 7, 3, 6, 5, 6]
+    # 输出：3
+    # 解释：中心下标是 3。左侧数之和 sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11 ，右侧数之和 sum = nums[4] + nums[5] = 5 + 6 = 11 ，二者相等。
+    # 示例 2：
+    # 输入：nums = [1, 2, 3]
+    # 输出：-1
+    # 解释：数组中不存在满足此条件的中心下标。
+    # 示例 3：
+    # 输入：nums = [2, 1, -1]
+    # 输出：0
+    # 解释：中心下标是 0。左侧数之和 sum = 0 ，（下标 0 左侧不存在元素），右侧数之和 sum = nums[1] + nums[2] = 1 + -1 = 0 
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        numSum = sum(nums) #数组总和
+        leftSum = 0
+        for i in range(len(nums)):
+            if numSum - leftSum -nums[i] == leftSum: #左右和相等
+                return i
+            leftSum += nums[i]
+        return -1
 
 
 #7 34. 在排序数组中查找元素的第一个和最后一个位置
-# 给定一个按照升序排列的整数数组 nums, 和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
-# 如果数组中不存在目标值 target, 返回 [-1, -1]。
+    # 给定一个按照升序排列的整数数组 nums, 和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+    # 如果数组中不存在目标值 target, 返回 [-1, -1]。
+    # 进阶：你可以设计并实现时间复杂度为 $O(\log n)$ 的算法解决此问题吗？
+    # 示例 1：
+    # 输入：nums = [5,7,7,8,8,10], target = 8
+    # 输出：[3,4]
+    # 示例 2：
+    # 输入：nums = [5,7,7,8,8,10], target = 6
+    # 输出：[-1,-1]
+    # 示例 3：
+    # 输入：nums = [], target = 0
+    # 输出：[-1,-1]
+# 寻找target在数组里的左右边界，有如下三种情况：
+# 情况一：target 在数组范围的右边或者左边，例如数组{3, 4, 5}，target为2或者数组{3, 4, 5},target为6，此时应该返回{-1, -1}
+# 情况二：target 在数组范围中，且数组中不存在target，例如数组{3,6,7},target为5，此时应该返回{-1, -1}
+# 情况三：target 在数组范围中，且数组中存在target，例如数组{3,6,7},target为6，此时应该返回{1, 1}
+# 这三种情况都考虑到，说明就想的很清楚了。
+# 接下来，在去寻找左边界，和右边界了。
+# 采用二分法来去寻找左右边界，为了让代码清晰，我分别写两个二分来寻找左边界和右边界。
+# 刚刚接触二分搜索的同学不建议上来就想用一个二分来查找左右边界，很容易把自己绕进去，建议扎扎实实的写两个二分分别找左边界和右边界
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def getRightBorder(nums:List[int], target:int) -> int:
+            left, right = 0, len(nums)-1
+            rightBoder = -2 # 记录一下rightBorder没有被赋值的情况
+            while left <= right:
+                middle = left + (right-left) // 2
+                if nums[middle] > target:
+                    right = middle - 1
+                else: # 寻找右边界，nums[middle] == target的时候更新left
+                    left = middle + 1
+                    rightBoder = left
+    
+            return rightBoder
+        
+        def getLeftBorder(nums:List[int], target:int) -> int:
+            left, right = 0, len(nums)-1 
+            leftBoder = -2 # 记录一下leftBorder没有被赋值的情况
+            while left <= right:
+                middle = left + (right-left) // 2
+                if nums[middle] >= target: #  寻找左边界，nums[middle] == target的时候更新right
+                    right = middle - 1
+                    leftBoder = right
+                else:
+                    left = middle + 1
+            return leftBoder
+        leftBoder = getLeftBorder(nums, target)
+        rightBoder = getRightBorder(nums, target)
+        # 情况一
+        if leftBoder == -2 or rightBoder == -2: return [-1, -1]
+        # 情况三
+        if rightBoder -leftBoder >1: return [leftBoder + 1, rightBoder - 1]
+        # 情况二
+        return [-1, -1]
+# 解法2
+# 1、首先，在 nums 数组中二分查找 target；
+# 2、如果二分查找失败，则 binarySearch 返回 -1，表明 nums 中没有 target。此时，searchRange 直接返回 {-1, -1}；
+# 3、如果二分查找成功，则 binarySearch 返回 nums 中值为 target 的一个下标。然后，通过左右滑动指针，来找到符合题意的区间
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def binarySearch(nums:List[int], target:int) -> int:
+            left, right = 0, len(nums)-1
+            while left<=right: # 不变量：左闭右闭区间
+                middle = left + (right-left) // 2
+                if nums[middle] > target:
+                    right = middle - 1
+                elif nums[middle] < target: 
+                    left = middle + 1
+                else:
+                    return middle
+            return -1
+        index = binarySearch(nums, target)
+        if index == -1:return [-1, -1] # nums 中不存在 target，直接返回 {-1, -1}
+        # nums 中存在 target，则左右滑动指针，来找到符合题意的区间
+        left, right = index, index
+        # 向左滑动，找左边界
+        while left -1 >=0 and nums[left - 1] == target: left -=1
+        # 向右滑动，找右边界
+        while right+1 < len(nums) and nums[right + 1] == target: right +=1
+        return [left, right]
+# 解法3
+# 1、首先，在 nums 数组中二分查找得到第一个大于等于 target的下标（左边界）与第一个大于target的下标（右边界）；
+# 2、如果左边界<= 右边界，则返回 [左边界, 右边界]。否则返回[-1, -1]
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def binarySearch(nums:List[int], target:int, lower:bool) -> int:
+            left, right = 0, len(nums)-1
+            ans = len(nums)
+            while left<=right: # 不变量：左闭右闭区间
+                middle = left + (right-left) //2 
+                # lower为True，执行前半部分，找到第一个大于等于 target的下标 ，否则找到第一个大于target的下标
+                if nums[middle] > target or (lower and nums[middle] >= target): 
+                    right = middle - 1
+                    ans = middle
+                else: 
+                    left = middle + 1
+            return ans
+
+        leftBorder = binarySearch(nums, target, True) # 搜索左边界
+        rightBorder = binarySearch(nums, target, False) -1  # 搜索右边界
+        if leftBorder<= rightBorder and rightBorder< len(nums) and nums[leftBorder] == target and  nums[rightBorder] == target:
+            return [leftBorder, rightBorder]
+        return [-1, -1]
+# 解法4
+# 1、首先，在 nums 数组中二分查找得到第一个大于等于 target的下标leftBorder；
+# 2、在 nums 数组中二分查找得到第一个大于等于 target+1的下标， 减1则得到rightBorder；
+# 3、如果开始位置在数组的右边或者不存在target，则返回[-1, -1] 。否则返回[leftBorder, rightBorder]
+class Solution:
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        def binarySearch(nums:List[int], target:int) -> int:
+            left, right = 0, len(nums)-1
+            while left<=right: # 不变量：左闭右闭区间
+                middle = left + (right-left) //2 
+                if nums[middle] >= target: 
+                    right = middle - 1
+                else: 
+                    left = middle + 1
+            return left  # 若存在target，则返回第一个等于target的值 
+
+        leftBorder = binarySearch(nums, target) # 搜索左边界
+        rightBorder = binarySearch(nums, target+1) -1  # 搜索右边界
+        if leftBorder == len(nums) or nums[leftBorder]!= target: # 情况一和情况二
+            return [-1, -1]
+        return [leftBorder, rightBorder]
 
 
 #8 922. 按奇偶排序数组II
