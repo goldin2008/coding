@@ -1442,7 +1442,6 @@ class Solution:
         self.n = 1010
         self.father = [i for i in range(self.n)]
 
-
     def find(self, u: int):
         """
         并查集里寻根的过程
@@ -1461,7 +1460,6 @@ class Solution:
         if u == v : return
         self.father[v] = u
         pass
-
 
     def same(self, u: int, v: int ):
         """
