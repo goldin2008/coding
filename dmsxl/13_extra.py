@@ -1280,6 +1280,7 @@ class Solution:
     # 输入：[[1,3],[3,0,1],[2],[0]]
     # 输出：false
     # 解释：我们不能进入 2 号房间。
+# 有向图搜索全路径的问题。 只能用深搜（DFS）或者广搜（BFS）来搜。
 # 深度搜索优先
 class Solution:
     def dfs(self, key: int, rooms: List[List[int]]  , visited : List[bool] ) :
@@ -1342,6 +1343,9 @@ class Solution:
     # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
     # 输出：0
     # 解释：endWord "cog" 不在字典中，所以无法进行转换。
+# 然后就是求起点和终点的最短路径长度，这里无向图求最短路，广搜最为合适，广搜只要搜到了终点，那么一定是最短的路径。因为广搜就是以起点中心向四周扩散的搜索。
+# 本题如果用深搜，会比较麻烦，要在到达终点的不同路径中选则一条最短路。 而广搜只要达到终点，一定是最短路。
+# 类似于BFS
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
         wordSet = set(wordList)
