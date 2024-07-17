@@ -1002,7 +1002,8 @@ class Solution:
             else :
                 self.join(edges[i][0], edges[i][1])
         return []
-#Python简洁写法：
+
+# *** Python简洁写法：
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         n = len(edges)

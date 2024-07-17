@@ -1170,7 +1170,6 @@ class Solution:
 # 双指针
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-
         def find_point(i, j, s):
             while i >= 0 and j < len(s) and s[i] == s[j]:
                 i -= 1
