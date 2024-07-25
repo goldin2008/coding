@@ -1168,29 +1168,49 @@ class Solution:
                     right = j
         return s[left:right + 1]
 # 双指针
+# class Solution:
+#     def longestPalindrome(self, s: str) -> str:
+#         def find_point(i, j, s):
+#             while i >= 0 and j < len(s) and s[i] == s[j]:
+#                 i -= 1
+#                 j += 1
+#             return i + 1, j
+
+#         def compare(start, end, left, right):
+#             if right - left > end - start:
+#                 return left, right
+#             else:
+#                 return start, end
+
+#         start = 0
+#         end = 0
+#         for i in range(len(s)):
+#             left, right = find_point(i, i, s)
+#             start, end = compare(start, end, left, right)
+
+#             left, right = find_point(i, i + 1, s)
+#             start, end = compare(start, end, left, right)
+#         return s[start:end]
 class Solution:
+    def __init__(self):
+        self.left = 0
+        self.right = 0
+        self.maxLength = 0
+
     def longestPalindrome(self, s: str) -> str:
-        def find_point(i, j, s):
-            while i >= 0 and j < len(s) and s[i] == s[j]:
-                i -= 1
-                j += 1
-            return i + 1, j
-
-        def compare(start, end, left, right):
-            if right - left > end - start:
-                return left, right
-            else:
-                return start, end
-
-        start = 0
-        end = 0
         for i in range(len(s)):
-            left, right = find_point(i, i, s)
-            start, end = compare(start, end, left, right)
+            self.extend(s, i, i)       # Extend with i as the center
+            self.extend(s, i, i + 1)   # Extend with i and i+1 as the center
+        return s[self.left:self.left + self.maxLength]
 
-            left, right = find_point(i, i + 1, s)
-            start, end = compare(start, end, left, right)
-        return s[start:end]
+    def extend(self, s: str, i: int, j: int):
+        while i >= 0 and j < len(s) and s[i] == s[j]:
+            if j - i + 1 > self.maxLength:
+                self.left = i
+                self.right = j
+                self.maxLength = j - i + 1
+            i -= 1
+            j += 1
 
 
 #26 132. 分割回文串 II
