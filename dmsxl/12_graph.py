@@ -1,33 +1,33 @@
 """
 DFS
-正是因为dfs搜索可一个方向，并需要回溯，所以用递归的方式来实现是最方便的。
-1. 确认递归函数，参数
-通常我们递归的时候，我们递归搜索需要了解哪些参数，其实也可以在写递归函数的时候，发现需要什么参数，再去补充就可以。
-一般情况，深搜需要 二维数组数组结构保存所有路径，需要一维数组保存单一路径，这种保存结果的数组，我们可以定义一个全局变量，避免让我们的函数参数过多。
+正是因为dfs搜索可一个方向, 并需要回溯, 所以用递归的方式来实现是最方便的。
+1. 确认递归函数, 参数
+通常我们递归的时候, 我们递归搜索需要了解哪些参数, 其实也可以在写递归函数的时候, 发现需要什么参数, 再去补充就可以。
+一般情况, 深搜需要 二维数组数组结构保存所有路径, 需要一维数组保存单一路径, 这种保存结果的数组, 我们可以定义一个全局变量, 避免让我们的函数参数过多。
 例如这样：
 vector<vector<int>> result; // 保存符合条件的所有路径
 vector<int> path; // 起点到终点的路径
-void dfs (图，目前搜索的节点)  
+void dfs (图, 目前搜索的节点)  
 
 2. 确认终止条件
-终止条件很重要，很多同学写dfs的时候，之所以容易死循环，栈溢出等等这些问题，都是因为终止条件没有想清楚。
+终止条件很重要, 很多同学写dfs的时候, 之所以容易死循环, 栈溢出等等这些问题, 都是因为终止条件没有想清楚。
 if (终止条件) {
     存放结果;
     return;
 }
 
 3. 处理目前搜索节点出发的路径
-一般这里就是一个for循环的操作，去遍历 目前搜索节点 所能到的所有节点。
+一般这里就是一个for循环的操作, 去遍历 目前搜索节点 所能到的所有节点。
 for (选择：本节点所连接的其他节点) {
     处理节点;
-    dfs(图，选择的节点); // 递归
-    回溯，撤销处理结果
+    dfs(图, 选择的节点); // 递归
+    回溯, 撤销处理结果
 }
 
 BFS
 广搜的搜索方式就适合于解决两个点之间的最短路径问题。
-因为广搜是从起点出发，以起始点为中心一圈一圈进行搜索，一旦遇到终点，记录之前走过的节点就是一条最短路。
-当然，也有一些问题是广搜 和 深搜都可以解决的，例如岛屿问题，这类问题的特征就是不涉及具体的遍历方式，只要能把相邻且相同属性的节点标记上就行。
+因为广搜是从起点出发, 以起始点为中心一圈一圈进行搜索, 一旦遇到终点, 记录之前走过的节点就是一条最短路。
+当然, 也有一些问题是广搜 和 深搜都可以解决的, 例如岛屿问题, 这类问题的特征就是不涉及具体的遍历方式, 只要能把相邻且相同属性的节点标记上就行。
 
 """
 # 回溯算法
@@ -38,8 +38,8 @@ void backtracking(参数) {
     }
     for (选择：本层集合中元素（树中节点孩子的数量就是集合的大小）) {
         处理节点;
-        backtracking(路径，选择列表); // 递归
-        回溯，撤销处理结果
+        backtracking(路径, 选择列表); // 递归
+        回溯, 撤销处理结果
     }
 }
 # dfs的代码框架
@@ -51,13 +51,13 @@ void dfs(参数) {
 
     for (选择：本节点所连接的其他节点) {
         处理节点;
-        dfs(图，选择的节点); // 递归
-        回溯，撤销处理结果
+        dfs(图, 选择的节点); // 递归
+        回溯, 撤销处理结果
     }
 }
 
 #1 797.所有可能的路径
-    # 给你一个有 n 个节点的 有向无环图（DAG），请你找出所有从节点 0 到节点 n-1 的路径并输出（不要求按特定顺序）
+    # 给你一个有 n 个节点的 有向无环图（DAG）, 请你找出所有从节点 0 到节点 n-1 的路径并输出（不要求按特定顺序）
     # graph[i] 是一个从节点 i 可以访问的所有节点的列表（即从节点 i 到节点 graph[i][j]存在一条有向边）。
     # 提示：
     # n == graph.length
@@ -66,8 +66,8 @@ void dfs(参数) {
     # graph[i][j] != i（即不存在自环）
     # graph[i] 中的所有元素 互不相同
     # 保证输入为 有向无环图（DAG）
-# 本题是比较基础的深度优先搜索模板题，这种有向图路径问题，最合适使用深搜，当然本题也可以使用广搜，但广搜相对来说就麻烦了一些，需要记录一下路径。
-# 而深搜和广搜都适合解决颜色类的问题，例如岛屿系列，其实都是 遍历+标记，所以使用哪种遍历都是可以的。
+# 本题是比较基础的深度优先搜索模板题, 这种有向图路径问题, 最合适使用深搜, 当然本题也可以使用广搜, 但广搜相对来说就麻烦了一些, 需要记录一下路径。
+# 而深搜和广搜都适合解决颜色类的问题, 例如岛屿系列, 其实都是 遍历+标记, 所以使用哪种遍历都是可以的。
 class Solution:
     def __init__(self):
         self.result = []
@@ -91,14 +91,14 @@ class Solution:
             self.dfs(graph, node)
             self.path.pop() # 回溯
 
-# 2 广搜的使用场景，广搜的过程以及广搜的代码框架
-    # 其实，我们仅仅需要一个容器，能保存我们要遍历过的元素就可以，那么用队列，还是用栈，甚至用数组，都是可以的。
-    # 用队列的话，就是保证每一圈都是一个方向去转，例如统一顺时针或者逆时针。
-    # 因为队列是先进先出，加入元素和弹出元素的顺序是没有改变的。
-    # 如果用栈的话，就是第一圈顺时针遍历，第二圈逆时针遍历，第三圈有顺时针遍历。
-    # 因为栈是先进后出，加入元素和弹出元素的顺序改变了。
+# 2 广搜的使用场景, 广搜的过程以及广搜的代码框架
+    # 其实, 我们仅仅需要一个容器, 能保存我们要遍历过的元素就可以, 那么用队列, 还是用栈, 甚至用数组, 都是可以的。
+    # 用队列的话, 就是保证每一圈都是一个方向去转, 例如统一顺时针或者逆时针。
+    # 因为队列是先进先出, 加入元素和弹出元素的顺序是没有改变的。
+    # 如果用栈的话, 就是第一圈顺时针遍历, 第二圈逆时针遍历, 第三圈有顺时针遍历。
+    # 因为栈是先进后出, 加入元素和弹出元素的顺序改变了。
     # 那么广搜需要注意 转圈搜索的顺序吗？ 不需要！
-    # 所以用队列，还是用栈都是可以的，但大家都习惯用队列了，所以下面的讲解用我也用队列来讲，只不过要给大家说清楚，并不是非要用队列，用栈也可以。
+    # 所以用队列, 还是用栈都是可以的, 但大家都习惯用队列了, 所以下面的讲解用我也用队列来讲, 只不过要给大家说清楚, 并不是非要用队列, 用栈也可以。
 # from collections import deque
 
 dir = [(0, 1), (1, 0), (-1, 0), (0, -1)] # 创建方向元素
@@ -114,7 +114,7 @@ def bfs(grid, visited, x, y):
         for dx, dy in dir: # 遍历四个方向
             nextx, nexty = curx + dx, cury + dy
         
-            if nextx < 0 or nextx >= len(grid) or nexty < 0 or nexty >= len(grid[0]): # 越界了，直接跳过
+            if nextx < 0 or nextx >= len(grid) or nexty < 0 or nexty >= len(grid[0]): # 越界了, 直接跳过
                 continue
                 
             if not visited[nextx][nexty]: # 如果节点没被访问过  
@@ -123,18 +123,18 @@ def bfs(grid, visited, x, y):
 
 
 #3 200. 岛屿数量
-    # 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
-    # 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
-    # 此外，你可以假设该网格的四条边均被水包围。
-# 本题思路，是用遇到一个没有遍历过的节点陆地，计数器就加一，然后把该节点陆地所能遍历到的陆地都标记上。
+    # 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格, 请你计算网格中岛屿的数量。
+    # 岛屿总是被水包围, 并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+    # 此外, 你可以假设该网格的四条边均被水包围。
+# 本题思路, 是用遇到一个没有遍历过的节点陆地, 计数器就加一, 然后把该节点陆地所能遍历到的陆地都标记上。
 # 在遇到标记过的陆地节点和海洋节点的时候直接跳过。 这样计数器就是最终岛屿的数量。
-# 那么如果把节点陆地所能遍历到的陆地都标记上呢，就可以使用 DFS，BFS或者并查集。
+# 那么如果把节点陆地所能遍历到的陆地都标记上呢, 就可以使用 DFS, BFS或者并查集。
 
-# 这里大家应该能看出区别了，无疑就是版本一中 调用dfs 的条件判断 放在了 版本二 的 终止条件位置上。
-# 版本一的写法是 ：下一个节点是否能合法已经判断完了，只要调用dfs就是可以合法的节点。
-# 版本二的写法是：不管节点是否合法，上来就dfs，然后在终止条件的地方进行判断，不合法再return。
-# 理论上来讲，版本一的效率更高一些，因为避免了 没有意义的递归调用，在调用dfs之前，就做合法性判断。 但从写法来说，可能版本二 更利于理解一些。（不过其实都差不太多）
-# 很多同学看了同一道题目，都是dfs，写法却不一样，有时候有终止条件，有时候连终止条件都没有，其实这就是根本原因，两种写法而已。
+# 这里大家应该能看出区别了, 无疑就是版本一中 调用dfs 的条件判断 放在了 版本二 的 终止条件位置上。
+# 版本一的写法是 ：下一个节点是否能合法已经判断完了, 只要调用dfs就是可以合法的节点。
+# 版本二的写法是：不管节点是否合法, 上来就dfs, 然后在终止条件的地方进行判断, 不合法再return。
+# 理论上来讲, 版本一的效率更高一些, 因为避免了 没有意义的递归调用, 在调用dfs之前, 就做合法性判断。 但从写法来说, 可能版本二 更利于理解一些。（不过其实都差不太多）
+# 很多同学看了同一道题目, 都是dfs, 写法却不一样, 有时候有终止条件, 有时候连终止条件都没有, 其实这就是根本原因, 两种写法而已。
 # *** DFS 版本一
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
@@ -147,7 +147,7 @@ class Solution:
             for d in dirs:
                 nextx = x + d[0]
                 nexty = y + d[1]
-                if nextx < 0 or nextx >= m or nexty < 0 or nexty >= n:  # 越界了，直接跳过
+                if nextx < 0 or nextx >= m or nexty < 0 or nexty >= n:  # 越界了, 直接跳过
                     continue
                 if not visited[nextx][nexty] and grid[nextx][nexty] == '1':  # 没有访问过的同时是陆地的
                     visited[nextx][nexty] = True
@@ -157,7 +157,7 @@ class Solution:
             for j in range(n):
                 if not visited[i][j] and grid[i][j] == '1':
                     visited[i][j] = True
-                    result += 1  # 遇到没访问过的陆地，+1
+                    result += 1  # 遇到没访问过的陆地, +1
                     dfs(i, j)  # 将与其链接的陆地都标记上 true
 
         return result
@@ -176,14 +176,14 @@ class Solution:
             for d in dirs:
                 nextx = x + d[0]
                 nexty = y + d[1]
-                if nextx < 0 or nextx >= m or nexty < 0 or nexty >= n:  # 越界了，直接跳过
+                if nextx < 0 or nextx >= m or nexty < 0 or nexty >= n:  # 越界了, 直接跳过
                     continue
                 dfs(nextx, nexty)
         
         for i in range(m):
             for j in range(n):
                 if not visited[i][j] and grid[i][j] == '1':
-                    result += 1  # 遇到没访问过的陆地，+1
+                    result += 1  # 遇到没访问过的陆地, +1
                     dfs(i, j)  # 将与其链接的陆地都标记上 true
 
         return result
@@ -219,10 +219,10 @@ class Solution:
 
 
 #4 200. 岛屿数量 BFS solution
-# 不少同学用广搜做这道题目的时候，超时了。 这里有一个广搜中很重要的细节：
-# 根本原因是只要 加入队列就代表 走过，就需要标记，而不是从队列拿出来的时候再去标记走过。
+# 不少同学用广搜做这道题目的时候, 超时了。 这里有一个广搜中很重要的细节：
+# 根本原因是只要 加入队列就代表 走过, 就需要标记, 而不是从队列拿出来的时候再去标记走过。
 # 很多同学可能感觉这有区别吗？
-# 如果从队列拿出节点，再去标记这个节点走过，就会发生下图所示的结果，会导致很多节点重复加入队列
+# 如果从队列拿出节点, 再去标记这个节点走过, 就会发生下图所示的结果, 会导致很多节点重复加入队列
 class Solution:
     def __init__(self):
         self.dirs = [[0, 1], [1, 0], [-1, 0], [0, -1]] 
@@ -245,7 +245,7 @@ class Solution:
         visited[i][j] = True
         while q:
             x, y = q.popleft()
-            # visited[next_i][next_j] = True // 从队列中取出在标记走过，错误，会导致很多节点重复加入队列
+            # visited[next_i][next_j] = True // 从队列中取出在标记走过, 错误, 会导致很多节点重复加入队列
             for k in range(4):
                 next_i = x + self.dirs[k][0]
                 next_j = y + self.dirs[k][1]
@@ -264,12 +264,12 @@ class Solution:
 
 #5 695. 岛屿的最大面积
     # 给你一个大小为 m x n 的二进制矩阵 grid 。
-    # 岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在 水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
+    # 岛屿 是由一些相邻的 1 (代表土地) 构成的组合, 这里的「相邻」要求两个 1 必须在 水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
     # 岛屿的面积是岛上值为 1 的单元格的数目。
-    # 计算并返回 grid 中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。
+    # 计算并返回 grid 中最大的岛屿面积。如果没有岛屿, 则返回面积为 0 。
     # 输入：grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,1,1,0,1,0,0,0,0,0,0,0,0],[0,1,0,0,1,1,0,0,1,0,1,0,0],[0,1,0,0,1,1,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,1,0,0],[0,0,0,0,0,0,0,1,1,1,0,0,0],[0,0,0,0,0,0,0,1,1,0,0,0,0]]
     # 输出：6
-    # 解释：答案不应该是 11 ，因为岛屿只能包含水平或垂直这四个方向上的 1 。
+    # 解释：答案不应该是 11 , 因为岛屿只能包含水平或垂直这四个方向上的 1 。
 # BFS
 class Solution:
     def __init__(self):
@@ -308,12 +308,12 @@ class Solution:
                     self.count += 1
                     queue.append((new_x, new_y))
 #DFS
-# 大家通过注释可以发现，两种写法，版本一，在主函数遇到陆地就计数为1，接下来的相邻陆地都在dfs中计算。 版本二 在主函数遇到陆地 计数为0，也就是不计数，陆地数量都去dfs里做计算。
-# 这也是为什么大家看了很多，dfs的写法，发现写法怎么都不一样呢？ 其实这就是根本原因。
+# 大家通过注释可以发现, 两种写法, 版本一, 在主函数遇到陆地就计数为1, 接下来的相邻陆地都在dfs中计算。 版本二 在主函数遇到陆地 计数为0, 也就是不计数, 陆地数量都去dfs里做计算。
+# 这也是为什么大家看了很多, dfs的写法, 发现写法怎么都不一样呢？ 其实这就是根本原因。
 # 这里其实涉及到dfs的两种写法。
-# 写法一，dfs只处理下一个节点，即在主函数遇到岛屿就计数为1，dfs处理接下来的相邻陆地
+# 写法一, dfs只处理下一个节点, 即在主函数遇到岛屿就计数为1, dfs处理接下来的相邻陆地
 
-# 写法二，dfs处理当前节点，即即在主函数遇到岛屿就计数为0，dfs处理接下来的全部陆地
+# 写法二, dfs处理当前节点, 即即在主函数遇到岛屿就计数为0, dfs处理接下来的全部陆地
 class Solution:
     def __init__(self):
         self.count = 0
@@ -345,12 +345,12 @@ class Solution:
 
 
 #6 1020. 飞地的数量
-    # 给你一个大小为 m x n 的二进制矩阵 grid ，其中 0 表示一个海洋单元格、1 表示一个陆地单元格。
+    # 给你一个大小为 m x n 的二进制矩阵 grid , 其中 0 表示一个海洋单元格、1 表示一个陆地单元格。
     # 一次 移动 是指从一个陆地单元格走到另一个相邻（上、下、左、右）的陆地单元格或跨过 grid 的边界。
     # 返回网格中 无法 在任意次数的移动中离开网格边界的陆地单元格的数量。
     # 输入：grid = [[0,0,0,0],[1,0,1,0],[0,1,1,0],[0,0,0,0]]
     # 输出：3
-    # 解释：有三个 1 被 0 包围。一个 1 没有被包围，因为它在边界上。
+    # 解释：有三个 1 被 0 包围。一个 1 没有被包围, 因为它在边界上。
     # 输入：grid = [[0,1,1,0],[0,0,1,0],[0,0,1,0],[0,0,0,0]]
     # 输出：0
     # 解释：所有 1 都在边界上或可以到达边界。
@@ -361,9 +361,9 @@ class Solution:
 
     def numEnclaves(self, grid: List[List[int]]) -> int:
         rowSize, colSize, ans = len(grid), len(grid[0]), 0
-        # 标记数组记录每个值为 1 的位置是否可以到达边界，可以为 True，反之为 False
+        # 标记数组记录每个值为 1 的位置是否可以到达边界, 可以为 True, 反之为 False
         visited = [[False for _ in range(colSize)] for _ in range(rowSize)]
-        # 搜索左边界和右边界，对值为 1 的位置进行深度优先遍历
+        # 搜索左边界和右边界, 对值为 1 的位置进行深度优先遍历
         for row in range(rowSize):
             if grid[row][0] == 1:
                 visited[row][0] = True
@@ -371,7 +371,7 @@ class Solution:
             if grid[row][colSize - 1] == 1:
                 visited[row][colSize - 1] = True
                 self.dfs(grid, row, colSize - 1, visited)
-        # 搜索上边界和下边界，对值为 1 的位置进行深度优先遍历，但是四个角不需要，因为上面遍历过了
+        # 搜索上边界和下边界, 对值为 1 的位置进行深度优先遍历, 但是四个角不需要, 因为上面遍历过了
         for col in range(1, colSize - 1):
             if grid[0][col] == 1:
                 visited[0][col] = True
@@ -379,14 +379,14 @@ class Solution:
             if grid[rowSize - 1][col] == 1:
                 visited[rowSize - 1][col] = True
                 self.dfs(grid, rowSize - 1, col, visited)
-        # 找出矩阵中值为 1 但是没有被标记过的位置，记录答案
+        # 找出矩阵中值为 1 但是没有被标记过的位置, 记录答案
         for row in range(rowSize):
             for col in range(colSize):
                 if grid[row][col] == 1 and not visited[row][col]:
                     ans += 1
         return ans
 
-    # 深度优先遍历，把可以通向边缘部分的 1 全部标记成 true
+    # 深度优先遍历, 把可以通向边缘部分的 1 全部标记成 true
     def dfs(self, grid: List[List[int]], row: int, col: int, visited: List[List[bool]]) -> None:
         for current in self.position:
             newRow, newCol = row + current[0], col + current[1]
@@ -406,7 +406,7 @@ class Solution:
 
     def numEnclaves(self, grid: List[List[int]]) -> int:
         rowSize, colSize, ans = len(grid), len(grid[0]), 0
-        # 标记数组记录每个值为 1 的位置是否可以到达边界，可以为 True，反之为 False
+        # 标记数组记录每个值为 1 的位置是否可以到达边界, 可以为 True, 反之为 False
         visited = [[False for _ in range(colSize)] for _ in range(rowSize)]
         queue = deque()		# 队列
         # 搜索左侧边界和右侧边界查找 1 存入队列
@@ -417,7 +417,7 @@ class Solution:
             if grid[row][colSize - 1] == 1:
                 visited[row][colSize - 1] = True
                 queue.append([row, colSize - 1])
-        # 搜索上边界和下边界查找 1 存入队列，但是四个角不用遍历，因为上面已经遍历到了
+        # 搜索上边界和下边界查找 1 存入队列, 但是四个角不用遍历, 因为上面已经遍历到了
         for col in range(1, colSize - 1):
             if grid[0][col] == 1:
                 visited[0][col] = True
@@ -428,14 +428,14 @@ class Solution:
 
         self.bfs(grid, queue, visited)	# 广度优先遍历
 
-        # 找出矩阵中值为 1 但是没有被标记过的位置，记录答案
+        # 找出矩阵中值为 1 但是没有被标记过的位置, 记录答案
         for row in range(rowSize):
             for col in range(colSize):
                 if grid[row][col] == 1 and not visited[row][col]:
                     ans += 1
         return ans
 
-    # 广度优先遍历，把可以通向边缘部分的 1 全部标记成 true
+    # 广度优先遍历, 把可以通向边缘部分的 1 全部标记成 true
     def bfs(self, grid: List[List[int]], queue: deque, visited: List[List[bool]]) -> None:
         while queue:
             curPos = queue.popleft()
@@ -451,12 +451,12 @@ class Solution:
 
 
 #7 130. 被围绕的区域
-    # 给你一个 m x n 的矩阵 board ，由若干字符 'X' 和 'O' ，找到所有被 'X' 围绕的区域，并将这些区域里所有的 'O' 用 'X' 填充。
+    # 给你一个 m x n 的矩阵 board , 由若干字符 'X' 和 'O' , 找到所有被 'X' 围绕的区域, 并将这些区域里所有的 'O' 用 'X' 填充。
     # 输入：board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
     # 输出：[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
-    # 解释：被围绕的区间不会存在于边界上，换句话说，任何边界上的 'O' 都不会被填充为 'X'。 任何不在边界上，或不与边界上的 'O' 相连的 'O' 最终都会被填充为 'X'。如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。
+    # 解释：被围绕的区间不会存在于边界上, 换句话说, 任何边界上的 'O' 都不会被填充为 'X'。 任何不在边界上, 或不与边界上的 'O' 相连的 'O' 最终都会被填充为 'X'。如果两个元素在水平或垂直方向相邻, 则称它们是“相连”的。
 # 步骤一：深搜或者广搜将地图周边的'O'全部改成'A'
-# 步骤二：在遍历地图，将'O'全部改成'X'（地图中间的'O'改成了'X'），将'A'改回'O'（保留的地图周边的'O'）
+# 步骤二：在遍历地图, 将'O'全部改成'X'（地图中间的'O'改成了'X'）, 将'A'改回'O'（保留的地图周边的'O'）
 # DFS 深度优先遍历
 class Solution:
     dir_list = [(0, 1), (0, -1), (1, 0), (-1, 0)]
@@ -468,7 +468,7 @@ class Solution:
         row_size = len(board)
         column_size = len(board[0])
         visited = [[False] * column_size for _ in range(row_size)]
-        # 从边缘开始，将边缘相连的O改成A。然后遍历所有，将A改成O，O改成X
+        # 从边缘开始, 将边缘相连的O改成A。然后遍历所有, 将A改成O, O改成X
         # 第一行和最后一行
         for i in range(column_size):
             if board[0][i] == "O" and not visited[0][i]:
@@ -504,10 +504,10 @@ class Solution:
 
 
 #8 417. 太平洋大西洋水流问题
-    # 有一个 m × n 的矩形岛屿，与 太平洋 和 大西洋 相邻。 “太平洋” 处于大陆的左边界和上边界，而 “大西洋” 处于大陆的右边界和下边界。
-    # 这个岛被分割成一个由若干方形单元格组成的网格。给定一个 m x n 的整数矩阵 heights ， heights[r][c] 表示坐标 (r, c) 上单元格 高于海平面的高度 。
-    # 岛上雨水较多，如果相邻单元格的高度 小于或等于 当前单元格的高度，雨水可以直接向北、南、东、西流向相邻单元格。水可以从海洋附近的任何单元格流入海洋。
-    # 返回网格坐标 result 的 2D 列表 ，其中 result[i] = [ri, ci] 表示雨水从单元格 (ri, ci) 流动 既可流向太平洋也可流向大西洋 。
+    # 有一个 m × n 的矩形岛屿, 与 太平洋 和 大西洋 相邻。 “太平洋” 处于大陆的左边界和上边界, 而 “大西洋” 处于大陆的右边界和下边界。
+    # 这个岛被分割成一个由若干方形单元格组成的网格。给定一个 m x n 的整数矩阵 heights ,  heights[r][c] 表示坐标 (r, c) 上单元格 高于海平面的高度 。
+    # 岛上雨水较多, 如果相邻单元格的高度 小于或等于 当前单元格的高度, 雨水可以直接向北、南、东、西流向相邻单元格。水可以从海洋附近的任何单元格流入海洋。
+    # 返回网格坐标 result 的 2D 列表 , 其中 result[i] = [ri, ci] 表示雨水从单元格 (ri, ci) 流动 既可流向太平洋也可流向大西洋 。
     # 示例 1：
     # 输入: heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
     # 输出: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
@@ -519,14 +519,14 @@ class Solution:
     # n == heights[r].length
     # 1 <= m, n <= 200
     # 0 <= heights[r][c] <= 10^5
-# 那么我们可以 反过来想，从太平洋边上的节点 逆流而上，将遍历过的节点都标记上。 
-# 从大西洋的边上节点 逆流而长，将遍历过的节点也标记上。 
+# 那么我们可以 反过来想, 从太平洋边上的节点 逆流而上, 将遍历过的节点都标记上。 
+# 从大西洋的边上节点 逆流而长, 将遍历过的节点也标记上。 
 # 然后两方都标记过的节点就是既可以流太平洋也可以流大西洋的节点。
 
-# 所以 调用dfs函数，只要参数传入的是 数组pacific，那么地图中 每一个节点其实就遍历一次，无论你调用多少次。
-# 同理，调用 dfs函数，只要 参数传入的是 数组atlantic，地图中每个节点也只会遍历一次。
-# 所以，以下这段代码的时间复杂度是 2 * n * m。 地图用每个节点就遍历了两次，参数传入pacific的时候遍历一次，参数传入atlantic的时候遍历一次。
-# 那么本题整体的时间复杂度其实是： 2 * n * m + n * m ，所以最终时间复杂度为 O(n * m) 。
+# 所以 调用dfs函数, 只要参数传入的是 数组pacific, 那么地图中 每一个节点其实就遍历一次, 无论你调用多少次。
+# 同理, 调用 dfs函数, 只要 参数传入的是 数组atlantic, 地图中每个节点也只会遍历一次。
+# 所以, 以下这段代码的时间复杂度是 2 * n * m。 地图用每个节点就遍历了两次, 参数传入pacific的时候遍历一次, 参数传入atlantic的时候遍历一次。
+# 那么本题整体的时间复杂度其实是： 2 * n * m + n * m , 所以最终时间复杂度为 O(n * m) 。
 # 空间复杂度为：O(n * m) 这个就不难理解了。开了几个 n * m 的数组。
 
 # DFS 深度优先遍历
@@ -534,8 +534,8 @@ class Solution:
     def __init__(self):
         self.position = [[-1, 0], [0, 1], [1, 0], [0, -1]]	# 四个方向
 
-    # heights：题目给定的二维数组， row：当前位置的行号， col：当前位置的列号
-    # sign：记录是哪一条河，两条河中可以一个为 0，一个为 1
+    # heights：题目给定的二维数组,  row：当前位置的行号,  col：当前位置的列号
+    # sign：记录是哪一条河, 两条河中可以一个为 0, 一个为 1
     # visited：记录这个位置可以到哪条河
     def dfs(self, heights: List[List[int]], row: int, col: int, sign: int, visited: List[List[List[int]]]):
         for current in self.position:
@@ -549,8 +549,8 @@ class Solution:
 
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
         rowSize, colSize = len(heights), len(heights[0])
-        # visited 记录 [row, col] 位置是否可以到某条河，可以为 true，反之为 false；
-        # 假设太平洋的标记为 1，大西洋为 0
+        # visited 记录 [row, col] 位置是否可以到某条河, 可以为 true, 反之为 false；
+        # 假设太平洋的标记为 1, 大西洋为 0
         # ans 用来保存满足条件的答案
         ans, visited = [], [[[False for _ in range(2)] for _ in range(colSize)] for _ in range(rowSize)]
         # 第一列和最后一列
@@ -567,7 +567,7 @@ class Solution:
             self.dfs(heights, rowSize - 1, col, 0, visited)
         for row in range(rowSize):
             for col in range(colSize):
-                # 如果该位置即可以到太平洋又可以到大西洋，就放入答案数组
+                # 如果该位置即可以到太平洋又可以到大西洋, 就放入答案数组
                 if visited[row][col][0] and visited[row][col][1]:
                     ans.append([row, col])
         return ans
@@ -576,7 +576,7 @@ class Solution:
     def __init__(self):
         self.position = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 
-    # heights：题目给定的二维数组，visited：记录这个位置可以到哪条河
+    # heights：题目给定的二维数组, visited：记录这个位置可以到哪条河
     def bfs(self, heights: List[List[int]], queue: deque, visited: List[List[List[int]]]):
         while queue:
             curPos = queue.popleft()
@@ -591,12 +591,12 @@ class Solution:
 
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
         rowSize, colSize = len(heights), len(heights[0])
-        # visited 记录 [row, col] 位置是否可以到某条河，可以为 true，反之为 false；
-        # 假设太平洋的标记为 1，大西洋为 0
+        # visited 记录 [row, col] 位置是否可以到某条河, 可以为 true, 反之为 false；
+        # 假设太平洋的标记为 1, 大西洋为 0
         # ans 用来保存满足条件的答案
         ans, visited = [], [[[False for _ in range(2)] for _ in range(colSize)] for _ in range(rowSize)]
-        # 队列，保存的数据为 [行号, 列号, 标记]
-        # 假设太平洋的标记为 1，大西洋为 0
+        # 队列, 保存的数据为 [行号, 列号, 标记]
+        # 假设太平洋的标记为 1, 大西洋为 0
         queue = deque()
         for row in range(rowSize):
             visited[row][0][1] = True
@@ -613,7 +613,7 @@ class Solution:
 
         for row in range(rowSize):
             for col in range(colSize):
-                # 如果该位置即可以到太平洋又可以到大西洋，就放入答案数组
+                # 如果该位置即可以到太平洋又可以到大西洋, 就放入答案数组
                 if visited[row][col][0] and visited[row][col][1]:
                     ans.append([row, col])
         return ans
@@ -621,20 +621,20 @@ class Solution:
 
 #9 ??? 827.最大人工岛
     # 给你一个大小为 n x n 二进制矩阵 grid 。最多 只能将一格 0 变成 1 。
-    # 返回执行此操作后，grid 中最大的岛屿面积是多少？
+    # 返回执行此操作后, grid 中最大的岛屿面积是多少？
     # 岛屿 由一组上、下、左、右四个方向相连的 1 形成。
     # 示例 1:
     # 输入: grid = [[1, 0], [0, 1]]
     # 输出: 3
-    # 解释: 将一格0变成1，最终连通两个小岛得到面积为 3 的岛屿。
+    # 解释: 将一格0变成1, 最终连通两个小岛得到面积为 3 的岛屿。
     # 示例 2:
     # 输入: grid = [[1, 1], [1, 0]]
     # 输出: 4
-    # 解释: 将一格0变成1，岛屿的面积扩大为 4。
+    # 解释: 将一格0变成1, 岛屿的面积扩大为 4。
     # 示例 3:
     # 输入: grid = [[1, 1], [1, 1]]
     # 输出: 4
-    # 解释: 没有0可以让我们变成1，面积依然为 4。
+    # 解释: 没有0可以让我们变成1, 面积依然为 4。
 class Solution:
     def largestIsland(self, grid: List[List[int]]) -> int:
         visited = set()    #标记访问过的位置
@@ -656,10 +656,10 @@ class Solution:
                     nextC not in range(n) or     #列坐标越界
                     (nextR, nextC) in visited):  #坐标已访问
                     continue
-                if grid[nextR][nextC] == 1:      #遇到有效坐标，进入下一个层搜索
+                if grid[nextR][nextC] == 1:      #遇到有效坐标, 进入下一个层搜索
                     dfs(island_num, nextR, nextC)
 
-        island_num = 2             #初始岛屿编号设为2， 因为grid里的数据有0和1， 所以从2开始编号
+        island_num = 2             #初始岛屿编号设为2,  因为grid里的数据有0和1,  所以从2开始编号
         all_land = True            #标记是否整个地图都是陆地
         for r in range(m):
             for c in range(n):
@@ -671,11 +671,11 @@ class Solution:
                     islands_size[island_num] = island_size #保存当前岛屿尺寸
                     island_num += 1     #下一个岛屿编号加一
         if all_land:
-            return m * n     #如果全是陆地， 返回地图面积
+            return m * n     #如果全是陆地,  返回地图面积
 
         count = 0            #某个位置0变成1后当前岛屿尺寸
-        #因为后续计算岛屿面积要往四个方向遍历，但某2个或3个方向的位置可能同属于一个岛，
-        #所以为避免重复累加，把已经访问过的岛屿编号加入到这个集合
+        #因为后续计算岛屿面积要往四个方向遍历, 但某2个或3个方向的位置可能同属于一个岛, 
+        #所以为避免重复累加, 把已经访问过的岛屿编号加入到这个集合
         visited_island = set() #保存访问过的岛屿
         for r in range(m):
             for c in range(n):
@@ -701,7 +701,7 @@ class Solution:
     # 序列中最后一个单词是 endWord 。
     # 每次转换只能改变一个字母。
     # 转换过程中的中间单词必须是字典 wordList 中的单词。
-    # 给你两个单词 beginWord 和 endWord 和一个字典 wordList ，找到从 beginWord 到 endWord 的 最短转换序列 中的 单词数目 。如果不存在这样的转换序列，返回 0。
+    # 给你两个单词 beginWord 和 endWord 和一个字典 wordList , 找到从 beginWord 到 endWord 的 最短转换序列 中的 单词数目 。如果不存在这样的转换序列, 返回 0。
     # 示例 1：
     # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
     # 输出：5
@@ -709,13 +709,13 @@ class Solution:
     # 示例 2：
     # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
     # 输出：0
-    # 解释：endWord "cog" 不在字典中，所以无法进行转换。
-# 首先题目中并没有给出点与点之间的连线，而是要我们自己去连，条件是字符只能差一个，所以判断点与点之间的关系，要自己判断是不是差一个字符，如果差一个字符，那就是有链接。
-# 然后就是求起点和终点的最短路径长度，这里无向图求最短路，广搜最为合适，广搜只要搜到了终点，那么一定是最短的路径。因为广搜就是以起点中心向四周扩散的搜索。
-# 本题如果用深搜，会比较麻烦，要在到达终点的不同路径中选则一条最短路。 而广搜只要达到终点，一定是最短路。
+    # 解释：endWord "cog" 不在字典中, 所以无法进行转换。
+# 首先题目中并没有给出点与点之间的连线, 而是要我们自己去连, 条件是字符只能差一个, 所以判断点与点之间的关系, 要自己判断是不是差一个字符, 如果差一个字符, 那就是有链接。
+# 然后就是求起点和终点的最短路径长度, 这里无向图求最短路, 广搜最为合适, 广搜只要搜到了终点, 那么一定是最短的路径。因为广搜就是以起点中心向四周扩散的搜索。
+# 本题如果用深搜, 会比较麻烦, 要在到达终点的不同路径中选则一条最短路。 而广搜只要达到终点, 一定是最短路。
 # 另外需要有一个注意点：
-# 本题是一个无向图，需要用标记位，标记着节点是否走过，否则就会死循环！
-# 本题给出集合是数组型的，可以转成set结构，查找更快一些
+# 本题是一个无向图, 需要用标记位, 标记着节点是否走过, 否则就会死循环！
+# 本题给出集合是数组型的, 可以转成set结构, 查找更快一些
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
         wordSet = set(wordList)
@@ -740,15 +740,15 @@ class Solution:
 
 
 #11 ??? 841.钥匙和房间
-    # 有 N 个房间，开始时你位于 0 号房间。每个房间有不同的号码：0，1，2，...，N-1，并且房间里可能有一些钥匙能使你进入下一个房间。
-    # 在形式上，对于每个房间 i 都有一个钥匙列表 rooms[i]，每个钥匙 rooms[i][j] 由 [0,1，...，N-1] 中的一个整数表示，其中 N = rooms.length。 钥匙 rooms[i][j] = v 可以打开编号为 v 的房间。
-    # 最初，除 0 号房间外的其余所有房间都被锁住。
+    # 有 N 个房间, 开始时你位于 0 号房间。每个房间有不同的号码：0, 1, 2, ..., N-1, 并且房间里可能有一些钥匙能使你进入下一个房间。
+    # 在形式上, 对于每个房间 i 都有一个钥匙列表 rooms[i], 每个钥匙 rooms[i][j] 由 [0,1, ..., N-1] 中的一个整数表示, 其中 N = rooms.length。 钥匙 rooms[i][j] = v 可以打开编号为 v 的房间。
+    # 最初, 除 0 号房间外的其余所有房间都被锁住。
     # 你可以自由地在房间之间来回走动。
-    # 如果能进入每个房间返回 true，否则返回 false。
+    # 如果能进入每个房间返回 true, 否则返回 false。
     # 示例 1：
     # 输入: [[1],[2],[3],[]]
     # 输出: true
-    # 解释: 我们从 0 号房间开始，拿到钥匙 1。 之后我们去 1 号房间，拿到钥匙 2。 然后我们去 2 号房间，拿到钥匙 3。 最后我们去了 3 号房间。 由于我们能够进入每个房间，我们返回 true。
+    # 解释: 我们从 0 号房间开始, 拿到钥匙 1。 之后我们去 1 号房间, 拿到钥匙 2。 然后我们去 2 号房间, 拿到钥匙 3。 最后我们去了 3 号房间。 由于我们能够进入每个房间, 我们返回 true。
     # 示例 2：
     # 输入：[[1,3],[3,0,1],[2],[0]]
     # 输出：false
@@ -801,9 +801,9 @@ class Solution:
 
 
 #12 463. 岛屿的周长
-    # 给定一个 row x col 的二维网格地图 grid ，其中：grid[i][j] = 1 表示陆地， grid[i][j] = 0 表示水域。
-    # 网格中的格子 水平和垂直 方向相连（对角线方向不相连）。整个网格被水完全包围，但其中恰好有一个岛屿（或者说，一个或多个表示陆地的格子相连组成的岛屿）。
-    # 岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+    # 给定一个 row x col 的二维网格地图 grid , 其中：grid[i][j] = 1 表示陆地,  grid[i][j] = 0 表示水域。
+    # 网格中的格子 水平和垂直 方向相连（对角线方向不相连）。整个网格被水完全包围, 但其中恰好有一个岛屿（或者说, 一个或多个表示陆地的格子相连组成的岛屿）。
+    # 岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形, 且宽度和高度均不超过 100 。计算这个岛屿的周长。
     # 输入：grid = [[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
     # 输出：16
     # 解释：它的周长是上面图片中的 16 个黄色的边
@@ -818,7 +818,7 @@ class Solution:
     # col == grid[i].length
     # 1 <= row, col <= 100
     # grid[i][j] 为 0 或 1
-# 解法一：遍历每一个空格，遇到岛屿，计算其上下左右的情况，遇到水域或者出界的情况，就可以计算边了。
+# 解法一：遍历每一个空格, 遇到岛屿, 计算其上下左右的情况, 遇到水域或者出界的情况, 就可以计算边了。
 class Solution:
     def __init__(self):
         self.direction = [[0, 1], [1, 0], [-1, 0], [0, -1]]
@@ -838,7 +838,7 @@ class Solution:
                                 or grid[x][y] == 0):  # Position x,y is water
                             result += 1
         return result
-# 解法二：计算出总的岛屿数量，因为有一对相邻两个陆地，边的总数就减2，那么在计算出相邻岛屿的数量就可以了。result = 岛屿数量 * 4 - cover * 2;
+# 解法二：计算出总的岛屿数量, 因为有一对相邻两个陆地, 边的总数就减2, 那么在计算出相邻岛屿的数量就可以了。result = 岛屿数量 * 4 - cover * 2;
 class Solution:
     def islandPerimeter(self, grid):
         land_count = 0  # Number of land cells
@@ -856,7 +856,7 @@ class Solution:
                     # Why not count cells below and to the right? To avoid duplicate counting
         return land_count * 4 - neighbor_count * 2
 # *** 
-# 扫描每个cell,如果当前位置为岛屿 grid[i][j] == 1， 从当前位置判断四边方向，如果边界或者是水域，证明有边界存在，res矩阵的对应cell加一。
+# 扫描每个cell,如果当前位置为岛屿 grid[i][j] == 1,  从当前位置判断四边方向, 如果边界或者是水域, 证明有边界存在, res矩阵的对应cell加一。
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
 
@@ -868,11 +868,11 @@ class Solution:
 
         for i in range(m):
             for j in range(len(grid[i])):
-                # 如果当前位置为水域，不做修改或reset res[i][j] = 0
+                # 如果当前位置为水域, 不做修改或reset res[i][j] = 0
                 if grid[i][j] == 0:
                     res[i][j] = 0
-                # 如果当前位置为陆地，往四个方向判断，update res[i][j]
-                # 只要上下左右四个边，都会有一个边
+                # 如果当前位置为陆地, 往四个方向判断, update res[i][j]
+                # 只要上下左右四个边, 都会有一个边
                 elif grid[i][j] == 1:
                     if i == 0 or (i > 0 and grid[i-1][j] == 0): # 上边
                         res[i][j] += 1
@@ -883,7 +883,7 @@ class Solution:
                     if j == n-1 or (j < n-1 and grid[i][j+1] == 0): # 右边
                         res[i][j] += 1
 
-        # 最后求和res矩阵，这里其实不一定需要矩阵记录，可以设置一个variable res 记录边长，舍矩阵无非是更加形象而已
+        # 最后求和res矩阵, 这里其实不一定需要矩阵记录, 可以设置一个variable res 记录边长, 舍矩阵无非是更加形象而已
         ans = sum([sum(row) for row in res])
 
         return ans
@@ -898,14 +898,14 @@ void init() {
 
 # # // 并查集里寻根的过程
 # int find(int u) {
-#     if (u == father[u]) return u; // 如果根就是自己，直接返回
-#     else return find(father[u]); // 如果根不是自己，就根据数组下标一层一层向下找
+#     if (u == father[u]) return u; // 如果根就是自己, 直接返回
+#     else return find(father[u]); // 如果根不是自己, 就根据数组下标一层一层向下找
 # }
 # // 并查集里寻根的过程
-# 除了根节点其他所有节点都挂载根节点下，这样我们在寻根的时候就很快，只需要一步，
-# 如果我们想达到这样的效果，就需要 路径压缩，将非根节点的所有节点直接指向根节点。 那么在代码层面如何实现呢？
-# 我们只需要在递归的过程中，让 father[u] 接住 递归函数 find(father[u]) 的返回结果。
-# 因为 find 函数向上寻找根节点，father[u] 表述 u 的父节点，那么让 father[u] 直接获取 find函数 返回的根节点，这样就让节点 u 的父节点 变成根节点。
+# 除了根节点其他所有节点都挂载根节点下, 这样我们在寻根的时候就很快, 只需要一步, 
+# 如果我们想达到这样的效果, 就需要 路径压缩, 将非根节点的所有节点直接指向根节点。 那么在代码层面如何实现呢？
+# 我们只需要在递归的过程中, 让 father[u] 接住 递归函数 find(father[u]) 的返回结果。
+# 因为 find 函数向上寻找根节点, father[u] 表述 u 的父节点, 那么让 father[u] 直接获取 find函数 返回的根节点, 这样就让节点 u 的父节点 变成根节点。
 int find(int u) {
     if (u == father[u]) return u;
     else return father[u] = find(father[u]); // 路径压缩
@@ -918,11 +918,11 @@ bool isSame(int u, int v) {
     return u == v;
 }
 
-# // 将v，u 这条边加入并查集
+# // 将v, u 这条边加入并查集
 void join(int u, int v) {
     u = find(u); // 寻找u的根
     v = find(v); // 寻找v的根
-    if (u == v) return; // 如果发现根相同，则说明在一个集合，不用两个节点相连直接返回
+    if (u == v) return; // 如果发现根相同, 则说明在一个集合, 不用两个节点相连直接返回
     father[v] = u;
 }
 
@@ -934,13 +934,13 @@ void join(int u, int v) {
     if (rank[u] <= rank[v]) father[u] = v; // rank小的树合入到rank大的树
     else father[v] = u;
 
-    if (rank[u] == rank[v] && u != v) rank[v]++; // 如果两棵树高度相同，则v的高度+1因为，方面 if (rank[u] <= rank[v]) father[u] = v; 注意是 <=
+    if (rank[u] == rank[v] && u != v) rank[v]++; // 如果两棵树高度相同, 则v的高度+1因为, 方面 if (rank[u] <= rank[v]) father[u] = v; 注意是 <=
 }
 
 #13 1971. 寻找图中是否存在路径
-    # 有一个具有 n个顶点的 双向 图，其中每个顶点标记从 0 到 n - 1（包含 0 和 n - 1）。图中的边用一个二维整数数组 edges 表示，其中 edges[i] = [ui, vi] 表示顶点 ui 和顶点 vi 之间的双向边。 每个顶点对由 最多一条 边连接，并且没有顶点存在与自身相连的边。
-    # 请你确定是否存在从顶点 start 开始，到顶点 end 结束的 有效路径 。
-    # 给你数组 edges 和整数 n、start和end，如果从 start 到 end 存在 有效路径 ，则返回 true，否则返回 false 。
+    # 有一个具有 n个顶点的 双向 图, 其中每个顶点标记从 0 到 n - 1（包含 0 和 n - 1）。图中的边用一个二维整数数组 edges 表示, 其中 edges[i] = [ui, vi] 表示顶点 ui 和顶点 vi 之间的双向边。 每个顶点对由 最多一条 边连接, 并且没有顶点存在与自身相连的边。
+    # 请你确定是否存在从顶点 start 开始, 到顶点 end 结束的 有效路径 。
+    # 给你数组 edges 和整数 n、start和end, 如果从 start 到 end 存在 有效路径 , 则返回 true, 否则返回 false 。
 # PYTHON并查集解法如下：
 class Solution:
     def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
@@ -958,8 +958,8 @@ class Solution:
 
 #14 684.冗余连接
     # 树可以看成是一个连通且 无环 的 无向 图。
-    # 给定往一棵 n 个节点 (节点值 1～n) 的树中添加一条边后的图。添加的边的两个顶点包含在 1 到 n 中间，且这条附加的边不属于树中已存在的边。图的信息记录于长度为 n 的二维数组 edges ，edges[i] = [ai, bi] 表示图中在 ai 和 bi 之间存在一条边。
-    # 请找出一条可以删去的边，删除后可使得剩余部分是一个有着 n 个节点的树。如果有多个答案，则返回数组 edges 中最后出现的边。
+    # 给定往一棵 n 个节点 (节点值 1～n) 的树中添加一条边后的图。添加的边的两个顶点包含在 1 到 n 中间, 且这条附加的边不属于树中已存在的边。图的信息记录于长度为 n 的二维数组 edges , edges[i] = [ai, bi] 表示图中在 ai 和 bi 之间存在一条边。
+    # 请找出一条可以删去的边, 删除后可使得剩余部分是一个有着 n 个节点的树。如果有多个答案, 则返回数组 edges 中最后出现的边。
 class Solution:
     def __init__(self):
         """
@@ -989,7 +989,7 @@ class Solution:
 
     def same(self, u, v ):
         """
-        判断 u 和 v是否找到同一个根，本题用不上
+        判断 u 和 v是否找到同一个根, 本题用不上
         """
         u = self.find(u)
         v = self.find(v)
@@ -1020,15 +1020,15 @@ class Solution:
 
 #15 ??? 685.冗余连接II
 # ??? 为什么需要分两种情况: 一种看入度2的情况, 另一种看是不是成环
-    # 在本问题中，有根树指满足以下条件的 有向 图。该树只有一个根节点，所有其他节点都是该根节点的后继。该树除了根节点之外的每一个节点都有且只有一个父节点，而根节点没有父节点。
-    # 输入一个有向图，该图由一个有着 n 个节点（节点值不重复，从 1 到 n）的树及一条附加的有向边构成。附加的边包含在 1 到 n 中的两个不同顶点间，这条附加的边不属于树中已存在的边。
-    # 结果图是一个以边组成的二维数组 edges 。 每个元素是一对 [ui, vi]，用以表示 有向 图中连接顶点 ui 和顶点 vi 的边，其中 ui 是 vi 的一个父节点。
-    # 返回一条能删除的边，使得剩下的图是有 n 个节点的有根树。若有多个答案，返回最后出现在给定二维数组的答案。
+    # 在本问题中, 有根树指满足以下条件的 有向 图。该树只有一个根节点, 所有其他节点都是该根节点的后继。该树除了根节点之外的每一个节点都有且只有一个父节点, 而根节点没有父节点。
+    # 输入一个有向图, 该图由一个有着 n 个节点（节点值不重复, 从 1 到 n）的树及一条附加的有向边构成。附加的边包含在 1 到 n 中的两个不同顶点间, 这条附加的边不属于树中已存在的边。
+    # 结果图是一个以边组成的二维数组 edges 。 每个元素是一对 [ui, vi], 用以表示 有向 图中连接顶点 ui 和顶点 vi 的边, 其中 ui 是 vi 的一个父节点。
+    # 返回一条能删除的边, 使得剩下的图是有 n 个节点的有根树。若有多个答案, 返回最后出现在给定二维数组的答案。
 # 我们要实现两个最为关键的函数：
 # isTreeAfterRemoveEdge() 判断删一个边之后是不是树了
-# getRemoveEdge 确定图中一定有了有向环，那么要找到需要删除的那条边
-# 此时应该是用到并查集了，并查集为什么可以判断 一个图是不是树呢？
-# 因为如果两个点所在的边在添加图之前如果就可以在并查集里找到了相同的根，那么这条边添加上之后 这个图一定不是树了
+# getRemoveEdge 确定图中一定有了有向环, 那么要找到需要删除的那条边
+# 此时应该是用到并查集了, 并查集为什么可以判断 一个图是不是树呢？
+# 因为如果两个点所在的边在添加图之前如果就可以在并查集里找到了相同的根, 那么这条边添加上之后 这个图一定不是树了
 class Solution:
     def __init__(self):
         self.n = 1010
@@ -1055,7 +1055,7 @@ class Solution:
 
     def same(self, u: int, v: int ):
         """
-        判断 u 和 v是否找到同一个根，本题用不上
+        判断 u 和 v是否找到同一个根, 本题用不上
         """
         u = self.find(u)
         v = self.find(v)
@@ -1067,12 +1067,12 @@ class Solution:
 
     def getRemoveEdge(self, edges: List[List[int]]) -> List[int]:
         """
-        在有向图里找到删除的那条边，使其变成树
+        在有向图里找到删除的那条边, 使其变成树
         """
 
         self.init_father()
         for i in range(len(edges)):
-            if self.same(edges[i][0], edges[i][1]): # 构成有向环了，就是要删除的边
+            if self.same(edges[i][0], edges[i][1]): # 构成有向环了, 就是要删除的边
                 return edges[i]
             self.join(edges[i][0], edges[i][1]);
         return []
@@ -1085,7 +1085,7 @@ class Solution:
         self.init_father()
         for i in range(len(edges)):
             if i == deleteEdge: continue
-            if self.same(edges[i][0], edges[i][1]): #  构成有向环了，一定不是树
+            if self.same(edges[i][0], edges[i][1]): #  构成有向环了, 一定不是树
                 return False
             self.join(edges[i][0], edges[i][1]);
         return True
@@ -1096,7 +1096,7 @@ class Solution:
         for i in range(len(edges)):
             inDegree[ edges[i][1] ] += 1
 
-        # 找入度为2的节点所对应的边，注意要倒序，因为优先返回最后出现在二维数组中的答案
+        # 找入度为2的节点所对应的边, 注意要倒序, 因为优先返回最后出现在二维数组中的答案
         towDegree = []
         # i代表第i条边
         for i in range(len(edges))[::-1]:
@@ -1104,11 +1104,11 @@ class Solution:
                 towDegree.append(i)
 
         # 处理图中情况1 和 情况2
-        # 如果有入度为2的节点，那么一定是两条边里删一个，看删哪个可以构成树
+        # 如果有入度为2的节点, 那么一定是两条边里删一个, 看删哪个可以构成树
         if len(towDegree) > 0:
             if(self.isTreeAfterRemoveEdge(edges, towDegree[0])) :
                 return edges[towDegree[0]]
             return edges[towDegree[1]]
 
-        # 明确没有入度为2的情况，那么一定有有向环，找到构成环的边返回就可以了
+        # 明确没有入度为2的情况, 那么一定有有向环, 找到构成环的边返回就可以了
         return self.getRemoveEdge(edges)
