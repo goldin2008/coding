@@ -33,9 +33,10 @@ def run_sorting_algorithm(algorithm, array):
 """
 Comparison based sorting
 
-Bubble Sort
-Time complexity O(n2)
-Space complexity O(n)
+1. Bubble Sort
+
+Time Complexity: O(n^2)
+Space Complexity: O(1)
 """
 def bubble_sort(array):
     n = len(array)
@@ -69,10 +70,11 @@ def bubble_sort(array):
     return array
 
 """
-Insertion Sort
+2. Insertion Sort
+
 The insertion sort algorithm works exactly like the example with the deck of cards.
-Time complexity O(n2)
-Space complexity O(n)
+Time Complexity: O(n^2)
+Space Complexity: O(1)
 """
 def insertion_sort(array):
     # Loop from the second element of the array until
@@ -105,7 +107,10 @@ def insertion_sort(array):
     return array
 
 """
-Selection Sort
+3. Selection Sort
+
+Time Complexity: O(n^2)
+Space Complexity: O(1)
 """
 def selection_sort(arr):
     n = len(arr)
@@ -120,7 +125,8 @@ def selection_sort(arr):
     return array
 
 """
-Merge Sort
+4. Merge Sort
+
 merge() has a linear runtime. This leads to a runtime complexity of O(n).
 The second step splits the input array recursively and calls merge() for each half.
 Since the array is halved until a single element remains, the total number of
@@ -131,7 +137,8 @@ Cons: Both bubble sort and insertion sort beat merge sort when sorting a ten-ele
 merge sort use much more memory than bubble sort and insertion sort, which are both able
 to sort the list in place. Due to this limitation, you may not want to use merge sort 
 to sort large lists in memory-constrained hardware.
-Time Complexity Average: O(n*log n)
+
+Time Complexity: Average O(n*log n)
 Space Complexity: O(n)
 > https://www.programiz.com/dsa/merge-sort
 """
@@ -229,8 +236,9 @@ def mergeSort(array):
             k += 1
 
 """
-Quicksort
-Time Complexity Average: O(n*log n)
+5. Quicksort
+
+Time Complexity: Average O(n*log n)
 Space Complexity: O(log n)
 > https://www.programiz.com/dsa/quick-sort
 """
@@ -305,7 +313,8 @@ def quickSort(array, low, high):
     quickSort(array, pi + 1, high)
 
 """
-Timsort
+6. Timsort
+
 the complexity of Timsort is O(n log2n)
 Timsort performs exceptionally well on already-sorted or close-to-sorted lists,
 leading to a best-case scenario of O(n).
@@ -388,10 +397,12 @@ def timsort(array):
     return array
 
 """
-Heapsort
+7. Heapsort
+
 The time complexity of heapify is O(log(n)).
 Time complexity of createAndBuildHeap() is O(n).
-And, hence the overall time complexity of Heap Sort is O(n*log(n)).
+
+And, hence the overall Time Complexity of Heap Sort is O(n*log(n)).
 Space Complexity: O(1)
 > https://www.programiz.com/dsa/heap-sort
 """
@@ -435,8 +446,10 @@ def heapsort(arr):
 """
 Non-comparison based sorting
 
-Radix Sort
-Counting sort is a linear time sorting algorithm that sort in O(n+k) time when elements are in the range from 1 to k.
+8. Radix Sort
+
+Time Complexity: Counting sort is a linear time sorting algorithm that sort in O(n+k) time when elements are in the range from 1 to k.
+Space Complexity: O(n+k)
 > https://www.geeksforgeeks.org/radix-sort/
 """
 # Python program for implementation of Radix Sort
@@ -490,7 +503,8 @@ def radix_sort(arr):
         exp *= 10
 
 """
-Counting Sort
+9. Counting Sort
+
 Time Complexity: O(n+k) 
 Auxiliary Space: O(n+k)
 > https://www.geeksforgeeks.org/counting-sort/
@@ -529,8 +543,9 @@ def count_sort(arr):
     return arr
 
 """
-Bucket Sort
-Average	O(n)
+10. Bucket Sort
+
+Time Complexity: Average	O(n+k)
 Space Complexity: O(n+k)
 > https://www.programiz.com/dsa/bucket-sort
 > https://www.geeksforgeeks.org/bucket-sort-2/
