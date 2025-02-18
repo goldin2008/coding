@@ -34,6 +34,11 @@ def run_sorting_algorithm(algorithm, array):
 Comparison based sorting
 
 1. Bubble Sort
+Bubble Sort is a simple sorting algorithm that repeatedly steps through a list, compares adjacent elements, 
+and swaps them if they are in the wrong order. The algorithm gets its name because smaller elements "bubble" 
+to the top of the list (beginning) like bubbles in water.
+
+Right end in the list is the sorted.
 
 Time Complexity
 Worst-case: O(n²) — When the list is in reverse order.
@@ -43,6 +48,25 @@ Average-case: O(n²).
 Space Complexity
 Bubble Sort is an in-place sorting algorithm, meaning it requires only a constant amount of additional space (O(1)).
 """
+How Bubble Sort Works
+1. Start at the beginning of the list.
+2. Compare the first two elements. If the first is greater than the second, swap them.
+3. Move to the next pair of elements and repeat the comparison and swap.
+4. Continue this process until you reach the end of the list. This completes one pass.
+5. Repeat the process for multiple passes until no more swaps are needed (the list is sorted).
+    
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):  # Number of passes
+        swapped = False  # Flag to check if any swaps occurred
+        for j in range(0, n-i-1):  # Compare adjacent elements
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]  # Swap
+                swapped = True
+        if not swapped:  # If no swaps occurred, the list is sorted
+            break
+    return arr
+
 # def bubble_sort(array):
 #     n = len(array)
 #     for i in range(n):
@@ -72,72 +96,100 @@ Bubble Sort is an in-place sorting algorithm, meaning it requires only a constan
 #             break
 #     return array
 
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):  # Number of passes
-        swapped = False  # Flag to check if any swaps occurred
-        for j in range(0, n-i-1):  # Compare adjacent elements
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]  # Swap
-                swapped = True
-        if not swapped:  # If no swaps occurred, the list is sorted
-            break
-    return arr
-
 """
 2. Insertion Sort
 
-The insertion sort algorithm works exactly like the example with the deck of cards.
-Time Complexity: O(n^2)
-Space Complexity: O(1)
+Insertion Sort is a simple and intuitive sorting algorithm that builds the final sorted list one element at a time. 
+It works similarly to how you might sort a hand of playing cards: you pick one card at a time and insert it 
+into its correct position in the sorted part of your hand.
+
+Left end in the list is the sorted.
+
+Time Complexity
+Worst-case: O(n²) — When the list is in reverse order.
+Best-case: O(n) — When the list is already sorted.
+Average-case: O(n²).
+
+Space Complexity
+Insertion Sort is an in-place sorting algorithm, meaning it requires only a constant amount of additional space (O(1)).
 """
-def insertion_sort(array):
-    # Loop from the second element of the array until
-    # the last element
-    for i in range(1, len(array)):
-        # This is the element we want to position in its
-        # correct place
-        key_item = array[i]
+How Insertion Sort Works
+1. Start with the second element (assume the first element is already sorted).
+2. Compare the current element with the elements in the sorted part of the list.
+3. Shift all larger elements to the right to make space for the current element.
+4. Insert the current element into its correct position in the sorted part.
+5. Repeat until the entire list is sorted.
 
-        # Initialize the variable that will be used to
-        # find the correct position of the element referenced
-        # by `key_item`
-        j = i - 1
-
-        # Run through the list of items (the left
-        # portion of the array) and find the correct position
-        # of the element referenced by `key_item`. Do this only
-        # if `key_item` is smaller than its adjacent values.
-        while j >= 0 and array[j] > key_item:
-            # Shift the value one position to the left
-            # and reposition j to point to the next element
-            # (from right to left)
-            array[j + 1] = array[j]
+def insertion_sort(arr):
+    for i in range(1, len(arr)):  # Start from the second element
+        key = arr[i]  # Current element to be inserted
+        j = i - 1  # Start comparing with the previous element
+        while j >= 0 and key < arr[j]:  # Shift elements to the right
+            arr[j + 1] = arr[j]
             j -= 1
+        arr[j + 1] = key  # Insert the key in the correct position
+    return arr
 
-        # When you finish shifting the elements, you can position
-        # `key_item` in its correct location
-        array[j + 1] = key_item
+# def insertion_sort(array):
+#     # Loop from the second element of the array until
+#     # the last element
+#     for i in range(1, len(array)):
+#         # This is the element we want to position in its
+#         # correct place
+#         key_item = array[i]
 
-    return array
+#         # Initialize the variable that will be used to
+#         # find the correct position of the element referenced
+#         # by `key_item`
+#         j = i - 1
+
+#         # Run through the list of items (the left
+#         # portion of the array) and find the correct position
+#         # of the element referenced by `key_item`. Do this only
+#         # if `key_item` is smaller than its adjacent values.
+#         while j >= 0 and array[j] > key_item:
+#             # Shift the value one position to the left
+#             # and reposition j to point to the next element
+#             # (from right to left)
+#             array[j + 1] = array[j]
+#             j -= 1
+
+#         # When you finish shifting the elements, you can position
+#         # `key_item` in its correct location
+#         array[j + 1] = key_item
+#     return array
 
 """
 3. Selection Sort
 
-Time Complexity: O(n^2)
-Space Complexity: O(1)
+Selection Sort is a simple and intuitive sorting algorithm that works by repeatedly selecting 
+the smallest (or largest, depending on the order) element from the unsorted portion of the list 
+and swapping it with the first unsorted element. This process continues until the entire list is sorted.
+
+Time Complexity
+Worst-case: O(n²) — When the list is in reverse order.
+Best-case: O(n²) — Even if the list is already sorted, the algorithm still performs all comparisons.
+Average-case: O(n²).
+
+Space Complexity
+Selection Sort is an in-place sorting algorithm, meaning it requires only a constant amount of additional space (O(1)).
 """
+How Selection Sort Works
+1. Divide the list into two parts: the sorted part (initially empty) and the unsorted part (initially the entire list).
+2. Find the smallest element in the unsorted part.
+3. Swap it with the first element of the unsorted part.
+4. Move the boundary between the sorted and unsorted parts one element to the right.
+5. Repeat until the entire list is sorted.
+
 def selection_sort(arr):
     n = len(arr)
-
-    for i in range(n):
-        min_idx = i
-        for j in range(i+1, n):
+    for i in range(n):  # Number of passes
+        min_idx = i  # Assume the first unsorted element is the smallest
+        for j in range(i + 1, n):  # Find the smallest element in the unsorted part
             if arr[j] < arr[min_idx]:
                 min_idx = j
-        arr[i], arr[min_idx] = arr[min_idx], arr[i]
-
-    return array
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]  # Swap
+    return arr
 
 """
 4. Merge Sort
