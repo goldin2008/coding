@@ -35,9 +35,6 @@ Comparison based sorting
 
 1. Bubble Sort
 
-# Time Complexity: O(n^2)
-# Space Complexity: O(1)
-
 Time Complexity
 Worst-case: O(n²) — When the list is in reverse order.
 Best-case: O(n) — When the list is already sorted (with the swapped optimization).
