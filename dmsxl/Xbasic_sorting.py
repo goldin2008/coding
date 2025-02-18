@@ -37,37 +37,55 @@ Comparison based sorting
 
 Time Complexity: O(n^2)
 Space Complexity: O(1)
+
+Time Complexity
+Worst-case: O(n²) — When the list is in reverse order.
+Best-case: O(n) — When the list is already sorted (with the swapped optimization).
+Average-case: O(n²).
+
+Space Complexity
+Bubble Sort is an in-place sorting algorithm, meaning it requires only a constant amount of additional space (O(1)).
 """
-def bubble_sort(array):
-    n = len(array)
+# def bubble_sort(array):
+#     n = len(array)
+#     for i in range(n):
+#         # Create a flag that will allow the function to
+#         # terminate early if there's nothing left to sort
+#         already_sorted = True
 
-    for i in range(n):
-        # Create a flag that will allow the function to
-        # terminate early if there's nothing left to sort
-        already_sorted = True
+#         # Start looking at each item of the list one by one,
+#         # comparing it with its adjacent value. With each
+#         # iteration, the portion of the array that you look at
+#         # shrinks because the remaining items have already been
+#         # sorted.
+#         for j in range(n - i - 1):
+#             if array[j] > array[j + 1]:
+#                 # If the item you're looking at is greater than its
+#                 # adjacent value, then swap them
+#                 array[j], array[j + 1] = array[j + 1], array[j]
 
-        # Start looking at each item of the list one by one,
-        # comparing it with its adjacent value. With each
-        # iteration, the portion of the array that you look at
-        # shrinks because the remaining items have already been
-        # sorted.
-        for j in range(n - i - 1):
-            if array[j] > array[j + 1]:
-                # If the item you're looking at is greater than its
-                # adjacent value, then swap them
-                array[j], array[j + 1] = array[j + 1], array[j]
+#                 # Since you had to swap two elements,
+#                 # set the `already_sorted` flag to `False` so the
+#                 # algorithm doesn't finish prematurely
+#                 already_sorted = False
 
-                # Since you had to swap two elements,
-                # set the `already_sorted` flag to `False` so the
-                # algorithm doesn't finish prematurely
-                already_sorted = False
+#         # If there were no swaps during the last iteration,
+#         # the array is already sorted, and you can terminate
+#         if already_sorted:
+#             break
+#     return array
 
-        # If there were no swaps during the last iteration,
-        # the array is already sorted, and you can terminate
-        if already_sorted:
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):  # Number of passes
+        swapped = False  # Flag to check if any swaps occurred
+        for j in range(0, n-i-1):  # Compare adjacent elements
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]  # Swap
+                swapped = True
+        if not swapped:  # If no swaps occurred, the list is sorted
             break
-
-    return array
+    return arr
 
 """
 2. Insertion Sort
@@ -917,3 +935,26 @@ class Solution:
         # perfectly fine to just return sorted_array instead
         for i in range(len(lst)):
             lst[i] = sorted_array[i]
+
+#X11 148. Sort List
+    # Given the head of a linked list, return the list after sorting it in ascending order.
+
+
+#X12 912. Sort an Array
+    # Given an array of integers nums, sort the array in ascending order and return it.
+    # You must solve the problem without using any built-in functions in O(nlog(n)) 
+    # time complexity and with the smallest space complexity possible.
+
+#X13 1985. Find the Kth Largest Integer in the Array
+    # You are given an array of strings nums and an integer k. Each string in nums 
+    # represents an integer without leading zeros.
+    # Return the string that represents the kth largest integer in nums.
+    # Note: Duplicate numbers should be counted distinctly. For example, 
+    # if nums is ["1","2","2"], "2" is the first largest integer, "2" is the second-largest integer, and "1" is the third-largest integer.
+
+#X14 Dutch National Flag
+    # Given an array of 0s, 1s, and 2s representing red, white, and blue, respectively, 
+    # sort the array in place so that it resembles the Dutch national flag, with all reds (0s) coming first, followed by whites (1s), and finally blues (2s).
+    # Example:
+    # Input: nums = [0, 1, 2, 0, 1, 2, 0]
+    # Output: [0, 0, 0, 1, 1, 2, 2]
