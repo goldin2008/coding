@@ -428,10 +428,34 @@ class Solution:
 #         return prev2
 
 
-#2 70. 爬楼梯
+#X2 70. 爬楼梯
     # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
     # 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
     # 注意:给定 n 是一个正整数。
+def climbing_stairs_bottom_up(n: int) -> int:
+    if n <= 2:
+        return n
+    dp = [0] * (n + 1)
+    # Base cases.
+    dp[1], dp[2] = 1, 2
+    # Starting from step 3, calculate the number of ways to reach each 
+    # step until the n-th step.
+    for i in range(3, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    return dp[n]
+
+def climbing_stairs_bottom_up_optimized(n: int) -> int:
+    if n <= 2:
+        return n
+    # Set 'one_step_before' and 'two_steps_before' as the base cases.
+    one_step_before, two_steps_before = 2, 1
+    for i in range(3, n + 1):
+        # Calculate the number of ways to reach the current step.
+        current = one_step_before + two_steps_before
+        # Update the values for the next iteration.
+        two_steps_before = one_step_before
+        one_step_before = current
+    return one_step_before
 # 动态规划(版本一)
 # 空间复杂度为O(n)版本
 class Solution:
@@ -904,11 +928,55 @@ class Solution:
 动态规划:关于多重背包,你该了解这些!
 听说背包问题很难？ 这篇总结篇来拯救你了
 """
-#8 01 背包
-    # 有n件物品和一个最多能背重量为w 的背包。第i件物品的重量是weight[i], 得到的价值是value[i] 。每件物品只能用一次, 求解将哪些物品装入背包里物品价值总和最大。
+#X8 01 背包
+    # 有n件物品和一个最多能背重量为w 的背包。第i件物品的重量是weight[i], 得到的价值是value[i] 。每件物品只能用一次, 
+    # 求解将哪些物品装入背包里物品价值总和最大。
     # dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
     # 大家可以看出, 虽然两个for循环遍历的次序不同, 但是dp[i][j]所需要的数据就是左上角, 根本不影响dp[i][j]公式的推导!
     # 其实背包问题里, 两个for循环的先后循序是非常有讲究的, 理解遍历顺序其实比理解推导公式难多了。
+def knapsack(cap: int, weights: List[int], values: List[int]) -> int:
+    n = len(values)
+    # Base case: Set the first column and last row to 0 by
+    # initializing the entire DP table to 0.
+    dp = [[0 for x in range(cap + 1)] for x in range(n + 1)]
+    # Populate the DP table.
+    for i in range(n - 1, -1, -1):
+        for c in range(1, cap + 1):
+            # If the item 'i' fits in the current knapsack capacity, 
+            # the maximum value at 'dp[i][c]' is the largest of either:
+            # 1. The maximum value if we include item 'i'.
+            # 2. The maximum value if we exclude item 'i'.
+            if weights[i] <= c:
+                dp[i][c] = max(values[i] + dp[i + 1][c - weights[i]], dp[i + 1][c])
+            # If it doesn't fit, we have to exclude it.
+            else:
+                dp[i][c] = dp[i + 1][c]
+    return dp[0][cap]
+
+def knapsack_optimized(cap: int, weights: List[int], values: List[int]) -> int:
+    n = len(values)
+    # Initialize 'prev_row' as the DP values of the row below the 
+    # current row.
+    prev_row = [0] * (cap + 1)
+    for i in range(n - 1, -1, -1):
+        # Set the first cell of the 'curr_row' to 0 to set the base 
+        # case for this row. This is done by initializing the entire 
+        # row to 0.
+        curr_row = [0] * (cap + 1)
+        for c in range(1, cap + 1):
+            # If item 'i' fits in the current knapsack capacity, the 
+            # maximum value at 'curr_row[c]' is the largest of either:
+            # 1. The maximum value if we include item 'i'.
+            # 2. The maximum value if we exclude item 'i'.
+            if weights[i] <= c:
+                curr_row[c] = max(values[i] + prev_row[c - weights[i]], prev_row[c])
+            # If item 'i' doesn't fit, we exclude it.
+            else:
+                curr_row[c] = prev_row[c]
+        # Set 'prev_row' to 'curr_row' values for the next iteration.
+        prev_row = curr_row
+    return prev_row[cap]
+
 def test_2_wei_bag_problem1(bag_size, weight, value) -> int: 
 	rows, cols = len(weight), bag_size + 1
 	# dp = [[0 for _ in range(cols)] for _ in range(rows)]
@@ -1772,7 +1840,7 @@ class Solution:
 动态规划:继续打家劫舍!
 动态规划:还要打家劫舍!
 """
-#21 198.打家劫舍
+#X21 198.打家劫舍
     # 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
     # 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
     # 示例 1：
@@ -2528,19 +2596,22 @@ class Solution:
 #         return result
 
 
-#32 *** 718. 最长重复子数组 (连续)
-    # 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组的长度。
+#X32 *** 718. 最长重复子数组 (连续)
+# 两个整数数组
+    # 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组sub array的长度。
     # 示例：
     # 输入：
     # A: [1,2,3,2,1]
     # B: [3,2,1,4,7]
     # 输出：3
     # 解释：长度最长的公共子数组是 [3, 2, 1] 。
-# dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]。 （特别注意： “以下标i - 1为结尾的A” 标明一定是 以A[i-1]为结尾的字符串 ）
+# dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]。 
+# （特别注意： “以下标i - 1为结尾的A” 标明一定是 以A[i-1]为结尾的字符串 ）
 # 此时细心的同学应该发现，那dp[0][0]是什么含义呢？总不能是以下标-1为结尾的A数组吧。
 # 其实dp[i][j]的定义也就决定着，我们在遍历dp[i][j]的时候i 和 j都要从1开始。
 # 那有同学问了，我就定义dp[i][j]为 以下标i为结尾的A，和以下标j 为结尾的B，最长重复子数组长度。不行么？
-# 行倒是行！ 但实现起来就麻烦一点，需要单独处理初始化部分，在本题解下面的拓展内容里，我给出了 第二种 dp数组的定义方式所对应的代码和讲解，大家比较一下就了解了。
+# 行倒是行！ 但实现起来就麻烦一点，需要单独处理初始化部分，在本题解下面的拓展内容里，我给出了 第二种 
+# dp数组的定义方式所对应的代码和讲解，大家比较一下就了解了。
 # 根据dp[i][j]的定义，dp[i][j]的状态只能由dp[i - 1][j - 1]推导出来。
 # 即当A[i - 1] 和B[j - 1]相等的时候，dp[i][j] = dp[i - 1][j - 1] + 1;
 # 注意题目中说的子数组,其实就是连续子序列。
@@ -2645,10 +2716,13 @@ class Solution:
 #         return result
 
 
-#33 1143.最长公共子序列 (不连续)
+#X33 1143.最长公共子序列 (不连续)
+# 两个字符串
     # 给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
-    # 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
-    # 例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。两个字符串的「公共子序列」是这两个字符串所共同拥有的子序列。
+    # 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）
+    # 后组成的新字符串。
+    # 例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。两个字符串的「公共子序列」
+    # 是这两个字符串所共同拥有的子序列。
     # 若这两个字符串没有公共子序列，则返回 0。
     # 示例 1:
     # 输入：text1 = "abcde", text2 = "ace"
@@ -2713,6 +2787,50 @@ class Solution:
         
         return dp[n]  # 返回最后一个位置的最长公共子序列长度作为结果
 
+def longest_common_subsequence(s1: str, s2: str) -> int:
+    # Base case: Set the last row and last column to 0 by
+    # initializing the entire DP table with 0s.
+    dp = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
+    # Populate the DP table.
+    for i in range(len(s1) - 1, -1, -1):
+        for j in range(len(s2) - 1, -1, -1):
+            # If the characters match, the length of the LCS at
+            # 'dp[i][j]' is  1 + the LCS length of the remaining
+            # substrings.
+            if s1[i] == s2[j]:
+                dp[i][j] = 1 + dp[i + 1][j + 1]
+            # If the characters don't match, the LCS length at
+            # 'dp[i][j]' can be found by either:
+            # 1. Excluding the current character of s1.
+            # 2. Excluding the current character of s2.
+            else:
+                dp[i][j] = max(dp[i + 1][j], dp[i][j + 1])
+    return dp[0][0]
+
+def longest_common_subsequence_optimized(s1: str, s2: str) -> int:
+    # Initialize 'prev_row' as the DP values of the last row.
+    prev_row = [0] * (len(s2) + 1)
+    for i in range(len(s1) - 1, -1, -1):
+        # Set the last cell of 'curr_row' to 0 to set the base case for 
+        # this row. This is done by initializing the entire row to 0.
+        curr_row = [0] * (len(s2) + 1)
+        for j in range(len(s2) - 1, -1, -1):
+            # If the characters match, the length of the LCS at
+            # 'curr_row[j]' is 1 + the LCS length of the remaining
+            # substrings ('prev_row[j + 1]').
+            if s1[i] == s2[j]:
+                curr_row[j] = 1 + prev_row[j + 1]
+            # If the characters don't match, the LCS length at
+            # 'curr_row[j]' can be found by either:
+            # 1. Excluding the current character of s1 ('prev_row[j]').
+            # 2. Excluding the current character of s2 
+            # ('curr_row[j + 1]').
+            else:
+                curr_row[j] = max(prev_row[j], curr_row[j + 1])
+        # Update 'prev_row' with 'curr_row' values for the next 
+        # iteration.
+        prev_row = curr_row
+    return prev_row[0]
 
 #34 1035.不相交的线 (不连续)
     # 我们在两条独立的水平线上按给定的顺序写下 A 和 B 中的整数。
@@ -2994,7 +3112,8 @@ class Solution:
         return dp[-1][-1]
 
 
-#40 647. 回文子串 (连续)
+#X40 647. 回文子串 (连续)
+# 一个字符串
     # 给定一个字符串，你的任务是计算这个字符串中有多少个回文子串。
     # 具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
     # 示例 1：
@@ -3074,7 +3193,8 @@ class Solution:
         return res
 
 
-#41 516.最长回文子序列 (不连续)
+#X41 516.最长回文子序列 (不连续)
+# 一个字符串
     # 给定一个字符串 s ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 s 的最大长度为 1000 。
     # 示例 1: 输入: "bbbab" 输出: 4 一个可能的最长回文子序列为 "bbbb"。
     # 示例 2: 输入:"cbbd" 输出: 2 一个可能的最长回文子序列为 "bb"。
@@ -3107,3 +3227,219 @@ class Solution:
                 else:
                     dp[i][j] = max(dp[i+1][j], dp[i][j-1])
         return dp[0][-1] #注意最终状态的位置，因为是从下往上，所以最后在右上角
+
+def longest_palindrome_in_a_string(s: str) -> str:
+    n = len(s)
+    if n == 0:
+        return ""
+    dp = [[False] * n for _ in range(n)]
+    max_len = 1
+    start_index = 0
+    # Base case: a single character is always a palindrome.
+    for i in range(n):
+        dp[i][i] = True
+    # Base case: a substring of length two is a palindrome if both  
+    # characters are the same.
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            dp[i][i + 1] = True
+            max_len = 2
+            start_index = i
+    # Find palindromic substrings of length 3 or greater.
+    for substring_len in range(3, n + 1):
+        # Iterate through each substring of length 'substring_len'.
+        for i in range(n - substring_len + 1):
+            j = i + substring_len - 1
+            # If the first and last characters are the same, and the 
+            # inner substring is a palindrome, then the current 
+            # substring is a palindrome.
+            if s[i] == s[j] and dp[i + 1][j - 1]:
+                dp[i][j] = True
+                max_len = substring_len
+                start_index = i
+    return s[start_index : start_index + max_len]
+
+def longest_palindrome_in_a_string_expanding(s: str) -> str:
+    n = len(s)
+    start, max_len = 0, 0
+    for center in range(n):
+        # Check for odd-length palindromes.
+        odd_start, odd_length = expand_palindrome(center, center, s)
+        if odd_length > max_len:
+            start = odd_start
+            max_len = odd_length
+        # Check for even-length palindromes.
+        if center < n - 1 and s[center] == s[center + 1]:
+            even_start, even_length = expand_palindrome(center, center + 1, s)
+            if even_length > max_len:
+                start = even_start
+                max_len = even_length
+    return s[start : start + max_len]
+
+# Expands outward from the center of a base case to identify the start 
+# index and length of the longest palindrome that extends from this 
+# base case.
+def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
+    while left > 0 and right < len(s) - 1 and s[left - 1] == s[right + 1]:
+        left -= 1
+        right += 1
+    return left, right - left + 1
+
+# ByteByteGo 101
+#X42 Minimum Coin Combination
+    # You are given an array of coin values and a target amount of money.
+    # Return the minimum number of coins needed to total the target amount. If this isn't possible, return ‐1. 
+    # You may assume there's an unlimited supply of each coin.
+    # Example 1:
+    # Input: coins = [1, 2, 3], target = 5
+    # Output: 2
+    # Explanation: Use one 2-dollar coin and one 3-dollar coin to make 5 dollars.
+    # Example 2:
+    # Input: coins = [2, 4], target = 5
+    # Output: -1
+from typing import List
+
+def min_coin_combination_bottom_up(coins: List[int], target: int) -> int:
+    # The DP array will store the minimum number of coins needed for 
+    # each amount. Set each element to a large number initially.
+    dp = [float('inf')] * (target + 1)
+    # Base case: if the target is 0, then 0 coins are needed.
+    dp[0] = 0
+    # Update the DP array for all target amounts greater than 0.
+    
+    for t in range(1, target + 1):
+        for coin in coins:
+            if coin <= t:
+                dp[t] = min(dp[t], 1 + dp[t - coin])
+    return dp[target] if dp[target] != float('inf') else -1
+
+#X43 Matrix Pathways
+    # You are positioned at the top-left corner of a m × n matrix, and can only move 
+    # downward or rightward through the matrix. Determine the number of unique pathways 
+    # you can take to reach the bottom-right corner of the matrix.
+def matrix_pathways(m: int, n: int) -> int:
+    # Base cases: Set all cells in row 0 and column 0 to 1. We can
+    # do this by initializing all cells in the DP table to 1.
+    dp = [[1] * n for _ in range(m)]
+    # Fill in the rest of the DP table.
+    for r in range(1, m):
+        for c in range(1, n):
+            # Paths to current cell = paths from above + paths from 
+            # left.
+            dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
+    return dp[m - 1][n - 1]
+
+def matrix_pathways_optimized(m: int, n: int) -> int:
+    # Initialize 'prev_row' as the DP values of row 0, which are all 1s.
+    prev_row = [1] * n
+    # Iterate through the matrix starting from row 1.
+    for r in range(1, m):
+        # Set the first cell of 'curr_row' to 1. This is done by 
+        # setting the entire row to 1.
+        curr_row = [1] * n
+        for c in range(1, n):
+            # The number of unique paths to the current cell is the sum 
+            # of the paths from the cell above it ('prev_row[c]') and 
+            # the cell to the left ('curr_row[c - 1]').
+            curr_row[c] = prev_row[c] + curr_row[c - 1]
+        # Update 'prev_row' with 'curr_row' values for the next 
+        # iteration.
+        prev_row = curr_row
+    # The last element in 'prev_row' stores the result for the 
+    # bottom-right cell.
+    return prev_row[n - 1]
+
+#X44 Maximum Subarray Sum
+    # Given an array of integers, return the sum of the subarray with the largest sum.
+    # Example:
+    # Input: nums = [3, 1, -6, 2, -1, 4, -9]
+    # Output: 5
+    # Explanation: subarray [2, -1, 4] has the largest sum of 5.
+    # Constraints:
+    # The input array contains at least one element.
+from typing import List
+
+def maximum_subarray_sum_dp(nums: List[int]) -> int:
+    n = len(nums)
+    if n == 0:
+        return 0
+    dp = [0] * n
+    # Base case: the maximum subarray sum of an array with just one
+    # element is that element.
+    dp[0] = nums[0]
+    max_sum = dp[0]
+    # Populate the rest of the DP array.
+    for i in range(1, n):
+        # Determine the maximum subarray sum ending at the current 
+        # index.
+        dp[i] = max(dp[i - 1] + nums[i], nums[i])
+        max_sum = max(max_sum, dp[i])
+    return max_sum
+
+def maximum_subarray_sum_dp_optimized(nums: List[int]) -> int:
+    n = len(nums)
+    if n == 0:
+        return 0
+    current_sum = nums[0]
+    max_sum = nums[0]
+    for i in range(1, n):
+        current_sum = max(nums[i], current_sum + nums[i])
+        max_sum = max(max_sum, current_sum)
+    return max_sum
+
+#X45 Largest Square in a Matrix
+    # Determine the area of the largest square of 1's in a binary matrix.
+from typing import List
+
+def largest_square_in_a_matrix(matrix: List[List[int]]) -> int:
+    if not matrix:
+        return 0
+    m, n = len(matrix), len(matrix[0])
+    dp = [[0] * n for _ in range(m)]
+    max_len = 0
+    # Base case: If a cell in row 0 is 1, the largest square ending there has a
+    # length of 1.
+    for j in range(n):
+        if matrix[0][j] == 1:
+            dp[0][j] = 1
+            max_len = 1
+    # Base case: If a cell in column 0 is 1, the largest square ending there has
+    # a length of 1.
+    for i in range(m):
+        if matrix[i][0] == 1:
+            dp[i][0] = 1
+            max_len = 1
+    # Populate the rest of the DP table.
+    for i in range(1, m):
+        for j in range(1, n):
+            if matrix[i][j] == 1:
+                # The length of the largest square ending here is determined by 
+                # the smallest square ending at the neighboring cells (left, 
+                # top-left, top), plus 1 to include this cell.
+                dp[i][j] = 1 + min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1])
+            max_len = max(max_len, dp[i][j])
+    return max_len ** 2
+
+def largest_square_in_a_matrix_optimized(matrix: List[List[int]]) -> int:
+    if not matrix:
+        return 0
+    m, n = len(matrix), len(matrix[0])
+    prev_row = [0] * n
+    max_len = 0
+    # Iterate through the matrix.
+    for i in range(m):
+        curr_row = [0] * n
+        for j in range(n):
+            # Base cases: if we’re in row 0 or column 0, the largest square ending
+            # here has a length of 1. This can be set by using the value in the
+            # input matrix.
+            if i == 0 or j == 0:
+                curr_row[j] = matrix[i][j]
+            else:
+                if matrix[i][j] == 1:
+                      # curr_row[j] = 1 + min(left, top-left, top)
+                    curr_row[j] = 1 + min(curr_row[j - 1], prev_row[j - 1], prev_row[j])
+            max_len = max(max_len, curr_row[j])
+        # Update 'prev_row' with 'curr_row' values for the next iteration.
+        prev_row, curr_row = curr_row, [0] * n
+    return max_len ** 2
