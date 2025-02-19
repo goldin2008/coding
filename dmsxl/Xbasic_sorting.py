@@ -1274,12 +1274,118 @@ class Solution:
 
 #X11 148. Sort List
     # Given the head of a linked list, return the list after sorting it in ascending order.
+from ds import ListNode
+"""
+Definition of ListNode:
+class ListNode:
+    def __init__(self, val=None, next=None):
+        self.val = val
+        self.next = next
+"""
+def sort_linked_list(head: ListNode) -> ListNode:
+    # If the linked list is empty or has only one element, it's already
+    # sorted.
+    if not head or not head.next:
+        return head
+    # Split the linked list into halves using the fast and slow pointer
+    # technique.
+    second_head = split_list(head) 
+    # Recursively sort both halves.
+    first_half_sorted = sort_linked_list(head)
+    second_half_sorted = sort_linked_list(second_head)
+    # Merge the sorted sublists.
+    return merge(first_half_sorted, second_half_sorted)
 
+def split_list(head: ListNode) -> ListNode:
+    slow = fast = head
+    while fast.next and fast.next.next:
+        slow = slow.next
+        fast = fast.next.next
+    second_head = slow.next
+    slow.next = None
+    return second_head
+
+def merge(l1: ListNode, l2: ListNode) -> ListNode:
+    dummy = ListNode(0)
+    # This pointer will be used to append nodes to the tail of the 
+    # merged linked list.
+    tail = dummy
+    # Continually append the node with the smaller value from each 
+    # linked list to the merged linked list until one of the linked 
+    # lists has no more nodes to merge.
+    while l1 and l2:
+        if l1.val < l2.val:
+            tail.next = l1
+            l1 = l1.next
+        else:
+            tail.next = l2
+            l2 = l2.next
+        tail = tail.next
+    # One of the two linked lists could still have nodes remaining.
+    # Attach those nodes to the end of the merged linked list.
+    tail.next = l1 or l2
+    return dummy.next
 
 #X12 912. Sort an Array
     # Given an array of integers nums, sort the array in ascending order and return it.
     # You must solve the problem without using any built-in functions in O(nlog(n)) 
     # time complexity and with the smallest space complexity possible.
+def sort_array_counting_sort(nums: List[int]) -> List[int]:
+    if not nums:
+        return []
+    res = []
+    # Count occurrences of each element in 'nums'.
+    counts = [0] * (max(nums) + 1)
+    for num in nums:
+        counts[num] += 1
+    # Build the sorted array by appending each index 'i' to it a total 
+    # of 'counts[i]' times.
+    for i, count in enumerate(counts):
+        res.extend([i] * count)
+    return res
+
+def sort_array(nums: List[int]) -> List[int]:
+    quicksort(nums, 0, len(nums) - 1)
+    return nums
+
+def quicksort(nums: List[int], left: int, right: int) -> None:
+    # Base case: if the subarray has 0 or 1 element, it's already 
+    # sorted.
+    if left >= right:
+        return
+    # Partition the array and retrieve the pivot index.
+    pivot_index = partition(nums, left, right)
+    # Call quicksort on the left and right parts to recursively sort
+    # them.
+    quicksort(nums, left, pivot_index - 1)
+    quicksort(nums, pivot_index + 1, right)
+
+def partition(nums: List[int], left: int, right: int) -> int:
+    pivot = nums[right]
+    lo = left
+    # Move all numbers less than the pivot to the left, which
+    # consequently positions all numbers greater than or equal to the
+    # pivot to the right.
+    for i in range(left, right):
+        if nums[i] < pivot:
+            nums[lo], nums[i] = nums[i], nums[lo]
+            lo += 1
+    # After partitioning, 'lo' will be positioned where the pivot should
+    # be. So, swap the pivot number with the number at the 'lo' pointer.
+    nums[lo], nums[right] = nums[right], nums[lo]
+    return lo
+
+def quicksort_optimized(nums: List[int], left: int, right: int) -> None:
+    if left >= right:
+        return
+    # Choose a pivot at a random index.
+    random_index = random.randint(left, right)
+    # Swap the randomly chosen pivot with the rightmost element to 
+    # position the pivot at the rightmost index.
+    nums[random_index], nums[right] = nums[right], nums[random_index]
+    pivot_index = partition(nums, left, right)
+    quicksort_optimized(nums, left, pivot_index - 1)
+    quicksort_optimized(nums, pivot_index + 1, right)
 
 #X13 1985. Find the Kth Largest Integer in the Array
     # You are given an array of strings nums and an integer k. Each string in nums 
@@ -1287,6 +1393,53 @@ class Solution:
     # Return the string that represents the kth largest integer in nums.
     # Note: Duplicate numbers should be counted distinctly. For example, 
     # if nums is ["1","2","2"], "2" is the first largest integer, "2" is the second-largest integer, and "1" is the third-largest integer.
+def kth_largest_integer_min_heap(nums: List[int], k: int) -> int:
+    min_heap = []
+    heapq.heapify(min_heap)
+    for num in nums:
+        # Ensure the heap has at least 'k' integers.
+        if len(min_heap) < k:
+            heapq.heappush(min_heap, num)
+        # If 'num' is greater than the smallest integer in the heap, pop
+        # off this smallest integer from the heap and push in 'num'.
+        elif num > min_heap[0]:
+            heapq.heappop(min_heap)
+            heapq.heappush(min_heap, num)
+    return min_heap[0]
+
+def kth_largest_integer_quickselect(nums: List[int], k: int) -> int:
+    return quickselect(nums, 0, len(nums) - 1, k)
+
+def quickselect(nums: List[int], left: int, right: int, k: int) -> None:
+    n = len(nums)
+    if left >= right:
+        return nums[left]
+    random_index = random.randint(left, right)
+    nums[random_index], nums[right] = nums[right], nums[random_index]
+    pivot_index = partition(nums, left, right)
+    # If the pivot comes before 'n - k', the ('n - k')th smallest 
+    # integer is somewhere to its right. Perform quickselect on the 
+    # right part.
+    if pivot_index < n - k:
+        return quickselect(nums, pivot_index + 1, right, k)
+    # If the pivot comes after 'n - k', the ('n - k')th smallest integer
+    # is somewhere to its left. Perform quickselect on the left part.
+    elif pivot_index > n - k:
+        return quickselect(nums, left, pivot_index - 1, k)
+    # If the pivot is at index 'n - k', it's the ('n - k')th smallest
+    # integer.
+    else:
+        return nums[pivot_index]
+
+def partition(nums: List[int], left: int, right: int) -> int:
+    pivot = nums[right]
+    lo = left
+    for i in range(left, right):
+        if nums[i] < pivot:
+            nums[lo], nums[i] = nums[i], nums[lo]
+            lo += 1
+    nums[lo], nums[right] = nums[right], nums[lo]
+    return lo
 
 #X14 Dutch National Flag
     # Given an array of 0s, 1s, and 2s representing red, white, and blue, respectively, 
@@ -1294,3 +1447,17 @@ class Solution:
     # Example:
     # Input: nums = [0, 1, 2, 0, 1, 2, 0]
     # Output: [0, 0, 0, 1, 1, 2, 2]
+def dutch_national_flag(nums: List[int]) -> None:
+    i, left, right = 0, 0, len(nums) - 1
+    while i <= right:
+        # Swap 0s with the element at the left pointer.
+        if nums[i] == 0:
+            nums[i], nums[left] = nums[left], nums[i]
+            left += 1
+            i += 1
+        # Swap 2s with the element at the right pointer.
+        elif nums[i] == 2:
+            nums[i], nums[right] = nums[right], nums[i]
+            right -= 1
+        else:
+            i += 1
