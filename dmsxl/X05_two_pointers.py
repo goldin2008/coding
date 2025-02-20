@@ -406,7 +406,7 @@ class Solution:
         return None
 
 
-#9 第15题. 三数之和
+#X9 第15题. 三数之和
     # 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
     # 注意： 答案中不可以包含重复的三元组。
     # 示例：
@@ -475,6 +475,15 @@ class Solution:
 #                     d[nums[j]] = j
 #         return result
 
+# Triplet Sum
+# Given an array of integers, return all triplets [a, b, c] such that a + b + c = 0 . 
+# The solution must not contain duplicate triplets (e.g., [1, 2, 3] and [2, 3, 1] are considered duplicates). 
+# If no such triplets are found, return an empty array.
+# Each triplet can be arranged in any order, and the output can be returned in any order.
+# Example:
+# Input: nums = [0, -1, 2, -3, 1]
+# Output: [[-3, 1, 2], [-1, 0, 1]]
+
 
 #10 第18题. 四数之和
     # 题意：给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
@@ -539,3 +548,33 @@ class Solution:
 #                             ans.add(tuple(sorted([nums[i], nums[j], nums[k], val])))
         
 #         return [list(x) for x in ans]
+
+
+#X11 Pair Sum - Sorted
+# Given an array of integers sorted in ascending order and a target value, 
+# return the indexes of any pair of numbers in the array that sum to the target. 
+# The order of the indexes in the result doesn't matter. If no pair is found, return an empty array.
+# Example 1:
+# Input: nums = [-5, -2, 3, 4, 6], target = 7
+# Output: [2, 3]
+# Explanation: nums[2] + nums[3] = 3 + 4 = 7
+# Example 2:
+# Input: nums = [1, 1, 1], target = 2
+# Output: [0, 1]
+# Explanation: other valid outputs could be [1, 0], [0, 2], [2, 0], [1, 2] or [2, 1].
+def pair_sum_sorted(nums: List[int], target: int) -> List[int]:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        sum = nums[left] + nums[right]
+        # If the sum is smaller, increment the left pointer, aiming
+        # to increase the sum toward the target value.
+        if sum < target:
+            left += 1
+        # If the sum is larger, decrement the right pointer, aiming
+        # to decrease the sum toward the target value.
+        elif sum > target:
+            right -= 1
+        # If the target pair is found, return its indexes.
+        else:   
+            return [left, right]
+    return []
