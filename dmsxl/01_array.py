@@ -262,3 +262,11 @@ def product_array_without_current_element(nums: List[int]) -> List[int]:
         res[i] *= right_product
         right_product *= nums[i]
     return res
+
+# Intervals
+#X9 Merge Overlapping Intervals
+# Merge an array of intervals so there are no overlapping intervals, 
+# and return the resultant merged intervals.
+# Example:
+# Input: intervals = [[3, 4], [7, 8], [2, 5], [6, 7], [1, 4]]
+# Output: [[1, 5], [6, 8]]
