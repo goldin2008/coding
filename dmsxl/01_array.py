@@ -185,3 +185,80 @@ class Solution:
         if n % 2 != 0 :			# n为奇数时，填充中心点
             nums[mid][mid] = count 
         return nums
+
+# Prefix Sums
+#X6 Sum Between Range
+# Given an integer array, write a function which returns the sum of values between two indexes.
+# Example:
+# Input: nums = [3, -7, 6, 0, -2, 5],
+#        [sum_range(0, 3), sum_range(2, 4), sum_range(2, 2)]
+# Output: [2, 4, 6]
+class SumBetweenRange:
+    def __init__(self, nums: List[int]):
+        self.prefix_sum = [nums[0]]
+        for i in range(1, len(nums)):
+            self.prefix_sum.append(self.prefix_sum[-1] + nums[i])
+
+    def sum_range(self, i: int, j: int) -> int:
+        if i == 0:
+            return self.prefix_sum[j]
+        return self.prefix_sum[j] - self.prefix_sum[i - 1]
+#X7 K-Sum Subarrays
+# Find the number of subarrays in an integer array that sum to k.
+# Example:
+# Input: nums = [1, 2, -1, 1, 2], k = 3
+# Output: 3
+def k_sum_subarrays(nums: List[int], k: int) -> int:
+    n = len(nums)
+    count = 0
+    # Populate the prefix sum array, setting its first element to 0.
+    prefix_sum = [0]
+    for i in range(0, n):
+        prefix_sum.append(prefix_sum[-1] + nums[i])
+    # Loop through all valid pairs of prefix sum values to find all 
+    # subarrays that sum to 'k'.
+    for j in range(1, n + 1):
+        for i in range(1, j + 1):
+            if prefix_sum[j] - prefix_sum[i - 1] == k:
+                count += 1
+    return count
+
+def k_sum_subarrays_optimized(nums: List[int], k: int) -> int:
+    count = 0
+    # Initialize the map with 0 to handle subarrays that sum to 'k' 
+    # from the start of the array.
+    prefix_sum_map = {0: 1}
+    curr_prefix_sum = 0
+    for num in nums:
+        # Update the running prefix sum by adding the current number.
+        curr_prefix_sum += num
+        # If a subarray with sum 'k' exists, increment 'count' by the 
+        # number of times it has been found.
+        if curr_prefix_sum - k in prefix_sum_map:
+            count += prefix_sum_map[curr_prefix_sum - k]
+        # Update the frequency of 'curr_prefix_sum' in the hash map.
+        freq = prefix_sum_map.get(curr_prefix_sum, 0)
+        prefix_sum_map[curr_prefix_sum] = freq + 1
+    return count
+
+#X8 Product Array Without Current Element
+# Given an array of integers, return an array res so that res[i] is equal to the 
+# product of all the elements of the input array except nums[i] itself.
+# Example:
+# Input: nums = [2, 3, 1, 4, 5]
+# Output: [60, 40, 120, 30, 24]
+# Explanation: The output value at index 0 is the product of all numbers 
+# except nums[0] (3⋅1⋅4⋅5 = 60). The same logic applies to the rest of the output.
+def product_array_without_current_element(nums: List[int]) -> List[int]:
+    n = len(nums)
+    res = [1] * n
+    # Populate the output with the running left product.
+    for i in range(1, n):
+        res[i] = res[i - 1] * nums[i - 1]
+    # Multiply the output with the running right product, from right to 
+    # left.
+    right_product = 1
+    for i in range(n - 1, -1, -1):
+        res[i] *= right_product
+        right_product *= nums[i]
+    return res
