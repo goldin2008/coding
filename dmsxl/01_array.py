@@ -270,3 +270,84 @@ def product_array_without_current_element(nums: List[int]) -> List[int]:
 # Example:
 # Input: intervals = [[3, 4], [7, 8], [2, 5], [6, 7], [1, 4]]
 # Output: [[1, 5], [6, 8]]
+from ds import Interval
+from typing import List
+"""
+Definition of Interval:
+class Interval:
+    def __init__(self, start: int, end: int):
+        self.start = start
+        self.end = end
+"""
+def merge_overlapping_intervals(intervals: List[Interval]) -> List[Interval]:
+    intervals.sort(key=lambda x: x.start)
+    merged = [intervals[0]]
+    for B in intervals[1:]:
+        A = merged[-1]
+        # If A and B don't overlap, add B to the merged list.
+        if A.end < B.start:
+            merged.append(B)
+        # If they do overlap, merge A with B.
+        else:
+            merged[-1] = Interval(A.start, max(A.end, B.end))
+    return merged
+
+#X10 Identify All Interval Overlaps
+# Return an array of all overlaps between two arrays of intervals; intervals1 and intervals2. 
+# Each individual interval array is sorted by start value, and contains no overlapping 
+# intervals within itself.
+# Example:
+# Input: intervals1 = [[1, 4], [5, 6], [9, 10]],
+#        intervals2 = [[2, 7], [8, 9]]
+# Output: [[2, 4], [5, 6], [9, 9]]
+# Constraints:
+# For every index i in intervals1, intervals1[i].start < intervals1[i].end.
+# For every index j in intervals2, intervals2[j].start < intervals2[j].end.
+def identify_all_interval_overlaps(intervals1: List[Interval], intervals2: List[Interval]) -> List[Interval]:
+    overlaps = []
+    i = j = 0
+    while i < len(intervals1) and j < len(intervals2):
+        # Set A to the interval that starts first and B to the other 
+        # interval.
+        if intervals1[i].start <= intervals2[j].start:
+            A, B = intervals1[i], intervals2[j]
+        else:
+            A, B = intervals2[j], intervals1[i]
+        # If there's an overlap, add the overlap.
+        if A.end >= B.start:
+            overlaps.append(Interval(B.start, min(A.end, B.end)))
+        # Advance the pointer associated with the interval that ends 
+        # first.
+        if intervals1[i].end < intervals2[j].end:
+            i += 1
+        else:
+            j += 1
+    return overlaps
+
+#X11 Largest Overlap of Intervals
+# Given an array of intervals, determine the maximum number of intervals that overlap 
+# at any point. Each interval is half-open, meaning it includes the start point but 
+# excludes the end point.
+# Example:
+# Input: intervals = [[1, 3], [5, 7], [2, 6], [4, 8]]
+# Output: 3
+# Constraints:
+# The input will contain at least one interval.
+# For every index i in the list, intervals[i].start < intervals[i].end.
+def largest_overlap_of_intervals(intervals: List[Interval]) -> int:
+    points = []
+    for interval in intervals:
+        points.append((interval.start, 'S'))
+        points.append((interval.end, 'E'))
+    # Sort in chronological order. If multiple points occur at the same 
+    # time, ensure end points are prioritized before start points.
+    points.sort(key=lambda x: (x[0], x[1]))
+    active_intervals = 0
+    max_overlaps = 0
+    for time, point_type in points:
+        if point_type == 'S':
+            active_intervals += 1
+        else:
+            active_intervals -= 1
+        max_overlaps = max(max_overlaps, active_intervals)
+    return max_overlaps
