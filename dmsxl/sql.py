@@ -61,6 +61,49 @@
 # Find the name of the user who has rated the greatest number of movies. In case of a tie, return the lexicographically smaller user name.
 # Find the movie name with the highest average rating in February 2020. In case of a tie, return the lexicographically smaller movie name.
 # The result format is in the following example.
+# Example 1:
+# Input: 
+# Movies table:
+# +-------------+--------------+
+# | movie_id    |  title       |
+# +-------------+--------------+
+# | 1           | Avengers     |
+# | 2           | Frozen 2     |
+# | 3           | Joker        |
+# +-------------+--------------+
+# Users table:
+# +-------------+--------------+
+# | user_id     |  name        |
+# +-------------+--------------+
+# | 1           | Daniel       |
+# | 2           | Monica       |
+# | 3           | Maria        |
+# | 4           | James        |
+# +-------------+--------------+
+# MovieRating table:
+# +-------------+--------------+--------------+-------------+
+# | movie_id    | user_id      | rating       | created_at  |
+# +-------------+--------------+--------------+-------------+
+# | 1           | 1            | 3            | 2020-01-12  |
+# | 1           | 2            | 4            | 2020-02-11  |
+# | 1           | 3            | 2            | 2020-02-12  |
+# | 1           | 4            | 1            | 2020-01-01  |
+# | 2           | 1            | 5            | 2020-02-17  | 
+# | 2           | 2            | 2            | 2020-02-01  | 
+# | 2           | 3            | 2            | 2020-03-01  |
+# | 3           | 1            | 3            | 2020-02-22  | 
+# | 3           | 2            | 4            | 2020-02-25  | 
+# +-------------+--------------+--------------+-------------+
+# Output: 
+# +--------------+
+# | results      |
+# +--------------+
+# | Daniel       |
+# | Frozen 2     |
+# +--------------+
+# Explanation: 
+# Daniel and Monica have rated 3 movies ("Avengers", "Frozen 2" and "Joker") but Daniel is smaller lexicographically.
+# Frozen 2 and Joker have a rating average of 3.5 in February but Frozen 2 is smaller lexicographically.
 (SELECT name AS results
 FROM MovieRating JOIN Users USING(user_id)
 GROUP BY name
@@ -77,6 +120,41 @@ ORDER BY AVG(rating) DESC, title
 LIMIT 1)
 
 # 1164. Product Price at a Given Date
+# Table: Products
+# +---------------+---------+
+# | Column Name   | Type    |
+# +---------------+---------+
+# | product_id    | int     |
+# | new_price     | int     |
+# | change_date   | date    |
+# +---------------+---------+
+# (product_id, change_date) is the primary key (combination of columns with unique values) of this table.
+# Each row of this table indicates that the price of some product was changed to a new price at some date.
+ 
+# Write a solution to find the prices of all products on 2019-08-16. Assume the price of all products before any change is 10.
+# Return the result table in any order.
+# The result format is in the following example.
+# Example 1:
+# Input: 
+# Products table:
+# +------------+-----------+-------------+
+# | product_id | new_price | change_date |
+# +------------+-----------+-------------+
+# | 1          | 20        | 2019-08-14  |
+# | 2          | 50        | 2019-08-14  |
+# | 1          | 30        | 2019-08-15  |
+# | 1          | 35        | 2019-08-16  |
+# | 2          | 65        | 2019-08-17  |
+# | 3          | 20        | 2019-08-18  |
+# +------------+-----------+-------------+
+# Output: 
+# +------------+-------+
+# | product_id | price |
+# +------------+-------+
+# | 2          | 50    |
+# | 1          | 35    |
+# | 3          | 10    |
+# +------------+-------+
 SELECT
   product_id,
   IFNULL (price, 10) AS price
