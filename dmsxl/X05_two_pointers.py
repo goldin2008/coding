@@ -1,7 +1,7 @@
 """
 
 """
-#1 27. 移除元素
+#1 Easy 27. 移除元素
     # 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
     # 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并原地修改输入数组。
     # 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
@@ -36,7 +36,7 @@ class Solution:
 #         return l
 
 
-#2 344.反转字符串
+#2 Easy 344.反转字符串
     # 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
     # 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
     # 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
@@ -111,7 +111,7 @@ class Solution:
 #         s.reverse()
 
 
-#3 替换数字
+#3 Easy 替换数字
     # 给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。
     # 例如，对于输入字符串 "a1b2c3"，函数应该将其转换为 "anumberbnumbercnumber"。
     # 对于输入字符串 "a5b"，函数应该将其转换为 "anumberb"
@@ -128,7 +128,7 @@ class Solution:
         return ''.join(lst)
 
 
-#4 151.翻转字符串里的单词
+#4 Medium 151.翻转字符串里的单词
     # 给定一个字符串，逐个翻转字符串中的每个单词。
     # 示例 1：
     # 输入: "the sky is blue"
@@ -166,9 +166,54 @@ class Solution:
 
         # 将列表转换成字符串
         return " ".join(words)
+# （版本三）不使用build-in function
+class Solution:
+        #1.去除多余的空格
+        def trim_spaces(self, s):     
+            n = len(s)
+            left = 0
+            right = n-1
+        
+            while left <= right and s[left] == ' ':    #去除开头的空格
+                left += 1
+            while left <= right and s[right] == ' ':   #去除结尾的空格
+                right = right-1
+            tmp = []
+            while left <= right:                      #去除单词中间多余的空格
+                if s[left] != ' ':
+                    tmp.append(s[left])
+                elif tmp[-1] != ' ':                 #当前位置是空格，但是相邻的上一个位置不是空格，则该空格是合理的
+                    tmp.append(s[left])
+                left += 1
+            return tmp
+        #2.翻转字符数组
+        def reverse_string(self, nums, left, right):
+            while left < right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+            return None
+        #3.翻转每个单词
+        def reverse_each_word(self, nums):
+            start = 0
+            end = 0
+            n = len(nums)
+            while start < n:
+                while end < n and nums[end] != ' ':
+                    end += 1
+                self.reverse_string(nums, start, end-1)
+                end += 1
+                start = end
+            return None
+        #4.翻转字符串里的单词
+        def reverseWords(self, s):                #测试用例："the sky is blue"
+            l = self.trim_spaces(s)               #输出：['t', 'h', 'e', ' ', 's', 'k', 'y', ' ', 'i', 's', ' ', 'b', 'l', 'u', 'e'
+            self.reverse_string(l,  0, len(l)-1)  #输出：['e', 'u', 'l', 'b', ' ', 's', 'i', ' ', 'y', 'k', 's', ' ', 'e', 'h', 't']
+            self.reverse_each_word(l)             #输出：['b', 'l', 'u', 'e', ' ', 'i', 's', ' ', 's', 'k', 'y', ' ', 't', 'h', 'e']
+            return ''.join(l)                    #输出：blue is sky the
 
 
-#5 206.反转链表
+#5 Easy 206.反转链表
     # 题意：反转一个单链表。
     # 示例: 输入: 1->2->3->4->5->NULL 输出: 5->4->3->2->1->NULL
 # （版本一）双指针法
@@ -179,8 +224,9 @@ class Solution:
 #         self.next = next
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        cur = head   
         pre = None
+        cur = head   
+        
         while cur:
             temp = cur.next # 保存一下 cur的下一个节点，因为接下来要改变cur->next
             cur.next = pre #反转
@@ -205,7 +251,7 @@ class Solution:
 #         return self.reverse(temp, cur)
 
 
-#6 19.删除链表的倒数第N个节点
+#6 Medium 19.删除链表的倒数第N个节点
     # 给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
     # 进阶：你能尝试使用一趟扫描实现吗？
     # 示例 1：
@@ -240,7 +286,7 @@ class Solution:
         return dummy_head.next
 
 
-#7 160.链表相交
+#7 Easy Medium 160.链表相交
     # 给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 null 。
 # （版本一）求长度，同时出发
 class Solution:
@@ -266,7 +312,7 @@ class Solution:
             else:
                 curA = curA.next 
                 curB = curB.next
-        return None 
+        return None
 # （版本二）求长度，同时出发 （代码复用）
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
@@ -358,7 +404,7 @@ class Solution:
         return pointerA
 
 
-#8 142.环形链表II
+#8 Medium 142.环形链表II
     # 题意： 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
     # 为了表示给定链表中的环，使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
     # 说明：不允许修改给定的链表。
@@ -483,7 +529,57 @@ class Solution:
 # Example:
 # Input: nums = [0, -1, 2, -3, 1]
 # Output: [[-3, 1, 2], [-1, 0, 1]]
+def triplet_sum_brute_force(nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    # Use a hash set to ensure we don't add duplicate triplets.
+    triplets = set()
+    # Iterate through the indexes of all triplets.
+    for i in range(n):
+        for j in range(i + 1, n):          
+            for k in range(j + 1, n):
+                if nums[i] + nums[j] + nums[k] == 0:
+                    # Sort the triplet before including it in the 
+                    # hash set.
+                    triplet = tuple(sorted([nums[i], nums[j], nums[k]]))
+                    triplets.add(triplet)
+    return [list(triplet) for triplet in triplets]
 
+def triplet_sum(nums: List[int]) -> List[List[int]]:
+    triplets = []
+    nums.sort()
+    for i in range(len(nums)):
+        # Optimization: triplets consisting of only positive numbers 
+        # will never sum to 0.
+        
+        if nums[i] > 0:
+            break
+        # To avoid duplicate triplets, skip 'a' if it's the same as 
+        # the previous number.
+        if i > 0 and nums[i] == nums[i - 1]:
+            continue
+        # Find all pairs that sum to a target of '-a' (-nums[i]).
+        pairs = pair_sum_sorted_all_pairs(nums, i + 1, -nums[i])
+        for pair in pairs:
+            triplets.append([nums[i]] + pair)
+    return triplets
+
+def pair_sum_sorted_all_pairs(nums: List[int], start: int, target: int) -> List[int]:
+    pairs = []
+    left, right = start, len(nums) - 1
+    while left < right:
+        sum = nums[left] + nums[right]  
+        if sum == target:
+            pairs.append([nums[left], nums[right]])
+            left += 1
+            # To avoid duplicate '[b, c]' pairs, skip 'b' if it's the 
+            # same as the previous number.
+            while left < right and nums[left] == nums[left - 1]:
+                left += 1
+        elif sum < target:
+            left += 1
+        else:
+            right -= 1
+    return pairs
 
 #10 第18题. 四数之和
     # 题意：给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
@@ -562,6 +658,14 @@ class Solution:
 # Input: nums = [1, 1, 1], target = 2
 # Output: [0, 1]
 # Explanation: other valid outputs could be [1, 0], [0, 2], [2, 0], [1, 2] or [2, 1].
+def pair_sum_sorted_brute_force(nums: List[int], target: int) -> List[int]:
+    n = len(nums)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+    return []
+
 def pair_sum_sorted(nums: List[int], target: int) -> List[int]:
     left, right = 0, len(nums) - 1
     while left < right:
@@ -578,3 +682,206 @@ def pair_sum_sorted(nums: List[int], target: int) -> List[int]:
         else:   
             return [left, right]
     return []
+
+#X12 Is Palindrome Valid
+# A palindrome is a sequence of characters that reads the same forward and backward.
+# Given a string, determine if it's a palindrome after removing all non-alphanumeric characters. 
+# A character is alphanumeric if it's either a letter or a number.
+# Example 1:
+# Input: s = 'a dog! a panic in a pagoda.'
+# Output: True
+def is_palindrome_valid(s: str) -> bool:    
+    left, right = 0, len(s) - 1
+    while left < right:   
+        # Skip non-alphanumeric characters from the left.     
+        while left < right and not s[left].isalnum():
+            left += 1
+        # Skip non-alphanumeric characters from the right.
+        while left < right and not s[right].isalnum():
+            right -= 1
+        # If the characters at the left and right pointers don't
+        # match, the string is not a palindrome.
+        if s[left] != s[right]:
+            return False 
+        left += 1
+        right -= 1
+    return True
+
+#X13 Largest Container
+# You are given an array of numbers, each representing the height of a vertical 
+# line on a graph. A container can be formed with any pair of these lines, 
+# along with the x-axis of the graph. Return the amount of water which the largest container can hold.
+# Input: heights = [2, 7, 8, 3, 7, 6]
+# Output: 24
+def largest_container_brute_force(heights: List[int]) -> int:
+    n = len(heights)
+    max_water = 0
+    # Find the maximum amount of water stored between all pairs of
+    # lines.
+    for i in range(n):
+        for j in range(i + 1, n):
+            water = min(heights[i], heights[j]) * (j - i)
+            max_water = max(max_water, water)
+    return max_water
+
+def largest_container(heights: List[int]) -> int:
+    max_water = 0
+    left, right = 0, len(heights) - 1
+    while (left < right):
+        # Calculate the water contained between the current pair of 
+        # lines.
+        water = min(heights[left], heights[right]) * (right - left)
+        max_water = max(max_water, water)
+        # Move the pointers inward, always moving the pointer at the 
+        # shorter line. If both lines have the same height, move both 
+        # pointers inward.
+        if (heights[left] < heights[right]):
+            left += 1
+        elif (heights[left] > heights[right]):
+            right -= 1
+        else:
+            left += 1
+            right -= 1
+    return max_water
+
+#X14 Shift Zeros to the End
+# Given an array of integers, modify the array in place to move all zeros to the end 
+# while maintaining the relative order of non-zero elements.
+# Example:
+# Input: nums = [0, 1, 0, 3, 2]
+# Output: [1, 3, 2, 0, 0]
+def shift_zeros_to_the_end_naive(nums: List[int]) -> None:
+    temp = [0] * len(nums)
+    i = 0
+    # Add all non-zero elements to the left of 'temp'.
+    for num in nums:
+        if num != 0:
+            temp[i] = num
+            i += 1
+    # Set 'nums' to 'temp'.
+    for j in range(len(nums)):
+        nums[j] = temp[j]
+
+def shift_zeros_to_the_end(nums: List[int]) -> None:
+    # The 'left' pointer is used to position non-zero elements.
+    left = 0
+    # Iterate through the array using a 'right' pointer to locate non-zero 
+    # elements.
+    for right in range(len(nums)):
+        if nums[right] != 0:
+            nums[left], nums[right] = nums[right], nums[left]
+            # Increment 'left' since it now points to a position already occupied 
+            # by a non-zero element.
+            left += 1
+
+#X15 Next Lexicographical Sequence
+# Given a string of lowercase English letters, rearrange the characters to form a 
+# new string representing the next immediate sequence in lexicographical (alphabetical) 
+# order. If the given string is already last in lexicographical order among all 
+# possible arrangements, return the arrangement that's first in lexicographical order.
+# Example 1:
+# Input: s = 'abcd'
+# Output: 'abdc'
+# Explanation: "abdc" is the next sequence in lexicographical order after rearranging "abcd".
+# Example 2:
+# Input: s = 'dcba'
+# Output: 'abcd'
+# Explanation: Since "dcba" is the last sequence in lexicographical order, we return the first sequence: "abcd".
+def next_lexicographical_sequence(s: str) -> str:
+    letters = list(s)
+    # Locate the pivot, which is the first character from the right that breaks 
+    # non-increasing order. Start searching from the second-to-last position.
+    pivot = len(letters) - 2
+    while pivot >= 0 and letters[pivot] >= letters[pivot + 1]:
+        pivot -= 1
+    # If pivot is not found, the string is already in its largest permutation. In
+    # this case, reverse the string to obtain the smallest permutation.
+    if pivot == -1:
+        return ''.join(reversed(letters))
+    # Find the rightmost successor to the pivot.
+    rightmost_successor = len(letters) - 1
+    while letters[rightmost_successor] <= letters[pivot]:
+        rightmost_successor -= 1
+    # Swap the rightmost successor with the pivot to increase the lexicographical
+    # order of the suffix.
+    letters[pivot], letters[rightmost_successor] = (letters[rightmost_successor], letters[pivot])
+    # Reverse the suffix after the pivot to minimize its permutation.
+    letters[pivot + 1:] = reversed(letters[pivot + 1:])
+    return ''.join(letters)
+
+
+#X16 Linked List Loop
+# Given a singly linked list, determine if it contains a cycle. 
+# A cycle occurs if a node's next pointer references an earlier node in the linked list, causing a loop.
+from ds import ListNode
+"""
+Definition of ListNode:
+class ListNode:
+    def __init__(self, val=None, next=None):
+        self.val = val
+        self.next = next
+"""
+def linked_list_loop_naive(head: ListNode) -> bool:
+    visited = set()  
+    curr = head
+    while curr:  
+        # Cycle detected if the current node has already been visited.
+        if curr in visited:
+            return True  
+        visited.add(curr)  
+        curr = curr.next
+    return False  
+
+def linked_list_loop(head: ListNode) -> bool:
+    slow = fast = head
+    # Check both 'fast' and 'fast.next' to avoid null pointer
+    # exceptions when we perform 'fast.next' and 'fast.next.next'.
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if fast == slow:
+            return True
+    return False
+
+#X17 Linked List Midpoint
+# Given a singly linked list, find and return its middle node. If there are two middle nodes, return the second one.
+def linked_list_midpoint(head: ListNode) -> ListNode:
+    slow = fast = head
+    # When the fast pointer reaches the end of the list, the slow
+    # pointer will be at the midpoint of the linked list.
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow
+
+#X18 Happy Number
+# In number theory, a happy number is defined as a number that, when repeatedly subjected to the 
+# process of squaring its digits and summing those squares, eventually leads to 1. 
+# An unhappy number will never reach 1 during this process, and will get stuck in an infinite loop.
+# Given an integer, determine if it's a happy number.
+# Example:
+# Input: n = 23
+# Output: True
+def happy_number(n: int) -> bool:
+    slow = fast = n
+    while True:
+        slow = get_next_num(slow)
+        fast = get_next_num(get_next_num(fast))
+        if fast == 1:
+            return True
+        # If the fast and slow pointers meet, a cycle is detected. 
+        # Hence, 'n' is not a happy number.
+        elif fast == slow:
+            return False
+
+def get_next_num(x: int) -> int:
+    next_num = 0
+    while x > 0:
+        # Extract the last digit of 'x'.
+        digit = x % 10
+        # Truncate (remove) the last digit from 'x' using floor 
+        # division.
+        x //= 10
+        # Add the square of the extracted digit to the sum.
+        next_num += digit ** 2
+    return next_num
