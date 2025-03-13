@@ -452,49 +452,44 @@ class Solution:
         return None
 
 
-#X9 第15题. 三数之和
+#X9 Medium 15. 三数之和 3Sum
     # 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
     # 注意： 答案中不可以包含重复的三元组。
     # 示例：
     # 给定数组 nums = [-1, 0, 1, 2, -1, -4]，
     # 满足要求的三元组集合为： [ [-1, 0, 1], [-1, -1, 2] ]
-# （版本一） 双指针
+# ***（版本一） 双指针
+# 先定一个数，然后用双指针法找另外两个数
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         result = []
         nums.sort()
-        
-        for i in range(len(nums)):
+        n = len(nums)
+
+        for i in range(n):
             # 如果第一个元素已经大于0，不需要进一步检查
             if nums[i] > 0:
-                return result
-            
+                # return result
+                break
             # 跳过相同的元素以避免重复
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
                 
             left = i + 1
-            right = len(nums) - 1
+            right = n - 1
             
-            while right > left:
+            while left < right:
                 sum_ = nums[i] + nums[left] + nums[right]
-                
                 if sum_ < 0:
                     left += 1
                 elif sum_ > 0:
                     right -= 1
                 else:
                     result.append([nums[i], nums[left], nums[right]])
-                    
                     # 跳过相同的元素以避免重复
-                    while right > left and nums[right] == nums[right - 1]:
-                        right -= 1
-                    while right > left and nums[left] == nums[left + 1]:
-                        left += 1
-                        
-                    right -= 1
                     left += 1
-                    
+                    while right > left and nums[left] == nums[left - 1]:
+                        left += 1
         return result
 # （版本二） 使用字典
 # class Solution:
@@ -544,6 +539,7 @@ def triplet_sum_brute_force(nums: List[int]) -> List[List[int]]:
                     triplets.add(triplet)
     return [list(triplet) for triplet in triplets]
 
+# *** Pair Sum - Sorted *** BEST SOLUTION
 def triplet_sum(nums: List[int]) -> List[List[int]]:
     triplets = []
     nums.sort()
@@ -567,21 +563,21 @@ def pair_sum_sorted_all_pairs(nums: List[int], start: int, target: int) -> List[
     pairs = []
     left, right = start, len(nums) - 1
     while left < right:
-        sum = nums[left] + nums[right]  
-        if sum == target:
+        sum = nums[left] + nums[right]
+        if sum < target:
+            left += 1
+        elif sum > target:
+            right -= 1
+        else:
             pairs.append([nums[left], nums[right]])
             left += 1
             # To avoid duplicate '[b, c]' pairs, skip 'b' if it's the 
             # same as the previous number.
             while left < right and nums[left] == nums[left - 1]:
                 left += 1
-        elif sum < target:
-            left += 1
-        else:
-            right -= 1
     return pairs
 
-#10 第18题. 四数之和
+#10 Medium 第18题. 四数之和 4Sum
     # 题意：给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
     # 注意：
     # 答案中不可以包含重复的四元组。
@@ -593,30 +589,28 @@ class Solution:
         n = len(nums)
         result = []
         for i in range(n):
-            if nums[i] > target and nums[i] > 0 and target > 0:# 剪枝（可省）
-                break
+            # if nums[i] > target and nums[i] > 0 and target > 0:# 剪枝（可省）
+            #     break
             if i > 0 and nums[i] == nums[i-1]:# 去重
                 continue
             for j in range(i+1, n):
-                if nums[i] + nums[j] > target and target > 0: #剪枝（可省）
-                    break
+                # if nums[i] + nums[j] > target and target > 0: #剪枝（可省）
+                #     break
                 if j > i+1 and nums[j] == nums[j-1]: # 去重
                     continue
-                left, right = j+1, n-1
+                left = j + 1
+                right = n - 1
                 while left < right:
-                    s = nums[i] + nums[j] + nums[left] + nums[right]
-                    if s == target:
-                        result.append([nums[i], nums[j], nums[left], nums[right]])
-                        while left < right and nums[left] == nums[left+1]:
-                            left += 1
-                        while left < right and nums[right] == nums[right-1]:
-                            right -= 1
+                    sum_ = nums[i] + nums[j] + nums[left] + nums[right]
+                    if sum_ < target:
                         left += 1
+                    elif sum_ > target:
                         right -= 1
-                    elif s < target:
-                        left += 1
                     else:
-                        right -= 1
+                        result.append([nums[i], nums[j], nums[left], nums[right]])
+                        left += 1
+                        while left < right and nums[left] == nums[left - 1]:
+                            left += 1
         return result
 # (版本二) 使用字典
 # class Solution(object):
@@ -646,7 +640,7 @@ class Solution:
 #         return [list(x) for x in ans]
 
 
-#X11 Pair Sum - Sorted
+#X11 Easy 2Sum Pair Sum - Sorted
 # Given an array of integers sorted in ascending order and a target value, 
 # return the indexes of any pair of numbers in the array that sum to the target. 
 # The order of the indexes in the result doesn't matter. If no pair is found, return an empty array.
@@ -683,7 +677,7 @@ def pair_sum_sorted(nums: List[int], target: int) -> List[int]:
             return [left, right]
     return []
 
-#X12 Is Palindrome Valid
+#X12 Easy Is Palindrome Valid
 # A palindrome is a sequence of characters that reads the same forward and backward.
 # Given a string, determine if it's a palindrome after removing all non-alphanumeric characters. 
 # A character is alphanumeric if it's either a letter or a number.
@@ -707,7 +701,7 @@ def is_palindrome_valid(s: str) -> bool:
         right -= 1
     return True
 
-#X13 Largest Container
+#X13 Medium Largest Container
 # You are given an array of numbers, each representing the height of a vertical 
 # line on a graph. A container can be formed with any pair of these lines, 
 # along with the x-axis of the graph. Return the amount of water which the largest container can hold.
@@ -744,7 +738,7 @@ def largest_container(heights: List[int]) -> int:
             right -= 1
     return max_water
 
-#X14 Shift Zeros to the End
+#X14 Easy Shift Zeros to the End
 # Given an array of integers, modify the array in place to move all zeros to the end 
 # while maintaining the relative order of non-zero elements.
 # Example:
@@ -774,7 +768,7 @@ def shift_zeros_to_the_end(nums: List[int]) -> None:
             # by a non-zero element.
             left += 1
 
-#X15 Next Lexicographical Sequence
+#X15 Medium Next Lexicographical Sequence
 # Given a string of lowercase English letters, rearrange the characters to form a 
 # new string representing the next immediate sequence in lexicographical (alphabetical) 
 # order. If the given string is already last in lexicographical order among all 
@@ -810,7 +804,8 @@ def next_lexicographical_sequence(s: str) -> str:
     return ''.join(letters)
 
 
-#X16 Linked List Loop
+# Fast And Slow Pointers
+#X16 Easy 141. Easy Linked List Loop
 # Given a singly linked list, determine if it contains a cycle. 
 # A cycle occurs if a node's next pointer references an earlier node in the linked list, causing a loop.
 from ds import ListNode
@@ -843,8 +838,9 @@ def linked_list_loop(head: ListNode) -> bool:
             return True
     return False
 
-#X17 Linked List Midpoint
-# Given a singly linked list, find and return its middle node. If there are two middle nodes, return the second one.
+#X17 Easy Linked List Midpoint
+# Given a singly linked list, find and return its middle node. If there are two middle nodes, 
+# return the second one.
 def linked_list_midpoint(head: ListNode) -> ListNode:
     slow = fast = head
     # When the fast pointer reaches the end of the list, the slow
@@ -854,7 +850,7 @@ def linked_list_midpoint(head: ListNode) -> ListNode:
         fast = fast.next.next
     return slow
 
-#X18 Happy Number
+#X18 Medium Happy Number
 # In number theory, a happy number is defined as a number that, when repeatedly subjected to the 
 # process of squaring its digits and summing those squares, eventually leads to 1. 
 # An unhappy number will never reach 1 during this process, and will get stuck in an infinite loop.
@@ -885,3 +881,37 @@ def get_next_num(x: int) -> int:
         # Add the square of the extracted digit to the sum.
         next_num += digit ** 2
     return next_num
+
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        def get_next(n):
+            total_sum = 0
+            while n > 0:
+                n, digit = divmod(n, 10)
+                total_sum += digit ** 2
+            return total_sum
+
+        seen = set()
+        while n != 1 and n not in seen:
+            seen.add(n)
+            n = get_next(n)
+
+        return n == 1
+
+class Solution:
+    def isHappy(self, n: int) -> bool:
+        def get_next(x):
+            res = 0
+            while x > 0:
+                res += (x % 10) ** 2
+                x = x // 10
+            return res
+        
+        seen = set()
+        while True:
+            n = get_next(n)
+            if n in seen:
+                return False
+            if n == 1:
+                return True
+            seen.add(n)
