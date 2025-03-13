@@ -12,12 +12,21 @@
 # ^: This represents the start of a string or line.
 # [a-z]: This represents a character range, matching any character from a to z.
 # [0-9]: This represents a character range, matching any character from 0 to 9.
-# [a-zA-Z]: This variant matches any character from a to z or A to Z. Note that there is no limit to the number of character ranges you can specify inside the square brackets -- you can add additional characters or ranges you want to match.
-# [^a-z]: This variant matches any character that is not from a to z. Note that the ^ character is used to negate the character range, which means it has a different meaning inside the square brackets than outside where it means the start.
+# [a-zA-Z]: This variant matches any character from a to z or A to Z. Note that there 
+# is no limit to the number of character ranges you can specify inside the square 
+# brackets -- you can add additional characters or ranges you want to match.
+
+# [^a-z]: This variant matches any character that is not from a to z. Note that 
+# the ^ character is used to negate the character range, which means it has a 
+# different meaning inside the square brackets than outside where it means the start.
+
 # [a-z]*: This represents a character range, matching any character from a to z zero or more times.
 # [a-z]+: This represents a character range, matching any character from a to z one or more times.
 # .: This matches exactly one of any character.
-# \.: This represents a period character. Note that the backslash is used to escape the period character, as the period character has a special meaning in regular expressions. Also note that in many languages, you need to escape the backslash itself, so you need to use \\..
+# \.: This represents a period character. Note that the backslash is used to escape the period character, 
+# as the period character has a special meaning in regular expressions. 
+# Also note that in many languages, you need to escape the backslash itself, so you need to use \\..
+
 # The dollar sign: This represents the end of a string or line.
 
 # 1341. Movie Rating
@@ -40,6 +49,7 @@
 # +---------------+---------+
 # user_id is the primary key (column with unique values) for this table.
 # The column 'name' has unique values.
+
 # Table: MovieRating
 # +---------------+---------+
 # | Column Name   | Type    |
