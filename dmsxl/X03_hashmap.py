@@ -792,7 +792,7 @@ def geometric_sequence_triplets(nums: List[int], r: int) -> int:
     # Use 'defaultdict' to ensure the default value of 0 is returned when 
     # accessing a key that doesn’t exist in the hash map. This effectively sets 
     # the default frequency of all elements to 0.
-    
+
     # It checks if there exists a number a = x // r in left_map and a number c = x * r in 
     # right_map. If both exist, it increments the count of valid triplets.
     # After processing x, it updates left_map and right_map to reflect the current state 
@@ -808,6 +808,12 @@ def geometric_sequence_triplets(nums: List[int], r: int) -> int:
         # Decrement the frequency of x in 'right_map' since x is now being
         # processed and is no longer to the right.
         right_map[x] -= 1
+        # The code checks if x is divisible by r (i.e., x % r == 0). 
+        # This ensures that x // r is an integer.
+        # If the condition is satisfied:
+        # left_map[x // r] gives the frequency of a = x // r to the left of x.
+        # right_map[x * r] gives the frequency of c = x * r to the right of x.
+        # The product left_map[x // r] * right_map[x * r] gives the number of valid triplets with x as the middle element.
         if x % r == 0:
             count += left_map[x // r] * right_map[x * r]
         # Increment the frequency of x in 'left_map' since it'll be a part of the
