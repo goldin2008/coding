@@ -792,6 +792,11 @@ def geometric_sequence_triplets(nums: List[int], r: int) -> int:
     # Use 'defaultdict' to ensure the default value of 0 is returned when 
     # accessing a key that doesn’t exist in the hash map. This effectively sets 
     # the default frequency of all elements to 0.
+    
+    # It checks if there exists a number a = x // r in left_map and a number c = x * r in 
+    # right_map. If both exist, it increments the count of valid triplets.
+    # After processing x, it updates left_map and right_map to reflect the current state 
+    # of the array.
     left_map = defaultdict(int)
     right_map = defaultdict(int)
     count = 0
