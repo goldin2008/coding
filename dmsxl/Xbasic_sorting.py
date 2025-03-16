@@ -1272,7 +1272,7 @@ class Solution:
         for i in range(len(lst)):
             lst[i] = sorted_array[i]
 
-#X11 148. Sort List
+#X11 Medium 148. Sort List
     # Given the head of a linked list, return the list after sorting it in ascending order.
 from ds import ListNode
 """
@@ -1326,7 +1326,7 @@ def merge(l1: ListNode, l2: ListNode) -> ListNode:
     tail.next = l1 or l2
     return dummy.next
 
-#X12 912. Sort an Array
+#X12 Medium 912. Sort an Array
     # Given an array of integers nums, sort the array in ascending order and return it.
     # You must solve the problem without using any built-in functions in O(nlog(n)) 
     # time complexity and with the smallest space complexity possible.
@@ -1387,12 +1387,15 @@ def quicksort_optimized(nums: List[int], left: int, right: int) -> None:
     quicksort_optimized(nums, left, pivot_index - 1)
     quicksort_optimized(nums, pivot_index + 1, right)
 
-#X13 1985. Find the Kth Largest Integer in the Array
+#X13 Medium 1985. Find the Kth Largest Integer in the Array
     # You are given an array of strings nums and an integer k. Each string in nums 
     # represents an integer without leading zeros.
     # Return the string that represents the kth largest integer in nums.
     # Note: Duplicate numbers should be counted distinctly. For example, 
     # if nums is ["1","2","2"], "2" is the first largest integer, "2" is the second-largest integer, and "1" is the third-largest integer.
+import heapq
+from typing import List
+
 def kth_largest_integer_min_heap(nums: List[int], k: int) -> int:
     min_heap = []
     heapq.heapify(min_heap)
@@ -1441,7 +1444,7 @@ def partition(nums: List[int], left: int, right: int) -> int:
     nums[lo], nums[right] = nums[right], nums[lo]
     return lo
 
-#X14 Dutch National Flag
+#X14 Medium Dutch National Flag
     # Given an array of 0s, 1s, and 2s representing red, white, and blue, respectively, 
     # sort the array in place so that it resembles the Dutch national flag, with all reds (0s) coming first, followed by whites (1s), and finally blues (2s).
     # Example:
