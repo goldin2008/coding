@@ -427,3 +427,121 @@ class Solution:
 #                     return True
                 
 #         return False
+
+
+# Sliding Window
+#X8 Medium Substring Anagrams
+# Given two strings, s and t , both consisting of lowercase English letters, 
+# return the number of substrings in s that are anagrams of t.
+# An anagram is a word or phrase formed by rearranging the letters of another 
+# word or phrase, using all the original letters exactly once.
+# Example:
+# Input: s = 'caabab', t = 'aba'
+# Output: 2
+# Explanation: There is an anagram of t starting at index 1 ("caabab") and 
+# another starting at index 2 ("caabab")
+def substring_anagrams(s: str, t: str) -> int:
+    len_s, len_t = len(s), len(t)
+    if len_t > len_s:
+        return 0
+    count = 0
+    expected_freqs, window_freqs = [0] * 26, [0] * 26
+    # Populate 'expected_freqs' with the characters in string 't'.
+    for c in t:
+        expected_freqs[ord(c) - ord('a')] += 1
+    left = right = 0
+    while right < len_s:
+        # Add the character at the right pointer to 'window_freqs' 
+        # before sliding the window.
+        window_freqs[ord(s[right]) - ord('a')] += 1
+        # If the window has reached the expected fixed length, we 
+        # advance the left pointer as well as the right pointer to 
+        # slide the window.
+        if right - left + 1 == len_t:
+            if window_freqs == expected_freqs:
+                count += 1
+            # Remove the character at the left pointer from 
+            # 'window_freqs' before advancing the left pointer.
+            window_freqs[ord(s[left]) - ord('a')] -= 1
+            left += 1
+        right += 1
+    return count
+
+#X9 Medium Longest Substring With Unique Characters
+# Given a string, determine the length of its longest substring that consists 
+# only of unique characters.
+# Example:
+# Input: s = 'abcba'
+# Output: 3
+# Explanation: Substring "abc" is the longest substring of length 3 that 
+# contains unique characters ("cba" also fits this description).
+def longest_substring_with_unique_chars(s: str) -> int:
+    max_len = 0
+    hash_set = set()
+    left = right = 0
+    while right < len(s):
+        # If we encounter a duplicate character in the window, shrink 
+        # the window until it's no longer a duplicate.
+        while s[right] in hash_set:
+            hash_set.remove(s[left])
+            left += 1
+        # Once there are no more duplicates in the window, update
+        # 'max_len' if the current window is larger.
+        max_len = max(max_len, right - left + 1)
+        hash_set.add(s[right])
+        # Expand the window.
+        right += 1
+    return max_len
+
+def longest_substring_with_unique_chars_optimized(s: str) -> int:
+    max_len = 0
+    prev_indexes = {}
+    left = right = 0
+    while right < len(s):
+        # If a previous index of the current character is present
+        # in the current window, it's a duplicate character in the
+        # window. 
+        if s[right] in prev_indexes and prev_indexes[s[right]] >= left:
+            # Shrink the window to exclude the previous occurrence
+            # of this character.
+            left = prev_indexes[s[right]] + 1
+        # Update 'max_len' if the current window is larger.
+        max_len = max(max_len, right - left + 1)
+        prev_indexes[s[right]] = right
+        # Expand the window.
+        right += 1
+    return max_len
+
+#X10 Hard Longest Uniform Substring After Replacements
+# A uniform substring is one in which all characters are identical. Given a string, 
+# determine the length of the longest uniform substring that can be formed by 
+# replacing up to k characters.
+# Example:
+# Input: s = 'aabcdcca', k = 2
+# Output: 5
+# Explanation: if we can only replace 2 characters, the longest uniform substring we can achieve is "ccccc", obtained by replacing 'b' and 'd' with 'c'.
+def longest_uniform_substring_after_replacements(s: str, k: int) -> int:
+    freqs = {}
+    highest_freq = max_len = 0
+    left = right = 0
+    while right < len(s):
+        # Update the frequency of the character at the right pointer 
+        # and the highest frequency for the current window.
+        freqs[s[right]] = freqs.get(s[right], 0) + 1
+        highest_freq = max(highest_freq, freqs[s[right]])
+        # Calculate replacements needed for the current window.
+        num_chars_to_replace = (right - left + 1) - highest_freq
+        # Slide the window if the number of replacements needed exceeds 
+        # 'k'. The right pointer always gets advanced, so we just need 
+        # to advance 'left'.
+        if num_chars_to_replace > k:
+            # Remove the character at the left pointer from the hash map 
+            # before advancing the left pointer.
+            freqs[s[left]] -= 1
+            left += 1
+        # Since the length of the current window increases or stays the 
+        # same, assign  the length of the current window to 'max_len'.
+        max_len = right - left + 1
+        # Expand the window.
+        right += 1
+    return max_len

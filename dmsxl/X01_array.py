@@ -187,7 +187,7 @@ class Solution:
         return nums
 
 # Prefix Sums
-#X6 Sum Between Range
+#X6 Easy Sum Between Range
 # Given an integer array, write a function which returns the sum of values between two indexes.
 # Example:
 # Input: nums = [3, -7, 6, 0, -2, 5],
@@ -203,7 +203,7 @@ class SumBetweenRange:
         if i == 0:
             return self.prefix_sum[j]
         return self.prefix_sum[j] - self.prefix_sum[i - 1]
-#X7 K-Sum Subarrays
+#X7 Medium K-Sum Subarrays
 # Find the number of subarrays in an integer array that sum to k.
 # Example:
 # Input: nums = [1, 2, -1, 1, 2], k = 3
@@ -241,7 +241,7 @@ def k_sum_subarrays_optimized(nums: List[int], k: int) -> int:
         prefix_sum_map[curr_prefix_sum] = freq + 1
     return count
 
-#X8 Product Array Without Current Element
+#X8 Medium Product Array Without Current Element
 # Given an array of integers, return an array res so that res[i] is equal to the 
 # product of all the elements of the input array except nums[i] itself.
 # Example:
@@ -264,7 +264,7 @@ def product_array_without_current_element(nums: List[int]) -> List[int]:
     return res
 
 # Intervals
-#X9 Merge Overlapping Intervals
+#X9 Medium Merge Overlapping Intervals
 # Merge an array of intervals so there are no overlapping intervals, 
 # and return the resultant merged intervals.
 # Example:
@@ -292,7 +292,7 @@ def merge_overlapping_intervals(intervals: List[Interval]) -> List[Interval]:
             merged[-1] = Interval(A.start, max(A.end, B.end))
     return merged
 
-#X10 Identify All Interval Overlaps
+#X10 Medium Identify All Interval Overlaps
 # Return an array of all overlaps between two arrays of intervals; intervals1 and intervals2. 
 # Each individual interval array is sorted by start value, and contains no overlapping 
 # intervals within itself.
@@ -324,7 +324,7 @@ def identify_all_interval_overlaps(intervals1: List[Interval], intervals2: List[
             j += 1
     return overlaps
 
-#X11 Largest Overlap of Intervals
+#X11 Medium Largest Overlap of Intervals
 # Given an array of intervals, determine the maximum number of intervals that overlap 
 # at any point. Each interval is half-open, meaning it includes the start point but 
 # excludes the end point.
