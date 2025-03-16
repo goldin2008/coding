@@ -1,7 +1,7 @@
 """
 
 """
-#1 232.用栈实现队列
+#X1 Medium 232.用栈实现队列
     # 使用栈实现队列的下列操作：
     # push(x) -- 将一个元素放入队列的尾部。
     # pop() -- 从队列首部移除元素。
@@ -58,6 +58,39 @@ class MyQueue:
         只要in或者out有元素,说明队列不为空
         """
         return not (self.stack_in or self.stack_out)
+# Implement a Queue using Stacks
+# Implement a queue using the stack data structure. Include the following functions:
+# enqueue(x: int) -> None: adds x to the end of the queue.
+# dequeue() -> int: removes and returns the element from the front of the queue.
+# peek() -> int: returns the front element of the queue.
+# You may not use any other data structures to implement the queue.
+# Example
+# Input: [enqueue(1), enqueue(2), dequeue(), enqueue(3), peek()]
+# Output: [1, 2]
+class Queue:
+    def __init__(self):
+        self.enqueue_stack = []
+        self.dequeue_stack = []
+
+    def enqueue(self, x: int) -> None:
+        self.enqueue_stack.append(x)
+
+    def transfer_enqueue_to_dequeue(self) -> None:
+        # If the dequeue stack is empty, push all elements from the enqueue stack
+        # onto the dequeue stack. This ensures the top of the dequeue stack
+        # contains the most recent value.
+        if not self.dequeue_stack:
+            while self.enqueue_stack:
+                self.dequeue_stack.append(self.enqueue_stack.pop())
+
+    def dequeue(self) -> int:
+        self.transfer_enqueue_to_dequeue()
+        # Pop and return the value at the top of the dequeue stack.
+        return self.dequeue_stack.pop() if self.dequeue_stack else None
+
+    def peek(self) -> int:
+        self.transfer_enqueue_to_dequeue()
+        return self.dequeue_stack[-1] if self.dequeue_stack else None
 
 
 #2 225. 用队列实现栈
@@ -182,7 +215,7 @@ class MyStack:
         return not self.que
 
 
-#3 20. 有效的括号
+#X3 Easy 20. 有效的括号
     # 给定一个只包括 '(',')','{','}','[',']' 的字符串,判断字符串是否有效。
     # 有效字符串需满足：
     # 左括号必须用相同类型的右括号闭合。
@@ -238,9 +271,38 @@ class Solution:
             else: 
                 stack.pop()
         return True if not stack else False
+# Valid Parenthesis Expression
+# Given a string representing an expression of parentheses containing the characters 
+# '(', ')', '[', ']', '{', or '}', determine if the expression forms a valid sequence of parentheses.
+# A sequence of parentheses is valid if every opening parenthesis has a corresponding closing parenthesis, 
+# and no closing parenthesis appears before its matching opening parenthesis.
+# Example 1:
+# Input: s = '([]{})'
+# Output: True
+# Example 2:
+# Input: s = '([]{)}'
+# Output: False
+def valid_parenthesis_expression(s: str) -> bool:
+    parentheses_map = {'(': ')', '{': '}', '[': ']'}
+    stack = []
+    for c in s:
+        # If the current character is an opening parenthesis, push it 
+        # onto the stack.
+        if c in parentheses_map:
+            stack.append(c)
+        # If the current character is a closing parenthesis, check if 
+        # it closes the opening parenthesis at the top of the stack.
+        else:
+            if stack and parentheses_map[stack[-1]] == c:
+                stack.pop()
+            else:
+                return False
+    # If the stack is empty, all opening parentheses were successfully 
+    # closed.
+    return not stack
 
 
-#4 1047. 删除字符串中的所有相邻重复项
+#X4 Easy 1047. 删除字符串中的所有相邻重复项
     # 给出由小写字母组成的字符串 S,重复项删除操作会选择两个相邻且相同的字母,并删除它们。
     # 在 S 上反复执行重复项删除操作,直到无法继续删除。
     # 在完成所有重复项删除操作后返回最终的字符串。答案保证唯一。
@@ -277,6 +339,28 @@ class Solution:
             fast += 1
             
         return ''.join(res[0: slow])
+# Repeated Removal of Adjacent Duplicates
+# Given a string, continually perform the following operation: remove a pair of adjacent duplicates from the string. 
+# Continue performing this operation until the string no longer contains pairs of adjacent duplicates. Return the final string.
+# Example 1:
+# Input: s = 'aacabba'
+# Output: 'c'
+# Example 2:
+# Input: s = 'aaa'
+# Output: 'a'
+def repeated_removal_of_adjacent_duplicates(s: str) -> str:
+    stack = []
+    for c in s:
+        # If the current character is the same as the top character on the stack,
+        # a pair of adjacent duplicates has been formed. So, pop the top character 
+        # from the stack.
+        if stack and c == stack[-1]:
+            stack.pop()
+        # Otherwise, push the current character onto the stack.
+        else:
+            stack.append(c)
+    # Return the remaining characters as a string.
+    return ''.join(stack)
 
 
 #5 150. 逆波兰表达式求值
@@ -339,7 +423,7 @@ class Solution:
         return int(stack.pop()) # 如果一开始只有一个数,那么会是字符串形式的
 
 
-#6 ??? 239. 滑动窗口最大值
+#X6 ??? Hard 239. 滑动窗口最大值
     # 给定一个数组 nums,有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
     # 返回滑动窗口中的最大值。
     # 进阶：
@@ -378,6 +462,39 @@ class Solution:
             que.push(nums[i]) #滑动窗口前加入最后面的元素
             result.append(que.front()) #记录对应的最大值
         return result
+# Hard Maximums of Sliding Window
+# There's a sliding window of size k that slides through an integer array from left to right. 
+# Create a new array that records the largest number found in each window as it slides through.
+# Example:
+# Input: nums = [3, 2, 4, 1, 2, 1, 1], k = 4
+# Output: [4, 4, 4, 2]
+from collections import deque
+from typing import List
+
+def maximums_of_sliding_window(nums: List[int], k: int) -> List[int]:
+    res = []
+    dq = deque()
+    left = right = 0
+    while right < len(nums):
+        # 1) Ensure the values of the deque maintain a monotonic decreasing order
+        # by removing candidates <= the current candidate.
+        while dq and dq[-1][0] <= nums[right]:
+            dq.pop()
+        # 2) Add the current candidate.
+        dq.append((nums[right], right))
+        # If the window is of length 'k', record the maximum of the window.
+        if right - left + 1 == k:
+            # 3) Remove values whose indexes occur outside the window.
+            if dq and dq[0][1] < left:
+                dq.popleft()
+            # The maximum value of this window is the leftmost value in the 
+            # deque.
+            res.append(dq[0][0])
+            # Slide the window by advancing both 'left' and 'right'. The right  
+            # pointer always gets advanced so we just need to advance 'left'.
+            left += 1
+        right += 1
+    return res
 
 
 #7 ??? 347.前 K 个高频元素
@@ -430,3 +547,468 @@ class Solution:
         for i in range(k-1, -1, -1):
             result[i] = heapq.heappop(pri_que)[1]
         return result
+
+#X8 Hard 224.Evaluate Expression
+# Given a string representing a mathematical expression containing integers, parentheses, 
+# addition, and subtraction operators, evaluate and return the result of the expression.
+def evaluate_expression(s: str) -> int:
+    stack = []
+    curr_num, sign, res = 0, 1, 0
+    for c in s:
+        if c.isdigit():
+            curr_num = curr_num * 10 + int(c)
+        # If the current character is an operator, add 'curr_num' to 
+        # the result after multiplying it by its sign.
+        elif c == '+' or c == '-':
+            res += curr_num * sign
+            # Update the sign and reset 'curr_num'.
+            sign = -1 if c == '-' else 1
+            curr_num = 0
+        # If the current character is an opening parenthesis, a new 
+        # nested expression is starting. 
+        elif c == '(':
+            # Save the current 'res' and 'sign' values by pushing them 
+            # onto the stack, then reset their values to start 
+            # calculating the new nested expression.
+            stack.append(res)
+            stack.append(sign)
+            res, sign = 0, 1
+        # If the current character is a closing parenthesis, a nested 
+        # expression has ended.
+        elif c == ')':
+            # Finalize the result of the current nested expression.
+            res += sign * curr_num
+            # Apply the sign of the current nested  expression's result 
+            # before adding this result to the result of the outer 
+            # expression.
+            res *= stack.pop()
+            res += stack.pop()
+            curr_num = 0
+    # Finalize the result of the overall expression.
+    return res + curr_num * sign
+# Hard 224. Basic Calculator
+# Given a string s representing a valid expression, implement a basic calculator 
+# to evaluate it, and return the result of the evaluation.
+# Note: You are not allowed to use any built-in function which evaluates strings 
+# as mathematical expressions, such as eval().
+# Example 1:
+# Input: s = "1 + 1"
+# Output: 2
+# Example 2:
+# Input: s = " 2-1 + 2 "
+# Output: 3
+# Example 3:
+# Input: s = "(1+(4+5+2)-3)+(6+8)"
+# Output: 23
+# Constraints:
+# 1 <= s.length <= 3 * 105
+# s consists of digits, '+', '-', '(', ')', and ' '.
+# s represents a valid expression.
+# '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
+# '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
+# There will be no two consecutive operators in the input.
+# Every number and running calculation will fit in a signed 32-bit integer.
+# Approach 1: Stack and String Reversal
+class Solution:
+    def evaluate_expr(self, stack):
+        # If stack is empty or the expression starts with
+        # a symbol, then append 0 to the stack.
+        # i.e. [1, '-', 2, '-'] becomes [1, '-', 2, '-', 0]
+        if not stack or type(stack[-1]) == str:
+            stack.append(0)
+            
+        res = stack.pop()
+        # Evaluate the expression till we get corresponding ')'
+        while stack and stack[-1] != ')':
+            sign = stack.pop()
+            if sign == '+':
+                res += stack.pop()
+            else:
+                res -= stack.pop()
+        return res       
+
+    def calculate(self, s: str) -> int:
+        stack = []
+        n, operand = 0, 0
+
+        for i in range(len(s) - 1, -1, -1):
+            ch = s[i]
+
+            if ch.isdigit():
+                # Forming the operand - in reverse order.
+                operand = (10**n * int(ch)) + operand
+                n += 1
+            elif ch != " ":
+                if n:
+                    # Save the operand on the stack
+                    # As we encounter some non-digit.
+                    stack.append(operand)
+                    n, operand = 0, 0
+                if ch == '(':         
+                    res = self.evaluate_expr(stack)
+                    stack.pop()
+                    # Append the evaluated result to the stack.
+                    # This result could be of a sub-expression within the parenthesis.
+                    stack.append(res)
+                # For other non-digits just push onto the stack.
+                else:
+                    stack.append(ch)
+        # Push the last operand to stack, if any.
+        if n:
+            stack.append(operand)
+        # Evaluate any left overs in the stack.
+        return self.evaluate_expr(stack)
+# *** Approach 2: Stack and No String Reversal
+class Solution:
+    def calculate(self, s: str) -> int:
+        stack = []
+        operand = 0 # current number
+        res = 0 # For the on-going result
+        sign = 1 # 1 means positive, -1 means negative  
+
+        for c in s:
+            if c.isdigit():
+                # Forming operand, since it could be more than one digit
+                operand = (operand * 10) + int(c)
+            elif c == '+':
+                # Evaluate the expression to the left,
+                # with result, sign, operand
+                res += sign * operand
+                # Save the recently encountered '+' sign
+                sign = 1
+                # Reset operand
+                operand = 0
+            elif c == '-':
+                res += sign * operand
+                sign = -1
+                operand = 0
+            elif c == '(':
+                # Push the result and sign on to the stack, for later
+                # We push the result first, then sign
+                stack.append(res)
+                stack.append(sign)
+                # Reset operand and result, as if new evaluation begins for the new sub-expression
+                sign = 1
+                res = 0
+            elif c == ')':
+                # Evaluate the expression to the left
+                # with result, sign and operand
+                res += sign * operand
+                # ')' marks end of expression within a set of parenthesis
+                # Its result is multiplied with sign on top of stack
+                # as stack.pop() is the sign before the parenthesis
+                res *= stack.pop() # stack pop 1, sign
+                # Then add to the next operand on the top.
+                # as stack.pop() is the result calculated before this parenthesis
+                # (operand on stack) + (sign on stack * (result from parenthesis))
+                res += stack.pop() # stack pop 2, operand
+                # Reset the operand
+                operand = 0
+        return res + sign * operand
+
+#X9 Medium Next Largest Number to the Right
+# Given an integer array nums, return an output array res where, 
+# for each value nums[i], res[i] is the first number to the right that's larger than nums[i]. 
+# If no larger number exists to the right of nums[i], set res[i] to ‐1.
+# Example:
+# Input: nums = [5, 2, 4, 6, 1]
+# Output: [6, 4, 6, -1, -1]
+def next_largest_number_to_the_right(nums: List[int]) -> List[int]:
+    res = [0] * len(nums)
+    stack = []
+    # Find the next largest number of each element, starting with the 
+    # rightmost element.
+    for i in range(len(nums) - 1, -1, -1):
+        # Pop values from the top of the stack until the current 
+        # value's next largest number is at the top.
+        while stack and stack[-1] <= nums[i]:
+            stack.pop()
+        # Record the current value's next largest number, which is at 
+        # the top of the stack. If the stack is empty, record -1.
+        res[i] = stack[-1] if stack else -1
+        stack.append(nums[i])
+    return res
+
+#10 Medium 227. Basic Calculator II
+# Given a string s which represents an expression, evaluate this expression and 
+# return its value. 
+# The integer division should truncate toward zero.
+# You may assume that the given expression is always valid. All intermediate 
+# results will be in the range of [-231, 231 - 1].
+# Note: You are not allowed to use any built-in function which evaluates 
+# strings as mathematical expressions, such as eval().
+# Example 1:
+# Input: s = "3+2*2"
+# Output: 7
+# Example 2:
+# Input: s = " 3/2 "
+# Output: 1
+# Example 3:
+# Input: s = " 3+5 / 2 "
+# Output: 5
+# Constraints:
+# 1 <= s.length <= 3 * 105
+# s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
+# s represents a valid expression.
+# All the integers in the expression are non-negative integers in the range [0, 231 - 1].
+# The answer is guaranteed to fit in a 32-bit integer.
+# use stack
+class Solution:
+    def calculate(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        stack = []
+        current_number = 0
+        operation = '+'
+        n = len(s)
+        
+        for i in range(n):
+            current_char = s[i]
+            if current_char.isdigit():
+                current_number = (current_number * 10) + int(current_char)
+    
+            if (not current_char.isdigit() and not current_char.isspace()) or i == n - 1:
+                if operation == '-':
+                    stack.append(-current_number)
+                elif operation == '+':
+                    stack.append(current_number)
+                elif operation == '*':
+                    stack.append(stack.pop() * current_number)
+                elif operation == '/':
+                    # Handle division truncating towards zero
+                    top = stack.pop()
+                    if top // current_number < 0 and top % current_number != 0:
+                        # stack.append(top // current_number + 1)
+                        stack.append(-(-top // current_number))
+                    else:
+                        stack.append(top // current_number)
+                
+                operation = current_char
+                current_number = 0
+        
+        result = 0
+        while stack:
+            result += stack.pop()
+        
+        return result
+# no stack
+class Solution:
+    def calculate(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        length = len(s)
+        current_number = 0
+        last_number = 0
+        result = 0
+        operation = '+'
+        
+        for i in range(length):
+            current_char = s[i]
+            if current_char.isdigit():
+                current_number = (current_number * 10) + int(current_char)
+            
+            if (not current_char.isdigit() and not current_char.isspace()) or i == length - 1:
+                if operation == '+' or operation == '-':
+                    result += last_number
+                    last_number = current_number if operation == '+' else -current_number
+                elif operation == '*':
+                    last_number = last_number * current_number
+                elif operation == '/':
+                    # Handle division truncating towards zero
+                    # if last_number < 0 or current_number < 0:
+                    if last_number < 0:
+                        last_number = -(-last_number // current_number) if last_number < 0 else last_number // current_number
+                    else:
+                        last_number = last_number // current_number
+                
+                operation = current_char
+                current_number = 0
+        
+        result += last_number
+        return result
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        inner, outer, result, opt = 0, 0, 0, '+'
+        for c in s + '+':
+            if c == ' ': continue
+            if c.isdigit():
+                inner = 10 * inner + int(c)
+                continue
+            if opt == '+':
+                result += outer
+                outer = inner
+            elif opt == '-':
+                result += outer
+                outer = -inner
+            elif opt == '*':
+                outer = outer * inner
+            elif opt == '/':
+                outer = int(outer / inner)
+            inner, opt = 0, c
+        return result + outer
+
+#11 Hard 282. Expression Add Operators
+# Given a string num that contains only digits and an integer target, 
+# return all possibilities to insert the binary operators '+', '-', 
+# and/or '*' between the digits of num so that the resultant expression 
+# evaluates to the target value.
+# Note that operands in the returned expressions should not contain leading zeros.
+# Example 1:
+# Input: num = "123", target = 6
+# Output: ["1*2*3","1+2+3"]
+# Explanation: Both "1*2*3" and "1+2+3" evaluate to 6.
+# Example 2:
+# Input: num = "232", target = 8
+# Output: ["2*3+2","2+3*2"]
+# Explanation: Both "2*3+2" and "2+3*2" evaluate to 8.
+# Example 3:
+# Input: num = "3456237490", target = 9191
+# Output: []
+# Explanation: There are no expressions that can be created from "3456237490" to evaluate to 9191.
+# Approach 1: Backtracking
+class Solution:
+    def addOperators(self, num: 'str', target: 'int') -> 'List[str]':
+
+        N = len(num)
+        answers = []
+        def recurse(index, prev_operand, current_operand, value, string):
+            # Done processing all the digits in num
+            if index == N:
+                # If the final value == target expected AND
+                # no operand is left unprocessed
+                if value == target and current_operand == 0:
+                    answers.append("".join(string[1:]))
+                return
+            # Extending the current operand by one digit
+            current_operand = current_operand*10 + int(num[index])
+            str_op = str(current_operand)
+
+            # To avoid cases where we have 1 + 05 or 1 * 05 since 05 won't be a
+            # valid operand. Hence this check
+            if current_operand > 0:
+                # NO OP recursion
+                recurse(index + 1, prev_operand, current_operand, value, string)
+
+            # ADDITION
+            string.append('+'); string.append(str_op)
+            recurse(index + 1, current_operand, 0, value + current_operand, string)
+            string.pop();string.pop()
+
+            # Can subtract or multiply only if there are some previous operands
+            if string:
+                # SUBTRACTION
+                string.append('-'); string.append(str_op)
+                recurse(index + 1, -current_operand, 0, value - current_operand, string)
+                string.pop();string.pop()
+
+                # MULTIPLICATION
+                string.append('*'); string.append(str_op)
+                recurse(index + 1, current_operand * prev_operand, 0, value - prev_operand + (current_operand * prev_operand), string)
+                string.pop();string.pop()
+        recurse(0, 0, 0, 0, [])    
+        return answers
+
+#12 Hard 772. Basic Calculator III
+# Implement a basic calculator to evaluate a simple expression string.
+# The expression string contains only non-negative integers, '+', '-', 
+# '*', '/' operators, and open '(' and closing parentheses ')'. 
+# The integer division should truncate toward zero.
+# You may assume that the given expression is always valid. All intermediate 
+# results will be in the range of [-231, 231 - 1].
+# Note: You are not allowed to use any built-in function which evaluates 
+# strings as mathematical expressions, such as eval().
+# Example 1:
+# Input: s = "1+1"
+# Output: 2
+# Example 2:
+# Input: s = "6-4/2"
+# Output: 4
+# Example 3:
+# Input: s = "2*(5+5*2)/3+(6/2+8)"
+# Output: 21
+# Constraints:
+# 1 <= s <= 104
+# s consists of digits, '+', '-', '*', '/', '(', and ')'.
+# s is a valid expression.
+# Approach 1: Stack
+class Solution:
+    def calculate(self, s: str) -> int:
+        def evaluate(x, y, operator):
+            if operator == "+":
+                return x
+            if operator == "-":
+                return -x
+            if operator == "*":
+                return x * y
+            return int(x / y)
+        
+        stack = []
+        curr = 0
+        previous_operator = "+"
+        s += "@"
+        
+        for c in s:
+            if c.isdigit():
+                curr = curr * 10 + int(c)
+            elif c == "(":
+                stack.append(previous_operator)
+                previous_operator = "+"
+            else:
+                if previous_operator in "*/":
+                    stack.append(evaluate(stack.pop(), curr, previous_operator))
+                else:
+                    stack.append(evaluate(curr, 0, previous_operator))
+                
+                curr = 0
+                previous_operator = c
+                if c == ")":
+                    while type(stack[-1]) == int:
+                        curr += stack.pop()
+                    previous_operator = stack.pop()
+
+        return sum(stack)
+# Approach 2: Solve Isolated Expressions With Recursion
+class Solution:
+    def calculate(self, s: str) -> int:
+        def evaluate(x, y, operator):
+            if operator == "+":
+                return x
+            if operator == "-":
+                return -x
+            if operator == "*":
+                return x * y
+            return int(x / y)
+        
+        def solve(i):
+            stack = []
+            curr = 0
+            previous_operator = "+"
+            
+            while i[0] < len(s):
+                c = s[i[0]]
+                if c == "(":
+                    i[0] += 1
+                    curr = solve(i)
+                elif c.isdigit():
+                    curr = curr * 10 + int(c)
+                else:
+                    if previous_operator in "*/":
+                        stack.append(evaluate(stack.pop(), curr, previous_operator))
+                    else:
+                        stack.append(evaluate(curr, 0, previous_operator))
+                     
+                    if c == ")":
+                        break
+                    
+                    curr = 0
+                    previous_operator = c
+                    
+                i[0] += 1
+            
+            return sum(stack)
+
+        s += "@"
+        return solve([0])
