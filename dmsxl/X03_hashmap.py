@@ -10,7 +10,7 @@
 面试题 02.07. 链表相交
 142题.环形链表II
 """
-#1 Easy 242.有效的字母异位词
+#1 (Easy) 242.有效的字母异位词
     # 给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
     # 示例 1: 输入: s = "anagram", t = "nagaram" 输出: true
     # 示例 2: 输入: s = "rat", t = "car" 输出: false
@@ -50,7 +50,7 @@ class Solution:
 #         return a_count == b_count
 
 
-#2 Easy 349. 两个数组的交集
+#2 (Easy) 349.两个数组的交集
     # 题意：给定两个数组，编写一个函数来计算它们的交集。
 # （版本一） 使用字典和集合
 class Solution:
@@ -100,7 +100,7 @@ class Solution:
                 val_dict[num] = 0
         return ans
 
-#3 Easy 第202题. 快乐数
+#3 (Easy) 第202题.快乐数
     # 编写一个算法来判断一个数 n 是不是快乐数。
     # 「快乐数」定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。如果 可以变为  1，那么这个数就是快乐数。
     # 如果 n 是快乐数就返回 True ；不是，则返回 False 。
@@ -198,7 +198,7 @@ class Solution:
        return True
 
 
-#4 Easy 1.两数之和 2Sum
+#4 (Easy) 1.两数之和 2Sum
     # 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
     # 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
     # 示例:
@@ -258,7 +258,7 @@ class Solution:
 #                     return [i,j]
 
 
-#5 Medium 第454题.四数相加II
+#5 (Medium) 第454题.四数相加II
     # 给定四个包含整数的数组列表 A , B , C , D ,计算有多少个元组 (i, j, k, l) ，使得 A[i] + B[j] + C[k] + D[l] = 0。
     # 为了使问题简单化，所有的 A, B, C, D 具有相同的长度 N，且 0 ≤ N ≤ 500 。所有整数的范围在 -2^28 到 2^28 - 1 之间，最终结果不会超过 2^31 - 1 。
     # 例如:
@@ -338,7 +338,8 @@ class Solution:
                 count += hashmap.get(sum_com, 0)
         return count
 
-#6 Easy 383.赎金信
+
+#6 (Easy) 383.赎金信
     # 给定一个赎金信 (ransom) 字符串和一个杂志(magazine)字符串，判断第一个字符串 ransom 能不能由第二个字符串 magazines 里面的字符构成。如果可以构成，返回 true ；否则返回 false。
     # (题目说明：为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思。杂志字符串中的每个字符只能在赎金信字符串中使用一次。)
     # 注意：
@@ -419,7 +420,7 @@ class Solution:
 #         return True
 
 
-#7 Medium 第15题. 三数之和 3Sum
+#7 (Medium) 第15题.三数之和 3Sum
     # 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
     # 注意： 答案中不可以包含重复的三元组。
     # 示例：
@@ -493,7 +494,7 @@ class Solution:
 #         return result
 
 
-#8 Medium 第18题. 四数之和 4Sum
+#8 (Medium) 第18题.四数之和 4Sum
     # 题意：给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
     # 注意：
     # 答案中不可以包含重复的四元组。
@@ -568,13 +569,14 @@ class Solution:
         
 #         return [list(x) for x in ans]
 
-#X9 Easy 1.Pair Sum - Unsorted 2Sum
-# Given an array of integers, return the indexes of any two numbers that add up to a target. 
-# The order of the indexes in the result doesn't matter. If no pair is found, return an empty array.
-# Example:
-# Input: nums = [-1, 3, 4, 2], target = 3
-# Output: [0, 2]
-# Explanation: nums[0] + nums[2] = -1 + 4 = 3
+
+#X9 (Easy) 1.Pair Sum - Unsorted 2Sum
+    # Given an array of integers, return the indexes of any two numbers that add up to a target. 
+    # The order of the indexes in the result doesn't matter. If no pair is found, return an empty array.
+    # Example:
+    # Input: nums = [-1, 3, 4, 2], target = 3
+    # Output: [0, 2]
+    # Explanation: nums[0] + nums[2] = -1 + 4 = 3
 def pair_sum_unsorted(nums: List[int], target: int) -> List[int]:
     hashmap = {}   
     for i, x in enumerate(nums):
@@ -596,12 +598,13 @@ def pair_sum_unsorted_two_pass(nums: List[int], target: int) -> List[int]:
             return [i, num_map[complement]]
     return []
 
-#X10 Medium 36.Verify Sudoku Board
-# Given a partially completed 9×9 Sudoku board, determine if the current state of the board adheres to the rules of the game:
-# Each row and column must contain unique numbers between 1 and 9, or be empty (represented as 0).
-# Each of the nine 3×3 subgrids that compose the grid must contain unique numbers between 1 and 9, or be empty.
-# Note: You are asked to determine whether the current state of the board is valid given these rules, not whether 
-# the board is solvable.
+
+#X10 (Medium) 36.Verify Sudoku Board
+    # Given a partially completed 9×9 Sudoku board, determine if the current state of the board adheres to the rules of the game:
+    # Each row and column must contain unique numbers between 1 and 9, or be empty (represented as 0).
+    # Each of the nine 3×3 subgrids that compose the grid must contain unique numbers between 1 and 9, or be empty.
+    # Note: You are asked to determine whether the current state of the board is valid given these rules, not whether 
+    # the board is solvable.
 def verify_sudoku_board(board: List[List[int]]) -> bool:
     # Create hash sets for each row, column, and subgrid to keep 
     # track of numbers previously seen on any given row, column, or 
@@ -629,8 +632,9 @@ def verify_sudoku_board(board: List[List[int]]) -> bool:
             subgrid_sets[r // 3][c // 3].add(num)
     return True
 
-#X11 Medium 7.Zero Striping
-# For each zero in an m x n matrix, set its entire row and column to zero in place.
+
+#X11 (Medium) 7.Zero Striping
+    # For each zero in an m x n matrix, set its entire row and column to zero in place.
 def zero_striping(matrix: List[List[int]]) -> None:
     if not matrix or not matrix[0]:
         return
@@ -692,13 +696,14 @@ def zero_striping_hash_sets(matrix: List[List[int]]) -> None:
             if r in zero_rows or c in zero_cols:
                 matrix[r][c] = 0
 
-#X12 Medium 128.Longest Chain of Consecutive Numbers
-# Find the longest chain of consecutive numbers in an*array. 
-# Two numbers are consecutive if they have a difference of 1.
-# Example:
-# Input: nums = [1, 6, 2, 5, 8, 7, 10, 3]
-# Output: 4
-# Explanation: The longest chain of consecutive numbers is 5, 6, 7, 8.
+
+#X12 (Medium) 128.Longest Chain of Consecutive Numbers
+    # Find the longest chain of consecutive numbers in an*array. 
+    # Two numbers are consecutive if they have a difference of 1.
+    # Example:
+    # Input: nums = [1, 6, 2, 5, 8, 7, 10, 3]
+    # Output: 4
+    # Explanation: The longest chain of consecutive numbers is 5, 6, 7, 8.
 def longest_chain_of_consecutive_numbers_brute_force(nums: List[int]) -> int:
     if not nums:
         return 0
@@ -772,18 +777,19 @@ class Solution:
 
         return max(longest_streak, current_streak)
 
-#X13 Medium Geometric Sequence Triplets
-# A geometric sequence triplet is a sequence of three numbers where each successive number 
-# is obtained by multiplying the preceding number by a constant called the common ratio.
-# Let's examine three triplets to understand how this works:
-# (1, 2, 4): This is a geometric sequence with a ratio of 2 (i.e., [1, 1⋅2 = 2, 2⋅2 = 4]).
-# (5, 15, 45): This is a geometric sequence with a ratio of 3 (i.e., [5, 5⋅3 = 15, 15⋅3 = 45]).
-# (2, 3, 4): Not a geometric sequence.
-# Given an array of integers and a common ratio r, find all triplets of indexes (i, j, k) 
-# that follow a geometric sequence for i < j < k. It's possible to encounter duplicate triplets in the array.
-# Example:
-# Input: nums = [2, 1, 2, 4, 8, 8], r = 2
-# Output: 5
+
+#X13 (Medium) Geometric Sequence Triplets
+    # A geometric sequence triplet is a sequence of three numbers where each successive number 
+    # is obtained by multiplying the preceding number by a constant called the common ratio.
+    # Let's examine three triplets to understand how this works:
+    # (1, 2, 4): This is a geometric sequence with a ratio of 2 (i.e., [1, 1⋅2 = 2, 2⋅2 = 4]).
+    # (5, 15, 45): This is a geometric sequence with a ratio of 3 (i.e., [5, 5⋅3 = 15, 15⋅3 = 45]).
+    # (2, 3, 4): Not a geometric sequence.
+    # Given an array of integers and a common ratio r, find all triplets of indexes (i, j, k) 
+    # that follow a geometric sequence for i < j < k. It's possible to encounter duplicate triplets in the array.
+    # Example:
+    # Input: nums = [2, 1, 2, 4, 8, 8], r = 2
+    # Output: 5
 from collections import defaultdict
 from typing import List
 
