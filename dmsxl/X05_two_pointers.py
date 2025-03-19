@@ -1,7 +1,7 @@
 """
 
 """
-#1 Easy 27. 移除元素
+#1 (Easy) 27. 移除元素
     # 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
     # 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并原地修改输入数组。
     # 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
@@ -36,7 +36,7 @@ class Solution:
 #         return l
 
 
-#2 Easy 344.反转字符串
+#2 (Easy) 344.反转字符串
     # 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
     # 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
     # 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
@@ -111,7 +111,7 @@ class Solution:
 #         s.reverse()
 
 
-#3 Easy 替换数字
+#3 (Easy) 替换数字
     # 给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。
     # 例如，对于输入字符串 "a1b2c3"，函数应该将其转换为 "anumberbnumbercnumber"。
     # 对于输入字符串 "a5b"，函数应该将其转换为 "anumberb"
@@ -128,7 +128,7 @@ class Solution:
         return ''.join(lst)
 
 
-#4 Medium 151.翻转字符串里的单词
+#4 (Medium) 151.翻转字符串里的单词
     # 给定一个字符串，逐个翻转字符串中的每个单词。
     # 示例 1：
     # 输入: "the sky is blue"
@@ -213,7 +213,7 @@ class Solution:
             return ''.join(l)                    #输出：blue is sky the
 
 
-#5 Easy 206.反转链表
+#5 (Easy) 206.反转链表
     # 题意：反转一个单链表。
     # 示例: 输入: 1->2->3->4->5->NULL 输出: 5->4->3->2->1->NULL
 # （版本一）双指针法
@@ -251,7 +251,7 @@ class Solution:
 #         return self.reverse(temp, cur)
 
 
-#6 Medium 19.删除链表的倒数第N个节点
+#6 (Medium) 19.删除链表的倒数第N个节点
     # 给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
     # 进阶：你能尝试使用一趟扫描实现吗？
     # 示例 1：
@@ -286,7 +286,7 @@ class Solution:
         return dummy_head.next
 
 
-#7 Easy Medium 160.链表相交
+#7 (Easy/Medium) 160.链表相交
     # 给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 null 。
 # （版本一）求长度，同时出发
 class Solution:
@@ -404,7 +404,7 @@ class Solution:
         return pointerA
 
 
-#8 Medium 142.环形链表II
+#8 (Medium) 142.环形链表II
     # 题意： 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
     # 为了表示给定链表中的环，使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
     # 说明：不允许修改给定的链表。
@@ -452,7 +452,7 @@ class Solution:
         return None
 
 
-#X9 Medium 15. 三数之和 3Sum
+#X9 (Medium) 15.三数之和 3Sum
     # 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
     # 注意： 答案中不可以包含重复的三元组。
     # 示例：
@@ -517,13 +517,13 @@ class Solution:
 #         return result
 
 # Triplet Sum
-# Given an array of integers, return all triplets [a, b, c] such that a + b + c = 0 . 
-# The solution must not contain duplicate triplets (e.g., [1, 2, 3] and [2, 3, 1] are considered duplicates). 
-# If no such triplets are found, return an empty array.
-# Each triplet can be arranged in any order, and the output can be returned in any order.
-# Example:
-# Input: nums = [0, -1, 2, -3, 1]
-# Output: [[-3, 1, 2], [-1, 0, 1]]
+    # Given an array of integers, return all triplets [a, b, c] such that a + b + c = 0 . 
+    # The solution must not contain duplicate triplets (e.g., [1, 2, 3] and [2, 3, 1] are considered duplicates). 
+    # If no such triplets are found, return an empty array.
+    # Each triplet can be arranged in any order, and the output can be returned in any order.
+    # Example:
+    # Input: nums = [0, -1, 2, -3, 1]
+    # Output: [[-3, 1, 2], [-1, 0, 1]]
 def triplet_sum_brute_force(nums: List[int]) -> List[List[int]]:
     n = len(nums)
     # Use a hash set to ensure we don't add duplicate triplets.
@@ -577,7 +577,8 @@ def pair_sum_sorted_all_pairs(nums: List[int], start: int, target: int) -> List[
                 left += 1
     return pairs
 
-#10 Medium 第18题. 四数之和 4Sum
+
+#10 (Medium) 第18题.四数之和 4Sum
     # 题意：给定一个包含 n 个整数的数组 nums 和一个目标值 target，判断 nums 中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与 target 相等？找出所有满足条件且不重复的四元组。
     # 注意：
     # 答案中不可以包含重复的四元组。
@@ -640,18 +641,18 @@ class Solution:
 #         return [list(x) for x in ans]
 
 
-#X11 Easy 2Sum Pair Sum - Sorted
-# Given an array of integers sorted in ascending order and a target value, 
-# return the indexes of any pair of numbers in the array that sum to the target. 
-# The order of the indexes in the result doesn't matter. If no pair is found, return an empty array.
-# Example 1:
-# Input: nums = [-5, -2, 3, 4, 6], target = 7
-# Output: [2, 3]
-# Explanation: nums[2] + nums[3] = 3 + 4 = 7
-# Example 2:
-# Input: nums = [1, 1, 1], target = 2
-# Output: [0, 1]
-# Explanation: other valid outputs could be [1, 0], [0, 2], [2, 0], [1, 2] or [2, 1].
+#X11 (Easy) 2Sum Pair Sum - Sorted
+    # Given an array of integers sorted in ascending order and a target value, 
+    # return the indexes of any pair of numbers in the array that sum to the target. 
+    # The order of the indexes in the result doesn't matter. If no pair is found, return an empty array.
+    # Example 1:
+    # Input: nums = [-5, -2, 3, 4, 6], target = 7
+    # Output: [2, 3]
+    # Explanation: nums[2] + nums[3] = 3 + 4 = 7
+    # Example 2:
+    # Input: nums = [1, 1, 1], target = 2
+    # Output: [0, 1]
+    # Explanation: other valid outputs could be [1, 0], [0, 2], [2, 0], [1, 2] or [2, 1].
 def pair_sum_sorted_brute_force(nums: List[int], target: int) -> List[int]:
     n = len(nums)
     for i in range(n):
@@ -677,13 +678,14 @@ def pair_sum_sorted(nums: List[int], target: int) -> List[int]:
             return [left, right]
     return []
 
-#X12 Easy Is Palindrome Valid
-# A palindrome is a sequence of characters that reads the same forward and backward.
-# Given a string, determine if it's a palindrome after removing all non-alphanumeric characters. 
-# A character is alphanumeric if it's either a letter or a number.
-# Example 1:
-# Input: s = 'a dog! a panic in a pagoda.'
-# Output: True
+
+#X12 (Easy) Is Palindrome Valid
+    # A palindrome is a sequence of characters that reads the same forward and backward.
+    # Given a string, determine if it's a palindrome after removing all non-alphanumeric characters. 
+    # A character is alphanumeric if it's either a letter or a number.
+    # Example 1:
+    # Input: s = 'a dog! a panic in a pagoda.'
+    # Output: True
 def is_palindrome_valid(s: str) -> bool:    
     left, right = 0, len(s) - 1
     while left < right:   
@@ -701,12 +703,13 @@ def is_palindrome_valid(s: str) -> bool:
         right -= 1
     return True
 
-#X13 Medium Largest Container
-# You are given an array of numbers, each representing the height of a vertical 
-# line on a graph. A container can be formed with any pair of these lines, 
-# along with the x-axis of the graph. Return the amount of water which the largest container can hold.
-# Input: heights = [2, 7, 8, 3, 7, 6]
-# Output: 24
+
+#X13 (Medium) Largest Container
+    # You are given an array of numbers, each representing the height of a vertical 
+    # line on a graph. A container can be formed with any pair of these lines, 
+    # along with the x-axis of the graph. Return the amount of water which the largest container can hold.
+    # Input: heights = [2, 7, 8, 3, 7, 6]
+    # Output: 24
 def largest_container_brute_force(heights: List[int]) -> int:
     n = len(heights)
     max_water = 0
@@ -738,12 +741,13 @@ def largest_container(heights: List[int]) -> int:
             right -= 1
     return max_water
 
-#X14 Easy Shift Zeros to the End
-# Given an array of integers, modify the array in place to move all zeros to the end 
-# while maintaining the relative order of non-zero elements.
-# Example:
-# Input: nums = [0, 1, 0, 3, 2]
-# Output: [1, 3, 2, 0, 0]
+
+#X14 (Easy) Shift Zeros to the End
+    # Given an array of integers, modify the array in place to move all zeros to the end 
+    # while maintaining the relative order of non-zero elements.
+    # Example:
+    # Input: nums = [0, 1, 0, 3, 2]
+    # Output: [1, 3, 2, 0, 0]
 def shift_zeros_to_the_end_naive(nums: List[int]) -> None:
     temp = [0] * len(nums)
     i = 0
@@ -768,19 +772,20 @@ def shift_zeros_to_the_end(nums: List[int]) -> None:
             # by a non-zero element.
             left += 1
 
-#X15 Medium Next Lexicographical Sequence
-# Given a string of lowercase English letters, rearrange the characters to form a 
-# new string representing the next immediate sequence in lexicographical (alphabetical) 
-# order. If the given string is already last in lexicographical order among all 
-# possible arrangements, return the arrangement that's first in lexicographical order.
-# Example 1:
-# Input: s = 'abcd'
-# Output: 'abdc'
-# Explanation: "abdc" is the next sequence in lexicographical order after rearranging "abcd".
-# Example 2:
-# Input: s = 'dcba'
-# Output: 'abcd'
-# Explanation: Since "dcba" is the last sequence in lexicographical order, we return the first sequence: "abcd".
+
+#X15 (Medium) Next Lexicographical Sequence
+    # Given a string of lowercase English letters, rearrange the characters to form a 
+    # new string representing the next immediate sequence in lexicographical (alphabetical) 
+    # order. If the given string is already last in lexicographical order among all 
+    # possible arrangements, return the arrangement that's first in lexicographical order.
+    # Example 1:
+    # Input: s = 'abcd'
+    # Output: 'abdc'
+    # Explanation: "abdc" is the next sequence in lexicographical order after rearranging "abcd".
+    # Example 2:
+    # Input: s = 'dcba'
+    # Output: 'abcd'
+    # Explanation: Since "dcba" is the last sequence in lexicographical order, we return the first sequence: "abcd".
 def next_lexicographical_sequence(s: str) -> str:
     letters = list(s)
     # Locate the pivot, which is the first character from the right that breaks 
@@ -805,9 +810,9 @@ def next_lexicographical_sequence(s: str) -> str:
 
 
 # Fast And Slow Pointers
-#X16 Easy 141. Easy Linked List Loop
-# Given a singly linked list, determine if it contains a cycle. 
-# A cycle occurs if a node's next pointer references an earlier node in the linked list, causing a loop.
+#X16 (Easy) 141.Easy Linked List Loop
+    # Given a singly linked list, determine if it contains a cycle. 
+    # A cycle occurs if a node's next pointer references an earlier node in the linked list, causing a loop.
 from ds import ListNode
 """
 Definition of ListNode:
@@ -838,7 +843,8 @@ def linked_list_loop(head: ListNode) -> bool:
             return True
     return False
 
-#X17 Easy Linked List Midpoint
+
+#X17 (Easy) Linked List Midpoint
 # Given a singly linked list, find and return its middle node. If there are two middle nodes, 
 # return the second one.
 def linked_list_midpoint(head: ListNode) -> ListNode:
@@ -850,7 +856,8 @@ def linked_list_midpoint(head: ListNode) -> ListNode:
         fast = fast.next.next
     return slow
 
-#X18 Medium Happy Number
+
+#X18 (Medium) Happy Number
 # In number theory, a happy number is defined as a number that, when repeatedly subjected to the 
 # process of squaring its digits and summing those squares, eventually leads to 1. 
 # An unhappy number will never reach 1 during this process, and will get stuck in an infinite loop.
