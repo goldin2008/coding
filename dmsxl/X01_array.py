@@ -1,18 +1,20 @@
 """
 
 """
-#1 704. 二分查找
-    # 给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
+#1 (Easy) 704.二分查找
+    # 给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target，写一个函数搜索 nums 中的 target，
+    # 如果目标值存在返回下标，否则返回 -1。
 # 第一种写法, 我们定义 target 是在一个在左闭右闭的区间里, 也就是[left, right] （这个很重要非常重要）。
 # 区间的定义这就决定了二分法的代码应该如何写, 因为定义target在[left, right]区间, 所以有如下两点:
 # 1. while (left <= right) 要使用 <= , 因为left == right是有意义的, 所以使用 <=
-# 2. if (nums[middle] > target) right 要赋值为 middle - 1, 因为当前这个nums[middle]一定不是target, 那么接下来要查找的左区间结束下标位置就是 middle - 1
+# 2. if (nums[middle] > target) right 要赋值为 middle - 1, 因为当前这个nums[middle]一定不是target, 
+# 那么接下来要查找的左区间结束下标位置就是 middle - 1
 # （版本一）左闭右闭区间
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         left, right = 0, len(nums) - 1  # 定义target在左闭右闭的区间里, [left, right]
 
-        while left <= right:
+        while left <= right: # ********** 为什么这里是 <= **********
             middle = left + (right - left) // 2
             
             if nums[middle] > target:
@@ -39,7 +41,7 @@ class Solution:
 #         return -1  # 未找到目标值
 
 
-#2 27. 移除元素
+#2 (Easy) 27.移除元素
     # 给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
     # 不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并原地修改输入数组。
     # 元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
@@ -74,7 +76,7 @@ class Solution:
 #         return l
 
 
-#3 977.有序数组的平方
+#3 (Easy) 977.有序数组的平方
     # 给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
     # 示例 1：
     # 输入：nums = [-4,-1,0,3,10]
@@ -109,9 +111,10 @@ class Solution:
 #     def sortedSquares(self, nums: List[int]) -> List[int]:
 #         return sorted(x*x for x in nums)
 
-
-#4 209.长度最小的子数组
-    # 给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的 连续 子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。
+# Sliding Window
+#4 (Medium) 209.长度最小的子数组
+    # 给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的连续子数组，并返回其长度。
+    # 如果不存在符合条件的子数组，返回 0。
     # 示例：
     # 输入：s = 7, nums = [2,3,1,2,4,3]
     # 输出：2
@@ -130,6 +133,9 @@ class Solution:
         while right < l:
             cur_sum += nums[right]
             
+            # NO if cur_sum >= s: 因为如果不把窗口缩到是其小于target，就开始扩大窗口，
+            # 那么最终的结果一定是大于target的，就没有必要扩大右边界。需要在right不变的情况下，
+            # 先缩小left窗口到使其满足条件看看有没有更小的值，然后再扩大right窗口
             while cur_sum >= s: # 当前累加值大于目标值
                 min_len = min(min_len, right - left + 1)
                 cur_sum -= nums[left]
@@ -155,7 +161,7 @@ class Solution:
 #         return min_len if min_len != float('inf') else 0
 
 
-#5 59.螺旋矩阵II
+#5 (Medium) 59.螺旋矩阵II
     # 给定一个正整数 n，生成一个包含 1 到 n^2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。
     # 示例:
     # 输入: 3 输出: [ [ 1, 2, 3 ], [ 8, 9, 4 ], [ 7, 6, 5 ] ]
@@ -186,13 +192,14 @@ class Solution:
             nums[mid][mid] = count 
         return nums
 
+
 # Prefix Sums
-#X6 Easy Sum Between Range
-# Given an integer array, write a function which returns the sum of values between two indexes.
-# Example:
-# Input: nums = [3, -7, 6, 0, -2, 5],
-#        [sum_range(0, 3), sum_range(2, 4), sum_range(2, 2)]
-# Output: [2, 4, 6]
+#X6 (Easy) 303.Sum Between Range / Range Sum Query - Immutable
+    # Given an integer array, write a function which returns the sum of values between two indexes.
+    # Example:
+    # Input: nums = [3, -7, 6, 0, -2, 5],
+    #        [sum_range(0, 3), sum_range(2, 4), sum_range(2, 2)]
+    # Output: [2, 4, 6]
 class SumBetweenRange:
     def __init__(self, nums: List[int]):
         self.prefix_sum = [nums[0]]
@@ -203,11 +210,12 @@ class SumBetweenRange:
         if i == 0:
             return self.prefix_sum[j]
         return self.prefix_sum[j] - self.prefix_sum[i - 1]
-#X7 Medium K-Sum Subarrays
-# Find the number of subarrays in an integer array that sum to k.
-# Example:
-# Input: nums = [1, 2, -1, 1, 2], k = 3
-# Output: 3
+
+#X7 (Medium) K-Sum Subarrays
+    # Find the number of subarrays in an integer array that sum to k.
+    # Example:
+    # Input: nums = [1, 2, -1, 1, 2], k = 3
+    # Output: 3
 def k_sum_subarrays(nums: List[int], k: int) -> int:
     n = len(nums)
     count = 0
@@ -223,6 +231,13 @@ def k_sum_subarrays(nums: List[int], k: int) -> int:
                 count += 1
     return count
 
+# Why Use a Hash Map?
+# The hash map (prefix_sum_map) keeps track of how many times each prefix sum has occurred so far.
+# This helps us quickly check if a subarray with sum k exists.
+# Key Insight:
+# If the difference between two prefix sums is k, then the subarray between those two points has a sum of k.
+# Mathematically: curr_prefix_sum − (curr_prefix_sum − k) = k
+# So, if curr_prefix_sum - k exists in the hash map, it means there's a subarray with sum k.
 def k_sum_subarrays_optimized(nums: List[int], k: int) -> int:
     count = 0
     # Initialize the map with 0 to handle subarrays that sum to 'k' 
@@ -241,18 +256,18 @@ def k_sum_subarrays_optimized(nums: List[int], k: int) -> int:
         prefix_sum_map[curr_prefix_sum] = freq + 1
     return count
 
-#X8 Medium Product Array Without Current Element
-# Given an array of integers, return an array res so that res[i] is equal to the 
-# product of all the elements of the input array except nums[i] itself.
-# Example:
-# Input: nums = [2, 3, 1, 4, 5]
-# Output: [60, 40, 120, 30, 24]
-# Explanation: The output value at index 0 is the product of all numbers 
-# except nums[0] (3⋅1⋅4⋅5 = 60). The same logic applies to the rest of the output.
+#X8 (Medium) Product Array Without Current Element
+    # Given an array of integers, return an array res so that res[i] is equal to the 
+    # product of all the elements of the input array except nums[i] itself.
+    # Example:
+    # Input: nums = [2, 3, 1, 4, 5]
+    # Output: [60, 40, 120, 30, 24]
+    # Explanation: The output value at index 0 is the product of all numbers 
+    # except nums[0] (3⋅1⋅4⋅5 = 60). The same logic applies to the rest of the output.
 def product_array_without_current_element(nums: List[int]) -> List[int]:
     n = len(nums)
     res = [1] * n
-    # Populate the output with the running left product.
+    # Populate the output with the running left product. from left to right.
     for i in range(1, n):
         res[i] = res[i - 1] * nums[i - 1]
     # Multiply the output with the running right product, from right to 
@@ -263,13 +278,14 @@ def product_array_without_current_element(nums: List[int]) -> List[int]:
         right_product *= nums[i]
     return res
 
+
 # Intervals
-#X9 Medium Merge Overlapping Intervals
-# Merge an array of intervals so there are no overlapping intervals, 
-# and return the resultant merged intervals.
-# Example:
-# Input: intervals = [[3, 4], [7, 8], [2, 5], [6, 7], [1, 4]]
-# Output: [[1, 5], [6, 8]]
+#X9 (Medium) Merge Overlapping Intervals
+    # Merge an array of intervals so there are no overlapping intervals, 
+    # and return the resultant merged intervals.
+    # Example:
+    # Input: intervals = [[3, 4], [7, 8], [2, 5], [6, 7], [1, 4]]
+    # Output: [[1, 5], [6, 8]]
 from ds import Interval
 from typing import List
 """
@@ -292,17 +308,17 @@ def merge_overlapping_intervals(intervals: List[Interval]) -> List[Interval]:
             merged[-1] = Interval(A.start, max(A.end, B.end))
     return merged
 
-#X10 Medium Identify All Interval Overlaps
-# Return an array of all overlaps between two arrays of intervals; intervals1 and intervals2. 
-# Each individual interval array is sorted by start value, and contains no overlapping 
-# intervals within itself.
-# Example:
-# Input: intervals1 = [[1, 4], [5, 6], [9, 10]],
-#        intervals2 = [[2, 7], [8, 9]]
-# Output: [[2, 4], [5, 6], [9, 9]]
-# Constraints:
-# For every index i in intervals1, intervals1[i].start < intervals1[i].end.
-# For every index j in intervals2, intervals2[j].start < intervals2[j].end.
+#X10 (Medium) Identify All Interval Overlaps
+    # Return an array of all overlaps between two arrays of intervals; intervals1 and intervals2. 
+    # Each individual interval array is sorted by start value, and contains no overlapping 
+    # intervals within itself.
+    # Example:
+    # Input: intervals1 = [[1, 4], [5, 6], [9, 10]],
+    #        intervals2 = [[2, 7], [8, 9]]
+    # Output: [[2, 4], [5, 6], [9, 9]]
+    # Constraints:
+    # For every index i in intervals1, intervals1[i].start < intervals1[i].end.
+    # For every index j in intervals2, intervals2[j].start < intervals2[j].end.
 def identify_all_interval_overlaps(intervals1: List[Interval], intervals2: List[Interval]) -> List[Interval]:
     overlaps = []
     i = j = 0
@@ -324,16 +340,16 @@ def identify_all_interval_overlaps(intervals1: List[Interval], intervals2: List[
             j += 1
     return overlaps
 
-#X11 Medium Largest Overlap of Intervals
-# Given an array of intervals, determine the maximum number of intervals that overlap 
-# at any point. Each interval is half-open, meaning it includes the start point but 
-# excludes the end point.
-# Example:
-# Input: intervals = [[1, 3], [5, 7], [2, 6], [4, 8]]
-# Output: 3
-# Constraints:
-# The input will contain at least one interval.
-# For every index i in the list, intervals[i].start < intervals[i].end.
+#X11 (Medium) Largest Overlap of Intervals
+    # Given an array of intervals, determine the maximum number of intervals that overlap 
+    # at any point. Each interval is half-open, meaning it includes the start point but 
+    # excludes the end point.
+    # Example:
+    # Input: intervals = [[1, 3], [5, 7], [2, 6], [4, 8]]
+    # Output: 3
+    # Constraints:
+    # The input will contain at least one interval.
+    # For every index i in the list, intervals[i].start < intervals[i].end.
 def largest_overlap_of_intervals(intervals: List[Interval]) -> int:
     points = []
     for interval in intervals:
