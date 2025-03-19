@@ -47,8 +47,10 @@ class Solution:
             while end<n and nums[end]!=' ':
                 end+=1
             self.reverse_string(nums,start,end-1)
-            start=end+1
-            end+=1
+            # start=end+1
+            # end+=1
+            end +=1
+            start=end
         return None
 
     #4.翻转字符串里的单词
@@ -58,7 +60,8 @@ class Solution:
         self.reverse_each_word(l)               #输出：['b', 'l', 'u', 'e', ' ', 'i', 's', ' ', 's', 'k', 'y', ' ', 't', 'h', 'e']
         return ''.join(l)         #输出：blue is sky the
 
-#1 344.反转字符串
+
+#1 (Easy) 344.反转字符串
     # 编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 char[] 的形式给出。
     # 不要给另外的数组分配额外的空间，你必须原地修改输入数组、使用 O(1) 的额外空间解决这一问题。
     # 你可以假设数组中的所有字符都是 ASCII 码表中的可打印字符。
@@ -133,7 +136,7 @@ class Solution:
 #         s.reverse()
 
 
-#2 541. 反转字符串II
+#2 (Easy) 541. 反转字符串II
     # 给定一个字符串 s 和一个整数 k，从字符串开头算起, 每计数至 2k 个字符，就反转这 2k 个字符中的前 k 个字符。
     # 如果剩余字符少于 k 个，则将剩余字符全部反转。
     # 如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，其余字符保持原样。
@@ -157,6 +160,7 @@ class Solution:
         
         res = list(s)
 
+        # Python's slicing feature inherently handles out-of-range indices gracefully.
         for cur in range(0, len(s), 2 * k):
             res[cur: cur + k] = reverse_substring(res[cur: cur + k])
         
@@ -173,7 +177,7 @@ class Solution:
 #         return s
 
 
-#3 替换数字
+#3 (Easy) 替换数字
     # 给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。
     # 例如，对于输入字符串 "a1b2c3"，函数应该将其转换为 "anumberbnumbercnumber"。
     # 对于输入字符串 "a5b"，函数应该将其转换为 "anumberb"
@@ -190,7 +194,7 @@ class Solution:
         return ''.join(lst)
 
 
-#4 151.翻转字符串里的单词
+#4 (Medium) 151.翻转字符串里的单词
     # 给定一个字符串，逐个翻转字符串中的每个单词。
     # 示例 1：
     # 输入: "the sky is blue"
@@ -228,6 +232,51 @@ class Solution:
 
         # 将列表转换成字符串
         return " ".join(words)
+# two pointers
+class Solution:
+  #1.去除多余的空格
+        def trim_spaces(self, s):     
+            n = len(s)
+            left = 0
+            right = n-1
+
+            while left <= right and s[left] == ' ':    #去除开头的空格
+                left += 1
+            while left <= right and s[right] == ' ':   #去除结尾的空格
+                right = right-1
+            tmp = []
+            while left <= right:                      #去除单词中间多余的空格
+                if s[left] != ' ':
+                    tmp.append(s[left])
+                elif tmp[-1] != ' ':                 #当前位置是空格，但是相邻的上一个位置不是空格，则该空格是合理的
+                    tmp.append(s[left])
+                left += 1
+            return tmp
+        #2.翻转字符数组
+        def reverse_string(self, nums, left, right):
+            while left < right:
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+                right -= 1
+            return None
+        #3.翻转每个单词
+        def reverse_each_word(self, nums):
+            start = 0
+            end = 0
+            n = len(nums)
+            while start < n:
+                while end < n and nums[end] != ' ':
+                    end += 1
+                self.reverse_string(nums, start, end-1)
+                end += 1
+                start = end
+            return None
+        #4.翻转字符串里的单词
+        def reverseWords(self, s):                #测试用例："the sky is blue"
+            l = self.trim_spaces(s)               #输出：['t', 'h', 'e', ' ', 's', 'k', 'y', ' ', 'i', 's', ' ', 'b', 'l', 'u', 'e'
+            self.reverse_string(l,  0, len(l)-1)  #输出：['e', 'u', 'l', 'b', ' ', 's', 'i', ' ', 'y', 'k', 's', ' ', 'e', 'h', 't']
+            self.reverse_each_word(l)             #输出：['b', 'l', 'u', 'e', ' ', 'i', 's', ' ', 's', 'k', 'y', ' ', 't', 'h', 'e']
+            return ''.join(l)                    #输出：blue is sky the
 
 
 #5 右旋字符串
@@ -249,13 +298,35 @@ s = s[len(s)-k:] + s[:len(s)-k]
 print(s)
 
 
-#6 ??? 28. 实现 strStr()
+#6 (Easy) 28. 实现 strStr()
     # 实现 strStr() 函数。
     # 给定一个 haystack 字符串和一个 needle 字符串，在 haystack 字符串中找出 needle 字符串出现的第一个位置 (从0开始)。如果不存在，则返回  -1。
     # 示例 1: 输入: haystack = "hello", needle = "ll" 输出: 2
     # 示例 2: 输入: haystack = "aaaaa", needle = "bba" 输出: -1
     # 说明: 当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。 对于本题而言，当 needle 是空字符串时我们应当返回 0 。这与C语言的 strstr() 以及 Java的 indexOf() 定义相符。
-# KMP的经典思想就是:当出现字符串不匹配时，可以记录一部分之前已经匹配的文本内容，利用这些信息避免从头再去做匹配。
+# Two Pointers
+class Solution:
+    def strStr(self, text: str, pattern: str) -> int:
+        n1, n2 = len(text), len(pattern)
+        
+        if n2 == 0:
+            return 0
+        
+        i, j = 0, 0
+
+        while i < n1:
+            if text[i] == pattern[j]:  #相等时同时移动
+                i += 1
+                j += 1
+            else:
+                i -= j   #回到最开始匹配的位置
+                j = 0    #j回到位置0
+                i += 1   #向右移动一格
+
+            if j == n2:          #到达字符串末尾，说明匹配成功，返回结果
+                return i - j
+        return -1
+# *** KMP的经典思想就是:当出现字符串不匹配时，可以记录一部分之前已经匹配的文本内容，利用这些信息避免从头再去做匹配。
 # 那么什么是前缀表：记录下标i之前（包括i）的字符串中，有多大长度的相同前缀后缀。
 # 以下这句话，对于理解为什么使用前缀表可以告诉我们匹配失败之后跳到哪里重新匹配 非常重要！
 # 下标5之前这部分的字符串（也就是字符串aabaa）的最长相等的前缀 和 后缀字符串是 子字符串aa ，因为找到了最长相等的前缀和后缀，匹配失败的位置是后缀子串的后面，那么我们找到与其相同的前缀的后面重新匹配就可以了。
@@ -344,7 +415,7 @@ class Solution:
 #         return haystack.find(needle)
 
 
-#7 ??? 459.重复的子字符串
+#7 (Easy) 459.重复的子字符串
     # 给定一个非空的字符串，判断它是否可以由它的一个子串重复多次构成。给定的字符串只含有小写英文字母，并且长度不超过10000。
     # 示例 1:
     # 输入: "abab"
@@ -357,6 +428,32 @@ class Solution:
     # 输入: "abcabcabcabc"
     # 输出: True
     # 解释: 可由子字符串 "abc" 重复四次构成。 (或者子字符串 "abcabc" 重复两次构成。)
+# Time complexity: O(n)
+# Space complexity: O(n)
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        t = s + s
+        if s in t[1:-1]:
+            return True
+        return False
+# Time Complexity: O(n^2)
+# Space Complexity: O(n)
+class Solution:
+    def repeatedSubstringPattern(self, s: str) -> bool:
+        n = len(s)
+        # Iterate over all possible substring lengths
+        # The maximum possible length of such a substring is n // 2 because:
+        # If the substring length is greater than n // 2, repeating it would 
+        # result in a string longer than s.
+        for l in range(1, n // 2 + 1):
+            # Check if the length divides the string length
+            if n % l == 0:
+                # Get the substring
+                substring = s[:l]
+                # Check if repeating the substring forms the original string
+                if substring * (n // l) == s:
+                    return True
+        return False
 # KMP算法中next数组为什么遇到字符不匹配的时候可以找到上一个匹配过的位置继续匹配，靠的是有计算好的前缀表。 前缀表里，统计了各个位置为终点字符串的最长相同前后缀的长度。
 # 可能很多录友又忘了 前缀和后缀的定义，再回顾一下：
 # 前缀是指不包含最后一个字符的所有以第一个字符开头的连续子串；
@@ -430,16 +527,16 @@ class Solution:
 
 
 # Sliding Window
-#X8 Medium Substring Anagrams
-# Given two strings, s and t , both consisting of lowercase English letters, 
-# return the number of substrings in s that are anagrams of t.
-# An anagram is a word or phrase formed by rearranging the letters of another 
-# word or phrase, using all the original letters exactly once.
-# Example:
-# Input: s = 'caabab', t = 'aba'
-# Output: 2
-# Explanation: There is an anagram of t starting at index 1 ("caabab") and 
-# another starting at index 2 ("caabab")
+#X8 (Medium) 438.Substring Anagrams
+    # Given two strings, s and t , both consisting of lowercase English letters, 
+    # return the number of substrings in s that are anagrams of t.
+    # An anagram is a word or phrase formed by rearranging the letters of another 
+    # word or phrase, using all the original letters exactly once.
+    # Example:
+    # Input: s = 'caabab', t = 'aba'
+    # Output: 2
+    # Explanation: There is an anagram of t starting at index 1 ("caabab") and 
+    # another starting at index 2 ("caabab")
 def substring_anagrams(s: str, t: str) -> int:
     len_s, len_t = len(s), len(t)
     if len_t > len_s:
@@ -467,14 +564,15 @@ def substring_anagrams(s: str, t: str) -> int:
         right += 1
     return count
 
-#X9 Medium Longest Substring With Unique Characters
-# Given a string, determine the length of its longest substring that consists 
-# only of unique characters.
-# Example:
-# Input: s = 'abcba'
-# Output: 3
-# Explanation: Substring "abc" is the longest substring of length 3 that 
-# contains unique characters ("cba" also fits this description).
+
+#X9 (Medium) 3.Longest Substring With Unique Characters
+    # Given a string, determine the length of its longest substring that consists 
+    # only of unique characters.
+    # Example:
+    # Input: s = 'abcba'
+    # Output: 3
+    # Explanation: Substring "abc" is the longest substring of length 3 that 
+    # contains unique characters ("cba" also fits this description).
 def longest_substring_with_unique_chars(s: str) -> int:
     max_len = 0
     hash_set = set()
@@ -512,14 +610,16 @@ def longest_substring_with_unique_chars_optimized(s: str) -> int:
         right += 1
     return max_len
 
-#X10 Hard Longest Uniform Substring After Replacements
-# A uniform substring is one in which all characters are identical. Given a string, 
-# determine the length of the longest uniform substring that can be formed by 
-# replacing up to k characters.
-# Example:
-# Input: s = 'aabcdcca', k = 2
-# Output: 5
-# Explanation: if we can only replace 2 characters, the longest uniform substring we can achieve is "ccccc", obtained by replacing 'b' and 'd' with 'c'.
+
+#X10 (Medium/Hard) 424.Longest Uniform Substring After Replacements
+    # A uniform substring is one in which all characters are identical. Given a string, 
+    # determine the length of the longest uniform substring that can be formed by 
+    # replacing up to k characters.
+    # Example:
+    # Input: s = 'aabcdcca', k = 2
+    # Output: 5
+    # Explanation: if we can only replace 2 characters, the longest uniform substring we 
+    # can achieve is "ccccc", obtained by replacing 'b' and 'd' with 'c'.
 def longest_uniform_substring_after_replacements(s: str, k: int) -> int:
     freqs = {}
     highest_freq = max_len = 0
