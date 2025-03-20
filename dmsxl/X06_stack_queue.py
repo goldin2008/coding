@@ -18,6 +18,22 @@ A double-ended queue optimized for fast appends and pops from both ends.
 | **Insert/Delete in Middle** | Slow (\(O(n)\))                      | Slow (\(O(n)\))                         |
 | **Index Access**         | Fast (\(O(1)\))                        | Slow (\(O(n)\))                         |
 | **Use Case**             | General-purpose, random access         | Queue/stack operations, frequent insertions/deletions at ends |
+
+```python
+my_list = [1, 2, 3]
+my_list.append(4)       # Fast: O(1)
+my_list.pop()           # Fast: O(1)
+my_list.insert(0, 0)    # Slow: O(n)
+print(my_list[1])       # Fast: O(1)
+
+from collections import deque
+
+my_deque = deque([1, 2, 3])
+my_deque.append(4)       # Fast: O(1)
+my_deque.appendleft(0)   # Fast: O(1)
+my_deque.pop()           # Fast: O(1)
+my_deque.popleft()       # Fast: O(1)
+print(my_deque[1])       # Slow: O(n)
 """
 #X1 (Medium) 232.用栈实现队列
     # 使用栈实现队列的下列操作：
