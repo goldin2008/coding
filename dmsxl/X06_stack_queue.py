@@ -1,7 +1,25 @@
 """
+list:
+A built-in Python data structure that stores elements in a contiguous block of memory.
+Supports dynamic resizing and allows access to elements by index.
 
+deque:
+Part of the collections module.
+A double-ended queue optimized for fast appends and pops from both ends.
+
+# Comparison: `list` vs `deque`
+
+| Feature                  | **`list`**                              | **`deque`**                              |
+|--------------------------|-----------------------------------------|------------------------------------------|
+| **Import**               | Built-in (no import needed)             | Requires `from collections import deque` |
+| **Memory Allocation**    | Contiguous memory block                | Linked memory blocks (more efficient for frequent insertions/deletions at ends) |
+| **Append/Pop at Start**  | Slow (\(O(n)\))                        | Fast (\(O(1)\))                         |
+| **Append/Pop at End**    | Fast (\(O(1)\))                        | Fast (\(O(1)\))                         |
+| **Insert/Delete in Middle** | Slow (\(O(n)\))                      | Slow (\(O(n)\))                         |
+| **Index Access**         | Fast (\(O(1)\))                        | Slow (\(O(n)\))                         |
+| **Use Case**             | General-purpose, random access         | Queue/stack operations, frequent insertions/deletions at ends |
 """
-#X1 Medium 232.用栈实现队列
+#X1 (Medium) 232.用栈实现队列
     # 使用栈实现队列的下列操作：
     # push(x) -- 将一个元素放入队列的尾部。
     # pop() -- 从队列首部移除元素。
@@ -59,14 +77,14 @@ class MyQueue:
         """
         return not (self.stack_in or self.stack_out)
 # Implement a Queue using Stacks
-# Implement a queue using the stack data structure. Include the following functions:
-# enqueue(x: int) -> None: adds x to the end of the queue.
-# dequeue() -> int: removes and returns the element from the front of the queue.
-# peek() -> int: returns the front element of the queue.
-# You may not use any other data structures to implement the queue.
-# Example
-# Input: [enqueue(1), enqueue(2), dequeue(), enqueue(3), peek()]
-# Output: [1, 2]
+    # Implement a queue using the stack data structure. Include the following functions:
+    # enqueue(x: int) -> None: adds x to the end of the queue.
+    # dequeue() -> int: removes and returns the element from the front of the queue.
+    # peek() -> int: returns the front element of the queue.
+    # You may not use any other data structures to implement the queue.
+    # Example
+    # Input: [enqueue(1), enqueue(2), dequeue(), enqueue(3), peek()]
+    # Output: [1, 2]
 class Queue:
     def __init__(self):
         self.enqueue_stack = []
@@ -93,7 +111,7 @@ class Queue:
         return self.dequeue_stack[-1] if self.dequeue_stack else None
 
 
-#2 225. 用队列实现栈
+#2 (Easy) 225. 用队列实现栈
     # 使用队列实现栈的下列操作：
     # push(x) -- 元素 x 入栈
     # pop() -- 移除栈顶元素
@@ -215,7 +233,7 @@ class MyStack:
         return not self.que
 
 
-#X3 Easy 20. 有效的括号
+#X3 (Easy) 20. 有效的括号
     # 给定一个只包括 '(',')','{','}','[',']' 的字符串,判断字符串是否有效。
     # 有效字符串需满足：
     # 左括号必须用相同类型的右括号闭合。
@@ -272,16 +290,16 @@ class Solution:
                 stack.pop()
         return True if not stack else False
 # Valid Parenthesis Expression
-# Given a string representing an expression of parentheses containing the characters 
-# '(', ')', '[', ']', '{', or '}', determine if the expression forms a valid sequence of parentheses.
-# A sequence of parentheses is valid if every opening parenthesis has a corresponding closing parenthesis, 
-# and no closing parenthesis appears before its matching opening parenthesis.
-# Example 1:
-# Input: s = '([]{})'
-# Output: True
-# Example 2:
-# Input: s = '([]{)}'
-# Output: False
+    # Given a string representing an expression of parentheses containing the characters 
+    # '(', ')', '[', ']', '{', or '}', determine if the expression forms a valid sequence of parentheses.
+    # A sequence of parentheses is valid if every opening parenthesis has a corresponding closing parenthesis, 
+    # and no closing parenthesis appears before its matching opening parenthesis.
+    # Example 1:
+    # Input: s = '([]{})'
+    # Output: True
+    # Example 2:
+    # Input: s = '([]{)}'
+    # Output: False
 def valid_parenthesis_expression(s: str) -> bool:
     parentheses_map = {'(': ')', '{': '}', '[': ']'}
     stack = []
@@ -302,7 +320,7 @@ def valid_parenthesis_expression(s: str) -> bool:
     return not stack
 
 
-#X4 Easy 1047. 删除字符串中的所有相邻重复项
+#X4 (Easy) 1047. 删除字符串中的所有相邻重复项
     # 给出由小写字母组成的字符串 S,重复项删除操作会选择两个相邻且相同的字母,并删除它们。
     # 在 S 上反复执行重复项删除操作,直到无法继续删除。
     # 在完成所有重复项删除操作后返回最终的字符串。答案保证唯一。
@@ -363,7 +381,7 @@ def repeated_removal_of_adjacent_duplicates(s: str) -> str:
     return ''.join(stack)
 
 
-#5 150. 逆波兰表达式求值
+#5 (Medium) 150.逆波兰表达式求值
     # 根据 逆波兰表示法,求表达式的值。
     # 有效的运算符包括 + ,  - ,  * ,  / 。每个运算对象可以是整数,也可以是另一个逆波兰表达式。
     # 说明：
@@ -423,7 +441,7 @@ class Solution:
         return int(stack.pop()) # 如果一开始只有一个数,那么会是字符串形式的
 
 
-#X6 ??? Hard 239. 滑动窗口最大值
+#X6 ??? (Hard) 239. 滑动窗口最大值
     # 给定一个数组 nums,有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。
     # 返回滑动窗口中的最大值。
     # 进阶：
@@ -497,7 +515,7 @@ def maximums_of_sliding_window(nums: List[int], k: int) -> List[int]:
     return res
 
 
-#7 ??? 347.前 K 个高频元素
+#7 (Medium) 347.前 K 个高频元素
     # 给定一个非空的整数数组,返回其中出现频率前 k 高的元素。
     # 示例 1:
     # 输入: nums = [1,1,1,2,2,3], k = 2
@@ -548,9 +566,9 @@ class Solution:
             result[i] = heapq.heappop(pri_que)[1]
         return result
 
-#X8 Hard 224.Evaluate Expression
-# Given a string representing a mathematical expression containing integers, parentheses, 
-# addition, and subtraction operators, evaluate and return the result of the expression.
+#X8 (Hard) 224.Evaluate Expression
+    # Given a string representing a mathematical expression containing integers, parentheses, 
+    # addition, and subtraction operators, evaluate and return the result of the expression.
 def evaluate_expression(s: str) -> int:
     stack = []
     curr_num, sign, res = 0, 1, 0
@@ -586,28 +604,29 @@ def evaluate_expression(s: str) -> int:
             curr_num = 0
     # Finalize the result of the overall expression.
     return res + curr_num * sign
+
 # Hard 224. Basic Calculator
-# Given a string s representing a valid expression, implement a basic calculator 
-# to evaluate it, and return the result of the evaluation.
-# Note: You are not allowed to use any built-in function which evaluates strings 
-# as mathematical expressions, such as eval().
-# Example 1:
-# Input: s = "1 + 1"
-# Output: 2
-# Example 2:
-# Input: s = " 2-1 + 2 "
-# Output: 3
-# Example 3:
-# Input: s = "(1+(4+5+2)-3)+(6+8)"
-# Output: 23
-# Constraints:
-# 1 <= s.length <= 3 * 105
-# s consists of digits, '+', '-', '(', ')', and ' '.
-# s represents a valid expression.
-# '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
-# '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
-# There will be no two consecutive operators in the input.
-# Every number and running calculation will fit in a signed 32-bit integer.
+    # Given a string s representing a valid expression, implement a basic calculator 
+    # to evaluate it, and return the result of the evaluation.
+    # Note: You are not allowed to use any built-in function which evaluates strings 
+    # as mathematical expressions, such as eval().
+    # Example 1:
+    # Input: s = "1 + 1"
+    # Output: 2
+    # Example 2:
+    # Input: s = " 2-1 + 2 "
+    # Output: 3
+    # Example 3:
+    # Input: s = "(1+(4+5+2)-3)+(6+8)"
+    # Output: 23
+    # Constraints:
+    # 1 <= s.length <= 3 * 105
+    # s consists of digits, '+', '-', '(', ')', and ' '.
+    # s represents a valid expression.
+    # '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
+    # '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
+    # There will be no two consecutive operators in the input.
+    # Every number and running calculation will fit in a signed 32-bit integer.
 # Approach 1: Stack and String Reversal
 class Solution:
     def evaluate_expr(self, stack):
@@ -706,13 +725,14 @@ class Solution:
                 operand = 0
         return res + sign * operand
 
-#X9 Medium Next Largest Number to the Right
-# Given an integer array nums, return an output array res where, 
-# for each value nums[i], res[i] is the first number to the right that's larger than nums[i]. 
-# If no larger number exists to the right of nums[i], set res[i] to ‐1.
-# Example:
-# Input: nums = [5, 2, 4, 6, 1]
-# Output: [6, 4, 6, -1, -1]
+
+#X9 (Medium) Next Largest Number to the Right
+    # Given an integer array nums, return an output array res where, 
+    # for each value nums[i], res[i] is the first number to the right that's larger than nums[i]. 
+    # If no larger number exists to the right of nums[i], set res[i] to ‐1.
+    # Example:
+    # Input: nums = [5, 2, 4, 6, 1]
+    # Output: [6, 4, 6, -1, -1]
 def next_largest_number_to_the_right(nums: List[int]) -> List[int]:
     res = [0] * len(nums)
     stack = []
@@ -729,29 +749,30 @@ def next_largest_number_to_the_right(nums: List[int]) -> List[int]:
         stack.append(nums[i])
     return res
 
-#10 Medium 227. Basic Calculator II
-# Given a string s which represents an expression, evaluate this expression and 
-# return its value. 
-# The integer division should truncate toward zero.
-# You may assume that the given expression is always valid. All intermediate 
-# results will be in the range of [-231, 231 - 1].
-# Note: You are not allowed to use any built-in function which evaluates 
-# strings as mathematical expressions, such as eval().
-# Example 1:
-# Input: s = "3+2*2"
-# Output: 7
-# Example 2:
-# Input: s = " 3/2 "
-# Output: 1
-# Example 3:
-# Input: s = " 3+5 / 2 "
-# Output: 5
-# Constraints:
-# 1 <= s.length <= 3 * 105
-# s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
-# s represents a valid expression.
-# All the integers in the expression are non-negative integers in the range [0, 231 - 1].
-# The answer is guaranteed to fit in a 32-bit integer.
+
+#10 (Medium) 227. Basic Calculator II
+    # Given a string s which represents an expression, evaluate this expression and 
+    # return its value. 
+    # The integer division should truncate toward zero.
+    # You may assume that the given expression is always valid. All intermediate 
+    # results will be in the range of [-231, 231 - 1].
+    # Note: You are not allowed to use any built-in function which evaluates 
+    # strings as mathematical expressions, such as eval().
+    # Example 1:
+    # Input: s = "3+2*2"
+    # Output: 7
+    # Example 2:
+    # Input: s = " 3/2 "
+    # Output: 1
+    # Example 3:
+    # Input: s = " 3+5 / 2 "
+    # Output: 5
+    # Constraints:
+    # 1 <= s.length <= 3 * 105
+    # s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
+    # s represents a valid expression.
+    # All the integers in the expression are non-negative integers in the range [0, 231 - 1].
+    # The answer is guaranteed to fit in a 32-bit integer.
 # use stack
 class Solution:
     def calculate(self, s: str) -> int:
@@ -850,31 +871,37 @@ class Solution:
             inner, opt = 0, c
         return result + outer
 
-#11 Hard 282. Expression Add Operators
-# Given a string num that contains only digits and an integer target, 
-# return all possibilities to insert the binary operators '+', '-', 
-# and/or '*' between the digits of num so that the resultant expression 
-# evaluates to the target value.
-# Note that operands in the returned expressions should not contain leading zeros.
-# Example 1:
-# Input: num = "123", target = 6
-# Output: ["1*2*3","1+2+3"]
-# Explanation: Both "1*2*3" and "1+2+3" evaluate to 6.
-# Example 2:
-# Input: num = "232", target = 8
-# Output: ["2*3+2","2+3*2"]
-# Explanation: Both "2*3+2" and "2+3*2" evaluate to 8.
-# Example 3:
-# Input: num = "3456237490", target = 9191
-# Output: []
-# Explanation: There are no expressions that can be created from "3456237490" to evaluate to 9191.
+
+#11 (Hard) 282. Expression Add Operators
+    # Given a string num that contains only digits and an integer target, 
+    # return all possibilities to insert the binary operators '+', '-', 
+    # and/or '*' between the digits of num so that the resultant expression 
+    # evaluates to the target value.
+    # Note that operands in the returned expressions should not contain leading zeros.
+    # Example 1:
+    # Input: num = "123", target = 6
+    # Output: ["1*2*3","1+2+3"]
+    # Explanation: Both "1*2*3" and "1+2+3" evaluate to 6.
+    # Example 2:
+    # Input: num = "232", target = 8
+    # Output: ["2*3+2","2+3*2"]
+    # Explanation: Both "2*3+2" and "2+3*2" evaluate to 8.
+    # Example 3:
+    # Input: num = "3456237490", target = 9191
+    # Output: []
+    # Explanation: There are no expressions that can be created from "3456237490" to evaluate to 9191.
 # Approach 1: Backtracking
+    # index: The current position in the num string.
+    # prev_operand: The value of the previous operand (used for multiplication).
+    # current_operand: The current number being formed by extending digits.
+    # value: The current value of the expression being evaluated.
+    # string: A list representing the current expression (used to build the final string).
 class Solution:
     def addOperators(self, num: 'str', target: 'int') -> 'List[str]':
-
         N = len(num)
         answers = []
         def recurse(index, prev_operand, current_operand, value, string):
+            # print(index)
             # Done processing all the digits in num
             if index == N:
                 # If the final value == target expected AND
@@ -882,6 +909,7 @@ class Solution:
                 if value == target and current_operand == 0:
                     answers.append("".join(string[1:]))
                 return
+
             # Extending the current operand by one digit
             current_operand = current_operand*10 + int(num[index])
             str_op = str(current_operand)
@@ -890,12 +918,18 @@ class Solution:
             # valid operand. Hence this check
             if current_operand > 0:
                 # NO OP recursion
+                # print(f"recurse({index + 1}, {prev_operand}, {current_operand}, {value}, {string})")
                 recurse(index + 1, prev_operand, current_operand, value, string)
 
+            # print("index: ", index)
             # ADDITION
             string.append('+'); string.append(str_op)
+            # print(string)
+            # print(f"recurse({index + 1}, {current_operand}, {0}, {value + current_operand}, {string})")
             recurse(index + 1, current_operand, 0, value + current_operand, string)
             string.pop();string.pop()
+            # print("# END ADDITION")
+            # print(string)
 
             # Can subtract or multiply only if there are some previous operands
             if string:
@@ -911,29 +945,41 @@ class Solution:
         recurse(0, 0, 0, 0, [])    
         return answers
 
-#12 Hard 772. Basic Calculator III
-# Implement a basic calculator to evaluate a simple expression string.
-# The expression string contains only non-negative integers, '+', '-', 
-# '*', '/' operators, and open '(' and closing parentheses ')'. 
-# The integer division should truncate toward zero.
-# You may assume that the given expression is always valid. All intermediate 
-# results will be in the range of [-231, 231 - 1].
-# Note: You are not allowed to use any built-in function which evaluates 
-# strings as mathematical expressions, such as eval().
-# Example 1:
-# Input: s = "1+1"
-# Output: 2
-# Example 2:
-# Input: s = "6-4/2"
-# Output: 4
-# Example 3:
-# Input: s = "2*(5+5*2)/3+(6/2+8)"
-# Output: 21
-# Constraints:
-# 1 <= s <= 104
-# s consists of digits, '+', '-', '*', '/', '(', and ')'.
-# s is a valid expression.
+
+#12 (Hard) 772. Basic Calculator III
+    # Implement a basic calculator to evaluate a simple expression string.
+    # The expression string contains only non-negative integers, '+', '-', 
+    # '*', '/' operators, and open '(' and closing parentheses ')'. 
+    # The integer division should truncate toward zero.
+    # You may assume that the given expression is always valid. All intermediate 
+    # results will be in the range of [-231, 231 - 1].
+    # Note: You are not allowed to use any built-in function which evaluates 
+    # strings as mathematical expressions, such as eval().
+    # Example 1:
+    # Input: s = "1+1"
+    # Output: 2
+    # Example 2:
+    # Input: s = "6-4/2"
+    # Output: 4
+    # Example 3:
+    # Input: s = "2*(5+5*2)/3+(6/2+8)"
+    # Output: 21
+    # Constraints:
+    # 1 <= s <= 104
+    # s consists of digits, '+', '-', '*', '/', '(', and ')'.
+    # s is a valid expression.
 # Approach 1: Stack
+    # stack: Used to store intermediate results and operators.
+    # curr: Used to build multi-digit numbers.
+    # previous_operator: Tracks the last operator encountered.
+    # s += "@": Appends a sentinel character (@) to the end of the string to 
+    # ensure the last number is processed.
+# s = "3*(4+5)-6"
+# Initialization:
+# stack = []
+# curr = 0
+# previous_operator = "+"
+# s = "3*(4+5)-6@"
 class Solution:
     def calculate(self, s: str) -> int:
         def evaluate(x, y, operator):
@@ -1012,3 +1058,194 @@ class Solution:
 
         s += "@"
         return solve([0])
+
+
+# Heaps
+#X13 (Medium) K Most Frequent Strings
+    # Find the k most frequently occurring strings in an array, and return 
+    # them sorted by frequency in descending order. If two strings have the 
+    # same frequency, sort them in lexicographical order.
+    # Example:
+    # Input: strs = ['go', 'coding', 'byte', 'byte', 'go', 'interview', 'go'], k = 2
+    # Output: ['go', 'byte']
+    # Explanation: The strings "go" and "byte" appear the most frequently, 
+    # with frequencies of 3 and 2, respectively.
+    # Constraints:
+    # k ≤ n, where n denotes the length of the array.
+from collections import Counter
+import heapq
+from typing import List
+
+class Pair:
+    def __init__(self, str, freq):
+        self.str = str
+        self.freq = freq
+
+    # Define a custom comparator.
+    def __lt__(self, other):
+        # Prioritize lexicographical order for strings with equal
+        # frequencies.
+        if self.freq == other.freq:
+            return self.str < other.str
+        # Otherwise, prioritize strings with higher frequencies.
+        return self.freq > other.freq
+   
+def k_most_frequent_strings_max_heap(strs: List[str], k: int) -> List[str]:
+    # We use 'Counter' to create a hash map that counts the frequency 
+    # of each string.
+    freqs = Counter(strs)
+    # Create the max heap by performing heapify on all string-frequency 
+    # pairs.
+    max_heap = [Pair(str, freq) for str, freq in freqs.items()]
+    heapq.heapify(max_heap)
+    # Pop the most frequent string off the heap 'k' times and return 
+    # these 'k' most frequent strings.
+    return [heapq.heappop(max_heap).str for _ in range(k)]
+
+
+from collections import Counter
+import heapq
+from typing import List
+
+class Pair:
+    def __init__(self, str, freq):
+        self.str = str
+        self.freq = freq
+    # Since this is a min-heap comparator, we can use the same 
+    # comparator as the one used in the max-heap, but reversing the 
+    # inequality signs to invert the priority.
+    def __lt__(self, other):
+        if self.freq == other.freq:
+            return self.str > other.str
+        return self.freq < other.freq
+   
+def k_most_frequent_strings_min_heap(strs: List[str], k: int) -> List[str]:
+    freqs = Counter(strs)
+    min_heap = []
+    for str, freq in freqs.items():
+        heapq.heappush(min_heap, Pair(str, freq))
+        # If heap size exceeds 'k', pop the lowest frequency string to 
+        # ensure the heap only contains the 'k' most frequent words so 
+        # far.
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+    # Return the 'k' most frequent strings by popping the remaining 'k' 
+    # strings from the heap. Since we're using a min-heap, we need to 
+    # reverse the result after popping the elements to ensure the most 
+    # frequent strings are listed first.
+    res = [heapq.heappop(min_heap).str for _ in range(k)]
+    res.reverse()
+    return res
+
+
+#X14 (Medium) Combine Sorted Linked Lists
+    # Given k singly linked lists, each sorted in ascending order, combine them 
+    # into one sorted linked list.
+import heapq
+from ds import ListNode
+from typing import List
+"""
+Definition of ListNode:
+class ListNode:
+    def __init__(self, val=None, next=None):
+        self.val = val
+        self.next = next
+"""
+
+def combine_sorted_linked_lists(lists: List[ListNode]) -> ListNode:
+    # Define a custom comparator for 'ListNode', enabling the min-heap 
+    # to prioritize nodes with smaller values.
+    ListNode.__lt__ = lambda self, other: self.val < other.val
+    heap = []
+    # Push the head of each linked list into the heap.
+    for head in lists:
+        if head:
+            heapq.heappush(heap, head)
+    # Set a dummy node to point to the head of the output linked list.
+    dummy = ListNode(-1)
+    # Create a pointer to iterate through the combined linked list as 
+    # we add nodes to it.
+    curr = dummy
+    while heap:
+        # Pop the node with the smallest value from the heap and add it 
+        # to the output linked list.
+        smallest_node = heapq.heappop(heap)
+        curr.next = smallest_node
+        curr = curr.next
+        # Push the popped node's subsequent node to the heap.
+        if smallest_node.next:
+            heapq.heappush(heap, smallest_node.next)
+    return dummy.next
+
+
+#X15 (Hard) Median of an Integer Stream
+    # Design a data structure that supports adding integers from a data stream 
+    # and retrieving the median of all elements received at any point.
+    # add(num: int) -> None: adds an integer to the data structure.
+    # get_median() -> float: returns the median of all integers so far.
+    # Example:
+    # Input: [add(3), add(6), get_median(), add(1), get_median()]
+    # Output: [4.5, 3.0]
+    # Explanation:
+    # add(3)        # data structure contains [3] when sorted
+    # add(6)        # data structure contains [3, 6] when sorted
+    # get_median()  # median is (3 + 6) / 2 = 4.5
+    # add(1)        # data structure contains [1, 3, 6] when sorted
+    # get_median()  # median is 3.0
+    # Constraints:
+    # At least one value will have been added before get_median is called.
+import heapq
+
+class MedianOfAnIntegerStream:
+    def __init__(self):
+        self.left_half = []  # Max-heap.
+        self.right_half = []  # Min-heap.
+
+    def add(self, num: int) -> None:
+        # If 'num' is less than or equal to the max of 'left_half', it 
+        # belongs to the left half.
+        if not self.left_half or num <= -self.left_half[0]:
+            heapq.heappush(self.left_half, -num)
+            # Rebalance the heaps if the size of the 'left_half' 
+            # exceeds the size of the 'right_half' by more than one.
+            if len(self.left_half) > len(self.right_half) + 1:
+                heapq.heappush(self.right_half, -heapq.heappop(self.left_half))
+        # Otherwise, it belongs to the right half.
+        else:
+            heapq.heappush(self.right_half, num)
+            # Rebalance the heaps if 'right_half' is larger than 
+            # 'left_half'.
+            if len(self.left_half) < len(self.right_half):
+                heapq.heappush(self.left_half, -heapq.heappop(self.right_half))
+
+    def get_median(self) -> float:
+        if len(self.left_half) == len(self.right_half):
+            return (-self.left_half[0] + self.right_half[0]) / 2.0
+        return -self.left_half[0]
+
+
+#X16 (Medium) Sort a K-Sorted Array
+    # Given an integer array where each element is at most k positions away 
+    # from its sorted position, sort the array in a non-decreasing order.
+    # Example:
+    # Input: nums = [5, 1, 9, 4, 7, 10], k = 2
+    # Output: [1, 4, 5, 7, 9, 10]
+import heapq
+from typing import List
+
+def sort_a_k_sorted_array(nums: List[int], k: int) -> List[int]:
+    # Populate a min-heap with the first k + 1 values in 'nums'.
+    min_heap = nums[:k+1]
+    heapq.heapify(min_heap)
+    # Replace elements in the array with the minimum from the heap at each 
+    # iteration.
+    insert_index = 0
+    for i in range(k + 1, len(nums)):
+        nums[insert_index] = heapq.heappop(min_heap)
+        insert_index += 1
+        heapq.heappush(min_heap, nums[i])
+    # Pop the remaining elements from the heap to finish sorting the array.
+    while min_heap:
+        nums[insert_index] = heapq.heappop(min_heap)
+        insert_index += 1
+    return nums
