@@ -34,6 +34,7 @@ my_deque.appendleft(0)   # Fast: O(1)
 my_deque.pop()           # Fast: O(1)
 my_deque.popleft()       # Fast: O(1)
 print(my_deque[1])       # Slow: O(n)
+```
 """
 #X1 (Medium) 232.用栈实现队列
     # 使用栈实现队列的下列操作：
