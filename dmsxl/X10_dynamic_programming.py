@@ -368,7 +368,7 @@ for(int j = 0; j <= bagWeight; j++) { // 遍历背包容量
 动态规划:整数拆分,你要怎么拆？
 动态规划:不同的二叉搜索树
 """
-#1 509. 斐波那契数
+#1 (Easy) 509.斐波那契数
     # 斐波那契数, 通常用 F(n) 表示, 形成的序列称为 斐波那契数列 。
     # 该数列由 0 和 1 开始, 后面的每一项数字都是前面两项数字的和。
     # 也就是: F(0) = 0, F(1) = 1 F(n) = F(n - 1) + F(n - 2), 其中 n > 1 给你n , 请计算 F(n) 。
@@ -428,34 +428,10 @@ class Solution:
 #         return prev2
 
 
-#X2 70. 爬楼梯
+#X2 (Easy) 70.爬楼梯
     # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
     # 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
     # 注意:给定 n 是一个正整数。
-def climbing_stairs_bottom_up(n: int) -> int:
-    if n <= 2:
-        return n
-    dp = [0] * (n + 1)
-    # Base cases.
-    dp[1], dp[2] = 1, 2
-    # Starting from step 3, calculate the number of ways to reach each 
-    # step until the n-th step.
-    for i in range(3, n + 1):
-        dp[i] = dp[i - 1] + dp[i - 2]
-    return dp[n]
-
-def climbing_stairs_bottom_up_optimized(n: int) -> int:
-    if n <= 2:
-        return n
-    # Set 'one_step_before' and 'two_steps_before' as the base cases.
-    one_step_before, two_steps_before = 2, 1
-    for i in range(3, n + 1):
-        # Calculate the number of ways to reach the current step.
-        current = one_step_before + two_steps_before
-        # Update the values for the next iteration.
-        two_steps_before = one_step_before
-        one_step_before = current
-    return one_step_before
 # 动态规划(版本一)
 # 空间复杂度为O(n)版本
 class Solution:
@@ -502,8 +478,35 @@ public:
     }
 };
 
+# Climbing Stairs
+# Determine the number of distinct ways to climb a staircase of n steps by taking either 1 or 2 steps at a time.
+def climbing_stairs_bottom_up(n: int) -> int:
+    if n <= 2:
+        return n
+    dp = [0] * (n + 1)
+    # Base cases.
+    dp[1], dp[2] = 1, 2
+    # Starting from step 3, calculate the number of ways to reach each 
+    # step until the n-th step.
+    for i in range(3, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    return dp[n]
 
-#3 ??? 746. 使用最小花费爬楼梯
+def climbing_stairs_bottom_up_optimized(n: int) -> int:
+    if n <= 2:
+        return n
+    # Set 'one_step_before' and 'two_steps_before' as the base cases.
+    one_step_before, two_steps_before = 2, 1
+    for i in range(3, n + 1):
+        # Calculate the number of ways to reach the current step.
+        current = one_step_before + two_steps_before
+        # Update the values for the next iteration.
+        two_steps_before = one_step_before
+        one_step_before = current
+    return one_step_before
+
+
+#3 ??? (Easy) 746.使用最小花费爬楼梯
     # 数组的每个下标作为一个阶梯, 第 i 个阶梯对应着一个非负数的体力花费值 cost[i](下标从 0 开始)。
     # 每当你爬上一个阶梯你都要花费对应的体力值, 一旦支付了相应的体力值, 你就可以选择向上爬一个阶梯或者爬两个阶梯。
     # 请你找出达到楼层顶部的最低花费。在开始时, 你可以选择从下标为 0 或 1 的元素作为初始阶梯。
@@ -567,7 +570,7 @@ class Solution:
 #         return min(prev_1, prev_2)  # 最后一步可以理解为不用花费,取倒数第一步和第二步的最少值
 
 
-#4 62.不同路径
+#4 (Medium) 62.不同路径
     # 一个机器人位于一个 m x n 网格的左上角 (起始点在下图中标记为 “Start” )。
     # 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角(在下图中标记为 “Finish” )。
     # 问总共有多少条不同的路径？
@@ -635,7 +638,7 @@ class Solution:
 #         return numerator  # 返回最终的唯一路径数
 
 
-#5 63. 不同路径 II
+#5 (Medium) 63.不同路径 II
     # 一个机器人位于一个 m x n 网格的左上角 (起始点在下图中标记为“Start” )。
     # 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角(在下图中标记为“Finish”)。
     # 现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
@@ -810,7 +813,7 @@ class Solution:
 #         return dp[-1]  # 返回最后一个元素,即终点的路径数
 
 
-#6 ??? 343. 整数拆分
+#6 ??? (Medium) 343.整数拆分
     # 给定一个正整数 n, 将其拆分为至少两个正整数的和, 并使这些整数的乘积最大化。 返回你可以获得的最大乘积。
     # 示例 1:
     # 输入: 2
@@ -893,7 +896,7 @@ class Solution:
 #         return result
 
 
-#7 96.不同的二叉搜索树
+#7 (Medium) 96.不同的二叉搜索树
     # 给定一个整数 n, 求以 1 ... n 为节点组成的二叉搜索树有多少种？
 # dp[i] += dp[j - 1] * dp[i - j]
 # 在上面的分析中,其实已经看出其递推关系, dp[i] += dp[以j为头结点左子树节点数量] * dp[以j为头结点右子树节点数量]
@@ -934,6 +937,14 @@ class Solution:
     # dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
     # 大家可以看出, 虽然两个for循环遍历的次序不同, 但是dp[i][j]所需要的数据就是左上角, 根本不影响dp[i][j]公式的推导!
     # 其实背包问题里, 两个for循环的先后循序是非常有讲究的, 理解遍历顺序其实比理解推导公式难多了。
+# 0/1 Knapsack
+# You are a thief planning to rob a store. However, you can only carry a knapsack with a 
+# maximum capacity of cap units. Each item (i) in the store has a weight (weights[i]) and a value (values[i]).
+# Find the maximum total value of items you can carry in your knapsack.
+# Example:
+# Input: cap = 7, weights = [5, 3, 4, 1], values = [70, 50, 40, 10]
+# Output: 90
+# Explanation: The most valuable combination of items that can fit in the knapsack together are items 1 and 2 . These items have a combined value of 50 + 40 = 90 and a total weight of 3 + 4 = 7 , which fits within the knapsack's capacity.
 def knapsack(cap: int, weights: List[int], values: List[int]) -> int:
     n = len(values)
     # Base case: Set the first column and last row to 0 by
@@ -1104,7 +1115,7 @@ test_1_wei_bag_problem()
 #     print(result)
 
 
-#10 416. 分割等和子集
+#10 (Medium) 416.分割等和子集
     # 给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集, 使得两个子集的元素和相等。
     # 注意: 每个数组中的元素不会超过 100 数组的大小不会超过 200
     # 示例 1: 输入: [1, 5, 11, 5] 输出: true 解释: 数组可以分割成 [1, 5, 5] 和 [11].
@@ -1209,7 +1220,7 @@ class Solution:
 #         return dp[target_sum]
 
 
-#11 1049.最后一块石头的重量II
+#11 (Medium) 1049.最后一块石头的重量II
     # 有一堆石头,每块石头的重量都是正整数。
     # 每一回合,从中选出任意两块石头,然后将它们一起粉碎。假设石头的重量分别为 x 和 y,且 x <= y。那么粉碎的可能结果如下:
     # 如果 x == y,那么两块石头都会被完全粉碎；
@@ -1298,7 +1309,7 @@ class Solution:
 #         return 0
 
 
-#12 494.目标和
+#12 (Medium) 494.目标和
     # 给定一个非负整数数组,a1, a2, ..., an, 和一个目标数,S。现在你有两个符号 + 和 -。对于数组中的任意一个整数,你都可以从 + 或 -中选择一个符号添加在前面。
     # 返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
     # 示例:
@@ -1382,7 +1393,7 @@ class Solution:
         return dp[target_sum]  # 返回达到目标和的方案数
 
 
-#13 474.一和零
+#13 (Medium) 474.一和零
     # 给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
     # 请你找出并返回 strs 的最大子集的大小,该子集中 最多 有 m 个 0 和 n 个 1 。
     # 示例 1:
@@ -1499,7 +1510,7 @@ if __name__ == "__main__":
     print(result)
 
 
-#15 518.零钱兑换II
+#15 (Medium) 518.零钱兑换II
     # 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。
     # 示例 1:
     # 输入: amount = 5, coins = [1, 2, 5]
@@ -1553,7 +1564,7 @@ class Solution:
         return dp[amount]
 
 
-#16 377. 组合总和 Ⅳ
+#16 (Medium) 377.组合总和 Ⅳ
     # 给定一个由正整数组成且不存在重复数字的数组，找出和为给定目标正整数的组合的个数。
     # 示例:
     # nums = [1, 2, 3]
@@ -1589,7 +1600,7 @@ class Solution:
         return dp[-1]  # 返回背包容量为target时的组合总数
 
 
-#17 70. 爬楼梯(进阶版)
+#17 (Easy) 70.爬楼梯(进阶版)
 # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
 # 每次你可以爬至多m (1 <= m < n)个台阶。你有多少种不同的方法可以爬到楼顶呢？
 # 注意:给定 n 是一个正整数。
@@ -1620,7 +1631,7 @@ public:
 };
 
 
-#18 322. 零钱兑换
+#18 (Medium) 322.零钱兑换
     # 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
     # 你可以认为每种硬币的数量是无限的。
     # 示例 1：
@@ -1699,7 +1710,7 @@ class Solution:
 #         return dp[amount] if dp[amount] != float('inf') else -1
 
 
-#19 279.完全平方数
+#19 (Medium) 279.完全平方数
     # 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
     # 给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
     # 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
@@ -1758,7 +1769,7 @@ class Solution:
 #         return dp[n]
 
 
-#20 ??? 139.单词拆分
+#20 ??? (Medium) 139.单词拆分
     # 给定一个非空字符串 s 和一个包含非空单词的列表 wordDict，判定 s 是否可以被空格拆分为一个或多个在字典中出现的单词。
     # 说明：
     # 拆分时可以重复使用字典中的单词。
@@ -1840,7 +1851,7 @@ class Solution:
 动态规划:继续打家劫舍!
 动态规划:还要打家劫舍!
 """
-#X21 198.打家劫舍
+#X21 (Medium) 198.打家劫舍
     # 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
     # 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
     # 示例 1：
@@ -1905,9 +1916,49 @@ class Solution:
             curr_max = max(prev_max + num, curr_max)  # 更新当前房屋的最大金额
             prev_max = temp  # 更新上一个房屋的最大金额
         return curr_max  # 返回最后一个房屋中可抢劫的最大金额
+    
+# Neighborhood Burglary
+    # You plan to rob houses in a street where each house stores a certain amount of money. 
+    # The neighborhood has a security system that sets off an alarm when two adjacent houses are robbed. 
+    # Return the maximum amount of cash that can be stolen without triggering the alarms.
+def neighborhood_burglary(houses: List[int]) -> int:
+    # Handle the cases when the array is less than the size of 2 to 
+    # avoid out-of-bounds errors when assigning the base case values.
+    if not houses:
+        return 0
+    if len(houses) == 1:
+        return houses[0]
+    dp = [0] * len(houses)
+    # Base case: when there's only one house, rob that house.
+    dp[0] = houses[0]
+    # Base case: when there are two houses, rob the one with the most 
+    # money.
+    dp[1] = max(houses[0], houses[1])
+    # Fill in the rest of the DP array.
+    for i in range(2, len(houses)):
+        # 'dp[i]' = max(profit if we skip house 'i', profit if we rob 
+        # house 'i').
+        dp[i] = max(dp[i - 1], houses[i] + dp[i - 2])
+    return dp[len(houses) - 1]
 
 
-#22 213.打家劫舍II
+def neighborhood_burglary_optimized(houses: List[int]) -> int:
+    if not houses:
+        return 0
+    if len(houses) == 1:
+        return houses[0]
+    # Initialize the variables with the base cases.
+    prev_max_profit = max(houses[0], houses[1])
+    prev_prev_max_profit = houses[0]
+    for i in range(2, len(houses)):
+        curr_max_profit = max(prev_max_profit, houses[i] + prev_prev_max_profit)
+        # Update the values for the next iteration.
+        prev_prev_max_profit = prev_max_profit
+        prev_max_profit = curr_max_profit
+    return prev_max_profit
+
+
+#22 (Medium) 213.打家劫舍II
     # 你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
     # 给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，能够偷窃到的最高金额。
     # 示例 1：
@@ -2002,7 +2053,7 @@ class Solution:
 #         return max(result1, result2)
 
 
-#23 337.打家劫舍 III
+#23 (Medium) 337.打家劫舍 III
     # 在上次打劫完一条街道之后和一圈房屋后，小偷又发现了一个新的可行窃的地区。
     # 这个地区只有一个入口，我们称之为“根”。 除了“根”之外，每栋房子有且只有一个“父“房子与之相连。
     # 一番侦察之后，聪明的小偷意识到“这个地方的所有房屋的排列类似于一棵二叉树”。 
@@ -2090,7 +2141,7 @@ class Solution:
 动态规划:买卖股票的最佳时机含手续费
 动态规划:股票系列总结篇
 """
-#24 121. 买卖股票的最佳时机
+#24 (Easy) 121. 买卖股票的最佳时机
     # 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
     # 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
     # 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
@@ -2159,7 +2210,7 @@ class Solution:
 #         return dp1
 
 
-#25 122.买卖股票的最佳时机II
+#25 (Medium) 122.买卖股票的最佳时机II
     # 给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。
     # 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
     # 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
@@ -2212,7 +2263,7 @@ class Solution:
         return dp[(length-1) % 2][1]
 
 
-#26 123.买卖股票的最佳时机III
+#26 (Hard) 123.买卖股票的最佳时机III
     # 给定一个数组，它的第 i 个元素是一支给定的股票在第 i 天的价格。
     # 设计一个算法来计算你所能获取的最大利润。你最多可以完成 两笔 交易。
     # 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
@@ -2280,7 +2331,7 @@ class Solution:
 #         return dp[4]
 
 
-#27 188.买卖股票的最佳时机IV
+#27 (Hard) 188.买卖股票的最佳时机IV
     # 给定一个整数数组 prices ，它的第 i 个元素 prices[i] 是一支给定的股票在第 i 天的价格。
     # 设计一个算法来计算你所能获取的最大利润。你最多可以完成 k 笔交易。
     # 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
@@ -2339,7 +2390,7 @@ class Solution:
         return dp[2*k]
 
 
-#28 ??? 309.最佳买卖股票时机含冷冻期
+#28 ??? (Medium) 309.最佳买卖股票时机含冷冻期
     # 给定一个整数数组，其中第 i 个元素代表了第 i 天的股票价格 。
     # 设计一个算法计算出最大利润。在满足以下约束条件下，你可以尽可能地完成更多的交易（多次买卖一支股票）:
     # 你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
@@ -2425,7 +2476,7 @@ class Solution:
 #         return max(dp[-1][1], dp[-1][2])
 
 
-#29 714.买卖股票的最佳时机含手续费
+#29 (Medium) 714.买卖股票的最佳时机含手续费
     # 给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；非负整数 fee 代表了交易股票的手续费用。
     # 你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
     # 返回获得利润的最大值。
@@ -2477,7 +2528,7 @@ class Solution:
 动态规划:回文子串
 动态规划:最长回文子序列
 """
-#30 300.最长递增子序列 (不连续)
+#30 (Medium) 300.最长递增子序列 (不连续)
     # 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
     # 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
     # 示例 1：
@@ -2534,7 +2585,7 @@ class Solution:
 #         return len(tails)  # 返回递增子序列的长度
 
 
-#31 674. 最长连续递增序列 (连续)
+#31 (Easy) 674.最长连续递增序列 (连续)
     # 给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
     # 连续递增的子序列 可以由两个下标 l 和 r（l < r）确定，如果对于每个 l <= i < r，都有 nums[i] < nums[i + 1] ，那么子序列 [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] 就是连续递增子序列。
     # 示例 1：
@@ -2596,7 +2647,7 @@ class Solution:
 #         return result
 
 
-#X32 *** 718. 最长重复子数组 (连续)
+#X32 *** (Medium) 718.最长重复子数组 (连续)
 # 两个整数数组
     # 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组sub array的长度。
     # 示例：
@@ -2716,7 +2767,7 @@ class Solution:
 #         return result
 
 
-#X33 1143.最长公共子序列 (不连续)
+#X33 (Medium) 1143.最长公共子序列 (不连续)
 # 两个字符串
     # 给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
     # 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）
@@ -2787,6 +2838,13 @@ class Solution:
         
         return dp[n]  # 返回最后一个位置的最长公共子序列长度作为结果
 
+# Longest Common Subsequence
+    # Given two strings, find the length of their longest common subsequence (LCS). 
+    # A subsequence is a sequence of characters that can be derived from a string by 
+    # deleting zero or more elements, without changing the order of the remaining elements.
+    # Example:
+    # Input: s1 = 'acabac', s2 = 'aebab'
+    # Output: 3
 def longest_common_subsequence(s1: str, s2: str) -> int:
     # Base case: Set the last row and last column to 0 by
     # initializing the entire DP table with 0s.
@@ -2832,7 +2890,8 @@ def longest_common_subsequence_optimized(s1: str, s2: str) -> int:
         prev_row = curr_row
     return prev_row[0]
 
-#34 1035.不相交的线 (不连续)
+
+#34 (Medium) 1035.不相交的线 (不连续)
     # 我们在两条独立的水平线上按给定的顺序写下 A 和 B 中的整数。
     # 现在，我们可以绘制一些连接两个数字 A[i] 和 B[j] 的直线，只要 A[i] == B[j]，且我们绘制的直线不与任何其他连线（非水平线）相交。
     # 以这种方法绘制线条，并返回我们可以绘制的最大连线数。
@@ -2849,7 +2908,7 @@ class Solution:
         return dp[-1][-1]
 
 
-#35 53. 最大子序和 (连续)
+#35 (Medium) 53.最大子序和 (连续)
     # 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
     # 示例:
     # 输入: [-2,1,-3,4,-1,2,1,-5,4]
@@ -2875,7 +2934,7 @@ class Solution:
         return result
 
 
-#36 392.判断子序列
+#36 (Easy) 392.判断子序列
     # 给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
     # 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
     # 示例 1：
@@ -2903,7 +2962,7 @@ class Solution:
         return False
 
 
-#37 *** 115.不同的子序列
+#37 *** (Hard) 115.不同的子序列
     # 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
     # 字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
     # 题目数据保证答案符合 32 位带符号整数范围。
@@ -2986,7 +3045,7 @@ class SolutionDP2:
         return dp[-1]
 
 
-#38 583. 两个字符串的删除操作
+#38 (Medium) 583.两个字符串的删除操作
     # 给定两个单词 word1 和 word2，找到使得 word1 和 word2 相同所需的最小步数，每步可以删除任意一个字符串中的一个字符。
     # 示例：
     # 输入: "sea", "eat"
@@ -3054,7 +3113,7 @@ class Solution:
         return len(text1)+len(text2)-dp[len(text1)][len(text2)]*2
 
 
-#39 72. 编辑距离
+#39 (Medium) 72.编辑距离
     # 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
     # 你可以对一个单词进行如下三种操作：
     # 插入一个字符
@@ -3112,7 +3171,7 @@ class Solution:
         return dp[-1][-1]
 
 
-#X40 647. 回文子串 (连续)
+#X40 (Medium) 647.回文子串 (连续)
 # 一个字符串
     # 给定一个字符串，你的任务是计算这个字符串中有多少个回文子串。
     # 具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
@@ -3192,8 +3251,70 @@ class Solution:
             res += 1
         return res
 
+# Longest Palindrome in a String
+    # Return the longest palindromic substring within a given string.
+    # Example:
+    # Input: s = 'abccbaba'
+    # Output: 'abccba'
+def longest_palindrome_in_a_string(s: str) -> str:
+    n = len(s)
+    if n == 0:
+        return ""
+    dp = [[False] * n for _ in range(n)]
+    max_len = 1
+    start_index = 0
+    # Base case: a single character is always a palindrome.
+    for i in range(n):
+        dp[i][i] = True
+    # Base case: a substring of length two is a palindrome if both  
+    # characters are the same.
+    for i in range(n - 1):
+        if s[i] == s[i + 1]:
+            dp[i][i + 1] = True
+            max_len = 2
+            start_index = i
+    # Find palindromic substrings of length 3 or greater.
+    for substring_len in range(3, n + 1):
+        # Iterate through each substring of length 'substring_len'.
+        for i in range(n - substring_len + 1):
+            j = i + substring_len - 1
+            # If the first and last characters are the same, and the 
+            # inner substring is a palindrome, then the current 
+            # substring is a palindrome.
+            if s[i] == s[j] and dp[i + 1][j - 1]:
+                dp[i][j] = True
+                max_len = substring_len
+                start_index = i
+    return s[start_index : start_index + max_len]
 
-#X41 516.最长回文子序列 (不连续)
+def longest_palindrome_in_a_string_expanding(s: str) -> str:
+    n = len(s)
+    start, max_len = 0, 0
+    for center in range(n):
+        # Check for odd-length palindromes.
+        odd_start, odd_length = expand_palindrome(center, center, s)
+        if odd_length > max_len:
+            start = odd_start
+            max_len = odd_length
+        # Check for even-length palindromes.
+        if center < n - 1 and s[center] == s[center + 1]:
+            even_start, even_length = expand_palindrome(center, center + 1, s)
+            if even_length > max_len:
+                start = even_start
+                max_len = even_length
+    return s[start : start + max_len]
+
+# Expands outward from the center of a base case to identify the start 
+# index and length of the longest palindrome that extends from this 
+# base case.
+def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
+    while left > 0 and right < len(s) - 1 and s[left - 1] == s[right + 1]:
+        left -= 1
+        right += 1
+    return left, right - left + 1
+
+
+#X41 (Medium) 516.最长回文子序列 (不连续)
 # 一个字符串
     # 给定一个字符串 s ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 s 的最大长度为 1000 。
     # 示例 1: 输入: "bbbab" 输出: 4 一个可能的最长回文子序列为 "bbbb"。
@@ -3285,6 +3406,7 @@ def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
         right += 1
     return left, right - left + 1
 
+
 # ByteByteGo 101
 #X42 Minimum Coin Combination
     # You are given an array of coin values and a target amount of money.
@@ -3312,6 +3434,7 @@ def min_coin_combination_bottom_up(coins: List[int], target: int) -> int:
             if coin <= t:
                 dp[t] = min(dp[t], 1 + dp[t - coin])
     return dp[target] if dp[target] != float('inf') else -1
+
 
 #X43 Matrix Pathways
     # You are positioned at the top-left corner of a m × n matrix, and can only move 
@@ -3348,6 +3471,7 @@ def matrix_pathways_optimized(m: int, n: int) -> int:
     # The last element in 'prev_row' stores the result for the 
     # bottom-right cell.
     return prev_row[n - 1]
+
 
 #X44 Maximum Subarray Sum
     # Given an array of integers, return the sum of the subarray with the largest sum.
@@ -3386,6 +3510,7 @@ def maximum_subarray_sum_dp_optimized(nums: List[int]) -> int:
         current_sum = max(nums[i], current_sum + nums[i])
         max_sum = max(max_sum, current_sum)
     return max_sum
+
 
 #X45 Largest Square in a Matrix
     # Determine the area of the largest square of 1's in a binary matrix.
@@ -3443,3 +3568,38 @@ def largest_square_in_a_matrix_optimized(matrix: List[List[int]]) -> int:
         # Update 'prev_row' with 'curr_row' values for the next iteration.
         prev_row, curr_row = curr_row, [0] * n
     return max_len ** 2
+
+
+#45 (Medium) 1062. Longest Repeating Substring
+    # Given a string s, return the length of the longest repeating substrings. If no repeating substring exists, return 0.
+    # Example 1:
+    # Input: s = "abcd"
+    # Output: 0
+    # Explanation: There is no repeating substring.
+    # Example 2:
+    # Input: s = "abbaba"
+    # Output: 2
+    # Explanation: The longest repeating substrings are "ab" and "ba", each of which occurs twice.
+    # Example 3:
+    # Input: s = "aabcaabdaab"
+    # Output: 3
+    # Explanation: The longest repeating substring is "aab", which occurs 3 times.
+# Approach 5: Dynamic Programming
+# Time complexity: O(n^2)
+# Space complexity: O(n^2)
+class Solution:
+    def longestRepeatingSubstring(self, s: str) -> int:
+        length = len(s)
+        dp = [[0] * (length + 1) for _ in range(length + 1)]
+        max_length = 0
+
+        # Populate the DP array
+        for i in range(1, length + 1):
+            for j in range(i + 1, length + 1):
+                # Check if the characters match and
+                # update the DP value
+                if s[i - 1] == s[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                    # Update max_length
+                    max_length = max(max_length, dp[i][j])
+        return max_length

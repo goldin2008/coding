@@ -1,4 +1,107 @@
 """
+Binary Tree
+
+> https://www.programiz.com/dsa/complete-binary-tree
+> https://www.programiz.com/dsa/heap-data-structure
+"""
+# Checking if a binary tree is a complete binary tree in Python
+class Node:
+    def __init__(self, item):
+        self.item = item
+        self.left = None
+        self.right = None
+
+
+# Count the number of nodes
+def count_nodes(root):
+    if root is None:
+        return 0
+    return (1 + count_nodes(root.left) + count_nodes(root.right))
+
+
+# Check if the tree is complete binary tree
+def is_complete(root, index, numberNodes):
+    # Check if the tree is empty
+    if root is None:
+        return True
+
+    if index >= numberNodes:
+        return False
+
+    return (is_complete(root.left, 2 * index + 1, numberNodes)
+            and is_complete(root.right, 2 * index + 2, numberNodes))
+
+
+root = Node(1)
+root.left = Node(2)
+root.right = Node(3)
+root.left.left = Node(4)
+root.left.right = Node(5)
+root.right.left = Node(6)
+
+node_count = count_nodes(root)
+index = 0
+
+if is_complete(root, index, node_count):
+    print("The tree is a complete binary tree")
+else:
+    print("The tree is not a complete binary tree")
+
+
+# Max-Heap data structure in Python
+def heapify(arr, n, i):
+    # Find largest among root, left child and right child
+    largest = i
+    l = 2 * i + 1
+    r = 2 * i + 2 
+    
+    if l < n and arr[i] < arr[l]:
+        largest = l
+    
+    if r < n and arr[largest] < arr[r]:
+        largest = r
+    
+    if largest != i:
+        arr[i],arr[largest] = arr[largest],arr[i]
+        heapify(arr, n, largest)
+
+def insert(array, newNum):
+    size = len(array)
+    if size == 0:
+        array.append(newNum)
+    else:
+        array.append(newNum)
+        # Build heap (rearrange array)
+        for i in range((size//2)-1, -1, -1):
+            heapify(array, size, i)
+
+def deleteNode(array, num):
+    size = len(array)
+    i = 0
+    for i in range(0, size):
+        if num == array[i]:
+            break
+        
+    array[i], array[size-1] = array[size-1], array[i]
+    array.remove(num)
+    # Build heap (rearrange array)
+    for i in range((len(array)//2)-1, -1, -1):
+        heapify(array, len(array), i)
+    
+arr = []
+
+insert(arr, 3)
+insert(arr, 4)
+insert(arr, 9)
+insert(arr, 5)
+insert(arr, 2)
+
+print ("Max-Heap array: " + str(arr))
+
+deleteNode(arr, 4)
+print("After deleting an element: " + str(arr))
+
+"""
 ===================================================================================================
 NOTE:
 递归(深度和广度)只需要function call function, 用一个result储存结果;
@@ -107,7 +210,7 @@ void searchBST(TreeNode* cur) {
 """
 DFS 深度优先(前中后序遍历) 递归
 """
-#1 前序遍历-递归-LC144_二叉树的前序遍历
+#1 (Easy) 前序遍历-递归-LC144_二叉树的前序遍历
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -139,7 +242,7 @@ class Solution:
         return  [root.val] + left +  right
 
 
-#2 中序遍历-递归-LC94_二叉树的中序遍历
+#2 (Easy) 中序遍历-递归-LC94_二叉树的中序遍历
 # class Solution:
 #     def inorderTraversal(self, root: TreeNode) -> List[int]:
 #         result = []
@@ -163,7 +266,7 @@ class Solution:
         return left + [root.val] + right
 
 
-#3 后序遍历-递归-LC145_二叉树的后序遍历
+#3 (Easy) 后序遍历-递归-LC145_二叉树的后序遍历
 # class Solution:
 #     def postorderTraversal(self, root: TreeNode) -> List[int]:
 #         result = []
@@ -264,7 +367,7 @@ class Solution:
 """
 *** BFS 广度优先(层序遍历) 递归
 """
-#4 102.二叉树的层序遍历
+#4 (Medium) 102.二叉树的层序遍历
     # 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
@@ -341,7 +444,7 @@ class Solution:
 """
 二叉搜索树中的搜索
 """
-#5 700.二叉搜索树中的搜索
+#5 (Easy) 700.二叉搜索树中的搜索
     # 给定二叉搜索树（BST）的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在，则返回 NULL。
 # 递归法 (方法一)
 class Solution:
@@ -367,7 +470,7 @@ class Solution:
         return None
 
 
-#6 107.二叉树的层次遍历 II
+#6 (Medium) 107.二叉树的层次遍历 II
     # 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
 class Solution:
     """二叉树层序遍历II迭代解法"""
@@ -396,7 +499,7 @@ class Solution:
         return result[::-1]
 
 
-#7 199.二叉树的右视图
+#7 (Medium) 199.二叉树的右视图
     # 给定一棵二叉树，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
 # Definition for a binary tree node.
 # class TreeNode:
@@ -429,7 +532,7 @@ class Solution:
         return right_view
 
 
-#8 637.二叉树的层平均值
+#8 (Easy) 637.二叉树的层平均值
     # 给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
 class Solution:
     """二叉树层平均值迭代解法"""
@@ -464,7 +567,7 @@ class Solution:
         return averages
 
 
-#9 429.N叉树的层序遍历
+#9 (Medium) 429.N叉树的层序遍历
     # 给定一个 N 叉树，返回其节点值的层序遍历。 (即从左到右，逐层遍历)。
     # 例如，给定一个 3叉树 :
     # 429. N叉树的层序遍历
@@ -501,7 +604,7 @@ class Solution:
         return result
 
 
-#10 515.在每个树行中找最大值
+#10 (Medium) 515.在每个树行中找最大值
     # 您需要在二叉树的每一行中找到最大的值。
 # Definition for a binary tree node.
 # class TreeNode:
@@ -536,7 +639,7 @@ class Solution:
         return result
 
 
-#11 116.填充每个节点的下一个右侧节点指针
+#11 (Medium) 116.填充每个节点的下一个右侧节点指针
     # 给定一个完美二叉树，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
     # struct Node {
     #   int val;
@@ -583,7 +686,7 @@ class Solution:
         return root
 
 
-#12 117.填充每个节点的下一个右侧节点指针II
+#12 (Medium) 117.填充每个节点的下一个右侧节点指针II
     # 这道题目说是二叉树，但116题目说是完整二叉树，其实没有任何差别，一样的代码一样的逻辑一样的味道
 # 层序遍历解法
 """
@@ -623,7 +726,7 @@ class Solution:
         return root
 
 
-#13 104.二叉树的最大深度
+#13 (Easy) 104.二叉树的最大深度
     # 给定一个二叉树，找出其最大深度。
     # 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
     # 说明: 叶子节点是指没有子节点的节点。
@@ -656,7 +759,7 @@ class Solution:
         return depth
 
 
-#14 111.二叉树的最小深度
+#14 (Easy) 111.二叉树的最小深度
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -687,7 +790,7 @@ class Solution:
         return depth
 
 
-#15 226.翻转二叉树
+#15 (Easy) 226.翻转二叉树
     # 翻转一棵二叉树。
 ## *** 递归法：前序遍历
 class Solution:
@@ -817,7 +920,7 @@ class Solution:
 递归:顺序无所谓,递归函数返回值为bool类型是为了搜索一条边,没有返回值是搜索整棵树。
 迭代：栈里元素不仅要记录节点指针，还要记录从头结点到该节点的路径数值总和
 """
-#16 101. 对称二叉树
+#16 (Easy) 101. 对称二叉树
     # 给定一个二叉树, 检查它是否是镜像对称的。
 # 递归法
 class Solution:
@@ -913,7 +1016,7 @@ class Solution:
 #         return True
 
 
-#17 104.二叉树的最大深度
+#17 (Easy) 104.二叉树的最大深度
     # 给定一个二叉树, 找出其最大深度。
     # 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
     # 说明: 叶子节点是指没有子节点的节点。
@@ -959,7 +1062,7 @@ class Solution:
         return depth
 
 
-#18 559.n叉树的最大深度
+#18 (Easy) 559.n叉树的最大深度
 # 递归法, 后序遍历
 class solution:
     def maxdepth(self, root: treenode) -> int:
@@ -1025,7 +1128,7 @@ class Solution:
 #         return max_depth
 
 
-#19 111.二叉树的最小深度
+#19 (Easy) 111.二叉树的最小深度
     # 给定一个二叉树, 找出其最小深度。
     # 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
 # 需要注意的是，只有当左右孩子都为空的时候，才说明遍历到最低点了。如果其中一个孩子不为空则不是最低点
@@ -1118,7 +1221,7 @@ class Solution:
 #         return min_depth + 1
 
 
-#20 222.完全二叉树的节点个数
+#20 (Easy) 222.完全二叉树的节点个数
     # 给出一个完全二叉树，求出该树的节点个数。
     # 示例 1：
     # 输入：root = [1,2,3,4,5,6]
@@ -1208,7 +1311,7 @@ class Solution:
 #         return 1+self.countNodes(root.left)+self.countNodes(root.right) 
 
 
-#21 110.平衡二叉树
+#21 (Easy) 110.平衡二叉树
     # 给定一个二叉树, 判断它是否是高度平衡的二叉树。
     # 本题中，一棵高度平衡二叉树定义为：一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过1。
     # 示例 1:
@@ -1322,7 +1425,7 @@ class Solution:
 #         return True
 
 
-#22 257. 二叉树的所有路径
+#22 (Easy) 257.二叉树的所有路径
     # 给定一个二叉树, 返回所有从根节点到叶子节点的路径。
     # 说明: 叶子节点是指没有子节点的节点。
 # Definition for a binary tree node.
@@ -1418,7 +1521,7 @@ class Solution:
 #         return result
 
 
-#23 ??? 404.左叶子之和
+#23 ??? (Easy) 404.左叶子之和
     # 计算给定二叉树的所有左叶子之和。
 # 因为不能判断本节点是不是左叶子节点。
 # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
@@ -1465,7 +1568,7 @@ class Solution:
         return result
 
 
-#24 513.找树左下角的值
+#24 (Medium) 513.找树左下角的值
     # 给定一个二叉树, 在树的最后一行找到最左边的值。
 # （版本一）递归法 + 回溯
 # class Solution:
@@ -1531,7 +1634,7 @@ class Solution:
         return result
 
 
-#25 112. 路径总和
+#25 (Easy) 112.路径总和
     # 给定一个二叉树和一个目标和, 判断该树中是否存在根节点到叶子节点的路径, 这条路径上所有节点值相加等于目标和。
     # 说明: 叶子节点是指没有子节点的节点。
     # 示例: 给定如下二叉树，以及目标和 sum = 22，
@@ -1594,7 +1697,7 @@ class Solution:
         return False
 
 
-#26 0113.路径总和-ii
+#26 (Medium) 113.路径总和-ii
     # 给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
     # 说明: 叶子节点是指没有子节点的节点。
     # 示例: 给定如下二叉树，以及目标和 sum = 22，
@@ -1689,7 +1792,7 @@ class Solution:
 递归：前序，同时操作两个树的节点，注意合并的规则
 迭代：使用队列，类似层序遍历
 """
-#27 105.从前序与中序遍历序列构造二叉树
+#27 (Medium) 105.从前序与中序遍历序列构造二叉树
     # 根据一棵树的前序遍历与中序遍历构造二叉树。
     # 注意: 你可以假设树中没有重复的元素。
     # 例如，给出
@@ -1725,7 +1828,7 @@ class Solution:
         return root
 
 
-#28 106.从中序与后序遍历序列构造二叉树
+#28 (Medium) 106.从中序与后序遍历序列构造二叉树
     # 根据一棵树的中序遍历与后序遍历构造二叉树。
     # 注意: 你可以假设树中没有重复的元素。
     # 例如，给出
@@ -1762,7 +1865,7 @@ class Solution:
         return root
 
 
-#29 654.最大二叉树
+#29 (Medium) 654.最大二叉树
     # 给定一个不含重复元素的整数数组。一个以此数组构建的最大二叉树定义如下：
     # 二叉树的根是数组中的最大元素。
     # 左子树是通过数组中最大值左边部分构造出的最大二叉树。
@@ -1825,7 +1928,7 @@ class Solution:
         return node
 
 
-#30 617.合并二叉树
+#30 (Easy) 617.合并二叉树
     # 给定两个二叉树, 想象当你将它们中的一个覆盖到另一个上时, 两个二叉树的一些节点便会重叠。
     # 你需要将他们合并为一个新的二叉树。合并的规则是如果两个节点重叠，那么将他们的值相加作为节点合并后的新值，否则不为 NULL 的节点将直接作为新二叉树的节点。
     # 注意: 合并必须从两个树的根节点开始。
@@ -1937,7 +2040,7 @@ class Solution:
 递归：中序，双指针操作累加
 迭代：模拟中序，逻辑相同
 """
-# 700.二叉搜索树中的搜索
+# (Easy) 700.二叉搜索树中的搜索
     # 给定二叉搜索树(BST)的根节点和一个值。 你需要在BST中找到节点值等于给定值的节点。 返回以该节点为根的子树。 如果节点不存在, 则返回 NULL。
 # （方法一） 递归
 class Solution:
@@ -1963,7 +2066,7 @@ class Solution:
         return None
 
 
-#31 98.验证二叉搜索树
+#31 (Medium) 98.验证二叉搜索树
     # 给定一个二叉树, 判断其是否是一个有效的二叉搜索树。
     # 假设一个二叉搜索树具有如下特征：
     # 节点的左子树只包含小于当前节点的数。
@@ -2044,7 +2147,7 @@ class Solution:
         return left and right
 
 
-#32 530.二叉搜索树的最小绝对差
+#32 (Easy) 530.二叉搜索树的最小绝对差
     # 给你一棵所有节点为非负值的二叉搜索树, 请你计算树中任意两节点的差的绝对值的最小值。
     # 提示：树中至少有 2 个节点。
 # 同时要学会在递归遍历的过程中如何记录前后两个指针，这也是一个小技巧，学会了还是很受用的
@@ -2110,7 +2213,7 @@ class Solution:
         return result
 
 
-#33 501.二叉搜索树中的众数
+#33 (Easy) 501.二叉搜索树中的众数
     # 给定一个有相同值的二叉搜索树(BST), 找出 BST 中的所有众数(出现频率最高的元素)。
     # 假定 BST 有如下定义：
     # 结点左子树中所含结点的值小于等于当前结点的值
@@ -2230,7 +2333,7 @@ class Solution:
 递归：顺序无所谓，如果节点的数值在目标区间就是最近公共祖先
 迭代：按序遍历
 """
-#34 236. 二叉树的最近公共祖先
+#34 (Medium) 236.二叉树的最近公共祖先
     # 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
     # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
     # 例如，给定如下二叉树:  root = [3,5,1,6,2,0,8,null,null,7,4]
@@ -2299,7 +2402,7 @@ class Solution:
         return left
 
 
-#35 235. 二叉搜索树的最近公共祖先
+#35 (Medium) 235.二叉搜索树的最近公共祖先
     # 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
     # 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q, 最近公共祖先表示为一个结点 x, 满足 x 是 p、q 的祖先且 x 的深度尽可能大(一个节点也可以是它自己的祖先)。”
     # 例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
@@ -2371,7 +2474,7 @@ class Solution:
 递归：前序，数组中间节点分割
 迭代：较复杂，通过三个队列来模拟
 """
-#36 701.二叉搜索树中的插入操作
+#36 (Medium) 701.二叉搜索树中的插入操作
     # 给定二叉搜索树(BST)的根节点和要插入树中的值, 将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据保证, 新值和原始二叉搜索树中的任意节点值都不同。
     # 注意，可能存在多种有效的插入方式，只要树在插入后仍保持为二叉搜索树即可。 你可以返回任意有效的结果。
 # Definition for a binary tree node.
@@ -2479,7 +2582,7 @@ class Solution:
         return root
 
 
-#37 450.删除二叉搜索树中的节点
+#37 (Medium) 450.删除二叉搜索树中的节点
     # 给定一个二叉搜索树的根节点 root 和一个值 key, 删除二叉搜索树中的 key 对应的节点, 并保证二叉搜索树的性质不变。返回二叉搜索树(有可能被更新)的根节点的引用。
     # 一般来说，删除节点可分为两个步骤：
     # 首先找到需要删除的节点； 如果找到了，删除它。 说明： 要求算法时间复杂度为 $O(h)$，h 为树的高度。
@@ -2592,7 +2695,7 @@ class Solution:
 #         return root
 
 
-#38 669. 修剪二叉搜索树
+#38 (Medium) 669.修剪二叉搜索树
     # 给定一个二叉搜索树, 同时给定最小边界L 和最大边界 R。通过修剪二叉搜索树, 使得所有节点的值在[L, R]中 (R>=L) 。你可能需要改变树的根节点, 所以结果应当返回修剪好的二叉搜索树的新的根节点。
 # *** 递归法（版本一）
 class Solution:
@@ -2640,7 +2743,7 @@ class Solution:
 #         return root
 
 
-#39 108.将有序数组转换为二叉搜索树
+#39 (Easy) 108.将有序数组转换为二叉搜索树
     # 将一个按照升序排列的有序数组, 转换为一棵高度平衡二叉搜索树。
     # 本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
 # Definition for a binary tree node.
@@ -2728,7 +2831,7 @@ class Solution:
 #         return root
 
 
-#40 538.把二叉搜索树转换为累加树
+#40 (Medium) 538.把二叉搜索树转换为累加树
     # 给出二叉 搜索 树的根节点, 该树的节点值各不相同, 请你将其转换为累加树(Greater Sum Tree), 使每个节点 node 的新值等于原树中大于或等于 node.val 的值之和。
     # 提醒一下, 二叉搜索树满足下列约束条件：
     # 节点的左子树仅包含键 小于 节点键的节点。 节点的右子树仅包含键 大于 节点键的节点。 左右子树也必须是二叉搜索树。
@@ -2851,3 +2954,705 @@ class Solution:
                 pre = cur.val
                 cur =cur.left
         return root
+
+
+#X41 (Easy) Invert Binary Tree
+    # Invert a binary tree and return its root. When a binary tree is inverted, it becomes the mirror image of itself.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def invert_binary_tree_iterative(root: TreeNode) -> TreeNode:
+    if not root:
+        return None
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        # Swap the left and right subtrees of the current node.
+        node.left, node.right = node.right, node.left
+        # Push the left and right subtrees onto the stack.
+        if node.left:
+            stack.append(node.left)
+        if node.right:
+            stack.append(node.right)
+    return root
+
+def invert_binary_tree_recursive(root: TreeNode) -> TreeNode:
+    # Base case: If the node is null, there's nothing to invert.
+    if not root:
+        return None
+    # Swap the left and right subtrees of the current node.
+    root.left, root.right = root.right, root.left
+    # Recursively invert the left and right subtrees.
+    invert_binary_tree_recursive(root.left)
+    invert_binary_tree_recursive(root.right)
+    return root
+
+
+#X42 (Easy) Balanced Binary Tree Validation
+    # Determine if a binary tree is height-balanced, meaning no node's left 
+    # subtree and right subtree have a height difference greater than 1.
+def balanced_binary_tree_validation(root: TreeNode) -> bool:
+    return get_height_imbalance(root) != -1
+
+def get_height_imbalance(node: TreeNode) -> int:
+    # Base case: if the node is null, its height is 0.
+    if not node:
+        return 0
+    # Recursively get the height of the left and right subtrees. If
+    # either subtree is imbalanced, propagate -1 up the tree.
+    left_height = get_height_imbalance(node.left)
+    right_height = get_height_imbalance(node.right)
+    if left_height == -1 or right_height == -1:
+        return -1
+    # If the current node's subtree is imbalanced
+    # (height difference > 1), return -1.
+    if abs(left_height - right_height) > 1:
+        return -1
+    # Return the height of the current subtree.
+    return 1 + max(left_height, right_height)
+
+
+#X43 (Medium) Rightmost Nodes of a Binary Tree
+    # Return an array containing the values of the rightmost nodes at each level of a binary tree.
+from ds import TreeNode
+from typing import List
+from collections import deque
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def rightmost_nodes_of_a_binary_tree(root: TreeNode) -> List[int]:
+    if not root:
+        return []
+    res = []
+    queue = deque([root])
+    while queue:
+        level_size = len(queue)
+        # Add all the non-null child nodes of the current level to the 
+        # queue.
+        for i in range(level_size):
+            node = queue.popleft()
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+            # Record this level's last node to the result array.
+            if i == level_size - 1:
+                res.append(node.val)
+    return res
+
+
+#X44 (Medium) Widest Binary Tree Level
+    # Return the width of the widest level in a binary tree, where the width of a level 
+    # is defined as the distance between its leftmost and rightmost non-null nodes.
+from collections import deque
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def widest_binary_tree_level(root: TreeNode) -> int:
+    if not root:
+        return 0
+    max_width = 0
+    queue = deque([(root, 0)])  # Stores (node, index) pairs.
+    while queue:
+        level_size = len(queue)
+        # Set the 'leftmost_index' to the index of the first node in 
+        # this level. Start 'rightmost_index' at the same point as 
+        # 'leftmost_index' and update it as we traverse the level, 
+        # eventually positioning it at the last node.
+        leftmost_index = queue[0][1]
+        rightmost_index = leftmost_index
+        # Process all nodes at the current level.
+        for _ in range(level_size):
+            node, i = queue.popleft()
+            if node.left:
+                queue.append((node.left, 2*i + 1))
+            if node.right:
+                queue.append((node.right, 2*i + 2))
+            rightmost_index = i
+        max_width = max(max_width, rightmost_index - leftmost_index + 1)
+    return max_width
+
+
+#X45 (Medium) Binary Search Tree Validation
+    # Verify whether a binary tree is a valid binary search tree (BST). 
+    # A BST is a binary tree where each node meets the following criteria:
+    # A node's left subtree contains only nodes of lower values than the node's value.
+    # A node's right subtree contains only nodes of greater values than the node's value.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def binary_search_tree_validation(root: TreeNode) -> bool:
+    # Start validation at the root node. The root node can contain any 
+    # value, so set the initial lower and upper bounds to -infinity and 
+    # +infinity, respectively.
+    return is_within_bounds(root, float('-inf'), float('inf'))
+
+def is_within_bounds(node: TreeNode,
+                     lower_bound: int, upper_bound: int) -> bool:
+    # Base case: if the node is null, it satisfies the BST condition.
+    if not node:
+        return True
+    # If the current node's value is not within the valid bounds, this 
+    # tree is not a valid BST.
+    if not lower_bound < node.val < upper_bound:
+        return False
+    # If the left subtree isn't a BST, this tree isn't a BST.
+    if not is_within_bounds(node.left, lower_bound, node.val):
+        return False
+    # Otherwise, return true if the right subtree is also a BST.
+    return is_within_bounds(node.right, node.val, upper_bound)
+
+
+#X46 (Medium) Lowest Common Ancestor
+    # Return the lowest common ancestor (LCA) of two nodes, p and q, in a binary tree. 
+    # The LCA is defined as the lowest node that has both p and q as descendants. 
+    # A node can be considered an ancestor of itself.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    dfs(root, p, q)
+    return lca
+
+def dfs(node: TreeNode, p: TreeNode, q: TreeNode) -> bool:
+    global lca
+    # Base case: a null node is neither 'p' nor 'q'.
+    if not node:
+        return False
+    node_is_p_or_q = node == p or node == q
+    # Recursively determine if the left and right subtrees contain 'p' 
+    # or 'q'.
+    left_contains_p_or_q = dfs(node.left, p, q)
+    right_contains_p_or_q = dfs(node.right, p, q)
+    # If two of the above three variables are true, the current node is 
+    # the LCA.
+    if (node_is_p_or_q + left_contains_p_or_q + right_contains_p_or_q == 2):
+        lca = node
+    # Return true if the current subtree contains 'p' or 'q'.
+    return (node_is_p_or_q or left_contains_p_or_q or right_contains_p_or_q)
+
+
+#X47 (Medium) Build Binary Tree From Preorder and Inorder Traversals
+    # Construct a binary tree using arrays of values obtained after a preorder 
+    # traversal and an inorder traversal of the tree.
+from ds import TreeNode
+from typing import List
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+preorder_index = 0
+inorder_indexes_map = {}
+
+def build_binary_tree(preorder: List[int], inorder: List[int]) -> TreeNode:
+    global inorder_indexes_map
+    # Populate the hash map with the inorder values and their indexes.
+    for i, val in enumerate(inorder):
+        inorder_indexes_map[val] = i
+    # Build the tree and return its root node.
+    return build_subtree(0, len(inorder) - 1, preorder, inorder)
+
+def build_subtree(left: int, right: int, preorder: List[int], inorder: List[int]) -> TreeNode:
+    global preorder_index, inorder_indexes_map
+    # Base case: if no elements are in this range, return None.
+    if left > right:
+        return None
+    val = preorder[preorder_index]
+    # Set 'inorder_index' to the index of the same value pointed at by
+    # 'preorder_index'.
+    inorder_index = inorder_indexes_map[val]
+    node = TreeNode(val)
+    # Advance 'preorder_index' so it points to the value of the next
+    # node to be created.
+    preorder_index += 1
+    # Build the left and right subtrees and connect them to the current
+    # node.
+    node.left = build_subtree(
+        left, inorder_index - 1, preorder, inorder
+    )
+    node.right = build_subtree(
+        inorder_index + 1, right, preorder, inorder
+    )
+    return node
+
+
+#X48 (Hard) Maximum Sum of a Continuous Path in a Binary Tree
+    # Return the maximum sum of a continuous path in a binary tree. A path is defined by the following characteristics:
+    # Consists of a sequence of nodes that can begin and end at any node in the tree
+    # Each consecutive pair of nodes in the sequence is connected by an edge
+    # The path must be a single continuous sequence of nodes that doesn't split into multiple paths
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+max_sum = float('-inf')
+
+def max_path_sum(root: TreeNode) -> int:
+    global max_sum
+    max_path_sum_helper(root)
+    return max_sum
+
+def max_path_sum_helper(node: TreeNode) -> int:
+    global max_sum
+    # Base case: null nodes have no path sum.
+    if not node:
+        return 0
+    # Collect the maximum gain we can attain from the left and right 
+    # subtrees, setting them to 0 if they're negative.
+    left_sum = max(max_path_sum_helper(node.left), 0)
+    right_sum = max(max_path_sum_helper(node.right), 0)
+    # Update the overall maximum path sum if the current path sum is 
+    # larger.
+    max_sum = max(max_sum, node.val + left_sum + right_sum)
+    # Return the maximum sum of a single, continuous path with the 
+    # current node as an endpoint.
+    return node.val + max(left_sum, right_sum)
+
+
+#X49 (Medium) Binary Tree Symmetry
+    # Determine if a binary tree is vertically symmetric. That is, 
+    # the left subtree of the root node is a mirror of the right subtree.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def binary_tree_symmetry(root: TreeNode) -> bool:
+    if not root:
+        return True  
+    return compare_trees(root.left, root.right)
+
+
+def compare_trees(node1: TreeNode, node2: TreeNode) -> bool:
+    # Base case: if both nodes are null, they're symmetric.
+    if not node1 and not node2:
+        return True
+    # If one node is null and the other isn't, they aren't symmetric.
+    if not node1 or not node2:
+        return False
+    # If the values of the current nodes don't match, trees aren't symmetric.
+    if node1.val != node2.val:
+        return False
+    # Compare the 'node1's left subtree with 'node2's right subtree. If these 
+    # aren't symmetric, the whole tree is not symmetric.
+    if not compare_trees(node1.left, node2.right):
+        return False
+    # Compare the 'node1's right subtree with 'node2's left subtree. 
+    return compare_trees(node1.right, node2.left)
+
+
+#X50 (Medium) Binary Tree Columns
+    # Given the root of a binary tree, return a list of arrays where each array 
+    # represents a vertical column of the tree. Nodes in the same column should 
+    # be ordered from top to bottom. Nodes in the same row and column should be ordered from left to right.
+from collections import defaultdict, deque
+from ds import TreeNode
+from typing import List
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def binary_tree_columns(root: TreeNode) -> List[List[int]]:
+    if not root:
+        return []
+    column_map = defaultdict(list)
+    leftmost_column = rightmost_column = 0
+    queue = deque([(root, 0)])
+    while queue:
+        node, column = queue.popleft()
+        if node:
+            # Add the current node's value to its corresponding list in the hash 
+            # map.
+            column_map[column].append(node.val)
+            leftmost_column = min(leftmost_column, column)
+            rightmost_column = max(rightmost_column, column)
+            # Add the current node's children to the queue with their respective
+            # column ids.
+            queue.append((node.left, column - 1))
+            queue.append((node.right, column + 1))
+    # Construct the output list by collecting values from each column in the hash   
+    # map in the correct order.
+    return [column_map[i] for i in range(leftmost_column, rightmost_column + 1)]
+
+
+#X51 (Medium) Kth Smallest Number in a Binary Search Tree
+    # Given the root of a binary search tree (BST) and an integer k, find the kth smallest node value.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def kth_smallest_number_in_BST_iterative(root: TreeNode, k: int) -> int:
+    stack = []
+    node = root
+    while stack or node:
+        # Move to the leftmost node and add nodes to the stack as we go so they 
+        # can be processed in future iterations.
+        while node:
+            stack.append(node)
+            node = node.left
+        # Pop the top node from the stack to process it, and decrement 'k'.
+        node = stack.pop()
+        k -= 1
+        # If we have processed 'k' nodes, return the value of the 'k'th smallest 
+        # node.
+        if k == 0:
+            return node.val
+        # Move to the right subtree.
+        node = node.right
+
+def kth_smallest_number_in_BST_recursive(root: TreeNode, k: int) -> int:
+    sorted_list = inorder(root)
+    return sorted_list[k - 1]
+
+# Inorder traversal function to attain a sorted list of nodes from the BST.
+def inorder(node: TreeNode) -> List[int]:
+    if not node:
+        return []
+    return inorder(node.left) + [node.val] + inorder(node.right)
+
+
+#X52 (Medium) Serialize and Deserialize a Binary Tree
+    # Write a function to serialize a binary tree into a string, and another 
+    # function to deserialize that string back into the original binary tree structure.
+from ds import TreeNode
+from typing import List
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def serialize(root: TreeNode) -> str:
+    # Perform a preorder traversal to add node values to a list, then convert the
+    # list to a string.
+    serialized_list = []
+    preorder_serialize(root, serialized_list)
+    # Convert the list to a string and separate each value using a comma 
+    # delimiter.
+    return ','.join(serialized_list)
+
+# Helper function to perform serialization through preorder traversal.
+def preorder_serialize(node, serialized_list) -> None:
+    # Base case: mark null nodes as '#'.
+    if node is None:
+        serialized_list.append('#')
+        return
+    # Preorder traversal processes the current node first, then the left and right
+    # children.
+    serialized_list.append(str(node.val))
+    preorder_serialize(node.left, serialized_list)
+    preorder_serialize(node.right, serialized_list)
+
+def deserialize(data: str) -> TreeNode:
+    # Obtain the node values by splitting the string using the comma delimiter.
+    node_values = iter(data.split(','))
+    return build_tree(node_values)
+
+# Helper function to construct the tree using preorder traversal.
+def build_tree(values: List[str]) -> TreeNode:
+    val = next(values)
+    # Base case: '#' indicates a null node.
+    if val == '#':
+        return None
+    # Use preorder traversal processes the current node first, then the left and 
+    # right children.
+    node = TreeNode(int(val))
+    node.left = build_tree(values)
+    node.right = build_tree(values)
+    return node
+
+
+# Binary Search
+#X53 (Easy) Find the Insertion Index
+    # You are given a sorted array that contains unique values, along with an integer target.
+    # If the array contains the target value, return its index.
+    # Otherwise, return the insertion index. This is the index where the target would 
+    # be if it were inserted in order, maintaining the sorted sequence of the array.
+from typing import List
+
+def find_the_insertion_index(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums)
+    while left < right:
+        mid = (left + right) // 2
+        # If the midpoint value is greater than or equal to the target, 
+        # the lower bound is either at the midpoint, or to its left.
+        if nums[mid] >= target:
+            right = mid
+        # The midpoint value is less than the target, indicating the 
+        # lower bound is somewhere to the right.
+        else:
+            left = mid + 1
+    return left
+
+
+#X54 (Medium) First and Last Occurrences of a Number
+    # Given an array of integers sorted in non-decreasing order, return 
+    # the first and last indexes of a target number. If the target is not found, return [-1, -1] .
+    # Example 1:
+    # Input: nums = [1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10, 11],
+    #        target = 4
+    # Output: [3, 5]
+from typing import List
+
+def first_and_last_occurrences_of_a_number(nums: List[int], target: int) -> List[int]:
+    lower_bound = lower_bound_binary_search(nums, target)
+    upper_bound = upper_bound_binary_search(nums, target)
+    return [lower_bound, upper_bound]
+
+def lower_bound_binary_search(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        mid = (left + right) // 2
+        if nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid
+    return left if nums and nums[left] == target else -1
+
+def upper_bound_binary_search(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        # In upper-bound binary search, bias the midpoint to the right.
+        mid = (left + right) // 2 + 1
+        if nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            left = mid
+    # If the target doesn't exist in the array, then it's possible that
+    # 'left = mid + 1' places the left pointer outside the array when
+    # 'mid == n - 1'. So, we use the right pointer in the return 
+    # statement instead. 
+    return right if nums and nums[right] == target else -1
+
+
+#X55 (Medium) Cutting Wood
+    # You are given an array representing the heights of trees, and an integer k 
+    # representing the total length of wood that needs to be cut.
+    # For this task, a woodcutting machine is set to a certain height, H . 
+    # The machine cuts off the top part of all trees taller than H, while trees 
+    # shorter than H remain untouched. Determine the highest possible setting of 
+    # the woodcutter (H) so that it cuts at least k meters of wood.
+    # Assume the woodcutter cannot be set higher than the height of the tallest tree in the array.
+def cutting_wood(heights: List[int], k: int) -> int:
+    left, right = 0, max(heights)
+    while left < right:
+        # Bias the midpoint to the right during the upper-bound binary 
+        # search.
+        mid = (left + right) // 2 + 1
+        if cuts_enough_wood(mid, k, heights):
+            left = mid
+        else:
+            right = mid - 1
+    return right
+
+# Determine if the current value of 'H' cuts at least 'k' meters of 
+# wood.
+def cuts_enough_wood(H: int, k: int, heights: List[int]) -> bool:
+    wood_collected = 0
+    for height in heights:
+        if height > H:
+            wood_collected += (height - H)
+    return wood_collected >= k
+
+
+#X56 (Medium) Find the Target in a Rotated Sorted Array
+    # A rotated sorted array is an array of numbers sorted in ascending order, 
+    # in which a portion of the array is moved from the beginning to the end. 
+    # For example, a possible rotation of [1, 2, 3, 4, 5] is [3, 4, 5, 1, 2] , 
+    # where the first two numbers are moved to the end.
+    # Given a rotated sorted array of unique numbers, return the index of a target value. 
+    # If the target value is not present, return -1.
+    # Example:
+    # Input: nums = [8, 9, 1, 2, 3, 4, 5, 6, 7], target = 1
+    # Output: 2
+def find_the_target_in_a_rotated_sorted_array(nums: List[int], target: int) -> int:
+   left, right = 0, len(nums) - 1
+   while left < right:
+       mid = (left + right) // 2
+       if nums[mid] == target:
+           return mid
+       # If the left subarray [left : mid] is sorted, check if the 
+       # target falls in this range. If it does, search the left 
+       # subarray. Otherwise, search the right.
+       elif nums[left] <= nums[mid]:
+           if nums[left] <= target < nums[mid]:
+               right = mid - 1
+           else:
+               left = mid + 1
+       # If the right subarray [mid : right] is sorted, check if the
+       # target falls in this range. If it does, search the right
+       # subarray. Otherwise, search the left.
+       else:
+           if nums[mid] < target <= nums[right]:
+               left = mid + 1
+           else:
+               right = mid - 1
+   # If the target is found in the array, return it's index. Otherwise,
+   # return -1.
+   return left if nums and nums[left] == target else -1
+
+
+#X57 (Hard) Find the Median From Two Sorted Arrays
+    # Given two sorted integer arrays, find their median value as if they were merged into a single sorted sequence.
+    # Example 1:
+    # Input: nums1 = [0, 2, 5, 6, 8], nums2 = [1, 3, 7]
+    # Output: 4.0
+    # Explanation: Merging both arrays results in [0, 1, 2, 3, 5, 6, 7, 8], which has a median of (3 + 5) / 2 = 4.0.
+def find_the_median_from_two_sorted_arrays(nums1: List[int], nums2: List[int]) -> float:
+    # Optimization: ensure 'nums1' is the smaller array.
+    if len(nums2) < len(nums1):
+        nums1, nums2 = nums2, nums1
+    m, n = len(nums1), len(nums2)
+    half_total_len = (m + n) // 2
+    left, right = 0, m - 1
+    # A median always exists in a non-empty array, so continue binary search until
+    # it’s found.
+    while True:
+        L1_index = (left + right) // 2
+        L2_index = half_total_len - (L1_index + 1) - 1
+        # Set to -infinity or +infinity if out of bounds.
+        L1 = float('-inf') if L1_index < 0 else nums1[L1_index]
+        R1 = float('inf') if L1_index >= m - 1 else nums1[L1_index + 1]
+        L2 = float('-inf') if L2_index < 0 else nums2[L2_index]
+        R2 = float('inf') if L2_index >= n - 1 else nums2[L2_index + 1]
+        # If 'L1 > R2', then 'L1' is too far to the right. Narrow the search space
+        # toward the left.
+        if L1 > R2:
+            right = L1_index - 1
+        # If 'L2 > R1', then 'L1' is too far to the left. Narrow the search space
+        # toward the right.
+        elif L2 > R1:
+            left = L1_index + 1
+        # If both 'L1' and 'L2' are less than or equal to both 'R1' and 'R2', we 
+        # found the correct slice.
+        else:
+            if (m + n) % 2 == 0:
+                return (max(L1, L2) + min(R1, R2)) / 2.0
+            else:
+                return min(R1, R2)
+            
+
+#X58 (Medium) Matrix Search
+    # Determine if a target value exists in a matrix. Each row of the matrix 
+    # is sorted in non-decreasing order, and the first value of each row is 
+    # greater than or equal to the last value of the previous row.
+def matrix_search(matrix: List[List[int]], target: int) -> bool:
+    m, n = len(matrix), len(matrix[0])
+    left, right = 0, m * n - 1
+    # Perform binary search to find the target.
+    while left <= right:
+        mid = (left + right) // 2
+        r, c = mid // n, mid % n
+        if matrix[r][c] == target:
+            return True
+        elif matrix[r][c] > target:
+            right = mid - 1
+        else:
+            left = mid + 1
+    return False
+
+
+#X59 (Medium) Local Maxima in Array
+    # A local maxima is a value greater than both its immediate neighbors. 
+    # Return any local maxima in an array. You may assume that an element 
+    # is always considered to be strictly greater than a neighbor that is outside the array.
+def local_maxima_in_array(nums: List[int]) -> int:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        mid = (left + right) // 2
+        if nums[mid] > nums[mid + 1]:
+            right = mid
+        else:
+            left = mid + 1
+    return left
+
+
+#X60 (Medium) Weighted Random Selection
+    # Given an array of items, each with a corresponding weight, implement a 
+    # function that randomly selects an item from the array, where the probability 
+    # of selecting any item is proportional to its weight.
+    # In other words, the probability of picking the item at index i is:
+    # weights[i] / sum(weights).
+    # Return the index of the selected item.
+    # Example:
+    # Input: weights = [3, 1, 2, 4]
+import random
+from typing import List
+
+class WeightedRandomSelection:
+    def __init__(self, weights: List[int]):
+        self.prefix_sums = [weights[0]]
+        for i in range(1, len(weights)):
+            self.prefix_sums.append(self.prefix_sums[-1] + weights[i])
+
+    def select(self) -> int:
+        # Pick a random target between 1 and the largest endpoint on the number 
+        # line.
+        target = random.randint(1, self.prefix_sums[-1])
+        left, right = 0, len(self.prefix_sums) - 1
+        # Perform lower-bound binary search to find which endpoint (i.e., prefix 
+        # sum value) corresponds to the target.
+        while left < right:
+            mid = (left + right) // 2
+            if self.prefix_sums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+        return left
