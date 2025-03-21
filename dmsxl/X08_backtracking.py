@@ -26,7 +26,6 @@ for循环横向遍历,递归纵向遍历,回溯不断调整结果集
 子集问题: 一个N个数的集合里有多少符合条件的子集
 棋盘问题: N皇后, 解数独等等
 """
-
 # 以下在计算空间复杂度的时候我都把系统栈（不是数据结构里的栈）所占空间算进去。
 # 子集问题分析：
 # 时间复杂度：O(2^n)，因为每一个元素的状态无外乎取与不取，所以时间复杂度为O(2^n)
@@ -71,7 +70,8 @@ void backtracking(参数) { # 1.回溯函数模板返回值以及参数
     }
 }
 
-#1 第77题. 组合
+
+#1 (Medium) 第77题.组合
 # 给定两个整数 n 和 k, 返回 1 ... n 中所有可能的 k 个数的组合。
 # 示例:
 # 输入: n = 4, k = 2
@@ -124,7 +124,7 @@ class Solution:
 #             path.pop()  # 回溯，撤销处理的节点
 
 
-#2 216.组合总和III
+#2 (Medium) 216.组合总和III
     # 找出所有相加之和为 n 的 k 个数的组合。组合中只允许含有 1 - 9 的正整数, 并且每种组合中不存在重复的数字。
     # 示例 1: 输入: k = 3, n = 7 输出: [[1,2,4]]
     # 示例 2: 输入: k = 3, n = 9 输出: [[1,2,6], [1,3,5], [2,3,4]]
@@ -173,7 +173,7 @@ class Solution:
 #             path.pop()  # 回溯
 
 
-#3 17.电话号码的字母组合
+#X3 (Medium) 17.电话号码的字母组合
     # 给定一个仅包含数字 2-9 的字符串, 返回所有它能表示的字母组合。
     # 示例: 输入："23" 输出：["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
 # 因为本题每一个数字代表的是不同集合，也就是求不同集合之间的组合，而回溯算法：求组合问题！ 和回溯算法：求组合总和！ 都是是求同一个集合中的组合！
@@ -364,8 +364,40 @@ class Solution:
 #             self.getCombinations(digits, index + 1, path, result)
 #             path.pop()
 
+# Phone Keypad Combinations
+    # You are given a string containing digits from 2 to 9 inclusive. Each digit maps 
+    # to a set of letters as on a traditional phone keypad:
+    # Return all possible letter combinations the input digits could represent.
+    # Example:
+    # Input: digits = '69'
+    # Output: ['mw', 'mx', 'my', 'mz', 'nw', 'nx', 'ny', 'nz', 'ow', 'ox', 'oy', 'oz']
+from typing import Dict, List
 
-#4 39. 组合总和
+def phone_keypad_combinations(digits: str) -> List[str]:
+    keypad_map = {
+        '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',
+        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'
+    }
+    res = []
+    backtrack(0, [], digits, keypad_map, res)
+    return res
+
+def backtrack(i: int, curr_combination: List[str], digits: str, keypad_map: Dict[str, str], res: List[str]) -> None:
+    # Termination condition: if all digits have been considered, add the
+    # current combination to the output list.
+    if len(curr_combination) == len(digits):
+        res.append("".join(curr_combination))
+        return
+    for letter in keypad_map[digits[i]]:
+       # Add the current letter.
+        curr_combination.append(letter)
+        # Recursively explore all paths that branch from this combination.
+        backtrack(i + 1, curr_combination, digits, keypad_map, res)
+        # Backtrack by removing the letter we just added.
+        curr_combination.pop()
+
+
+#X4 (Medium) 39.组合总和
     # 给定一个无重复元素的数组 candidates 和一个目标数 target , 找出 candidates 中所有可以使数字和为 target 的组合。
     # 示例 1： 输入：candidates = [2,3,6,7], target = 7, 所求解集为： [ [7], [2,2,3] ]
     # 示例 2： 输入：candidates = [2,3,5], target = 8, 所求解集为： [   [2,2,2,2],   [2,3,3],   [3,5] ]
@@ -486,8 +518,40 @@ class Solution:
             self.backtracking(candidates, target - candidates[i], i, path, result)
             path.pop()
 
+# Combinations of a Sum
+    # Given an integer array and a target value, find all unique combinations in the array 
+    # where the numbers in each combination sum to the target. Each number in the array 
+    # may be used an unlimited number of times in the combination.
+    # Example:
+    # Input: nums = [1, 2, 3], target = 4
+    # Output: [[1, 1, 1, 1], [1, 1, 2], [1, 3], [2, 2]]
+def combinations_of_sum_k(nums: List[int], target: int) -> List[List[int]]:
+    res = []
+    dfs([], 0, nums, target, res)
+    return res
 
-#5 40.组合总和II
+def dfs(combination: List[int], start_index: int, nums: List[int], target: int,
+        res: List[List[int]]) -> None:
+    # Termination condition: If the target is equal to 0, we found a combination 
+    # that sums to 'k'.
+    if target == 0:
+        res.append(combination[:])
+        return
+    # Termination condition: If the target is less than 0, no more valid 
+    # combinations can be created by adding it to the current combination.
+    if target < 0:
+        return
+    # Starting from start_index, explore all combinations after adding nums[i].
+    for i in range(start_index, len(nums)):
+        # Add the current number to create a new combination.
+        combination.append(nums[i])
+        # Recursively explore all paths that branch from this new combination.
+        dfs(combination, i, nums, target - nums[i], res)
+        # Backtrack by removing the number we just added.
+        combination.pop()
+
+
+#5 (Medium) 40.组合总和II
     # 给定一个数组 candidates 和一个目标数 target , 找出 candidates 中所有可以使数字和为 target 的组合。
     # 本题的难点在于区别2中：集合（数组candidates）有重复元素, 但还不能有重复的组合。
     # 示例 1: 输入: candidates = [10,1,2,7,6,1,5], target = 8, 所求解集为: [ [1, 7], [1, 2, 5], [2, 6], [1, 1, 6] ]
@@ -605,7 +669,7 @@ class Solution:
 #             path.pop()
 
 
-#6 131.分割回文串
+#6 (Medium) 131.分割回文串
     # 给定一个字符串 s, 将 s 分割成一些子串, 使每个子串都是回文串。
     # 示例: 输入: "aab" 输出: [ ["aa","b"], ["a","a","b"] ]
 # 回溯+正反序判断回文串
@@ -795,7 +859,7 @@ class Solution:
 #         return all(s[i] == s[len(s) - 1 - i] for i in range(len(s) // 2))
 
 
-#7 93.复原IP地址
+#7 (Medium) 93.复原IP地址
     # 给定一个只包含数字的字符串, 复原它并返回所有可能的 IP 地址格式。
     # 输入：s = "25525511135"
     # 输出：["255.255.11.135","255.255.111.35"]
@@ -904,7 +968,7 @@ class Solution:
         return 0 <= num <= 255
 
 
-#8 78.子集
+#X8 (Medium) 78.子集
     # 给定一组不含重复元素的整数数组 nums, 返回该数组所有可能的子集（幂集）。
     # 说明：解集不能包含重复的子集。
     # 示例: 输入: nums = [1,2,3] 输出: [ [3],   [1],   [2],   [1,2,3],   [1,3],   [2,3],   [1,2],   [] ]
@@ -950,8 +1014,34 @@ class Solution:
             self.backtracking(nums, i + 1, path, result) # 注意从i+1开始，元素不重复取
             path.pop()
 
+# Find All Subsets
+    # Return all possible subsets of a given set of unique integers. 
+    # Each subset can be ordered in any way, and the subsets can be returned in any order.
+    # Example:
+    # Input: nums = [4, 5, 6]
+    # Output: [[], [4], [4, 5], [4, 5, 6], [4, 6], [5], [5, 6], [6]]
+def find_all_subsets(nums: List[int]) -> List[List[int]]:
+    res = []
+    backtrack(0, [], nums, res)
+    return res
 
-#9 90.子集II
+def backtrack(i: int, curr_subset: List[int], nums: List[int], res: List[List[int]]) -> None:
+    # Base case: if all elements have been considered, add the
+    # current subset to the output.
+    if i == len(nums):
+        res.append(curr_subset[:])
+        return
+    # Include the current element and recursively explore all paths
+    # that branch from this subset.
+    curr_subset.append(nums[i])
+    backtrack(i + 1, curr_subset, nums, res)
+    # Exclude the current element and recursively explore all paths
+    # that branch from this subset.
+    curr_subset.pop()
+    backtrack(i + 1, curr_subset, nums, res)
+
+
+#9 (Medium) 90.子集II
     # 给定一个可能包含重复元素的整数数组 nums, 返回该数组所有可能的子集（幂集）。
     # 输入: [1,2,2]
     # 输出: [ [2], [1], [1,2,2], [2,2], [1,2], [] ]
@@ -1040,7 +1130,7 @@ class Solution:
             path.pop()
 
 
-#10 491.递增子序列
+#10 (Medium) 491.递增子序列
     # 给定一个整型数组, 你的任务是找到所有该数组的递增子序列, 递增子序列的长度至少是2。
     # 输入: [4, 6, 7, 7]
     # 输出: [[4, 6], [4, 7], [4, 6, 7], [4, 6, 7, 7], [6, 7], [6, 7, 7], [7,7], [4,7,7]]
@@ -1160,7 +1250,7 @@ class Solution:
             path.pop()
 
 
-#11 46.全排列
+#X11 (Medium) 46.全排列
     # 给定一个 没有重复 数字的序列, 返回其所有可能的全排列。
     # 输入: [1,2,3]
     # 输出: [ [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1] ]
@@ -1244,8 +1334,40 @@ class Solution:
             path.pop()
             used[i] = False
 
+# Find All Permutations
+    # Return all possible permutations of a given array of unique integers. They can be returned in any order.
+    # Example:
+    # Input: nums = [4, 5, 6]
+    # Output: [[4, 5, 6], [4, 6, 5], [5, 4, 6], [5, 6, 4],
+    #          [6, 4, 5], [6, 5, 4]]
+from typing import List, Set
 
-#12 47.全排列 II
+
+def find_all_permutations(nums: List[int]) -> List[List[int]]:
+    res = []
+    backtrack(nums, [], set(), res)
+    return res
+
+def backtrack(nums: List[int], candidate: List[int], used: Set[int], res: List[List[int]]) -> None:
+    # If the current candidate is a complete permutation, add it to the
+    # result.
+    if len(candidate) == len(nums):
+        res.append(candidate[:])
+        return
+    for num in nums:
+        if num not in used:
+            # Add 'num' to the current permutation and mark it as used.
+            candidate.append(num)
+            used.add(num)
+            # Recursively explore all branches using the updated
+            # permutation candidate.
+            backtrack(nums, candidate, used, res)
+            # Backtrack by reversing the changes made.
+            candidate.pop()
+            used.remove(num)
+
+
+#12 (Medium) 47.全排列 II
     # 给定一个可包含重复数字的序列 nums , 按任意顺序 返回所有不重复的全排列。
     # 输入：nums = [1,1,2]
     # 输出： [[1,1,2], [1,2,1], [2,1,1]]
@@ -1369,7 +1491,7 @@ class Solution:
 #                 used[i] = False
 
 
-#13 ??? 332.重新安排行程
+#13 ??? (Hard) 332.重新安排行程
     # 给定一个机票的字符串二维数组 [from, to], 子数组中的两个成员分别表示飞机出发和降落的机场地点, 对该行程进行重新规划排序。所有这些机票都属于一个从 JFK（肯尼迪国际机场）出发的先生, 所以该行程必须从 JFK 开始。
     # 输入：[["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
     # 输出：["JFK", "MUC", "LHR", "SFO", "SJC"]
@@ -1480,7 +1602,7 @@ class Solution:
         result.append(airport)  # 将当前机场添加到行程路径中
 
 
-#14 第51题. N皇后
+#X14 (Hard) 第51题.N皇后
     # n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上, 并且使皇后彼此之间不能相互攻击。
     # 给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
     # 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
@@ -1581,8 +1703,46 @@ class Solution:
 
         return True  # 当前位置合法
 
+# N Queens
+    # There is a chessboard of size n x n. Your goal is to place n queens on the board 
+    # such that no two queens attack each other. Return the number of distinct 
+    # configurations where this is possible.
+from typing import Set
 
-#15 37. 解数独
+res = 0
+def n_queens(n: int) -> int:
+    dfs(0, set(), set(), set(), n)
+    return res
+
+def dfs(r: int, diagonals_set: Set[int], anti_diagonals_set: Set[int], cols_set: Set[int], n: int) -> None:
+    global res
+    # Termination condition: If we have reached the end of the rows,
+    # we've placed all 'n' queens.
+    if r == n:
+        res += 1
+        return
+    for c in range(n):
+        curr_diagonal = r - c
+        curr_anti_diagonal = r + c
+        # If there are queens on the current column, diagonal or
+        # anti−diagonal, skip this square.
+        if (c in cols_set or curr_diagonal in diagonals_set or curr_anti_diagonal in anti_diagonals_set):
+            continue
+        # Place the queen by marking the current column, diagonal, and
+        # anti −diagonal as occupied.
+        cols_set.add(c)
+        diagonals_set.add(curr_diagonal)
+        anti_diagonals_set.add(curr_anti_diagonal)
+        # Recursively move to the next row to continue placing queens.
+        dfs(r + 1, diagonals_set, anti_diagonals_set, cols_set, n)
+        # Backtrack by removing the current column, diagonal, and
+        # anti −diagonal from the hash sets.
+        cols_set.remove(c)
+        diagonals_set.remove(curr_diagonal)
+        anti_diagonals_set.remove(curr_anti_diagonal)
+
+
+#15 (Hard) 37.解数独
     # 编写一个程序, 通过填充空格来解决数独问题。
     # 一个数独的解法需遵循如下规则： 
     # 数字 1-9 在每一行只能出现一次。 

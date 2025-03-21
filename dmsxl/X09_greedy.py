@@ -6,7 +6,7 @@
 求解每一个子问题的最优解
 将局部最优解堆叠成全局最优解
 """
-#1 455.分发饼干
+#1 (Easy) 455.分发饼干
     # 假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
     # 对每个孩子 i，都有一个胃口值  g[i]，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j，都有一个尺寸 s[j] 。如果 s[j] >= g[i]，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
     # 示例  1:
@@ -41,7 +41,7 @@ class Solution:
         return index  # 返回满足的孩子数目
 
 
-#2 376. 摆动序列
+#2 (Medium) 376.摆动序列
     # 如果连续数字之间的差严格地在正数和负数之间交替，则数字序列称为摆动序列。第一个差（如果存在的话）可能是正数或负数。少于两个元素的序列也是摆动序列。
     # 例如， [1,7,4,9,2,5] 是一个摆动序列，因为差值 (6,-3,5,-7,3)  是正负交替出现的。相反, [1,4,7,2,5]  和  [1,7,4,5,5] 不是摆动序列，第一个序列是因为它的前两个差值都是正数，第二个序列是因为它的最后一个差值为零。
     # 给定一个整数序列，返回作为摆动序列的最长子序列的长度。 通过从原始序列中删除一些（也可以不删除）元素来获得子序列，剩下的元素保持其原始顺序。
@@ -152,7 +152,7 @@ class Solution:
         return res
 
 
-#3 53. 最大子序和
+#3 (Medium) 53.最大子序和
     # 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
     # 示例:
     # 输入: [-2,1,-3,4,-1,2,1,-5,4]
@@ -183,7 +183,7 @@ class Solution:
         return result
 
 
-#4 122.买卖股票的最佳时机II
+#4 (Medium) 122.买卖股票的最佳时机II
     # 给定一个数组，它的第  i 个元素是一支给定股票第 i 天的价格。
     # 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
     # 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
@@ -222,7 +222,7 @@ class Solution:
         return dp[-1][1]
 
 
-#5 55. 跳跃游戏
+#X5 (Medium) 55.跳跃游戏
     # 给定一个非负整数数组，你最初位于数组的第一个位置。
     # 数组中的每个元素代表你在该位置可以跳跃的最大长度。
     # 判断你是否能够到达最后一个位置。
@@ -261,9 +261,27 @@ class Solution:
                 cover = max(i + nums[i], cover)
                 if cover >= len(nums) - 1: return True
         return False
+    
+# Jump to the End
+    # You are given an integer array in which you're originally positioned at index 0. 
+    # Each number in the array represents the maximum jump distance from the current index. 
+    # Determine if it's possible to reach the end of the array.
+def jump_to_the_end(nums: List[int]) -> bool:
+    # Set the initial destination to the last index in the array.
+    destination = len(nums) - 1
+    # Traverse the array in reverse to see if the destination can be 
+    # reached by earlier indexes.
+    for i in range(len(nums) - 1, -1, -1):
+        # If we can reach the destination from the current index,
+        # set this index as the new destination.
+        if i + nums[i] >= destination:
+            destination = i
+    # If the destination is index 0, we can jump to the end from index 
+    # 0.
+    return destination == 0
 
 
-#6 45.跳跃游戏II
+#6 (Medium) 45.跳跃游戏II
     # 给定一个非负整数数组，你最初位于数组的第一个位置。
     # 数组中的每个元素代表你在该位置可以跳跃的最大长度。
     # 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
@@ -351,7 +369,7 @@ class Solution:
 #         return result[-1]  # 返回到达最后一个位置的最少步数
 
 
-#7 1005.K次取反后最大化的数组和
+#7 (Easy) 1005.K次取反后最大化的数组和
     # 给定一个整数数组 A，我们只能用以下方法修改该数组：我们选择某个索引 i 并将 A[i] 替换为 -A[i]，然后总共重复这个过程 K 次。（我们可以多次选择同一个索引 i。）
     # 以这种方式修改数组后，返回数组可能的最大和。
     # 示例 1：
@@ -383,7 +401,7 @@ class Solution:
         return result    
 
 
-#8 134. 加油站
+#X8 (Medium) 134. 加油站
     # 在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
     # 你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
     # 如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。
@@ -465,8 +483,34 @@ class Solution:
             return -1  # 总剩余油量totalSum小于0，说明无法环绕一圈
         return start
 
+# Gas Stations
+    # There's a circular route which contains gas stations. At each station, you can fill your car with a 
+    # certain amount of gas, and moving from that station to the next one consumes some fuel.
+    # Find the index of the gas station you would need to start at, in order to complete the circuit 
+    # without running out of gas. Assume your car starts with an empty tank. If it's not possible to 
+    # complete the circuit, return -1. If it's possible, assume only one solution exists.
+    # Example:
+    # Input: gas = [2, 5, 1, 3], cost = [3, 2, 1, 4]
+    # Output: 1
+def gas_stations(gas: List[int], cost: List[int]) -> int:
+    # If the total gas is less than the total cost, completing the
+    # circuit is impossible.
+    if sum(gas) < sum(cost):
+        return -1
+    start = tank = 0
+    for i in range(len(gas)):
+        tank += gas[i] - cost[i]
+        # If our tank has negative gas, we cannot continue through the 
+        # circuit from the current start point, nor from any station 
+        # before or including the current station 'i'.
+        if tank < 0:
+            # Set the next station as the new start point and reset the 
+            # tank.
+            start, tank = i + 1, 0
+    return start
 
-#9 135. 分发糖果
+
+#X9 (Hard) 135. 分发糖果
     # 老师想给孩子们分发糖果，有 N 个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。
     # 你需要按照以下要求，帮助老师给这些孩子分发糖果：
     # 每个孩子至少分配到 1 个糖果。
@@ -503,8 +547,37 @@ class Solution:
         result = sum(candyVec)
         return result
 
+# Candies
+    # You teach a class of children sitting in a row, each of whom has a rating based on their performance. 
+    # You want to distribute candies to the children while abiding by the following rules:
+    # Each child must receive at least one candy.
+    # If two children sit next to each other, the child with the higher rating must receive more candies.
+    # Determine the minimum number of candies you need to distribute to satisfy these conditions.
+    # Example 1:
+    # Input: ratings = [4, 3, 2, 4, 5, 1]
+    # Output: 12
+def candies(ratings: List[int]) -> int:
+    n = len(ratings)
+    # Ensure each child starts with 1 candy.
+    candies = [1] * n
+    # First pass: for each child, ensure the child has more candies  
+    # than their left-side neighbor if the current child's rating is 
+    # higher.
+    for i in range(1, n):
+        if ratings[i] > ratings[i - 1]:
+            candies[i] = candies[i - 1] + 1
+    # Second pass: for each child, ensure the child has more candies 
+    # than their right-side neighbor if the current child's rating is 
+    # higher.
+    for i in range(n - 2, -1, -1):
+        if ratings[i] > ratings[i + 1]:
+            # If the current child already has more candies than their 
+            # right-side neighbor, keep the higher amount.
+            candies[i] = max(candies[i], candies[i + 1] + 1)
+    return sum(candies)
 
-#10 860.柠檬水找零
+
+#10 (Easy) 860.柠檬水找零
     # 在柠檬水摊上，每一杯柠檬水的售价为 5 美元。
     # 顾客排队购买你的产品，（按账单 bills 支付的顺序）一次购买一杯。
     # 每位顾客只买一杯柠檬水，然后向你付 5 美元、10 美元或 20 美元。你必须给每个顾客正确找零，也就是说净交易是每位顾客向你支付 5 美元。
@@ -570,7 +643,7 @@ class Solution:
         return True
     
 
-#11 406.根据身高重建队列
+#11 (Medium) 406.根据身高重建队列
     # 假设有打乱顺序的一群人站成一个队列，数组 people 表示队列中一些人的属性（不一定按顺序）。每个 people[i] = [hi, ki] 表示第 i 个人的身高为 hi ，前面 正好 有 ki 个身高大于或等于 hi 的人。
     # 请你重新构造并返回输入数组 people 所表示的队列。返回的队列应该格式化为数组 queue ，其中 queue[j] = [hj, kj] 是队列中第 j 个人的属性（queue[0] 是排在队列前面的人）。
     # 示例 1：
@@ -605,7 +678,7 @@ class Solution:
         return que
 
 
-#12 452. 用最少数量的箭引爆气球
+#12 (Medium) 452.用最少数量的箭引爆气球
     # 在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。
     # 一支弓箭可以沿着 x 轴从不同点完全垂直地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标为 xstart，xend， 且满足  xstart ≤ x ≤ xend，则该气球会被引爆。可以射出的弓箭的数量没有限制。 弓箭一旦被射出之后，可以无限地前进。我们想找到使得所有气球全部被引爆，所需的弓箭的最小数量。
     # 给你一个数组 points ，其中 points [i] = [xstart,xend] ，返回引爆所有气球所必须射出的最小弓箭数。
@@ -651,7 +724,7 @@ class Solution:
 #         return count
 
 
-#13 435. 无重叠区间
+#13 (Medium) 435.无重叠区间
     # 给定一个区间的集合，找到需要移除区间的最小数量，使剩余区间互不重叠。
     # 注意: 可以认为区间的终点总是大于它的起点。 区间 [1,2] 和 [2,3] 的边界相互“接触”，但没有相互重叠。
     # 示例 1:
@@ -711,7 +784,7 @@ class Solution:
         return len(intervals) - result
 
 
-#14 ??? 763.划分字母区间
+#14 ??? (Medium) 763.划分字母区间
     # 字符串 S 由小写字母组成。我们要把这个字符串划分为尽可能多的片段，同一字母最多出现在一个片段中。返回一个表示每个字符串片段的长度的列表。
     # 示例：
     # 输入：S = "ababcbacadefegdehijhklij"
@@ -781,7 +854,7 @@ class Solution:
         return hash_filter
 
 
-#15 56. 合并区间
+#15 (Medium) 56.合并区间
     # 给出一个区间的集合，请合并所有重叠的区间。
     # 示例 1:
     # 输入: intervals = [[1,3],[2,6],[8,10],[15,18]]
@@ -813,7 +886,7 @@ class Solution:
         return result
 
 
-#16 738.单调递增的数字
+#16 (Medium) 738.单调递增的数字
     # 给定一个非负整数 N，找出小于或等于 N 的最大的整数，同时这个整数需要满足其各个位数上的数字是单调递增。
     # （当且仅当每个相邻位数上的数字 x 和 y 满足 x <= y 时，我们称这个整数是单调递增的。）
     # 示例 1:
@@ -918,7 +991,7 @@ class Solution:
 #         return int(strNum)
 
 
-#17 ??? 968.监控二叉树
+#17 ??? (Hard) 968.监控二叉树
     # 给定一个二叉树，我们在树的节点上安装摄像头。
     # 节点上的每个摄影头都可以监视其父对象、自身及其直接子对象。
     # 计算监控树的所有节点所需的最小摄像头数量。
