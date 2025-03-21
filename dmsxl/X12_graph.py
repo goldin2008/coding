@@ -56,7 +56,7 @@ void dfs(参数) {
     }
 }
 
-#1 797.所有可能的路径
+#1 (Medium) 797.所有可能的路径
     # 给你一个有 n 个节点的 有向无环图（DAG）, 请你找出所有从节点 0 到节点 n-1 的路径并输出（不要求按特定顺序）
     # graph[i] 是一个从节点 i 可以访问的所有节点的列表（即从节点 i 到节点 graph[i][j]存在一条有向边）。
     # 提示：
@@ -91,7 +91,7 @@ class Solution:
             self.dfs(graph, node)
             self.path.pop() # 回溯
 
-# 2 广搜的使用场景, 广搜的过程以及广搜的代码框架
+#2 广搜的使用场景, 广搜的过程以及广搜的代码框架
     # 其实, 我们仅仅需要一个容器, 能保存我们要遍历过的元素就可以, 那么用队列, 还是用栈, 甚至用数组, 都是可以的。
     # 用队列的话, 就是保证每一圈都是一个方向去转, 例如统一顺时针或者逆时针。
     # 因为队列是先进先出, 加入元素和弹出元素的顺序是没有改变的。
@@ -122,7 +122,7 @@ def bfs(grid, visited, x, y):
                 visited[nextx][nexty] = True # 标记为访问过的节点
 
 
-#3 200. 岛屿数量
+#3 (Medium) 200.岛屿数量
     # 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格, 请你计算网格中岛屿的数量。
     # 岛屿总是被水包围, 并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
     # 此外, 你可以假设该网格的四条边均被水包围。
@@ -218,7 +218,7 @@ class Solution:
         self.traversal(grid, i, j + 1) # 往右走
 
 
-#4 200. 岛屿数量 BFS solution
+#4 (Medium) 200.岛屿数量 BFS solution
 # 不少同学用广搜做这道题目的时候, 超时了。 这里有一个广搜中很重要的细节：
 # 根本原因是只要 加入队列就代表 走过, 就需要标记, 而不是从队列拿出来的时候再去标记走过。
 # 很多同学可能感觉这有区别吗？
@@ -262,7 +262,7 @@ class Solution:
                 visited[next_i][next_j] = True # 只要加入队列立刻标记
 
 
-#5 695. 岛屿的最大面积
+#5 (Medium) 695.岛屿的最大面积
     # 给你一个大小为 m x n 的二进制矩阵 grid 。
     # 岛屿 是由一些相邻的 1 (代表土地) 构成的组合, 这里的「相邻」要求两个 1 必须在 水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
     # 岛屿的面积是岛上值为 1 的单元格的数目。
@@ -344,7 +344,7 @@ class Solution:
                 self.dfs(grid, visited, new_x, new_y)
 
 
-#6 1020. 飞地的数量
+#6 (Medium) 1020.飞地的数量
     # 给你一个大小为 m x n 的二进制矩阵 grid , 其中 0 表示一个海洋单元格、1 表示一个陆地单元格。
     # 一次 移动 是指从一个陆地单元格走到另一个相邻（上、下、左、右）的陆地单元格或跨过 grid 的边界。
     # 返回网格中 无法 在任意次数的移动中离开网格边界的陆地单元格的数量。
@@ -450,7 +450,7 @@ class Solution:
                 queue.append([row, col])
 
 
-#7 130. 被围绕的区域
+#7 (Medium) 130.被围绕的区域
     # 给你一个 m x n 的矩阵 board , 由若干字符 'X' 和 'O' , 找到所有被 'X' 围绕的区域, 并将这些区域里所有的 'O' 用 'X' 填充。
     # 输入：board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]
     # 输出：[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]
@@ -503,7 +503,7 @@ class Solution:
             self.dfs(board, new_x, new_y, visited)
 
 
-#8 417. 太平洋大西洋水流问题
+#8 (Medium) 417.太平洋大西洋水流问题
     # 有一个 m × n 的矩形岛屿, 与 太平洋 和 大西洋 相邻。 “太平洋” 处于大陆的左边界和上边界, 而 “大西洋” 处于大陆的右边界和下边界。
     # 这个岛被分割成一个由若干方形单元格组成的网格。给定一个 m x n 的整数矩阵 heights ,  heights[r][c] 表示坐标 (r, c) 上单元格 高于海平面的高度 。
     # 岛上雨水较多, 如果相邻单元格的高度 小于或等于 当前单元格的高度, 雨水可以直接向北、南、东、西流向相邻单元格。水可以从海洋附近的任何单元格流入海洋。
@@ -619,7 +619,7 @@ class Solution:
         return ans
 
 
-#9 ??? 827.最大人工岛
+#9 ??? (Hard) 827.最大人工岛
     # 给你一个大小为 n x n 二进制矩阵 grid 。最多 只能将一格 0 变成 1 。
     # 返回执行此操作后, grid 中最大的岛屿面积是多少？
     # 岛屿 由一组上、下、左、右四个方向相连的 1 形成。
@@ -695,7 +695,7 @@ class Solution:
         return res
 
 
-#10 127. 单词接龙
+#10 (Hard) 127.单词接龙
     # 字典 wordList 中从单词 beginWord 和 endWord 的 转换序列 是一个按下述规格形成的序列：
     # 序列中第一个单词是 beginWord 。
     # 序列中最后一个单词是 endWord 。
@@ -739,7 +739,7 @@ class Solution:
         return 0
 
 
-#11 ??? 841.钥匙和房间
+#11 ??? (Medium) 841.钥匙和房间
     # 有 N 个房间, 开始时你位于 0 号房间。每个房间有不同的号码：0, 1, 2, ..., N-1, 并且房间里可能有一些钥匙能使你进入下一个房间。
     # 在形式上, 对于每个房间 i 都有一个钥匙列表 rooms[i], 每个钥匙 rooms[i][j] 由 [0,1, ..., N-1] 中的一个整数表示, 其中 N = rooms.length。 钥匙 rooms[i][j] = v 可以打开编号为 v 的房间。
     # 最初, 除 0 号房间外的其余所有房间都被锁住。
@@ -800,7 +800,7 @@ class Solution:
                     visited[nextIndex] = True
 
 
-#12 463. 岛屿的周长
+#12 (Easy) 463.岛屿的周长
     # 给定一个 row x col 的二维网格地图 grid , 其中：grid[i][j] = 1 表示陆地,  grid[i][j] = 0 表示水域。
     # 网格中的格子 水平和垂直 方向相连（对角线方向不相连）。整个网格被水完全包围, 但其中恰好有一个岛屿（或者说, 一个或多个表示陆地的格子相连组成的岛屿）。
     # 岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形, 且宽度和高度均不超过 100 。计算这个岛屿的周长。
@@ -937,7 +937,8 @@ void join(int u, int v) {
     if (rank[u] == rank[v] && u != v) rank[v]++; // 如果两棵树高度相同, 则v的高度+1因为, 方面 if (rank[u] <= rank[v]) father[u] = v; 注意是 <=
 }
 
-#13 1971. 寻找图中是否存在路径
+
+#13 (Easy) 1971.寻找图中是否存在路径
     # 有一个具有 n个顶点的 双向 图, 其中每个顶点标记从 0 到 n - 1（包含 0 和 n - 1）。图中的边用一个二维整数数组 edges 表示, 其中 edges[i] = [ui, vi] 表示顶点 ui 和顶点 vi 之间的双向边。 每个顶点对由 最多一条 边连接, 并且没有顶点存在与自身相连的边。
     # 请你确定是否存在从顶点 start 开始, 到顶点 end 结束的 有效路径 。
     # 给你数组 edges 和整数 n、start和end, 如果从 start 到 end 存在 有效路径 , 则返回 true, 否则返回 false 。
@@ -956,7 +957,7 @@ class Solution:
         return find(source) == find(destination)
 
 
-#14 684.冗余连接
+#14 (Medium) 684.冗余连接
     # 树可以看成是一个连通且 无环 的 无向 图。
     # 给定往一棵 n 个节点 (节点值 1～n) 的树中添加一条边后的图。添加的边的两个顶点包含在 1 到 n 中间, 且这条附加的边不属于树中已存在的边。图的信息记录于长度为 n 的二维数组 edges , edges[i] = [ai, bi] 表示图中在 ai 和 bi 之间存在一条边。
     # 请找出一条可以删去的边, 删除后可使得剩余部分是一个有着 n 个节点的树。如果有多个答案, 则返回数组 edges 中最后出现的边。
@@ -1018,7 +1019,7 @@ class Solution:
             p[find(u)] = find(v)
 
 
-#15 ??? 685.冗余连接II
+#15 ??? (Hard) 685.冗余连接II
 # ??? 为什么需要分两种情况: 一种看入度2的情况, 另一种看是不是成环
     # 在本问题中, 有根树指满足以下条件的 有向 图。该树只有一个根节点, 所有其他节点都是该根节点的后继。该树除了根节点之外的每一个节点都有且只有一个父节点, 而根节点没有父节点。
     # 输入一个有向图, 该图由一个有着 n 个节点（节点值不重复, 从 1 到 n）的树及一条附加的有向边构成。附加的边包含在 1 到 n 中的两个不同顶点间, 这条附加的边不属于树中已存在的边。
@@ -1112,3 +1113,466 @@ class Solution:
 
         # 明确没有入度为2的情况, 那么一定有有向环, 找到构成环的边返回就可以了
         return self.getRemoveEdge(edges)
+
+
+#X16 (Medium) Graph Deep Copy
+    # Given a reference to a node within an undirected graph, create a deep copy (clone) of the graph. 
+    # The copied graph must be completely independent of the original one. 
+    # This means you need to make new nodes for the copied graph instead of 
+    # reusing any nodes from the original graph.
+from ds import GraphNode
+
+"""
+Definition of GraphNode:
+class GraphNode:
+    def __init__(self, val):
+        self.val = val
+        self.neighbors = []
+"""
+def graph_deep_copy(node: GraphNode) -> GraphNode:
+    if not node:
+        return None
+    return dfs(node)
+
+def dfs(node: GraphNode, clone_map = {}) -> GraphNode:
+    # If this node was already cloned, then return this previously  
+    # cloned node.
+    if node in clone_map:
+        return clone_map[node]
+    # Clone the current node.
+    cloned_node = GraphNode(node.val)
+    # Store the current clone to ensure it doesn't need to be created 
+    # again in future DFS calls.
+    clone_map[node] = cloned_node
+    # Iterate through the neighbors of the current node to connect  
+    # their clones to the current cloned node.
+    for neighbor in node.neighbors:
+        cloned_neighbor = dfs(neighbor, clone_map)
+        cloned_node.neighbors.append(cloned_neighbor)
+    return cloned_node
+
+
+#X17 (Medium) Count Islands
+    # Given a binary matrix representing 1s as land and 0s as water, return the number of islands.
+    # An island is formed by connecting adjacent lands 4-directionally (up, down, left, and right).
+from typing import List
+
+def count_islands(matrix: List[List[int]]) -> int:
+    if not matrix:
+        return 0
+    count = 0
+    for r in range(len(matrix)):
+        for c in range(len(matrix[0])):
+            # If a land cell is found, perform DFS to explore the full 
+            # island, and include this island in our count.
+            if matrix[r][c] == 1:
+                dfs(r, c, matrix)
+                count += 1
+    return count
+
+def dfs(r: int, c: int, matrix: List[List[int]]) -> None:
+    # Mark the current land cell as visited.
+    matrix[r][c] = -1
+    # Define direction vectors for up, down, left, and right.
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    # Recursively call DFS on each neighboring land cell to continue 
+    # exploring this island.
+    for d in dirs:
+        next_r, next_c = r + d[0], c + d[1]
+        if is_within_bounds(next_r, next_c, matrix) and matrix[next_r][next_c] == 1:
+            dfs(next_r, next_c, matrix)
+
+def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
+    return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
+
+
+#X18 (Medium) Matrix Infection
+    # You are given a matrix where each cell is either:
+    # 0: Empty
+    # 1: Uninfected
+    # 2: Infected
+    # With each passing second, every infected cell (2) infects its uninfected neighboring 
+    # cells (1) that are 4-directionally adjacent. Determine the number of seconds 
+    # required for all uninfected cells to become infected. If this is impossible, return ‐1.
+from collections import deque
+from typing import List
+
+
+def matrix_infection(matrix: List[List[int]]) -> int:
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    queue = deque()
+    ones = seconds = 0
+    # Count the total number of uninfected cells and add each infected 
+    # cell to the queue to represent level 0 of the level-order  
+    # traversal.
+    for r in range(len(matrix)):
+        for c in range(len(matrix[0])):
+            if matrix[r][c] == 1:
+                ones += 1
+            elif matrix[r][c] == 2:
+                queue.append((r, c))
+    # Use level-order traversal to determine how long it takes to 
+    # infect the uninfected cells.
+    while queue and ones > 0:
+        # 1 second passes with each level of the matrix that's explored.
+        seconds += 1
+        for _ in range(len(queue)):
+            r, c = queue.popleft()
+            # Infect any neighboring 1s and add them to the queue to be 
+            # processed in the next level.
+            for d in dirs:
+                next_r, next_c = r + d[0], c + d[1]
+                if is_within_bounds(next_r, next_c, matrix) and matrix[next_r][next_c] == 1:
+                    matrix[next_r][next_c] = 2
+                    ones -= 1
+                    queue.append((next_r, next_c))
+    # If there are still uninfected cells left, return -1. Otherwise, 
+    # return the time passed.
+    return seconds if ones == 0 else -1
+
+def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
+    return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
+
+
+#X19 (Medium) Bipartite Graph Validation
+    # Given an undirected graph, determine if it's bipartite. A graph is bipartite if the nodes 
+    # can be colored in one of two colors, so that no two adjacent nodes are the same color.
+    # The input is presented as an adjacency list, where graph[i] is a list of all nodes adjacent to node i.
+def bipartite_graph_validation(graph: List[List[int]]) -> bool:
+    colors = [0] * len(graph)
+    # Determine if each graph component is bipartite.
+    for i in range(len(graph)):
+        if colors[i] == 0 and not dfs(i, 1, graph, colors):
+            return False
+    return True
+
+def dfs(node: int, color: int, graph: List[List[int]], colors: List[int]) -> bool:
+    colors[node] = color
+    for neighbor in graph[node]:
+        # If the current neighbor has the same color as the current 
+        # node, the graph is not bipartite.
+        if colors[neighbor] == color:
+            return False
+        # If the current neighbor is not colored, color it with the 
+        # other color and continue the DFS.
+        if colors[neighbor] == 0 and not dfs(neighbor, -color, graph, colors):
+            return False
+    return True
+
+
+#X20 (Medium) Longest Increasing Path
+    # Find the longest strictly increasing path in a matrix of positive integers. 
+    # A path is a sequence of cells where each one is 4-directionally adjacent 
+    # (up, down, left, or right) to the previous one.
+def longest_increasing_path(matrix: List[List[int]]) -> int:
+    if not matrix:
+        return 0
+    res = 0
+    m, n = len(matrix), len(matrix[0])
+    memo = [[0] * n for _ in range(m)]
+    # Find the longest increasing path starting at each cell. The
+    # maximum of these is equal to the overall longest increasing
+    # path.
+    for r in range(m):
+        for c in range(n):
+            res = max(res, dfs(r, c, matrix, memo))
+    return res
+
+def dfs(r: int, c: int, matrix: List[List[int]], memo: List[List[int]]) -> int:
+    if memo[r][c] != 0:
+        return memo[r][c]
+    max_path = 1
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    # The longest path starting at the current cell is equal to the
+    # longest path of its larger neighboring cells, plus 1.
+    for d in dirs:
+        next_r, next_c = r + d[0], c + d[1]
+        if is_within_bounds(next_r, next_c, matrix) and matrix[next_r][next_c] > matrix[r][c]:
+            max_path = max(max_path, 1 + dfs(next_r, next_c, matrix, memo))
+    memo[r][c] = max_path
+    return max_path
+
+def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
+    return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
+
+
+#X21 (Hard) Shortest Transformation Sequence
+    # Given two words, start and end, and a dictionary containing an array of words, 
+    # return the length of the shortest transformation sequence to transform start to end. 
+    # A transformation sequence is a series of words in which:
+    # Each word differs from the preceding word by exactly one letter.
+    # Each word in the sequence exists in the dictionary.
+    # If no such transformation sequence exists, return 0.
+    # Example:
+    # Input: start = 'red', end = 'hit',
+    #        dictionary = [
+    #             'red', 'bed', 'hat', 'rod', 'rad', 'rat', 'hit', 'bad', 'bat'
+    #        ]
+    # Output: 5
+from collections import deque
+from typing import List
+
+def shortest_transformation_sequence(start: str, end: str, dictionary: List[str]) -> int:
+    dictionary_set = set(dictionary)
+    if start not in dictionary_set or end not in dictionary_set:
+        return 0
+    if start == end:
+        return 1
+    lower_case_alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    queue = deque([start])
+    visited = set([start])
+    dist = 0
+    # Use level-order traversal to find the shortest path from the 
+    # start word to the end word.
+    while queue:
+        for _ in range(len(queue)):
+            curr_word = queue.popleft()
+            # If we found the end word, we've reached it via the 
+            # shortest path.
+            if curr_word == end:
+                return dist + 1
+            # Generate all possible words that have a one-letter 
+            # difference to the current word.
+            for i in range(len(curr_word)):
+                for c in lower_case_alphabet:
+                    next_word = curr_word[:i] + c + curr_word[i+1:]
+                    # If 'next_word' exists in the dictionary, it's a 
+                    # neighbor of the current word. If unvisited, add it
+                    # to the queue to be processed in the next level.
+                    if next_word in dictionary_set and next_word not in visited:
+                        visited.add(next_word)
+                        queue.append(next_word)
+        dist += 1
+    # If there is no way to reach the end node, then no path exists.
+    return 0
+
+from collections import deque
+from typing import List
+
+def shortest_transformation_sequence_optimized(start: str, end: str, dictionary: List[str]) -> int:
+    dictionary_set = set(dictionary)
+    if start not in dictionary_set or end not in dictionary_set:
+        return 0
+    if start == end:
+        return 1
+    start_queue = deque([start])
+    start_visited = {start}
+    end_queue = deque([end])
+    end_visited = {end}
+    level_start = level_end = 0
+    # Perform a level-order traversal from the start word and another 
+    # from the end word.
+    while start_queue and end_queue:
+        # Explore the next level of the traversal that starts from the 
+        # start word. If it meets the other traversal, the shortest 
+        # path between 'start' and 'end' has been found.
+        level_start += 1
+        if explore_level(start_queue, start_visited, end_visited, dictionary_set):
+            return level_start + level_end + 1
+        # Explore the next level of the traversal that starts from the  
+        # end word.
+        level_end += 1
+        if explore_level(end_queue, end_visited, start_visited, dictionary_set):
+            return level_start + level_end + 1
+    # If the traversals never met, then no path exists.
+    return 0
+
+# This function explores the next level in the level-order traversal 
+# and checks if two searches meet.
+def explore_level(queue, visited, other_visited, dictionary_set) -> bool:
+    lower_case_alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    for _ in range(len(queue)):
+        current_word = queue.popleft()
+        for i in range(len(current_word)):
+            for c in lower_case_alphabet:
+                next_word = current_word[:i] + c + current_word[i + 1:]
+                # If 'next_word' has been visited during the other
+                # traversal, it means both searches have met.
+                if next_word in other_visited:
+                    return True
+                if next_word in dictionary_set and next_word not in visited:
+                    visited.add(next_word)
+                    queue.append(next_word)
+    # If no word has been visited by the other traversal, the searches 
+    # have not met yet.
+    return False
+
+
+#X22 (Hard) Merging Communities
+    # There are n people numbered from 0 to n - 1 , with each person initially 
+    # belonging to a separate community. When two people from different communities connect, 
+    # their communities merge into a single community.
+    # Your goal is to write two functions:
+    # connect(x: int, y: int) -> None: Connects person x with person y and merges their communities.
+    # get_community_size(x: int) -> int: Returns the size of the community which person x belongs to.
+class UnionFind:
+    def __init__(self, size: int):
+        self.parent = [i for i in range(size)]
+        self.size = [1] * size
+
+    def union(self, x: int, y: int) -> None:
+        rep_x, rep_y = self.find(x), self.find(y)
+        if rep_x != rep_y:
+            # If 'rep_x' represents a larger community, connect
+            # 'rep_y 's community to it.
+            if self.size[rep_x] > self.size[rep_y]:
+                self.parent[rep_y] = rep_x
+                self.size[rep_x] += self.size[rep_y]
+                # Otherwise, connect 'rep_x's community to 'rep_y'.
+            else:
+                self.parent[rep_x] = rep_y
+                self.size[rep_y] += self.size[rep_x]
+        
+    def find(self, x: int) -> int:
+        if x == self.parent[x]:
+            return x
+        # Path compression.
+        self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def get_size(self, x: int) -> int:
+        return self.size[self.find(x)]
+
+
+class MergingCommunities:
+    def __init__(self, n: int):
+        self.uf = UnionFind(n)
+
+    def connect(self, x: int, y: int) -> None:
+        self.uf.union(x, y)
+
+    def get_community_size(self, x: int) -> int:
+        return self.uf.get_size(x)
+
+
+#X23 (Medium) Prerequisites
+    # Given an integer n representing the number of courses labeled from 0 to n - 1, 
+    # and an array of prerequisite pairs, determine if it's possible to enroll in all courses.
+    # Each prerequisite is represented as a pair [a, b], indicating that course a must be taken before course b.
+from collections import defaultdict, deque
+from typing import List
+
+
+def prerequisites(n: int, prerequisites: List[List[int]]) -> bool:
+    graph = defaultdict(list)
+    in_degrees = [0] * n
+    # Represent the graph as an adjacency list and record the in-
+    # degree of each course.
+    for prerequisite, course in prerequisites:
+        graph[prerequisite].append(course)
+        in_degrees[course] += 1
+    queue = deque()
+    # Add all courses with an in-degree of 0 to the queue.
+    for i in range(n):
+        if in_degrees[i] == 0:
+            queue.append(i)
+    enrolled_courses = 0
+    # Perform topological sort.
+    while queue:
+        node = queue.popleft()
+        enrolled_courses += 1
+        for neighbor in graph[node]:
+            in_degrees[neighbor] -= 1
+            # If the in-degree of a neighboring course becomes 0, add 
+            # it to the queue.
+            if in_degrees[neighbor] == 0:
+                queue.append(neighbor)
+    # Return true if we've successfully enrolled in all courses.
+    return enrolled_courses == n
+
+
+#X24 (Hard) Shortest Path
+    # Given an integer n representing nodes labeled from 0 to n - 1 in an undirected graph, 
+    # and an array of non-negative weighted edges, return an array where each index i 
+    # contains the shortest path length from a specified start node to node i. 
+    # If a node is unreachable, set its distance to -1.
+    # Each edge is represented by a triplet of positive integers: the start node, the end node, and the weight of the edge.
+from collections import defaultdict
+import heapq
+from typing import List
+
+
+def shortest_path(n: int, edges: List[int], start: int) -> List[int]:
+    graph = defaultdict(list)
+    distances = [float('inf')] * n
+    distances[start] = 0
+    # Represent the graph as an adjacency list.
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+    min_heap = [(0, start)]  # (distance, node)
+    # Use Dijkstra's algorithm to find the shortest path between the start node
+    # and all other nodes.
+    while min_heap:
+        curr_dist, curr_node = heapq.heappop(min_heap)
+        # If the current distance to this node is greater than the recorded
+        # distance, we've already found the shortest distance to this node.
+        if curr_dist > distances[curr_node]:
+            continue
+        # Update the distances of the neighboring nodes.
+        for neighbor, weight in graph[curr_node]:
+            neighbor_dist = curr_dist + weight
+            # Only update the distance if we find a shorter path to this 
+            # neighbor.
+            if neighbor_dist < distances[neighbor]:
+                distances[neighbor] = neighbor_dist
+                heapq.heappush(min_heap, (neighbor_dist, neighbor))
+    # Convert all infinity values to -1, representing unreachable nodes.
+    return [-1 if dist == float('inf') else dist for dist in distances]
+
+
+#X25 (Medium) Connect the Dots
+    # Given a set of points on a plane, determine the minimum cost to connect all these points.
+    # The cost of connecting two points is equal to the Manhattan distance between them, 
+    # which is calculated as |x1 - x2| + |y1 - y2| for two points (x1, y1) and (x2, y2).
+from typing import List
+
+class UnionFind:
+    def __init__(self, size):
+        self.parent = [i for i in range(size)]
+        self.size = [1] * size
+ 
+    def union(self, x, y) -> bool:
+        rep_x, rep_y = self.find(x), self.find(y)
+        if rep_x != rep_y:
+            if self.size[rep_x] > self.size[rep_y]:
+                self.parent[rep_y] = rep_x
+                self.size[rep_x] += self.size[rep_y]
+            else:
+                self.parent[rep_x] = rep_y
+                self.size[rep_y] += self.size[rep_x]
+            # Return True if both groups were merged.
+            return True
+        # Return False if the points belong to the same group.
+        return False 
+
+
+    def find(self, x) -> int:
+        if x == self.parent[x]:
+            return x
+        self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+def connect_the_dots(points: List[List[int]]) -> int:
+    n = len(points)
+    # Create and populate a list of all possible edges.
+    edges = []
+    for i in range(n):
+        for j in range(i + 1, n):
+            # Manhattan distance.
+            cost = (abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]))
+            edges.append((cost, i, j))
+    # Sort the edges by their cost in ascending order.
+    edges.sort()
+    uf = UnionFind(n)
+    total_cost = edges_added = 0
+    # Use Kruskal's algorithm to create the MST and identify its minimum cost.
+    for cost, p1, p2 in edges:
+        # If the points are not already connected (i.e. their representatives are
+        # not the same), connect them, and add the cost to the total cost.
+        if uf.union(p1, p2):
+            total_cost += cost
+            edges_added += 1
+            # If n - 1 edges have been added to the MST, the MST is complete.
+            if edges_added == n - 1:
+                return total_cost
