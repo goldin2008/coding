@@ -996,7 +996,6 @@ class Solution:
 class Solution:
     def addOperators(self, num: 'str', target: 'int') -> 'List[str]':
         N = len(num)
-        answers = []
         def recurse(index, prev_operand, current_operand, value, string):
             # print(index)
             # Done processing all the digits in num
@@ -1039,6 +1038,8 @@ class Solution:
                 string.append('*'); string.append(str_op)
                 recurse(index + 1, current_operand * prev_operand, 0, value - prev_operand + (current_operand * prev_operand), string)
                 string.pop();string.pop()
+
+        answers = []
         recurse(0, 0, 0, 0, [])    
         return answers
 # Approach 2: Backtracking
