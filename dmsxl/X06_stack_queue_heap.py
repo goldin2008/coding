@@ -995,11 +995,10 @@ class Solution:
     # string: A list representing the current expression (used to build the final string).
 class Solution:
     def addOperators(self, num: 'str', target: 'int') -> 'List[str]':
-        N = len(num)
         def recurse(index, prev_operand, current_operand, value, string):
             # print(index)
             # Done processing all the digits in num
-            if index == N:
+            if index == len(num):
                 # If the final value == target expected AND
                 # no operand is left unprocessed
                 if value == target and current_operand == 0:
