@@ -1042,7 +1042,7 @@ class Solution:
         recurse(0, 0, 0, 0, [])    
         return answers
 # Approach 2: Backtracking
-#     The same as above but with a slightly different implementation.
+    # The same as above but with a slightly different implementation.
 # time complexity: O(4^n)
 # space complexity: O(n)
 class Solution:
