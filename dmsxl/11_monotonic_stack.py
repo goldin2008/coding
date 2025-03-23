@@ -1,5 +1,6 @@
 """
-
+monotonic stack
+单调栈
 """
 #1 (Medium) 739.每日温度
     # 请根据每日 气温 列表，重新生成一个列表。对应位置的输出为：要想观测到更高的气温，至少需要等待的天数。
@@ -39,6 +40,24 @@ class Solution:
                 stack.pop()
             stack.append(i)
         return answer
+# Mine
+class Solution:
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        stack = []
+        res = [0] * len(temperatures)
+        for i in range(len(temperatures)-1, -1, -1):
+            
+            while stack and stack[-1][0] <= temperatures[i]:
+                stack.pop()
+            
+            if not stack:
+                res[i] = 0
+            else:
+                res[i] = stack[-1][1] - i
+
+            stack.append((temperatures[i], i))
+
+        return res
 
 
 #2 (Easy) 496.下一个更大元素 I
@@ -63,6 +82,34 @@ class Solution:
     # 0 <= nums1[i], nums2[i] <= 10^4
     # nums1和nums2中所有整数 互不相同
     # nums1 中的所有整数同样出现在 nums2 中
+# ***** 方法一：暴力解法
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        # Dictionary to store the next greater element for each element in nums2
+        next_greater = {}
+        # Stack to keep track of elements for which we haven't found the next greater element yet
+        stack = []
+        
+        # Traverse nums2 to find the next greater element for each element
+        for num in nums2:
+            # While the stack is not empty and the current number is greater than the top of the stack
+            while stack and num > stack[-1]:
+                # Pop the top element from the stack and set its next greater element to the current number
+                next_greater[stack.pop()] = num
+            # Push the current number onto the stack
+            stack.append(num)
+        
+        # For elements remaining in the stack, there is no next greater element
+        while stack:
+            next_greater[stack.pop()] = -1
+        
+        # Build the result by looking up the next greater element for each element in nums1
+        result = []
+        for num in nums1:
+            result.append(next_greater.get(num, -1))
+        
+        return result
+
 class Solution:
     def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
         result = [-1]*len(nums1)
@@ -110,15 +157,18 @@ class Solution:
     # 1 <= nums.length <= 10^4
     # -10^9 <= nums[i] <= 10^9
 # 方法 1:
+# ***** 单调栈
 class Solution:
     def nextGreaterElements(self, nums: List[int]) -> List[int]:
-        dp = [-1] * len(nums)
+        n = len(nums)
+        dp = [-1] * n
         stack = []
+        # 循环两倍长度
+         # 这里使用i%len(nums)来模拟循环
         for i in range(len(nums)*2):
-            while(len(stack) != 0 and nums[i%len(nums)] > nums[stack[-1]]):
-                    dp[stack[-1]] = nums[i%len(nums)]
-                    stack.pop()
-            stack.append(i%len(nums))
+            while stack and nums[stack[-1]] < nums[i%n]:
+                    dp[stack.pop()] = nums[i%n]
+            stack.append(i%n)
         return dp
 # 方法 2:
 class Solution:
@@ -152,48 +202,13 @@ class Solution:
     # 输出：9
 # 通常是一维数组，要寻找任一个元素的右边或者左边第一个比自己大或者小的元素的位置，此时我们就要想到可以用单调栈了。
 # 而接雨水这道题目，我们正需要寻找一个元素，右边最大元素以及左边最大元素，来计算雨水面积。
-# 暴力解法
-# class Solution:
-#     def trap(self, height: List[int]) -> int:
-#         res = 0
-#         for i in range(len(height)):
-#             if i == 0 or i == len(height)-1: continue
-#             lHight = height[i-1]
-#             rHight = height[i+1]
-#             for j in range(i-1):
-#                 if height[j] > lHight:
-#                     lHight = height[j]
-#             for k in range(i+2,len(height)):
-#                 if height[k] > rHight:
-#                     rHight = height[k]
-#             res1 = min(lHight,rHight) - height[i]
-#             if res1 > 0:
-#                 res += res1
-#         return res
-# # 双指针
-# class Solution:
-#     def trap(self, height: List[int]) -> int:
-#         leftheight, rightheight = [0]*len(height), [0]*len(height)
-
-#         leftheight[0]=height[0]
-#         for i in range(1,len(height)):
-#             leftheight[i]=max(leftheight[i-1],height[i])
-#         rightheight[-1]=height[-1]
-#         for i in range(len(height)-2,-1,-1):
-#             rightheight[i]=max(rightheight[i+1],height[i])
-
-#         result = 0
-#         for i in range(0,len(height)):
-#             summ = min(leftheight[i],rightheight[i])-height[i]
-#             result += summ
-#         return result
-# 单调栈
-# 从栈头（元素从栈头弹出）到栈底的顺序应该是从小到大的顺序。
-# 因为一旦发现添加的柱子高度大于栈头元素了，此时就出现凹槽了，
-# 栈头元素就是凹槽底部的柱子，栈头第二个元素就是凹槽左边的柱子，而添加的元素就是凹槽右边的柱子。
-# 情况一：当前遍历的元素（柱子）高度小于栈顶元素的高度 height[i] < height[st.top()]
-# 情况二：当前遍历的元素（柱子）高度等于栈顶元素的高度 height[i] == height[st.top()]
-# 情况三：当前遍历的元素（柱子）高度大于栈顶元素的高度 height[i] > height[st.top()]
+# *** 单调栈
+    # 从栈头（元素从栈头弹出）到栈底的顺序应该是从小到大的顺序。
+    # 因为一旦发现添加的柱子高度大于栈头元素了，此时就出现凹槽了，
+    # 栈头元素就是凹槽底部的柱子，栈头第二个元素就是凹槽左边的柱子，而添加的元素就是凹槽右边的柱子。
+    # 情况一：当前遍历的元素（柱子）高度小于栈顶元素的高度 height[i] < height[st.top()]
+    # 情况二：当前遍历的元素（柱子）高度等于栈顶元素的高度 height[i] == height[st.top()]
+    # 情况三：当前遍历的元素（柱子）高度大于栈顶元素的高度 height[i] > height[st.top()]
 # *** 单调栈非压缩版 
 class Solution:
     def trap(self, height: List[int]) -> int:
@@ -255,6 +270,41 @@ class Solution:
                     result += h * w
             stack.append(i)
         return result
+# 暴力解法
+# class Solution:
+#     def trap(self, height: List[int]) -> int:
+#         res = 0
+#         for i in range(len(height)):
+#             if i == 0 or i == len(height)-1: continue
+#             lHight = height[i-1]
+#             rHight = height[i+1]
+#             for j in range(i-1):
+#                 if height[j] > lHight:
+#                     lHight = height[j]
+#             for k in range(i+2,len(height)):
+#                 if height[k] > rHight:
+#                     rHight = height[k]
+#             res1 = min(lHight,rHight) - height[i]
+#             if res1 > 0:
+#                 res += res1
+#         return res
+# 双指针
+# class Solution:
+#     def trap(self, height: List[int]) -> int:
+#         leftheight, rightheight = [0]*len(height), [0]*len(height)
+
+#         leftheight[0]=height[0]
+#         for i in range(1,len(height)):
+#             leftheight[i]=max(leftheight[i-1],height[i])
+#         rightheight[-1]=height[-1]
+#         for i in range(len(height)-2,-1,-1):
+#             rightheight[i]=max(rightheight[i+1],height[i])
+
+#         result = 0
+#         for i in range(0,len(height)):
+#             summ = min(leftheight[i],rightheight[i])-height[i]
+#             result += summ
+#         return result
 
 
 #5 (Hard) 84.柱状图中最大的矩形
