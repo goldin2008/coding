@@ -17,7 +17,7 @@
 
 for循环横向遍历,递归纵向遍历,回溯不断调整结果集
 大家可以从图中看出for循环可以理解是横向遍历, backtracking (递归) 就是纵向遍历, 这样就把这棵树全遍历完了, 一般来说, 搜索叶子节点就是找的其中一个结果了。
-优化回溯算法只有剪枝一种方法
+优化回溯算法**只有剪枝**一种方法
 
 回溯算法能解决如下问题:
 组合问题: N个数里面按一定规则找出k个数的集合
@@ -83,31 +83,35 @@ class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         res=[]  #存放符合条件结果的集合
         path=[]  #用来存放符合条件结果
-        def backtrack(n,k,startIndex):
+
+        def backtrack(n, k, startIndex):
             if len(path) == k:
                 res.append(path[:])
                 return
+
             # for i in range(startIndex, n+1):
-            for i in range(startIndex,n-(k-len(path))+2):  #优化的地方
+            for i in range(startIndex, n- (k-len(path)) +2):  #优化的地方
                 path.append(i)  #处理节点
-                backtrack(n,k,i+1)  #递归
+                backtrack(n, k, i+1)  #递归
                 path.pop()  #回溯, 撤销处理的节点
-        backtrack(n,k,1)
+
+        backtrack(n, k, 1)
         return res
 # 未剪枝优化
-# class Solution:
-#     def combine(self, n: int, k: int) -> List[List[int]]:
-#         result = []  # 存放结果集
-#         self.backtracking(n, k, 1, [], result)
-#         return result
-#     def backtracking(self, n, k, startIndex, path, result):
-#         if len(path) == k:
-#             result.append(path[:])
-#             return
-#         for i in range(startIndex, n + 1):  # 需要优化的地方
-#             path.append(i)  # 处理节点
-#             self.backtracking(n, k, i + 1, path, result)
-#             path.pop()  # 回溯，撤销处理的节点
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        result = []  # 存放结果集
+        self.backtracking(n, k, 1, [], result)
+        return result
+
+    def backtracking(self, n, k, startIndex, path, result):
+        if len(path) == k:
+            result.append(path[:])
+            return
+        for i in range(startIndex, n + 1):  # 需要优化的地方
+            path.append(i)  # 处理节点
+            self.backtracking(n, k, i + 1, path, result)
+            path.pop()  # 回溯，撤销处理的节点
 # # 剪枝优化
 # class Solution:
 #     def combine(self, n: int, k: int) -> List[List[int]]:
@@ -132,20 +136,23 @@ class Solution:
 class Solution:
     def __init__(self):
         self.res = []
-        self.sum_now = 0
         self.path = []
+        self.sum_now = 0
 
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         self.backtracking(k, n, 1)
         return self.res
 
     def backtracking(self, k: int, n: int, start_num: int):
+        # 剪枝
         if self.sum_now > n:  # 剪枝
             return
+        # Base Case
         if len(self.path) == k:  # len(path)==k时不管sum是否等于n都会返回
             if self.sum_now == n:
                 self.res.append(self.path[:])
             return
+        # 单层递归逻辑
         for i in range(start_num, 10 - (k - len(self.path)) + 1):
             self.path.append(i)
             self.sum_now += i
@@ -290,15 +297,18 @@ class Solution:
             "wxyz"  # 9
         ]
         self.result = []
+    # 回溯
     def letterCombinations(self, digits):
         if len(digits) == 0:
             return self.result
         self.getCombinations(digits, 0, "")
         return self.result    
+    # 回溯函数
     def getCombinations(self, digits, index, s):
         if index == len(digits):
             self.result.append(s)
             return
+        
         digit = int(digits[index])
         letters = self.letterMap[digit]
         for letter in letters:
@@ -400,7 +410,7 @@ def backtrack(i: int, curr_combination: List[str], digits: str, keypad_map: Dict
 #X4 (Medium) 39.组合总和
     # 给定一个无重复元素的数组 candidates 和一个目标数 target , 找出 candidates 中所有可以使数字和为 target 的组合。
     # 示例 1： 输入：candidates = [2,3,6,7], target = 7, 所求解集为： [ [7], [2,2,3] ]
-    # 示例 2： 输入：candidates = [2,3,5], target = 8, 所求解集为： [   [2,2,2,2],   [2,3,3],   [3,5] ]
+    # 示例 2： 输入：candidates = [2,3,5], target = 8, 所求解集为： [ [2,2,2,2], [2,3,3], [3,5] ]
 # 如果是一个集合来求组合的话，就需要startIndex. 例如：77.组合 ，216.组合总和III 。
 # 如果是多个集合取组合，各个集合之间相互不影响，那么就不用startIndex，例如：17.电话号码的字母组合
 # *** 回溯 + 剪枝
@@ -504,6 +514,7 @@ class Solution:
         candidates.sort()
         self.backtracking(candidates, target, 0, [], result)
         return result
+
     def backtracking(self, candidates, target, startIndex, path, result):
         if target == 0:
             result.append(path[:])
@@ -1122,7 +1133,7 @@ class Solution:
     def backtracking(self, nums, startIndex, path, result):
         result.append(path[:])  # 收集子集
         for i in range(startIndex, len(nums)):
-            # 而我们要对同一树层使用过的元素进行跳过
+            # 而我们要对同一树层使用过的元素进行跳过, i > startIndex表示同一树层，已经使用过i=startIndex,使用过nums[i-1]
             if i > startIndex and nums[i] == nums[i - 1]:
                 continue
             path.append(nums[i])
@@ -1315,6 +1326,7 @@ class Solution:
 #             self.path.pop()
 # *** 回溯 使用used
 # 使用used因为每次都是从第一个item遍历，这样才能保证所有item都考虑到了。因为没有用start index
+# 使用start index是因为每次都从当前的start index开始遍历，这样就可以避免重复考虑了, 但是全排列需要考虑所有的item，所以不能用start index
 class Solution:
     def permute(self, nums):
         result = []
@@ -1325,6 +1337,7 @@ class Solution:
         if len(path) == len(nums):
             result.append(path[:])
             return
+
         for i in range(len(nums)):
             if used[i]:
                 continue
@@ -1342,7 +1355,6 @@ class Solution:
     #          [6, 4, 5], [6, 5, 4]]
 from typing import List, Set
 
-
 def find_all_permutations(nums: List[int]) -> List[List[int]]:
     res = []
     backtrack(nums, [], set(), res)
@@ -1354,6 +1366,7 @@ def backtrack(nums: List[int], candidate: List[int], used: Set[int], res: List[L
     if len(candidate) == len(nums):
         res.append(candidate[:])
         return
+
     for num in nums:
         if num not in used:
             # Add 'num' to the current permutation and mark it as used.
@@ -1406,6 +1419,7 @@ class Solution:
         if len(path) == len(nums):
             result.append(path[:])
             return
+
         for i in range(len(nums)):
             # used[i]用来检测是不是用过当前元素
             if (i > 0 and nums[i] == nums[i - 1] and not used[i - 1]) or used[i]:
@@ -1419,9 +1433,14 @@ class Solution:
 # 使用set来对本层去重的代码实现
 # 两种写法的性能分析
     # 需要注意的是：使用set去重的版本相对于used数组的版本效率都要低很多，大家在leetcode上提交，能明显发现。
-    # 原因在回溯算法：递增子序列 中也分析过，主要是因为程序运行的时候对unordered_set 频繁的insert，unordered_set需要做哈希映射（也就是把key通过hash function映射为唯一的哈希值）相对费时间，而且insert的时候其底层的符号表也要做相应的扩充，也是费时的。
+    # 原因在回溯算法：递增子序列 中也分析过，主要是因为程序运行的时候对unordered_set 频繁的insert，
+    # unordered_set需要做哈希映射（也就是把key通过hash function映射为唯一的哈希值）相对费时间，
+    # 而且insert的时候其底层的符号表也要做相应的扩充，也是费时的。
+
     # 而使用used数组在时间复杂度上几乎没有额外负担！
-    # 使用set去重，不仅时间复杂度高了，空间复杂度也高了，在本周小结！（回溯算法系列三） 中分析过，组合，子集，排列问题的空间复杂度都是O(n)，但如果使用set去重，空间复杂度就变成了O(n^2)，因为每一层递归都有一个set集合，系统栈空间是n，每一个空间都有set集合。
+    # 使用set去重，不仅时间复杂度高了，空间复杂度也高了，在本周小结！（回溯算法系列三） 中分析过，
+    # 组合，子集，排列问题的空间复杂度都是O(n)，但如果使用set去重，空间复杂度就变成了O(n^2)，
+    # 因为每一层递归都有一个set集合，系统栈空间是n，每一个空间都有set集合。
     # 那有同学可能疑惑 用used数组也是占用O(n)的空间啊？
     # used数组可是全局变量，每层与每层之间公用一个used数组，所以空间复杂度是O(n + n)，最终空间复杂度还是O(n)。
 # 90.子集II
@@ -1642,7 +1661,9 @@ class Solution:
                 i -= 1
                 j += 1
             return True
-
+        # 回溯
+            # row表示当前在哪一行摆放皇后
+            # n表示棋盘的宽度
         def backtracking(board, row, n):
             # 如果走到最后一行, 说明已经找到一个解
             if row == n:
@@ -1651,6 +1672,8 @@ class Solution:
                     temp_str = "".join(temp)
                     temp_res.append(temp_str)
                 res.append(temp_res)
+                return
+            # 遍历每一列
             for col in range(n):
                 if not isVaild(board, row, col):
                     continue
@@ -1721,6 +1744,8 @@ def dfs(r: int, diagonals_set: Set[int], anti_diagonals_set: Set[int], cols_set:
     if r == n:
         res += 1
         return
+    # Try placing a queen in each column of the current row 'r'.
+        # Iterate through all columns in the current row.
     for c in range(n):
         curr_diagonal = r - c
         curr_anti_diagonal = r + c
