@@ -540,7 +540,7 @@ class Solution:
         return int(stack.pop()) # 如果一开始只有一个数,那么会是字符串形式的
 
 
-#X6 (Hard) 239. 滑动窗口最大值
+#X6 (Hard) 239. 滑动窗口最大值 (monotonic queue)
     # 给定一个数组 nums,有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。
     # 滑动窗口每次只向右移动一位。返回滑动窗口中的最大值。
     # 进阶：
@@ -1045,6 +1045,11 @@ class Solution:
     # The same as above but with a slightly different implementation.
 # time complexity: O(4^n)
 # space complexity: O(n)
+    # index: Current position in the number string
+    # prev_op: The previous operand (used for multiplication precedence)
+    # cur_op: Current operand being formed
+    # value: Current accumulated value of the expression
+    # string: List representing the current expression being built
 class Solution:
     def addOperators(self, num: str, target: int) -> List[str]:
         def backtrack(index, prev_op, cur_op, value, string):
@@ -1072,6 +1077,11 @@ class Solution:
                 # Try adding '-'
                 backtrack(index + 1, -cur_op, 0, value - cur_op, string + ['-', str_op])
                 # Try adding '*'
+                # Why This Special Handling is Needed:
+                # Multiplication has higher precedence than addition/subtraction, so we need to:
+                # Undo the previous operation
+                # Then apply the multiplication
+                # This ensures expressions like "2+3*4" evaluate to 14 (not 20)
                 backtrack(index + 1, prev_op * cur_op, 0, value - prev_op + (prev_op * cur_op), string + ['*', str_op])
         
         result = []
@@ -1396,6 +1406,26 @@ The heapq.heapify function is used to transform a regular list into a heap in-pl
 It rearranges the elements of the list to satisfy the heap property, 
 which is essential for efficient heap operations like heappush, heappop, etc.
 """
+# ***** Max-Heap
+import heapq
+class Solution:
+    def topKFrequent(self, words: List[str], k: int) -> List[str]:
+        hashmap = {}
+        max_heap = []
+
+        for w in words:
+            hashmap[w] = hashmap.get(w, 0) + 1
+        
+        for key, freq in hashmap.items():
+            heapq.heappush(max_heap, (-freq, key))
+        
+        res = [""] * k
+        for i in range(k):
+            res[i] = heapq.heappop(max_heap)[1]
+        
+        return res
+
+# Max-Heap
 from collections import Counter
 import heapq
 from typing import List
@@ -1426,7 +1456,7 @@ def k_most_frequent_strings_max_heap(strs: List[str], k: int) -> List[str]:
     # these 'k' most frequent strings.
     return [heapq.heappop(max_heap).str for _ in range(k)]
 
-
+# Min-Heap
 from collections import Counter
 import heapq
 from typing import List
@@ -1460,25 +1490,6 @@ def k_most_frequent_strings_min_heap(strs: List[str], k: int) -> List[str]:
     res = [heapq.heappop(min_heap).str for _ in range(k)]
     res.reverse()
     return res
-
-# ***** Max-Heap
-import heapq
-class Solution:
-    def topKFrequent(self, words: List[str], k: int) -> List[str]:
-        hashmap = {}
-        max_heap = []
-
-        for w in words:
-            hashmap[w] = hashmap.get(w, 0) + 1
-        
-        for key, freq in hashmap.items():
-            heapq.heappush(max_heap, (-freq, key))
-        
-        res = [""] * k
-        for i in range(k):
-            res[i] = heapq.heappop(max_heap)[1]
-        
-        return res
 
 
 #X14 (Medium) Combine Sorted Linked Lists
