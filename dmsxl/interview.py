@@ -435,3 +435,64 @@ def count_set_bits(n):
 number = "1101"
 requests = ["?", "+", "?", "+", "?", "+", "?"]
 print(solution(number, requests))  # Expected output: [3, 3, 4, 1]
+
+
+#15 (Medium) 518.零钱兑换II
+    # 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。
+    # 示例 1:
+    # 输入: amount = 5, coins = [1, 2, 5]
+    # 输出: 4
+    # 解释: 有四种方式可以凑成总金额:
+    # 5=5
+    # 5=2+2+1
+    # 5=2+1+1+1
+    # 5=1+1+1+1+1
+    # 示例 2:
+    # 输入: amount = 3, coins = [2]
+    # 输出: 0
+    # 解释: 只用面额2的硬币不能凑成总金额3。
+    # 示例 3:
+    # 输入: amount = 10, coins = [10]
+    # 输出: 1
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        dp = [0]*(amount + 1)
+        dp[0] = 1
+        # 遍历物品
+        for i in range(len(coins)):
+            # 遍历背包
+            for j in range(coins[i], amount + 1):
+                dp[j] += dp[j - coins[i]]
+        return dp[amount]
+
+
+# (Medium) 322.零钱兑换
+    # 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+    # 你可以认为每种硬币的数量是无限的。
+    # 示例 1：
+    # 输入：coins = [1, 2, 5], amount = 11
+    # 输出：3
+    # 解释：11 = 5 + 5 + 1
+    # 示例 2：
+    # 输入：coins = [2], amount = 3
+    # 输出：-1
+    # 示例 3：
+    # 输入：coins = [1], amount = 0
+    # 输出：0
+    # 示例 4：
+    # 输入：coins = [1], amount = 1
+    # 输出：1
+    # 示例 5：
+    # 输入：coins = [1], amount = 2
+    # 输出：2
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+
+        for coin in coins:
+            for i in range(coin, amount + 1): # 进行优化,从能装得下的背包开始计算,则不需要进行比较
+                # 更新凑成金额 i 所需的最少硬币数量
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+
+        return dp[amount] if dp[amount] != float('inf') else -1
