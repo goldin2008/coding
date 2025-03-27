@@ -1,5 +1,14 @@
 """
 DEShaw
+
+4, 22, 79, 85, 124, 142, 240, 239, 430, 797, 815, 1059, 1387, 
+
+https://math.stackexchange.com/questions/2991347/catalan-numbers-sequence-of-balanced-parentheses
+
+https://www.geeksforgeeks.org/maximum-number-of-overlapping-intervals/
+
+https://medium.com/@Todd_Rizley/technical-interview-prep-1-collatz-25debc24a972
+
 """
 #1 Count Integer Partitions
 # Given a positive integer n, find out how many ways of writing n as a sum of positive integers. 
