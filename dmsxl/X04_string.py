@@ -11,6 +11,19 @@ return ''.join(res)
 要对一句话里的单词顺序进行反转, 发现先整体反转再局部反转 是一个很妙的思路。
 左旋转字符串:
 是先局部反转再 整体反转, 与151.翻转字符串里的单词类似, 但是也是一种新的思路。
+
+Adding or removing (or even changing) just one character anywhere in a string is O(n), 
+because strings are immutable. The entire string is rebuilt for every change.
+Adding or removing not from the end of a list, vector, or array is O(n) because the 
+other items are moved up to make a gap or down to fill in the gap.
+Checking if an item is in a list, because this requires a linear search. 
+Even if you use binary search, it'll still be O(logn), which is not ideal for this problem.
+A safe strategy is to iterate over the string and insert each character we want to keep into 
+a list (Python) or StringBuilder (Java). Then once we have all the characters, it is a single 
+O(n) step to convert them into a string.
+Recall that checking if an item is in a set is O(1). If all the indexes we need to remove are 
+in a set, then we can iterate through each index in the string, check if the current index 
+is in the set, and if it is not, then add the character at that index to the string builder.
 """
 class Solution:
     #1.去除多余的空格
