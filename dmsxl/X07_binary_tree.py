@@ -110,7 +110,7 @@ NOTE:
 
 DFS 深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list [], st = []
 可用st.pop()获得item (last one(right) in the stack)
-`深度遍历先遍历子node, 然后再处理node`. 用同一写法的话,都是先遍历(包括用None来先标记处理node)在处理.
+**深度遍历先遍历子node, 然后再处理node**. 用同一写法的话,都是先遍历(包括用None来先标记处理node)在处理.
 "所以是preorder的话, 先处理node再添加子node; 如果不是preorder, 需要用None标记待处理node"
 重点:要区分先处理还是后处理node
 
