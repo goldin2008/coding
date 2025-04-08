@@ -49,21 +49,23 @@ else:
 
 
 # Max-Heap data structure in Python
-def heapify(arr, n, i):
-    # Find largest among root, left child and right child
-    largest = i
-    l = 2 * i + 1
-    r = 2 * i + 2 
-    
-    if l < n and arr[i] < arr[l]:
-        largest = l
-    
-    if r < n and arr[largest] < arr[r]:
-        largest = r
-    
+def max_heapify(arr, n, i):
+    largest = i          # Initialize largest as root
+    left = 2 * i + 1     # Left child
+    right = 2 * i + 2    # Right child
+
+    # If left child exists and is greater than root
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+
+    # If right child exists and is greater than current largest
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+
+    # If largest is not root, swap and heapify the affected subtree
     if largest != i:
-        arr[i],arr[largest] = arr[largest],arr[i]
-        heapify(arr, n, largest)
+        arr[i], arr[largest] = arr[largest], arr[i]  # Swap
+        max_heapify(arr, n, largest)  # Recursively heapify
 
 def insert(array, newNum):
     size = len(array)
@@ -107,8 +109,8 @@ NOTE:
 递归(深度和广度)只需要function call function, 用一个result储存结果;
 
 DFS 深度(迭代)需要额外用stack来存遍历的node, 用while循环来遍历stack里面的所有node。数据结构栈stack用list [], st = []
-可用st.pop()获得item (last one in the stack)
-深度遍历先遍历子node, 然后再处理node. 用同一写法的话,都是先遍历(包括用None来先标记处理node)在处理.
+可用st.pop()获得item (last one(right) in the stack)
+`深度遍历先遍历子node, 然后再处理node`. 用同一写法的话,都是先遍历(包括用None来先标记处理node)在处理.
 "所以是preorder的话, 先处理node再添加子node; 如果不是preorder, 需要用None标记待处理node"
 重点:要区分先处理还是后处理node
 
