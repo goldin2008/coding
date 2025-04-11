@@ -1531,7 +1531,7 @@ def combine_sorted_linked_lists(lists: List[ListNode]) -> ListNode:
     return dummy.next
 
 
-#X15 (Hard) Median of an Integer Stream
+#X15 (Hard) 295.Median of an Integer Stream
     # Design a data structure that supports adding integers from a data stream 
     # and retrieving the median of all elements received at any point.
     # add(num: int) -> None: adds an integer to the data structure.

@@ -212,7 +212,7 @@ void searchBST(TreeNode* cur) {
 }
 
 """
-DFS 深度优先(前中后序遍历) 递归
+DFS 深度优先(前中后序遍历) 递归 Recursion
 """
 #1 (Easy) 前序遍历-递归-LC144_二叉树的前序遍历
 # Definition for a binary tree node.
@@ -295,7 +295,7 @@ class Solution:
 
 
 """
-DFS 深度优先(前中后序遍历) 迭代
+DFS 深度优先(前中后序遍历) 迭代 Iteration
 数据结构: 栈 stack, [] in python
 注意放入stack的顺序,如是前中后,放入的应该是后中前,因为先遍历再处理.因为用的是stack,所以遍历是处理的反顺序.
 """
@@ -367,21 +367,56 @@ class Solution:
                 result.append(node.val)
         return result
 
+class Solution:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+        
+        st = [root]
+        res = []
+        while st:
+            cur = st.pop()
+            if cur != None:
+                st.append(cur)
+                st.append(None)
+
+                if cur.right:
+                    st.append(cur.right)
+
+                if cur.left:
+                    st.append(cur.left)
+            else:
+                cur = st.pop()
+                res.append(cur.val)
+        return res
 
 """
-*** BFS 广度优先(层序遍历) 递归
+*** BFS 广度优先(层序遍历) 递归 Recursion
+preorder: 先处理node, 再遍历添加子node
 """
 #4 (Medium) 102.二叉树的层序遍历
     # 给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+# Input: root = [3,9,20,null,null,15,7]
+# Output: [[3],[9,20],[15,7]]
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
         res = []
         def helper(root, depth):
             if not root: return []
-            if len(res) == depth: res.append([]) # start the current depth
+            # if not root:
+            #     return  # Works fine (implicit `None`)
+            # # OR
+            # if not root:
+            #     pass  # Also valid, but less common
+
+            # If the current depth (depth) equals the length of res, 
+            # it means we are encountering this depth for the first time, 
+            # so we append an empty list to res to start storing nodes at this level.
+            if len(res) == depth: res.append([]) # start the current depth 
             res[depth].append(root.val) # fulfil the current depth
             if  root.left: helper(root.left, depth + 1) # process child nodes for the next depth
             if  root.right: helper(root.right, depth + 1)
+
         helper(root, 0)
         return res
 # 递归法
@@ -408,7 +443,7 @@ class Solution:
 
 
 """
-BFS 广度优先(层序遍历) 迭代
+BFS 广度优先(层序遍历) 迭代 Iteration
 数据结构: 队列 queue, deque() in python
 """
 # 利用迭代法
