@@ -46,3 +46,31 @@ def getKth(lo: int, hi: int, k: int) -> int:
     numbers.sort()
     return numbers[k-1][1]
 
+
+# X07_binary_tree.py
+#19 (Easy) 111.二叉树的最小深度
+    # 给定一个二叉树, 找出其最小深度。
+    # 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+# 需要注意的是，只有当左右孩子都为空的时候，才说明遍历到最低点了。如果其中一个孩子不为空则不是最低点
+# 递归法（版本一）后序遍历 postorder ???
+class Solution:
+    def minDepth(self, root):
+        return self.getDepth(root)
+
+    def getDepth(self, node):
+        if node is None:
+            return 0
+        leftDepth = self.getDepth(node.left)  # 左
+        rightDepth = self.getDepth(node.right)  # 右
+        
+        # 当一个左子树为空，右不为空，这时并不是最低点
+        if node.left is None and node.right is not None:
+            return 1 + rightDepth
+        
+        # 当一个右子树为空，左不为空，这时并不是最低点
+        if node.left is not None and node.right is None:
+            return 1 + leftDepth
+        
+        # The current node's depth is calculated after its children's depths are computed
+        result = 1 + min(leftDepth, rightDepth) # 中 
+        return result
