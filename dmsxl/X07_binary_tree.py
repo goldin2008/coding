@@ -185,7 +185,7 @@ morris遍历是二叉树遍历算法的超强进阶算法, morris遍历可以将
 """
 
 """
-二叉树的理论基础
+1. 二叉树的理论基础
 关于二叉树，你该了解这些！ ：二叉树的种类、存储方式、遍历方式、定义方式
 二叉树的遍历方式
 深度优先遍历
@@ -511,14 +511,13 @@ class Solution:
 
 #6 (Medium) 107.二叉树的层次遍历 II
     # 给定一个二叉树，返回其节点值自底向上的层次遍历。 （即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
-class Solution:
-    """二叉树层序遍历II迭代解法"""
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
 #         self.left = left
 #         self.right = right
+# 迭代
 class Solution:
     def levelOrderBottom(self, root: TreeNode) -> List[List[int]]:
         if not root:
@@ -535,7 +534,7 @@ class Solution:
                 if cur.right:
                     queue.append(cur.right)
             result.append(level)
-        return result[::-1]
+        return result[::-1] # 反转结果
 
 
 #7 (Medium) 199.二叉树的右视图
@@ -556,7 +555,6 @@ class Solution:
         
         while queue:
             level_size = len(queue)
-            
             for i in range(level_size):
                 node = queue.popleft()
                 
@@ -573,14 +571,13 @@ class Solution:
 
 #8 (Easy) 637.二叉树的层平均值
     # 给定一个非空二叉树, 返回一个由每层节点平均值组成的数组。
-class Solution:
-    """二叉树层平均值迭代解法"""
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
 #         self.val = val
 #         self.left = left
 #         self.right = right
+# 迭代
 class Solution:
     def averageOfLevels(self, root: TreeNode) -> List[float]:
         if not root:
@@ -612,13 +609,11 @@ class Solution:
     # 429. N叉树的层序遍历
     # 返回其层序遍历:
     # [ [1], [3,2,4], [5,6] ]
-"""
 # Definition for a Node.
-class Node:
-    def __init__(self, val=None, children=None):
-        self.val = val
-        self.children = children
-"""
+# class Node:
+#     def __init__(self, val=None, children=None):
+#         self.val = val
+#         self.children = children
 class Solution:
     def levelOrder(self, root: 'Node') -> List[List[int]]:
         if not root:
@@ -688,15 +683,13 @@ class Solution:
     # }
     # 填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
     # 初始状态下，所有 next 指针都被设置为 NULL。
-"""
 # Definition for a Node.
-class Node:
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
-"""
+# class Node:
+#     def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#         self.next = next
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root:
@@ -706,7 +699,7 @@ class Solution:
         
         while queue:
             level_size = len(queue)
-            prev = None
+            prev = None # 记录上一个节点, each level, reset to None
             
             for i in range(level_size):
                 node = queue.popleft()
@@ -728,15 +721,13 @@ class Solution:
 #12 (Medium) 117.填充每个节点的下一个右侧节点指针II
     # 这道题目说是二叉树，但116题目说是完整二叉树，其实没有任何差别，一样的代码一样的逻辑一样的味道
 # 层序遍历解法
-"""
 # Definition for a Node.
-class Node:
-    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.next = next
-"""
+# class Node:
+#     def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+#         self.next = next
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         if not root:
@@ -809,6 +800,7 @@ class Solution:
     def minDepth(self, root: TreeNode) -> int:
         if not root:
             return 0
+
         depth = 0
         queue = collections.deque([root])
         
@@ -831,6 +823,7 @@ class Solution:
 
 #15 (Easy) 226.翻转二叉树
     # 翻转一棵二叉树。
+# 这道题目使用前序遍历和后序遍历都可以，唯独中序遍历不方便，因为中序遍历会把某些节点的左右孩子翻转了两次！建议拿纸画一画，就理解了
 ## *** 递归法：前序遍历
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
@@ -851,10 +844,11 @@ class Solution:
         while st:
             node = st.pop()
             node.left, node.right = node.right, node.left #中
-            if node.left:
-                st.append(node.left) #左
             if node.right:
                 st.append(node.right) #右
+            if node.left:
+                st.append(node.left) #左
+
         return root
 
 
@@ -868,6 +862,8 @@ class Solution:
         self.invertTree(root.left)
         return root
 # 迭代法：中序遍历
+# 迭代法，伪中序遍历（结果是对的，看起来像是中序遍历，实际上它是前序遍历，
+# 只不过把中间节点处理逻辑放到了中间。还是要用'统一写法'才是真正的中序遍历）：
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if not root:
@@ -875,8 +871,8 @@ class Solution:
         stack = [root]        
         while stack:
             node = stack.pop()                   
-            if node.left:
-                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
             node.left, node.right = node.right, node.left               
             if node.right:
                 stack.append(node.right)       
@@ -893,6 +889,8 @@ class Solution:
         root.left, root.right = root.right, root.left
         return root
 # 迭代法：后序遍历
+# 迭代法，伪后序遍历（结果是对的，看起来像是后序遍历，实际上它是前序遍历，
+# 只不过把中间节点处理逻辑放到了最后。还是要用'统一写法'才是真正的后序遍历）：
 class Solution:
     def invertTree(self, root: TreeNode) -> TreeNode:
         if not root:
@@ -900,10 +898,10 @@ class Solution:
         stack = [root]        
         while stack:
             node = stack.pop()                   
-            if node.left:
-                stack.append(node.left)
             if node.right:
                 stack.append(node.right)  
+            if node.left:
+                stack.append(node.left)
             node.left, node.right = node.right, node.left
         return root
 
@@ -928,7 +926,7 @@ class Solution:
 
 
 """
-求二叉树的属性
+2. 求二叉树的属性
 二叉树：是否对称
 递归：后序，比较的是根节点的左子树与右子树是不是相互翻转
 迭代：使用队列/栈将两个节点顺序放入容器中进行比较
