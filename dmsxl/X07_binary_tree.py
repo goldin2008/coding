@@ -1356,11 +1356,13 @@ class Solution:
     # 示例 2:
     # 给定二叉树 [1,2,2,3,3,null,null,4,4]
     # 返回 false 。
-# 求深度可以从上到下去查 所以需要**前序遍历**（中左右），而高度只能从下到上去查，所以只能**后序遍历**（左右中）
-# 都知道回溯法其实就是递归，但是很少人用迭代的方式去实现回溯算法！
-# 因为对于回溯算法已经是非常复杂的递归了，如果再用迭代的话，就是自己给自己找麻烦，效率也并不一定高。
-# 讲了这么多二叉树题目的迭代法，有的同学会疑惑，迭代法中究竟什么时候用队列，什么时候用栈？
-# 如果是模拟前中后序遍历就用栈，如果是适合层序遍历就用队列，当然还是其他情况，那么就是 先用队列试试行不行，不行就用栈。
+"""
+求深度可以从上到下去查 所以需要**前序遍历 Preorder**（中左右），而高度只能从下到上去查，所以只能**后序遍历 Postorder**（左右中）
+都知道回溯法其实就是递归，但是很少人用迭代的方式去实现回溯算法！
+因为对于回溯算法已经是非常复杂的递归了，如果再用迭代的话，就是自己给自己找麻烦，效率也并不一定高。
+讲了这么多二叉树题目的迭代法，有的同学会疑惑，迭代法中究竟什么时候用队列，什么时候用栈？
+如果是模拟前中后序遍历就用栈，如果是适合层序遍历就用队列，当然还是其他情况，那么就是 先用队列试试行不行，不行就用栈。
+"""
 # 递归法
 class Solution:
     def isBalanced(self, root: TreeNode) -> bool:
@@ -1553,7 +1555,6 @@ class Solution:
 #             if cur.left:
 #                 stack.append(cur.left)
 #                 path_st.append(path + '->' + str(cur.left.val))
-
 #         return result
 
 
@@ -1577,7 +1578,8 @@ class Solution:
 
 #         sum_val = leftValue + rightValue  # 中
 #         return sum_val
-# 递归精简版
+# 递归精简版 (前序遍历)
+# 递归法 + 回溯
 class Solution:
     def sumOfLeftLeaves(self, root):
         if root is None:
@@ -1602,7 +1604,23 @@ class Solution:
             if node.left:
                 st.append(node.left)
         return result
+# Mine (前序遍历)
+class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+        ans = 0
 
+        if not root:
+            return 0
+        if root.left and not root.left.left and not root.left.right:
+            ans = root.left.val
+
+        if root.left:
+            ans += self.sumOfLeftLeaves(root.left)
+
+        if root.right:
+            ans += self.sumOfLeftLeaves(root.right)
+        
+        return ans
 
 #24 (Medium) 513.找树左下角的值
     # 给定一个二叉树, 在树的最后一行找到最左边的值。
@@ -1675,12 +1693,41 @@ class Solution:
     # 说明: 叶子节点是指没有子节点的节点。
     # 示例: 给定如下二叉树，以及目标和 sum = 22，
     # 返回 true, 因为存在目标和为 22 的根节点到叶子节点的路径 5->4->11->2。
+# 统一写法112和113
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+
+        if not root:
+            return False
+        
+        path = [root.val]
+        res = []
+        def traversal(node, path):
+            if not node.left and not node.right:
+                if sum(path) == targetSum:
+                    res.append(path[:])
+                return
+
+            if node.left:
+                path.append(node.left.val)
+                traversal(node.left, path)
+                path.pop()
+            if node.right:
+                path.append(node.right.val)
+                traversal(node.right, path)
+                path.pop()
+
+        traversal(root, path)
+        return bool(res)
+
 # *** (版本一) 递归
 class Solution:
     def hasPathSum(self, root: TreeNode, sum: int) -> bool:
         if root is None:
             return False
+        
         return self.traversal(root, sum - root.val)
+    
     def traversal(self, cur: TreeNode, count: int) -> bool:
         if not cur.left and not cur.right and count == 0: # 遇到叶子节点，并且计数为0
             return True
@@ -1737,7 +1784,140 @@ class Solution:
     # 给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
     # 说明: 叶子节点是指没有子节点的节点。
     # 示例: 给定如下二叉树，以及目标和 sum = 22，
+# 统一写法112和113
+# with targetsum, path and undo
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
+
+        if not root:
+            return []
+        
+        path = [root.val]
+        res = []
+        def traversal(node, count, path):
+            # print(path)
+            if not node.left and not node.right:
+                if count == 0:
+                    res.append(path[:])
+                return
+
+            if node.left:
+                # path.append(node.left.val)
+                # path.append(node.left.val) modifies path in-place and returns None (since list.append() is a void method).
+                # traversal(node.left, count-node.left.val, path.append(node.left.val))
+                traversal(node.left, count-node.left.val, path+[node.left.val])
+                # path.pop()
+                # Your commented-out path.pop() suggests you tried backtracking, but the current code doesn’t undo append operations.
+            if node.right:
+                traversal(node.right, count-node.right.val, path+[node.right.val])
+
+        traversal(root, targetsum-root.val, path)
+        return res
+# with targetSum
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
+
+        if not root:
+            return []
+        
+        path = [root.val]
+        res = []
+        def traversal(node, count):
+            if not node.left and not node.right:
+                if count == 0:
+                    res.append(path[:])
+                return
+
+            if node.left:
+                path.append(node.left.val)
+                traversal(node.left, count-node.left.val)
+                path.pop()
+            if node.right:
+                path.append(node.right.val)
+                traversal(node.right, count-node.right.val)
+                path.pop()
+
+        traversal(root, targetsum-root.val)
+        return res
+# func with nothing
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
+
+        if not root:
+            return []
+        
+        path = [root.val]
+        res = []
+        def traversal(node):
+            if not node.left and not node.right:
+                if sum(path) == targetsum:
+                    res.append(path[:])
+                return
+
+            if node.left:
+                path.append(node.left.val)
+                traversal(node.left)
+                path.pop()
+            if node.right:
+                path.append(node.right.val)
+                traversal(node.right)
+                path.pop()
+
+        traversal(root)
+        return res
+# func with path
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
+
+        if not root:
+            return []
+        
+        path = [root.val]
+        res = []
+        def traversal(node, path):
+            if not node.left and not node.right:
+                if sum(path) == targetsum:
+                    res.append(path[:])
+                return
+
+            if node.left:
+                path.append(node.left.val)
+                traversal(node.left, path)
+                path.pop()
+            if node.right:
+                path.append(node.right.val)
+                traversal(node.right, path)
+                path.pop()
+
+        traversal(root, path)
+        return res
+
 # *** (版本一) 递归
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
+        def traversal(cur_node, remain): 
+            if not cur_node.left and not cur_node.right:
+                if remain == 0: 
+                    result.append(path[:])
+                return
+
+            if cur_node.left: 
+                path.append(cur_node.left.val)
+                traversal(cur_node.left, remain-cur_node.left.val)
+                path.pop()
+
+            if cur_node.right: 
+                path.append(cur_node.right.val)
+                traversal(cur_node.right, remain-cur_node.right.val)
+                path.pop()
+
+        result, path = [], []
+        if not root: 
+            return []
+        path.append(root.val)
+        traversal(root, targetsum - root.val)
+        return result
+    
 class Solution:
     def __init__(self):
         self.result = []
