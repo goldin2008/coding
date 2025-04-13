@@ -1688,6 +1688,37 @@ class Solution:
         return result
 
 
+"""
+1. For Boolean Checks (Early Return):
+def traversal(node, count):
+    if not node.left and not node.right:
+        return count == 0  # True if match, False otherwise
+    
+    if node.left and traversal(node.left, count - node.left.val):
+        return True
+    if node.right and traversal(node.right, count - node.right.val):
+        return True
+    
+    return False  # No path found
+
+
+2. For Collecting Paths (No Early Return):
+def traversal(node, count, path, result):
+    if not node.left and not node.right:
+        if count == 0:
+            result.append(path.copy())
+        return  # No return value needed
+    
+    if node.left:
+        path.append(node.left.val)
+        traversal(node.left, count - node.left.val, path, result)
+        path.pop()  # Backtrack
+    
+    if node.right:
+        path.append(node.right.val)
+        traversal(node.right, count - node.right.val, path, result)
+        path.pop()  # Backtrack
+"""
 #25 (Easy) 112.路径总和
     # 给定一个二叉树和一个目标和, 判断该树中是否存在根节点到叶子节点的路径, 这条路径上所有节点值相加等于目标和。
     # 说明: 叶子节点是指没有子节点的节点。
@@ -1785,7 +1816,49 @@ class Solution:
     # 说明: 叶子节点是指没有子节点的节点。
     # 示例: 给定如下二叉树，以及目标和 sum = 22，
 # 统一写法112和113
-# with targetsum, path and undo
+# separate functions
+"""
+Potential Issues (Not Bugs, But Optimizations)
+Memory Usage:
+    path + [node.val] creates a new list at every step, which uses more memory than append/pop backtracking.
+    For large trees, this could lead to higher memory consumption.
+
+Redundant Copies:
+    path[:] creates another copy when appending to res, which is slightly redundant since path + [node.val] already created a new list.
+
+path.copy(): Explicitly calls the copy() method of the list (introduced in Python 3.3).
+path[:]: Uses slice notation to create a copy (works in all Python versions).
+"""
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
+
+        if not root:
+            return []
+        
+        path = [root.val]
+        res = []
+
+        self.traversal(root, targetsum-root.val, path, res)
+        return res
+
+    def traversal(self, node, count, path, res):
+        if not node.left and not node.right:
+            if count == 0:
+                # res.append(path[:])
+                res.append(path.copy())
+            return
+
+        if node.left:
+            path.append(node.left.val)
+            self.traversal(node.left, count-node.left.val, path, res)
+            path.pop()
+            # self.traversal(node.left, count-node.left.val, path+[node.left.val], res)
+        if node.right:
+            path.append(node.right.val)
+            self.traversal(node.right, count-node.right.val, path, res)
+            path.pop()
+            # self.traversal(node.right, count-node.right.val, path+[node.right.val], res)
+# nested function with targetsum, path and undo
 class Solution:
     def pathSum(self, root: Optional[TreeNode], targetsum: int) -> List[List[int]]:
 
