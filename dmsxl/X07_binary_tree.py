@@ -1562,7 +1562,7 @@ class Solution:
 #         return result
 
 
-#23 ??? (Easy) 404.左叶子之和
+#23 (Easy) 404.左叶子之和
     # 计算给定二叉树的所有左叶子之和。
 # 因为不能判断本节点是不是左叶子节点。
 # 此时就要通过节点的父节点来判断其左孩子是不是左叶子了。
@@ -2375,22 +2375,22 @@ class Solution:
     # 节点的右子树只包含大于当前节点的数。
     # 所有左子树和右子树自身必须也是二叉搜索树。
 # 迭代-中序遍历
-# class Solution:
-#     def isValidBST(self, root: TreeNode) -> bool:
-#         stack = []
-#         cur = root
-#         pre = None # 记录前一个节点
-#         while cur or stack:
-#             if cur: # 指针来访问节点, 访问到最底层
-#                 stack.append(cur)
-#                 cur = cur.left # 左
-#             else: # 逐一处理节点
-#                 cur = stack.pop() # 中
-#                 if pre and cur.val <= pre.val: # 比较当前节点和前节点的值的大小
-#                     return False
-#                 pre = cur # 保存前一个访问的结点
-#                 cur = cur.right  右
-#         return True
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        stack = []
+        cur = root
+        pre = None # 记录前一个节点
+        while cur or stack:
+            if cur: # 指针来访问节点, 访问到最底层
+                stack.append(cur)
+                cur = cur.left # 左
+            else: # 逐一处理节点 # No left child, process the node
+                cur = stack.pop() # 中 # Pop the last node (in-order)
+                if pre and cur.val <= pre.val: # 比较当前节点和前节点的值的大小
+                    return False
+                pre = cur # 保存前一个访问的结点
+                cur = cur.right  # 右
+        return True
 # 递归法（版本一）利用中序递增性质，转换成数组
 # class Solution:
 #     def __init__(self):
@@ -2447,7 +2447,48 @@ class Solution:
 
         right = self.isValidBST(root.right) # 右
         return left and right
+"""
+      5
+     / \
+    3   7
+   / \ / \
+  2  6 4  8  ← 6 > 5 (violation)
+    Walkthrough with Commentary
+    1. Start at root (5)
+        "I need to check the left subtree first"
+        Recursively call on left child (3)
+    2. At node 3
+        "First check left subtree (2)"
+        Recursively call on left child (2)
+    3. At node 2
+        Left child is None → return True
+        Check current node (2):
+        self.pre is None (first node) → valid
+        Update self.pre = 2
+        Right child is None → return True
+        Return (True and True) = True
+    4. Back to node 3
+        Left subtree returned True
+        Check current node (3):
+        self.pre is 2 → 2 < 3 → valid
+        Update self.pre = 3
+        "Now check right subtree (6)"
+        Recursively call on right child (6)
+    5. At node 6
+        Left child is None → return True
+        Check current node (6):
+        self.pre is 3 → 3 < 6 → valid
+        Update self.pre = 6
+        Right child is None → return True
+        Return (True and True) = True
+    6. Back to node 5
+        Left subtree returned True
+        Check current node (5):
+        self.pre is 6 → 6 >= 5 → VIOLATION
+        Immediately return False (don't need to check right subtree)
+"""
 
+                          
 
 #32 (Easy) 530.二叉搜索树的最小绝对差
     # 给你一棵所有节点为非负值的二叉搜索树, 请你计算树中任意两节点的差的绝对值的最小值。
@@ -2493,7 +2534,7 @@ class Solution:
             self.result = min(self.result, cur.val - self.pre.val)
         self.pre = cur  # 记录前一个
         self.traversal(cur.right)  # 右
-# ??? 迭代法
+# 迭代法
 class Solution:
     def getMinimumDifference(self, root):
         stack = []
@@ -2502,15 +2543,15 @@ class Solution:
         result = float('inf')
 
         while cur or stack:
-            if cur:
-                stack.append(cur)  # 将访问的节点放进栈
-                cur = cur.left  # 左
-            else:
-                cur = stack.pop()
+            if cur: # Go to the leftmost node
+                stack.append(cur)  # 将访问的节点放进栈 # Push current node to stack
+                cur = cur.left  # 左   # Move to left child
+            else: # No left child, process the node
+                cur = stack.pop()  # Pop the last node (in-order)
                 if pre:  # 中
                     result = min(result, cur.val - pre.val)
-                pre = cur
-                cur = cur.right  # 右
+                pre = cur # Update previous node
+                cur = cur.right  # 右     # Move to right subtree
 
         return result
 
@@ -2550,11 +2591,11 @@ class Solution:
 #         return result
 # *** 递归法（版本二）利用二叉搜索树性质
 class Solution:
-    def __init__(self):
-        self.maxCount = 0  # 最大频率
-        self.count = 0  # 统计频率
-        self.pre = None
-        self.result = []
+    # def __init__(self):
+    #     self.maxCount = 0  # 最大频率
+    #     self.count = 0  # 统计频率
+    #     self.pre = None
+    #     self.result = []
 
     def findMode(self, root):
         self.count = 0
@@ -2570,6 +2611,9 @@ class Solution:
             return
 
         self.searchBST(cur.left)  # 左
+
+
+        # 中序遍历，统计频率
         # 中
         if self.pre is None:  # 第一个节点
             self.count = 1
@@ -2585,6 +2629,7 @@ class Solution:
         if self.count > self.maxCount:  # 如果计数大于最大值频率
             self.maxCount = self.count  # 更新最大频率
             self.result = [cur.val]  # 很关键的一步，不要忘记清空result，之前result里的元素都失效了
+
 
         self.searchBST(cur.right)  # 右
         return
@@ -2647,8 +2692,8 @@ class Solution:
     # 所有节点的值都是唯一的。
     # p、q 为不同节点且均存在于给定的二叉树中。
 搜索一条边的写法:
-if (递归函数(root->left)) return ;
-if (递归函数(root->right)) return ;
+if (递归函数(root->left)) return;
+if (递归函数(root->right)) return;
 
 搜索整个树写法:
 left = 递归函数(root->left);  // 左
@@ -2671,6 +2716,7 @@ left与right的逻辑处理;         // 中
 #             return left
 #         return right
 # 递归法（版本一）
+# postorder
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         if root == q or root == p or root is None:
@@ -2741,7 +2787,7 @@ class Solution:
 
 #     def lowestCommonAncestor(self, root, p, q):
 #         return self.traversal(root, p, q)
-# *** 迭代法（版本二）精简
+# *** 递归法（版本二）精简
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         if root.val > p.val and root.val > q.val:
