@@ -926,6 +926,42 @@ class Solution:
                 if node.right:
                     queue.append(node.right)
         return root
+#X41 (Easy) Invert Binary Tree
+    # Invert a binary tree and return its root. When a binary tree is inverted, it becomes the mirror image of itself.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def invert_binary_tree_iterative(root: TreeNode) -> TreeNode:
+    if not root:
+        return None
+    stack = [root]
+    while stack:
+        node = stack.pop()
+        # Swap the left and right subtrees of the current node.
+        node.left, node.right = node.right, node.left
+        # Push the left and right subtrees onto the stack.
+        if node.left:
+            stack.append(node.left)
+        if node.right:
+            stack.append(node.right)
+    return root
+
+def invert_binary_tree_recursive(root: TreeNode) -> TreeNode:
+    # Base case: If the node is null, there's nothing to invert.
+    if not root:
+        return None
+    # Swap the left and right subtrees of the current node.
+    root.left, root.right = root.right, root.left
+    # Recursively invert the left and right subtrees.
+    invert_binary_tree_recursive(root.left)
+    invert_binary_tree_recursive(root.right)
+    return root
 
 
 """
@@ -1465,6 +1501,28 @@ class Solution:
 #                     return False
 #                 height_map[real_node] = 1 + max(left, right)
 #         return True
+#X42 (Easy) Balanced Binary Tree Validation
+    # Determine if a binary tree is height-balanced, meaning no node's left 
+    # subtree and right subtree have a height difference greater than 1.
+def balanced_binary_tree_validation(root: TreeNode) -> bool:
+    return get_height_imbalance(root) != -1
+
+def get_height_imbalance(node: TreeNode) -> int:
+    # Base case: if the node is null, its height is 0.
+    if not node:
+        return 0
+    # Recursively get the height of the left and right subtrees. If
+    # either subtree is imbalanced, propagate -1 up the tree.
+    left_height = get_height_imbalance(node.left)
+    right_height = get_height_imbalance(node.right)
+    if left_height == -1 or right_height == -1:
+        return -1
+    # If the current node's subtree is imbalanced
+    # (height difference > 1), return -1.
+    if abs(left_height - right_height) > 1:
+        return -1
+    # Return the height of the current subtree.
+    return 1 + max(left_height, right_height)
 
 
 #22 (Easy) 257.二叉树的所有路径
@@ -2123,6 +2181,52 @@ class Solution:
         root.right = self.buildTree(preorder_right, inorder_right)
         # 第七步: 返回答案
         return root
+#X47 (Medium) Build Binary Tree From Preorder and Inorder Traversals
+    # Construct a binary tree using arrays of values obtained after a preorder 
+    # traversal and an inorder traversal of the tree.
+from ds import TreeNode
+from typing import List
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+preorder_index = 0
+inorder_indexes_map = {}
+
+def build_binary_tree(preorder: List[int], inorder: List[int]) -> TreeNode:
+    global inorder_indexes_map
+    # Populate the hash map with the inorder values and their indexes.
+    for i, val in enumerate(inorder):
+        inorder_indexes_map[val] = i
+    # Build the tree and return its root node.
+    return build_subtree(0, len(inorder) - 1, preorder, inorder)
+
+def build_subtree(left: int, right: int, preorder: List[int], inorder: List[int]) -> TreeNode:
+    global preorder_index, inorder_indexes_map
+    # Base case: if no elements are in this range, return None.
+    if left > right:
+        return None
+    val = preorder[preorder_index]
+    # Set 'inorder_index' to the index of the same value pointed at by
+    # 'preorder_index'.
+    inorder_index = inorder_indexes_map[val]
+    node = TreeNode(val)
+    # Advance 'preorder_index' so it points to the value of the next
+    # node to be created.
+    preorder_index += 1
+    # Build the left and right subtrees and connect them to the current
+    # node.
+    node.left = build_subtree(
+        left, inorder_index - 1, preorder, inorder
+    )
+    node.right = build_subtree(
+        inorder_index + 1, right, preorder, inorder
+    )
+    return node
 
 
 #28 (Medium) 106.从中序与后序遍历序列构造二叉树
@@ -2487,7 +2591,40 @@ class Solution:
         self.pre is 6 → 6 >= 5 → VIOLATION
         Immediately return False (don't need to check right subtree)
 """
+#X45 (Medium) Binary Search Tree Validation
+    # Verify whether a binary tree is a valid binary search tree (BST). 
+    # A BST is a binary tree where each node meets the following criteria:
+    # A node's left subtree contains only nodes of lower values than the node's value.
+    # A node's right subtree contains only nodes of greater values than the node's value.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def binary_search_tree_validation(root: TreeNode) -> bool:
+    # Start validation at the root node. The root node can contain any 
+    # value, so set the initial lower and upper bounds to -infinity and 
+    # +infinity, respectively.
+    return is_within_bounds(root, float('-inf'), float('inf'))
 
+def is_within_bounds(node: TreeNode,
+                     lower_bound: int, upper_bound: int) -> bool:
+    # Base case: if the node is null, it satisfies the BST condition.
+    if not node:
+        return True
+    # If the current node's value is not within the valid bounds, this 
+    # tree is not a valid BST.
+    if not lower_bound < node.val < upper_bound:
+        return False
+    # If the left subtree isn't a BST, this tree isn't a BST.
+    if not is_within_bounds(node.left, lower_bound, node.val):
+        return False
+    # Otherwise, return true if the right subtree is also a BST.
+    return is_within_bounds(node.right, node.val, upper_bound)
                           
 
 #32 (Easy) 530.二叉搜索树的最小绝对差
@@ -2750,6 +2887,39 @@ class Solution:
             return right
 
         return left
+#X46 (Medium) Lowest Common Ancestor
+    # Return the lowest common ancestor (LCA) of two nodes, p and q, in a binary tree. 
+    # The LCA is defined as the lowest node that has both p and q as descendants. 
+    # A node can be considered an ancestor of itself.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    dfs(root, p, q)
+    return lca
+
+def dfs(node: TreeNode, p: TreeNode, q: TreeNode) -> bool:
+    global lca
+    # Base case: a null node is neither 'p' nor 'q'.
+    if not node:
+        return False
+    node_is_p_or_q = node == p or node == q
+    # Recursively determine if the left and right subtrees contain 'p' 
+    # or 'q'.
+    left_contains_p_or_q = dfs(node.left, p, q)
+    right_contains_p_or_q = dfs(node.right, p, q)
+    # If two of the above three variables are true, the current node is 
+    # the LCA.
+    if (node_is_p_or_q + left_contains_p_or_q + right_contains_p_or_q == 2):
+        lca = node
+    # Return true if the current subtree contains 'p' or 'q'.
+    return (node_is_p_or_q or left_contains_p_or_q or right_contains_p_or_q)
 
 
 #35 (Medium) 235.二叉搜索树的最近公共祖先
@@ -2899,17 +3069,17 @@ class Solution:
 #             else:
 #                 self.insertIntoBST(root.right, val)
 #         return root
-# *** 递归法（版本四）
+# *** 递归法（版本四） inorder
     # 通过递归函数返回值完成了新加入节点的父子关系赋值操作了，下一层将加入节点返回，本层用root->left或者root->right将其接住
 class Solution:
     def insertIntoBST(self, root, val):
-        if root is None:
+        if root is None: # 中
             node = TreeNode(val)
             return node
 
-        if root.val > val:
+        if root.val > val: # 左
             root.left = self.insertIntoBST(root.left, val)
-        if root.val < val:
+        if root.val < val: # 右
             root.right = self.insertIntoBST(root.right, val)
 
         return root
@@ -2974,6 +3144,7 @@ class Solution:
     def deleteNode(self, root, key):
         if root is None:
             return root
+        
         if root.val == key:
             if not root.left and not root.right:
                 return None
@@ -3050,7 +3221,8 @@ class Solution:
 
 
 #38 (Medium) 669.修剪二叉搜索树
-    # 给定一个二叉搜索树, 同时给定最小边界L 和最大边界 R。通过修剪二叉搜索树, 使得所有节点的值在[L, R]中 (R>=L) 。你可能需要改变树的根节点, 所以结果应当返回修剪好的二叉搜索树的新的根节点。
+    # 给定一个二叉搜索树, 同时给定最小边界L 和最大边界 R。通过修剪二叉搜索树, 使得所有节点的值在[L, R]中 (R>=L) 。
+    # 你可能需要改变树的根节点, 所以结果应当返回修剪好的二叉搜索树的新的根节点。
 # *** 递归法（版本一）
 class Solution:
     def trimBST(self, root: TreeNode, low: int, high: int) -> TreeNode:
@@ -3062,6 +3234,7 @@ class Solution:
         if root.val > high:
             # 寻找符合区间 [low, high] 的节点
             return self.trimBST(root.left, low, high)
+        
         root.left = self.trimBST(root.left, low, high)  # root.left 接入符合条件的左孩子
         root.right = self.trimBST(root.right, low, high)  # root.right 接入符合条件的右孩子
         return root
@@ -3310,68 +3483,6 @@ class Solution:
         return root
 
 
-#X41 (Easy) Invert Binary Tree
-    # Invert a binary tree and return its root. When a binary tree is inverted, it becomes the mirror image of itself.
-from ds import TreeNode
-"""
-Definition of TreeNode:
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-"""
-def invert_binary_tree_iterative(root: TreeNode) -> TreeNode:
-    if not root:
-        return None
-    stack = [root]
-    while stack:
-        node = stack.pop()
-        # Swap the left and right subtrees of the current node.
-        node.left, node.right = node.right, node.left
-        # Push the left and right subtrees onto the stack.
-        if node.left:
-            stack.append(node.left)
-        if node.right:
-            stack.append(node.right)
-    return root
-
-def invert_binary_tree_recursive(root: TreeNode) -> TreeNode:
-    # Base case: If the node is null, there's nothing to invert.
-    if not root:
-        return None
-    # Swap the left and right subtrees of the current node.
-    root.left, root.right = root.right, root.left
-    # Recursively invert the left and right subtrees.
-    invert_binary_tree_recursive(root.left)
-    invert_binary_tree_recursive(root.right)
-    return root
-
-
-#X42 (Easy) Balanced Binary Tree Validation
-    # Determine if a binary tree is height-balanced, meaning no node's left 
-    # subtree and right subtree have a height difference greater than 1.
-def balanced_binary_tree_validation(root: TreeNode) -> bool:
-    return get_height_imbalance(root) != -1
-
-def get_height_imbalance(node: TreeNode) -> int:
-    # Base case: if the node is null, its height is 0.
-    if not node:
-        return 0
-    # Recursively get the height of the left and right subtrees. If
-    # either subtree is imbalanced, propagate -1 up the tree.
-    left_height = get_height_imbalance(node.left)
-    right_height = get_height_imbalance(node.right)
-    if left_height == -1 or right_height == -1:
-        return -1
-    # If the current node's subtree is imbalanced
-    # (height difference > 1), return -1.
-    if abs(left_height - right_height) > 1:
-        return -1
-    # Return the height of the current subtree.
-    return 1 + max(left_height, right_height)
-
-
 #X43 (Medium) Rightmost Nodes of a Binary Tree
     # Return an array containing the values of the rightmost nodes at each level of a binary tree.
 from ds import TreeNode
@@ -3442,125 +3553,6 @@ def widest_binary_tree_level(root: TreeNode) -> int:
             rightmost_index = i
         max_width = max(max_width, rightmost_index - leftmost_index + 1)
     return max_width
-
-
-#X45 (Medium) Binary Search Tree Validation
-    # Verify whether a binary tree is a valid binary search tree (BST). 
-    # A BST is a binary tree where each node meets the following criteria:
-    # A node's left subtree contains only nodes of lower values than the node's value.
-    # A node's right subtree contains only nodes of greater values than the node's value.
-from ds import TreeNode
-"""
-Definition of TreeNode:
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-"""
-def binary_search_tree_validation(root: TreeNode) -> bool:
-    # Start validation at the root node. The root node can contain any 
-    # value, so set the initial lower and upper bounds to -infinity and 
-    # +infinity, respectively.
-    return is_within_bounds(root, float('-inf'), float('inf'))
-
-def is_within_bounds(node: TreeNode,
-                     lower_bound: int, upper_bound: int) -> bool:
-    # Base case: if the node is null, it satisfies the BST condition.
-    if not node:
-        return True
-    # If the current node's value is not within the valid bounds, this 
-    # tree is not a valid BST.
-    if not lower_bound < node.val < upper_bound:
-        return False
-    # If the left subtree isn't a BST, this tree isn't a BST.
-    if not is_within_bounds(node.left, lower_bound, node.val):
-        return False
-    # Otherwise, return true if the right subtree is also a BST.
-    return is_within_bounds(node.right, node.val, upper_bound)
-
-
-#X46 (Medium) Lowest Common Ancestor
-    # Return the lowest common ancestor (LCA) of two nodes, p and q, in a binary tree. 
-    # The LCA is defined as the lowest node that has both p and q as descendants. 
-    # A node can be considered an ancestor of itself.
-from ds import TreeNode
-"""
-Definition of TreeNode:
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-"""
-def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-    dfs(root, p, q)
-    return lca
-
-def dfs(node: TreeNode, p: TreeNode, q: TreeNode) -> bool:
-    global lca
-    # Base case: a null node is neither 'p' nor 'q'.
-    if not node:
-        return False
-    node_is_p_or_q = node == p or node == q
-    # Recursively determine if the left and right subtrees contain 'p' 
-    # or 'q'.
-    left_contains_p_or_q = dfs(node.left, p, q)
-    right_contains_p_or_q = dfs(node.right, p, q)
-    # If two of the above three variables are true, the current node is 
-    # the LCA.
-    if (node_is_p_or_q + left_contains_p_or_q + right_contains_p_or_q == 2):
-        lca = node
-    # Return true if the current subtree contains 'p' or 'q'.
-    return (node_is_p_or_q or left_contains_p_or_q or right_contains_p_or_q)
-
-
-#X47 (Medium) Build Binary Tree From Preorder and Inorder Traversals
-    # Construct a binary tree using arrays of values obtained after a preorder 
-    # traversal and an inorder traversal of the tree.
-from ds import TreeNode
-from typing import List
-"""
-Definition of TreeNode:
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-"""
-preorder_index = 0
-inorder_indexes_map = {}
-
-def build_binary_tree(preorder: List[int], inorder: List[int]) -> TreeNode:
-    global inorder_indexes_map
-    # Populate the hash map with the inorder values and their indexes.
-    for i, val in enumerate(inorder):
-        inorder_indexes_map[val] = i
-    # Build the tree and return its root node.
-    return build_subtree(0, len(inorder) - 1, preorder, inorder)
-
-def build_subtree(left: int, right: int, preorder: List[int], inorder: List[int]) -> TreeNode:
-    global preorder_index, inorder_indexes_map
-    # Base case: if no elements are in this range, return None.
-    if left > right:
-        return None
-    val = preorder[preorder_index]
-    # Set 'inorder_index' to the index of the same value pointed at by
-    # 'preorder_index'.
-    inorder_index = inorder_indexes_map[val]
-    node = TreeNode(val)
-    # Advance 'preorder_index' so it points to the value of the next
-    # node to be created.
-    preorder_index += 1
-    # Build the left and right subtrees and connect them to the current
-    # node.
-    node.left = build_subtree(
-        left, inorder_index - 1, preorder, inorder
-    )
-    node.right = build_subtree(
-        inorder_index + 1, right, preorder, inorder
-    )
-    return node
 
 
 #X48 (Hard) Maximum Sum of a Continuous Path in a Binary Tree
