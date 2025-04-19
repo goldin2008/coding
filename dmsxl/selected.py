@@ -1,5 +1,558 @@
 """
+Week 1 数组 & 字符串基础
+具体：刷完数组与字符串相关的基础题；可衡量：完成 10 题，每题记录解题时间与思路；可达成：每天利用 1 小时；相关：打好基础，对后续题型铺垫；时限：本周内完成。
+1,Two Sum 344,Reverse String
+242,Valid Anagram
+88,Merge Sorted Array
+14,Longest Common Prefix
+49,Group Anagrams
+3,Longest Substring Without Repeating Characters
+238,Product of Array Except Self
+11,Container With Most Water
+15,3Sum
+125,Valid Palindrome
+209,Minimum Size Subarray Sum
+283,Move Zeroes
+42,Trapping Rain Water
 
+
+Week 2 链表
+具体：完成链表基本操作题；可衡量：每题记录关键指针操作与边界处理；可达成：每天 1 小时分散完成；相关：链表题是面试高频考点；时限：本周内完成所有链表题。
+206. Reverse Linked List
+141. Linked List Cycle
+234. Palindrome Linked List
+21. Merge Two Sorted Lists
+160. Intersection of Two Linked Lists
+83. Remove Duplicates from Sorted List
+19. Remove Nth Node From End of List
+2. Add Two Numbers
+142. Linked List Cycle II
+86. Partition List
+138. Copy List with Random Pointer
+328. Odd Even Linked List
+445. Add Two Numbers II
+23. Merge k Sorted Lists
+
+
+Week 3 栈与队列
+具体：刷完所有与栈、队列相关的题；可衡量：每题记录思路和时间；可达成：每天 1 小时；相关：掌握括号匹配、表达式求值等基础应用；时限：本周内完成。
+核心题目
+20 Valid Parentheses (Easy, Facebook/Amazon/Microsoft)
+155 Min Stack (Medium, Amazon/Microsoft/Bloomberg)
+232 Implement Queue using Stacks (Easy, Microsoft/Amazon)
+1047 Remove All Adjacent Duplicates In String (Easy, Facebook/Amazon)
+394 Decode String (Medium, Facebook/Google)
+1249 Remove Minimum Invalid Parentheses (Medium, Facebook)
+856 Score of Parentheses (Medium, Facebook)
+225 Implement Stack using Queues (Easy, Microsoft)
+682 Baseball Game (Easy, Amazon)
+71 Simplify Path (Medium, Facebook/Microsoft)
+Optional Problems
+224 Basic Calculator (Hard, Facebook/Google)
+636 Exclusive Time of Functions (Medium, Facebook)
+341 Flatten Nested List Iterator (Medium, Facebook/Google)
+150 Evaluate Reverse Polish Notation (Medium, Microsoft/Amazon)
+739 Daily Temperatures (Medium, Amazon/Google)
+84 Largest Rectangle in Histogram (Hard, Amazon/Microsoft)
+901 Online Stock Span (Medium, Amazon/Microsoft)
+946 Validate Stack Sequences (Medium, Google/Amazon)
+
+
+Week 4 树的基础（遍历）
+具体：完成二叉树遍历及相关基础题；可衡量：题目完成数及遍历方式掌握情况；可达成：每天 1 小时；相关：树结构常考，需熟悉递归与迭代实现；时限：一周内完成所有题目。
+核心题目 (14道)
+Easy Level (5道)
+94. Binary Tree Inorder Traversal
+100. Same Tree
+101. Symmetric Tree
+104. Maximum Depth of Binary Tree
+257. Binary Tree Paths
+Medium Level (8道)
+102. Binary Tree Level Order Traversal
+110. Balanced Binary Tree
+112. Path Sum
+144. Binary Tree Preorder Traversal
+145. Binary Tree Postorder Traversal
+199. Binary Tree Right Side View
+226. Invert Binary Tree
+543. Diameter of Binary Tree
+Hard Level (1道)
+124. Binary Tree Maximum Path Sum
+选做题目 (8道)
+Medium Level (6道)
+98. Validate Binary Search Tree
+103. Binary Tree Zigzag Level Order Traversal
+105. Construct Binary Tree from Preorder and Inorder Traversal
+116. Populating Next Right Pointers in Each Node
+235. Lowest Common Ancestor of a Binary Search Tree
+617. Merge Two Binary Trees
+Hard Level (2道)
+236. Lowest Common Ancestor of a Binary Tree
+297. Serialize and Deserialize Binary Tree
+
+
+Week 5 树进阶 & 递归
+具体：攻克树的高级题及递归回溯相关题；可衡量：每题思路与递归终止条件清晰；可达成：保持每天 1 小时练习；相关：提升解决复杂问题的能力；时限：本周内完成所有目标。
+核心题目 (14道)
+Easy Level (5道)
+111. Minimum Depth of Binary Tree
+404. Sum of Left Leaves
+501. Find Mode in Binary Search Tree
+572. Subtree of Another Tree
+606. Construct String from Binary Tree
+Medium Level (8道)
+95. Unique Binary Search Trees II
+113. Path Sum II
+129. Sum Root to Leaf Numbers
+222. Count Complete Tree Nodes
+230. Kth Smallest Element in a BST
+450. Delete Node in a BST
+513. Find Bottom Left Tree Value
+669. Trim a Binary Search Tree
+Hard Level (1道)
+337. House Robber III
+选做题目 (8道)
+Medium Level (6道)
+96. Unique Binary Search Trees
+173. Binary Search Tree Iterator
+250. Count Univalue Subtrees
+508. Most Frequent Subtree Sum
+538. Convert BST to Greater Tree
+652. Find Duplicate Subtrees
+Hard Level (2道)
+687. Longest Univalue Path
+968. Binary Tree Camera
+
+
+Week 6 图 & 搜索算法
+具体：完成图的遍历与搜索相关题；可衡量：题目数量、BFS/DFS 实现情况；可达成：每天 1 小时；相关：图论为综合应用，重点在遍历与标记；时限：本周内完成所有题目。
+核心题目 (14道)
+Easy Level (5道)
+1971. Find if Path Exists in Graph
+733. Flood Fill
+841. Keys and Rooms
+547. Number of Provinces
+690. Employee Importance
+Medium Level (8道)
+200. Number of Islands
+207. Course Schedule
+210. Course Schedule II
+417. Pacific Atlantic Water Flow
+994. Rotting Oranges
+130. Surrounded Regions
+785. Is Graph Bipartite?
+886. Possible Bipartition
+Hard Level (1道)
+332. Reconstruct Itinerary
+选做题目 (8道)
+Medium Level (6道)
+133. Clone Graph
+695. Max Area of Island
+721. Accounts Merge
+743. Network Delay Time
+802. Find Eventual Safe States
+947. Most Stones Removed with Same Row or Column
+Hard Level (2道)
+399. Evaluate Division
+778. Swim in Rising Water
+
+
+Week 7 回溯算法
+具体：熟练掌握回溯算法解决排列、组合问题；可衡量：每题记录递归树、剪枝策略；可达成：每天 1 小时；相关：回溯思路是面试常考题型；时限：本周内完成所有回溯题。
+核心题目 (14道)
+Easy Level (5道)
+401. Binary Watch
+257. Binary Tree Paths
+784. Letter Case Permutation
+1079. Letter Tile Possibilities
+690. Employee Importance
+Medium Level (8道)
+17. Letter Combinations of a Phone Number
+39. Combination Sum
+40. Combination Sum II
+46. Permutations
+47. Permutations II
+77. Combinations
+78. Subsets
+90. Subsets II
+Hard Level (1道)
+51. N-Queens
+选做题目 (8道)
+Medium Level (6道)
+79. Word Search
+93. Restore IP Addresses
+131. Palindrome Partitioning
+216. Combination Sum III
+491. Non-decreasing Subsequences
+526. Beautiful Arrangement
+Hard Level (2道)
+37. Sudoku Solver
+52. N-Queens II
+
+
+Week 8 动态规划（DP）基础
+具体：完成 DP 基础题，理解状态转移及子问题分解；可衡量：题目数量与思路总结；可达成：每天 1 小时；相关：DP 为面试重点，打好基础很关键；时限：本周内完成所有 DP 基础题。
+核心题目 (14道)
+Easy Level (5道)
+70. Climbing Stairs
+121. Best Time to Buy and Sell Stock
+198. House Robber
+509. Fibonacci Number
+746. Min Cost Climbing Stairs
+Medium Level (8道)
+62. Unique Paths
+63. Unique Paths II
+64. Minimum Path Sum
+91. Decode Ways
+300. Longest Increasing Subsequence
+322. Coin Change
+416. Partition Equal Subset Sum
+647. Palindromic Substrings
+Hard Level (1道)
+1143. Longest Common Subsequence
+选做题目 (8道)
+Medium Level (6道)
+120. Triangle
+139. Word Break
+213. House Robber II
+279. Perfect Squares
+309. Best Time to Buy and Sell Stock with Cooldown
+518. Coin Change II
+Hard Level (2道)
+72. Edit Distance
+312. Burst Balloons
+
+
+Week 9 动态规划（DP）进阶
+具体：攻克 DP 难题，强化状态转移及空间优化技巧；可衡量：题目完成数与正确率、思路清晰；可达成：每天 1 小时；相关：提升 DP 解决复杂问题的能力；时限：本周内完成所有高级 DP 题。
+
+
+Week 10 贪心算法 & 双指针
+具体：解决贪心与双指针相关题，掌握题型技巧；可衡量：完成题目数量与正确率；可达成：每天 1 小时；相关：这些题型锻炼思路简化和边界判断能力；时限：本周内完成所有目标题。
+
+
+Week 11 二分搜索 & 综合题型
+具体：刷完二分搜索及综合题，强化边界处理与思维拓展；可衡量：题目完成数与总结归纳情况；可达成：每天 1 小时；相关：二分及综合题考验算法综合实力；时限：本周内完成所有目标题。
+
+
+Week 12 10 题＋模拟面试
+具体：回顾前 11 周所有重点题目，针对错题进行重新攻克，并安排 2 次全真模拟面试；可衡量：复做 10 道经典题及模拟面试次数；可达成：合理安排复盘时间；相关：全面检测知识盲区、提升实战能力；时限：本周内完成所有复习与模拟。
+
+
+
+（quick sort, merge sort)
+    148. Sort List
+    56. Merge Intervals
+    27. Remove elements
+
+    179. Largest Number
+    75. Sort Colors
+    215. Kth Largest Element （可以用堆的解法替代）
+    4. Median of Two Sorted Arrays
+
+ 
+Linked List
+    206. Reverse Linked List
+    876. Middle of the Linked List
+
+    160. Intersection of Two Linked Lists
+    141. Linked List Cycle (Linked List Cycle II)
+    92. Reverse Linked List II
+    328. Odd Even Linked List
+
+
+Queue
+    225. Implement Stack using Queues
+    346. Moving Average from Data Stream
+    281. Zigzag Iterator
+    54. Spiral Matrix
+
+    1429. First Unique Number
+    362. Design Hit Counter
+
+
+Stack
+    155. Min Stack (follow up716 Max Stack)
+    232. Implement Queue using Stacks
+    150. Evaluate Reverse Polish Notation
+    224. Basic Calculator II (I, II, III, IV)
+    20. Valid Parentheses
+    
+    1472. Design Browser History
+    1209. Remove All Adjacent Duplicates in String II
+    1249. Minimum Remove to Make Valid Parentheses
+    735. Asteroid Collision
+
+
+Hashmap/ Hashset
+    1. Two Sum
+    146. LRU Cache (Python中可以使用OrderedDict来代替)
+    128. Longest Consecutive Sequence
+    73. Set Matrix Zeroes
+    49. Group Anagrams
+
+    380. Insert Delete GetRandom O(1)
+    350. Intersection of Two Arrays II
+    299. Bulls and Cows
+    348 Design Tic-Tac-Toe
+
+
+Heap／Priority Queue
+    973. K Closest Points
+    347. Top k Largest Elements
+    23. Merge K Sorted Lists
+    88. Merge Sorted Arrays
+    692. Top K Frequent Words
+    378. Kth Smallest Element in a Sorted Matrix (Stack)
+
+    264. Ugly Number II
+    1086. High Five 
+    295. Find Median from Data Stream （标准解法是双heap，但是SortedDict会非常容易）
+    
+    767. Reorganize String
+    1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit (这个题用单调双端队列、TreeMap、双heap都可以)
+    895. Maximum Frequency
+
+
+Binary Search
+    34. Find First and Last Position of Element in Sorted Array
+    33. Search in Rotated Sorted Array
+    1095. Find in Mountain Array
+    162. Find Peak Element
+    278. First Bad Version
+    74. Search a 2D Matrix
+    240. Search a 2D Matrix II
+    
+    69. Sqrt(x)
+    540. Single Element in a Sorted Array
+    644. Maximum Average Subarray II
+    528. Random Pick with Weight
+ 
+    1300. Sum of Mutated Array Closest to Target
+    1060. Missing Element in Sorted Array
+    1062. Longest Repeating Substring
+    1891. Cutting Ribbons
+    410. Split Array Largest Sum (与1891类似)
+
+
+双指针（2 Pointer）
+    409. Longest Palindrome
+    125. Valid Palindrome (I、II)
+    5. Longest Palindromic Substring
+    647. Palindromic Substrings
+
+    1. Two Sum (这里使用的是先排序的双指针算法，不同于hashmap做法)
+    167. Two Sum II - Input array is sorted
+    15. 3Sum
+    16. 3Sum Closest
+    18. 4Sum
+    454. 4Sum II
+    277. Find the Celebrity
+    11. Container With Most Water
+    186 Reverse Words in a String II
+    
+    283. Move Zeroes
+    26. Remove Duplicate Numbers in Array
+    395. Longest Substring with At Least K Repeating Characters
+    340. Longest Substring with At Most K Distinct Characters
+    424. Longest Repeating Character Replacement
+    76. Minimum Window Substring
+    3. Longest Substring Without Repeating Characters
+    1004 Max Consecutive Ones III
+    1658 Minimum Operations to Reduce X to Zero
+
+
+BFS
+    102 Binary Tree Level Order Traversal
+    103 Binary Tree Zigzag Level Order Traversal
+    297 Serialize and Deserialize Binary Tree （很好的BFS和双指针结合的题）
+    314 Binary Tree Vertical Order Traversal
+
+    200. Number of Islands
+    133. Clone Graph
+    127. Word Ladder
+    490. The Maze
+    323. Connected Component in Undirected Graph
+    130. Surrounded Regions
+    752. Open the Lock
+    815. Bus Routes
+    1091. Shortest Path in Binary Matrix
+    542. 01 Matrix
+    1293. Shortest Path in a Grid with Obstacles Elimination
+    417. Pacific Atlantic Water Flow
+
+    207 Course Schedule （I, II）
+    444 Sequence Reconstruction
+    269 Alien Dictionary
+    310 Minimum Height Trees
+    366 Find Leaves of Binary Tree
+
+
+DFS
+    543 Diameter of Binary Tree (分治)
+    124 Binary Tree Maximum Path Sum (分治)
+    226 Invert Binary Tree (分治)
+    101 Symmetric Tree (回溯 or 分治)
+    951 Flip Equivalent Binary Trees (分治)
+    236 Lowest Common Ancestor of a Binary Tree (相似题：235、1650) (回溯 or 分治)
+    105 Construct Binary Tree from Preorder and Inorder Traversal (分治)
+    104 Maximum Depth of Binary Tree (回溯 or 分治)
+    987 Vertical Order Traversal of a Binary Tree
+    1485 Clone Binary Tree With Random Pointer
+    572 Subtree of Another Tree (分治)
+    863 All Nodes Distance K in Binary Tree
+    1110 Delete Nodes And Return Forest (分治)
+
+
+BST
+    230 Kth Smallest element in a BST
+    98 Validate Binary Search Tree
+    270 Cloest Binary Search Tree Value
+    235 Lowest Common Ancestor of a Binary Search Tree
+    669 Trim a Binary Search Tree (分治)
+    700 Search in a Binary Search Tree
+    108 Convert Sorted Array to Binary Search Tree (分治)
+    333 Largest BST Subtree (与98类似) (分治)
+    285 Inorder Successor in BST (I, II)
+
+
+基于图的DFS
+    341 Flatten Nested List Iterator (339 364)
+    394 Decode String
+    51 N-Queens (I II基本相同)
+    291 Word Pattern II (I为简单的Hashmap题)
+    126 Word Ladder II （I为BFS题目）
+    93 Restore IP Addresses
+    22 Generate Parentheses
+    856 Score of Parentheses
+    301 Remove Invalid Parentheses
+    37 Sodoku Solver
+    212 Word Search II （I, II）
+    1087 Brace Expansion
+    399 Evaluate Division
+    1274 Number of Ships in a Rectangle
+    1376 Time Needed to Inform All Employees
+    694 Number of Distinct Islands
+    131 Palindrome Partitioning
+
+
+基于排列组合的DFS:
+    17 Letter Combinations of a Phone Number
+    39 Combination Sum（I, II, III相似， IV为动态规划题目）
+    78 Subsets （I, II 重点在于如何去重）
+    46 Permutation (I, II 重点在于如何去重)
+    77 Combinations (I, II 重点在于如何去重)
+    698 Partition to K Equal Sum Subsets
+    526 Beautiful Arrangement (similar to 46)
+
+
+DFS + Memoization Search
+    139 Word Break II
+    72 Edit Distance
+    377 Combination Sum IV
+    1235 Maximum Profit in Job Scheduling
+    1335 Minimum Difficulty of a Job Schedule
+    1216 Valid Palindrome III
+    97 Interleaving String
+    472 Concatenated Words
+    403 Frog Jump
+    329 Longest Increasing Path in a Matrix
+
+
+Prefix Sum
+    53 Maximum Subarray
+    1423 Maximum Points You Can Obtain from Cards
+    1031 Maximum Sum of Two Non-Overlapping Subarrays
+    523 Continuous Subarray Sum
+    304 Range Sum Query 2D - Immutable
+
+
+Union Find
+    721 Accounts Merge
+    547 Number of Provinces
+    737 Sentence Similarity II
+    305 Number of Islands II
+
+
+Trie
+    208 Implement Trie (Prefix Tree)
+    211 Design Add and Search Words Data Structure
+    1268 Search Suggestions System
+    212 Word Search II
+    1166 Design File System
+
+
+Monotone Stack／Queue
+    85 Maximum Rectangle
+    84 Largest Rectangle in Histogram
+    907 Sum of Subarray Minimums (与84类似)
+    739 Daily Temperatures
+    901 Online Stock Span
+    503 Next Greater Element II
+    239 Sliding Window Maximum （唯一的单调队列题）
+
+
+Sweep Line
+    253 Meeting Room II（Meeting Room I也可以使用）
+    1094 Car Pooling
+    218 The Skyline Problem
+    759 Employee Free Time
+
+ 
+TreeMap
+    729 My Calendar I
+    981 Time Based Key-Value Store
+    846 Hand of Straights
+    218 The Skyline Problem
+    480. Sliding Window Median (这个题用TreeMap超级方便)
+    318 Count of Smaller Numbers After Self (这个题线段树、二分索引树、TreeMap都可以)
+
+
+Dynamic Programming（part 1)
+    674 Longest Continuous Increasing Subsequence (接龙型dp)
+    62 Unique Paths II
+    70 Climbing Stairs
+    64 Minimum Path Sum
+    368 Largest Divisible Subset (接龙型dp)
+    300 Longest Increasing Subsequence (接龙型dp)
+    354 Russian Doll Envelopes (接龙型dp， 300的2D版)
+    256 Paint House
+    121 Best Time to Buy and Sell Stock
+    55 Jump Game
+    45 Jump Game II
+    132 Palindrome Partitioning II
+
+
+DP 2 
+    312 Burst Balloons (区间型dp)
+    1143 Longest Common Subsequence (前缀型dp)
+    1062 Longest Repeating Substring (dp方法与longest common substring一致)
+    718 Maximum Length of Repeated Subarray (和1062本质上一样)
+    174 Dungeon Game
+    115 Distinct Subsequences
+    72 Edit Distance
+    91 Decode Ways
+    639 Decode Ways II
+    712 Minimum ASCII Delete Sum for Two Strings
+    221 Maximal Square
+    1277 Count Square Submatrices with All Ones (可以使用221一样的解法)
+
+
+DP 3
+    198 House Robber
+    213 House Robber II
+    740 Delete and Earn
+    87 Scramble String
+    1140 Stone Game II
+    322 Coin Change
+    518 Coin Change II (01背包型)
+    1048 Longest String Chain
+    44 Wildcard Matching
+    10 Regular Expression Matching
+    32 Longest Valid Parentheses
+    1235 Maximum Profit in Job Scheduling (DP + binary search)
+    1043 Partition Array for Maximum Sum
+    926 Flip String to Monotone Increasing
 """
 #1 (Medium) 1387. Sort Integers by The Power Value
     # The power of an integer x is defined as the number of steps needed to transform x into 1 using the following steps:
