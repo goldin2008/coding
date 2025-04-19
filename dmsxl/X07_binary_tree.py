@@ -1099,6 +1099,40 @@ class Solution:
 #             if level_vals != level_vals[::-1]:
 #                 return False
 #         return True
+#X49 (Medium) Binary Tree Symmetry
+    # Determine if a binary tree is vertically symmetric. That is, 
+    # the left subtree of the root node is a mirror of the right subtree.
+from ds import TreeNode
+"""
+Definition of TreeNode:
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+"""
+def binary_tree_symmetry(root: TreeNode) -> bool:
+    if not root:
+        return True  
+    return compare_trees(root.left, root.right)
+
+
+def compare_trees(node1: TreeNode, node2: TreeNode) -> bool:
+    # Base case: if both nodes are null, they're symmetric.
+    if not node1 and not node2:
+        return True
+    # If one node is null and the other isn't, they aren't symmetric.
+    if not node1 or not node2:
+        return False
+    # If the values of the current nodes don't match, trees aren't symmetric.
+    if node1.val != node2.val:
+        return False
+    # Compare the 'node1's left subtree with 'node2's right subtree. If these 
+    # aren't symmetric, the whole tree is not symmetric.
+    if not compare_trees(node1.left, node2.right):
+        return False
+    # Compare the 'node1's right subtree with 'node2's left subtree. 
+    return compare_trees(node1.right, node2.left)
 
 
 #17 (Easy) 104.二叉树的最大深度
@@ -1683,6 +1717,7 @@ class Solution:
             ans += self.sumOfLeftLeaves(root.right)
         
         return ans
+
 
 #24 (Medium) 513.找树左下角的值
     # 给定一个二叉树, 在树的最后一行找到最左边的值。
@@ -3556,7 +3591,8 @@ def widest_binary_tree_level(root: TreeNode) -> int:
 
 
 #X48 (Hard) Maximum Sum of a Continuous Path in a Binary Tree
-    # Return the maximum sum of a continuous path in a binary tree. A path is defined by the following characteristics:
+    # Return the maximum sum of a continuous path in a binary tree. 
+    # A path is defined by the following characteristics:
     # Consists of a sequence of nodes that can begin and end at any node in the tree
     # Each consecutive pair of nodes in the sequence is connected by an edge
     # The path must be a single continuous sequence of nodes that doesn't split into multiple paths
@@ -3591,42 +3627,6 @@ def max_path_sum_helper(node: TreeNode) -> int:
     # Return the maximum sum of a single, continuous path with the 
     # current node as an endpoint.
     return node.val + max(left_sum, right_sum)
-
-
-#X49 (Medium) Binary Tree Symmetry
-    # Determine if a binary tree is vertically symmetric. That is, 
-    # the left subtree of the root node is a mirror of the right subtree.
-from ds import TreeNode
-"""
-Definition of TreeNode:
-class TreeNode:
-    def __init__(self, val):
-        self.val = val
-        self.left = None
-        self.right = None
-"""
-def binary_tree_symmetry(root: TreeNode) -> bool:
-    if not root:
-        return True  
-    return compare_trees(root.left, root.right)
-
-
-def compare_trees(node1: TreeNode, node2: TreeNode) -> bool:
-    # Base case: if both nodes are null, they're symmetric.
-    if not node1 and not node2:
-        return True
-    # If one node is null and the other isn't, they aren't symmetric.
-    if not node1 or not node2:
-        return False
-    # If the values of the current nodes don't match, trees aren't symmetric.
-    if node1.val != node2.val:
-        return False
-    # Compare the 'node1's left subtree with 'node2's right subtree. If these 
-    # aren't symmetric, the whole tree is not symmetric.
-    if not compare_trees(node1.left, node2.right):
-        return False
-    # Compare the 'node1's right subtree with 'node2's left subtree. 
-    return compare_trees(node1.right, node2.left)
 
 
 #X50 (Medium) Binary Tree Columns
@@ -3708,7 +3708,7 @@ def inorder(node: TreeNode) -> List[int]:
     return inorder(node.left) + [node.val] + inorder(node.right)
 
 
-#X52 (Medium) Serialize and Deserialize a Binary Tree
+#X52 ??? (Medium) Serialize and Deserialize a Binary Tree
     # Write a function to serialize a binary tree into a string, and another 
     # function to deserialize that string back into the original binary tree structure.
 from ds import TreeNode
@@ -3784,7 +3784,7 @@ def find_the_insertion_index(nums: List[int], target: int) -> int:
     return left
 
 
-#X54 (Medium) First and Last Occurrences of a Number
+#X54 ??? (Medium) First and Last Occurrences of a Number
     # Given an array of integers sorted in non-decreasing order, return 
     # the first and last indexes of a target number. If the target is not found, return [-1, -1] .
     # Example 1:
@@ -3828,7 +3828,7 @@ def upper_bound_binary_search(nums: List[int], target: int) -> int:
     return right if nums and nums[right] == target else -1
 
 
-#X55 (Medium) Cutting Wood
+#X55 ??? (Medium) Cutting Wood
     # You are given an array representing the heights of trees, and an integer k 
     # representing the total length of wood that needs to be cut.
     # For this task, a woodcutting machine is set to a certain height, H . 
@@ -3858,7 +3858,7 @@ def cuts_enough_wood(H: int, k: int, heights: List[int]) -> bool:
     return wood_collected >= k
 
 
-#X56 (Medium) Find the Target in a Rotated Sorted Array
+#X56 ??? (Medium) Find the Target in a Rotated Sorted Array
     # A rotated sorted array is an array of numbers sorted in ascending order, 
     # in which a portion of the array is moved from the beginning to the end. 
     # For example, a possible rotation of [1, 2, 3, 4, 5] is [3, 4, 5, 1, 2] , 
@@ -3895,7 +3895,7 @@ def find_the_target_in_a_rotated_sorted_array(nums: List[int], target: int) -> i
    return left if nums and nums[left] == target else -1
 
 
-#X57 (Hard) Find the Median From Two Sorted Arrays
+#X57 ??? (Hard) Find the Median From Two Sorted Arrays
     # Given two sorted integer arrays, find their median value as if they were merged into a single sorted sequence.
     # Example 1:
     # Input: nums1 = [0, 2, 5, 6, 8], nums2 = [1, 3, 7]
@@ -3908,8 +3908,7 @@ def find_the_median_from_two_sorted_arrays(nums1: List[int], nums2: List[int]) -
     m, n = len(nums1), len(nums2)
     half_total_len = (m + n) // 2
     left, right = 0, m - 1
-    # A median always exists in a non-empty array, so continue binary search until
-    # it’s found.
+    # A median always exists in a non-empty array, so continue binary search until it’s found.
     while True:
         L1_index = (left + right) // 2
         L2_index = half_total_len - (L1_index + 1) - 1
@@ -3955,7 +3954,7 @@ def matrix_search(matrix: List[List[int]], target: int) -> bool:
     return False
 
 
-#X59 (Medium) Local Maxima in Array
+#X59 ??? (Medium) Local Maxima in Array
     # A local maxima is a value greater than both its immediate neighbors. 
     # Return any local maxima in an array. You may assume that an element 
     # is always considered to be strictly greater than a neighbor that is outside the array.
@@ -3991,11 +3990,15 @@ class WeightedRandomSelection:
     def select(self) -> int:
         # Pick a random target between 1 and the largest endpoint on the number 
         # line.
-        target = random.randint(1, self.prefix_sums[-1])
+        target = random.randint(1, self.prefix_sums[-1]) # Random target in [1, total_weight]
         left, right = 0, len(self.prefix_sums) - 1
         # Perform lower-bound binary search to find which endpoint (i.e., prefix 
         # sum value) corresponds to the target.
-        while left < right:
+        
+        # Find the smallest index left where prefix_sums[left] >= target.
+        # This ensures the target falls in the interval (prefix_sums[left-1], 
+        # prefix_sums[left]], corresponding to weight weights[left].
+        while left < right: # Binary search to find the smallest index where prefix_sums[i] >= target
             mid = (left + right) // 2
             if self.prefix_sums[mid] < target:
                 left = mid + 1
