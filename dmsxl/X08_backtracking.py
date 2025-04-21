@@ -266,11 +266,13 @@ class Solution:
         ]
         self.result = []
         self.s = ""
+
     def letterCombinations(self, digits):
         if len(digits) == 0:
             return self.result
         self.backtracking(digits, 0)
         return self.result
+
     def backtracking(self, digits, index):
         if index == len(digits):
             self.result.append(self.s)
@@ -496,6 +498,7 @@ class Solution:
         result =[]
         self.backtracking(candidates, target, 0, [], result)
         return result
+
     def backtracking(self, candidates, target, startIndex, path, result):
         if target == 0:
             result.append(path[:])
@@ -507,7 +510,7 @@ class Solution:
             path.append(candidates[i])
             self.backtracking(candidates, target - candidates[i], i, path, result)
             path.pop()
-# 回溯剪枝（版本二）
+# *** 回溯剪枝（版本二）
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         result =[]

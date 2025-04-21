@@ -1115,7 +1115,7 @@ class Solution:
         return self.getRemoveEdge(edges)
 
 
-#X16 (Medium) Graph Deep Copy
+#X16 (Medium) 133.Graph Deep Copy
     # Given a reference to a node within an undirected graph, create a deep copy (clone) of the graph. 
     # The copied graph must be completely independent of the original one. 
     # This means you need to make new nodes for the copied graph instead of 
@@ -1234,7 +1234,7 @@ def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
     return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
 
 
-#X19 (Medium) Bipartite Graph Validation
+#X19 (Medium) 785.Bipartite Graph Validation
     # Given an undirected graph, determine if it's bipartite. A graph is bipartite if the nodes 
     # can be colored in one of two colors, so that no two adjacent nodes are the same color.
     # The input is presented as an adjacency list, where graph[i] is a list of all nodes adjacent to node i.
@@ -1445,7 +1445,7 @@ class MergingCommunities:
         return self.uf.get_size(x)
 
 
-#X23 (Medium) Prerequisites
+#X23 (Medium) 207.Prerequisites
     # Given an integer n representing the number of courses labeled from 0 to n - 1, 
     # and an array of prerequisite pairs, determine if it's possible to enroll in all courses.
     # Each prerequisite is represented as a pair [a, b], indicating that course a must be taken before course b.

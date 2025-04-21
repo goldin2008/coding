@@ -3590,7 +3590,7 @@ def widest_binary_tree_level(root: TreeNode) -> int:
     return max_width
 
 
-#X48 (Hard) Maximum Sum of a Continuous Path in a Binary Tree
+#X48 (Hard) 124.Maximum Sum of a Continuous Path in a Binary Tree
     # Return the maximum sum of a continuous path in a binary tree. 
     # A path is defined by the following characteristics:
     # Consists of a sequence of nodes that can begin and end at any node in the tree
@@ -3667,7 +3667,7 @@ def binary_tree_columns(root: TreeNode) -> List[List[int]]:
     return [column_map[i] for i in range(leftmost_column, rightmost_column + 1)]
 
 
-#X51 (Medium) Kth Smallest Number in a Binary Search Tree
+#X51 (Medium) 230.Kth Smallest Number in a Binary Search Tree
     # Given the root of a binary search tree (BST) and an integer k, find the kth smallest node value.
 from ds import TreeNode
 """
@@ -3708,7 +3708,7 @@ def inorder(node: TreeNode) -> List[int]:
     return inorder(node.left) + [node.val] + inorder(node.right)
 
 
-#X52 ??? (Medium) Serialize and Deserialize a Binary Tree
+#X52 ??? (Medium/Hard) 297.Serialize and Deserialize a Binary Tree
     # Write a function to serialize a binary tree into a string, and another 
     # function to deserialize that string back into the original binary tree structure.
 from ds import TreeNode
