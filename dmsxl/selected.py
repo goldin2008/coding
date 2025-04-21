@@ -1,7 +1,7 @@
 """
 Week 1 数组 & 字符串基础
 具体：刷完数组与字符串相关的基础题；可衡量：完成 10 题, 每题记录解题时间与思路；可达成：每天利用 1 小时；相关：打好基础, 对后续题型铺垫；时限：本周内完成。
-1. Two Sum 
+* 1. Two Sum 
 * 344. Reverse String
 242. Valid Anagram
 88. Merge Sorted Array
@@ -160,8 +160,8 @@ Week 6 图 & 搜索算法
 
 Week 7 回溯算法
 具体：熟练掌握回溯算法解决排列、组合问题；可衡量：每题记录递归树、剪枝策略；可达成：每天 1 小时；相关：回溯思路是面试常考题型；时限：本周内完成所有回溯题。
-核心题目 (14道)
-Easy Level (5道)
+    核心题目 (14道)
+    Easy Level (5道)
 401. Binary Watch
 257. Binary Tree Paths
 784. Letter Case Permutation

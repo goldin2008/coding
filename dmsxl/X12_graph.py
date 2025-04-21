@@ -1480,6 +1480,75 @@ def prerequisites(n: int, prerequisites: List[List[int]]) -> bool:
     # Return true if we've successfully enrolled in all courses.
     return enrolled_courses == n
 
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        indegree = [0] * numCourses
+        adj = [[] for _ in range(numCourses)]
+
+        for prerequisite in prerequisites:
+            adj[prerequisite[1]].append(prerequisite[0])
+            indegree[prerequisite[0]] += 1
+
+        queue = deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                queue.append(i)
+
+        nodesVisited = 0
+        while queue:
+            node = queue.popleft()
+            nodesVisited += 1
+
+            for neighbor in adj[node]:
+                indegree[neighbor] -= 1
+                if indegree[neighbor] == 0:
+                    queue.append(neighbor)
+
+        return nodesVisited == numCourses
+# Directed Graph Cycle Detection:
+# A cycle exists if a node is revisited within the current recursion path (i.e., during the same DFS traversal).
+# Two Tracking Arrays:
+# visit[node]: Marks if a node has been fully processed (all descendants checked).
+# inStack[node]: Marks if a node is part of the current recursion path.
+# Case 1: inStack[node] = True
+# Explanation:
+# If a node B is revisited while it’s still in the recursion stack (i.e., inStack[B] = True), it means we’ve encountered a path like A → B → ... → A, forming a cycle.
+
+# Case 2: visit[node] = True
+# Explanation:
+# If a node B is already visited (visit[B] = True) but not in the current stack (inStack[B] = False), it means B was fully processed in a previous DFS call. Since no cycle was found earlier, we skip reprocessing it.
+
+# If node is already present in inStack, we have a cycle. We return true.
+# If node is already visited, we return false because we already visited this node and didn't find a cycle earlier.
+class Solution:
+    def dfs(self, node, adj, visit, inStack):
+        # If the node is already in the stack, we have a cycle.
+        if inStack[node]:
+            return True
+        if visit[node]:
+            return False
+        # Mark the current node as visited and part of current recursion stack.
+        visit[node] = True
+        inStack[node] = True
+        for neighbor in adj[node]:
+            if self.dfs(neighbor, adj, visit, inStack):
+                return True
+        # Remove the node from the stack.
+        inStack[node] = False
+        return False
+
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        adj = [[] for _ in range(numCourses)]
+        for prerequisite in prerequisites:
+            adj[prerequisite[1]].append(prerequisite[0])
+
+        visit = [False] * numCourses
+        inStack = [False] * numCourses
+        for i in range(numCourses):
+            if self.dfs(i, adj, visit, inStack):
+                return False
+        return True
+
 
 #X24 (Hard) Shortest Path
     # Given an integer n representing nodes labeled from 0 to n - 1 in an undirected graph, 
