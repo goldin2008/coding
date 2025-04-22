@@ -1172,22 +1172,39 @@ if __name__ == '__main__':
     k.deque_element()
     print(k.getMin())
 
-# Data Structure Efficiency Comparison
+# Time Complexity Comparison of Data Structures
+## Fundamental Operations 
+| Operation               | List (Dynamic Array) | Linked List | Stack (List-based) | Dictionary (Hash Table) | Queue (`deque`) |
+|-------------------------|----------------------|-------------|--------------------|-------------------------|-----------------|
+| **Access by Index**     | `O(1)`               | `O(n)`      | `O(1)`*            | N/A                     | `O(n)`          |
+| **Search by Value**     | `O(n)`               | `O(n)`      | `O(n)`             | `O(1)`**                | `O(n)`          |
+| **Insert at Start**     | `O(n)`               | `O(1)`      | `O(n)`             | N/A                     | `O(1)`          |
+| **Insert at End**       | `O(1)`†              | `O(n)`‡     | `O(1)`             | N/A                     | `O(1)`          |
+| **Delete at Start**     | `O(n)`               | `O(1)`      | `O(n)`             | N/A                     | `O(1)`          |
+| **Delete at End**       | `O(1)`               | `O(n)`‡     | `O(1)`             | N/A                     | `O(1)`          |
 
-## Time Complexity Summary
+## Specialized Operations
+| Operation               | List   | Linked List | Stack  | Dictionary | Queue |
+|-------------------------|--------|-------------|--------|------------|-------|
+| **Push (Add to Top)**   | `O(1)`†| `O(1)`      | `O(1)` | N/A        | N/A   |
+| **Pop (Remove from Top)**| `O(1)`| `O(1)`      | `O(1)` | N/A        | N/A   |
+| **Enqueue (Add to Back)**| N/A    | `O(1)`      | N/A    | N/A        | `O(1)`|
+| **Dequeue (Remove Front)`| N/A    | `O(1)`      | N/A    | N/A        | `O(1)`|
+| **Key Lookup**          | N/A    | N/A         | N/A    | `O(1)`     | N/A   |
 
-| Data Structure       | Access (Start) | Access (Middle) | Access (End) | Search (Value) | Insert (Start) | Insert (Middle) | Insert (End) | Delete (Start) | Delete (Middle) | Delete (End) |
-|----------------------|----------------|-----------------|--------------|----------------|----------------|-----------------|--------------|----------------|-----------------|--------------|
-| **List (Array)**     | O(n)           | O(1)            | O(1)         | O(n)           | O(n)           | O(n)            | O(1)*        | O(n)           | O(n)            | O(1)         |
-| **Linked List**      | O(1)           | O(n)            | O(n)         | O(n)           | O(1)           | O(n)            | O(1)         | O(1)           | O(n)            | O(1)         |
-| **Stack**           | O(n)           | O(n)            | O(1)         | O(n)           | O(n)           | O(n)            | O(1)         | O(n)           | O(n)            | O(1)         |
-| **Dictionary**      | N/A            | N/A             | N/A          | O(1)           | O(1)           | N/A             | O(1)         | O(1)           | N/A             | O(1)         |
-| **Queue (deque)**   | O(1)           | O(n)            | O(1)         | O(n)           | O(1)           | O(n)            | O(1)         | O(1)           | O(n)            | O(1)         |
+### Footnotes:
+- * Stack access assumes `peek` operation (same as list access)
+- ** Dictionary has `O(1)` average case, `O(n)` worst case (hash collisions)
+- † Amortized `O(1)` for lists (occasional resizing needed)
+- ‡ Linked lists can achieve `O(1)` end operations with tail pointer
 
-*Amortized constant time for dynamic arrays
+## Python Implementation Notes
+- **Lists**: Use for random access and iterations
+- **`deque`**: Preferred for queues (faster than list for FIFO)
+- **Dicts**: Keys must be hashable (immutable types recommended)
+- **Sets**: Similar to dicts but store only keys
 
 ## Best Use Cases
-
 | Data Structure       | Strengths                              | Weaknesses                          | Typical Applications               |
 |----------------------|----------------------------------------|-------------------------------------|------------------------------------|
 | **List (Array)**     | Fast random access, cache-friendly     | Slow insert/delete at start         | General-purpose storage            |
@@ -1197,7 +1214,6 @@ if __name__ == '__main__':
 | **Queue (deque)**   | Efficient FIFO operations              | Slow middle access                  | Task scheduling, buffers           |
 
 ## Key Differences
-
 ### **Memory Layout**
 - **Lists**: Contiguous memory (better cache locality)
 - **Linked Lists**: Non-contiguous nodes (more flexible)
@@ -1214,7 +1230,6 @@ if __name__ == '__main__':
 - C++: `std::vector`, `std::list`
 
 ## When to Use Which?
-
 1. **Need index-based access?** → List
 2. **Frequent insertions/deletions at ends?** → Linked List or Deque
 3. **Key-value storage?** → Dictionary
