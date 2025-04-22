@@ -39,7 +39,7 @@ Week 3 栈与队列
 具体：刷完所有与栈、队列相关的题；可衡量：每题记录思路和时间；可达成：每天 1 小时；相关：掌握括号匹配、表达式求值等基础应用；时限：本周内完成。
     核心题目
 * 20 Valid Parentheses (Easy, Facebook/Amazon/Microsoft)
-155 Min Stack (Medium, Amazon/Microsoft/Bloomberg)
+* 155 Min Stack (Medium, Amazon/Microsoft/Bloomberg)
 * 232 Implement Queue using Stacks (Easy, Microsoft/Amazon)
 * 1047 Remove All Adjacent Duplicates In String (Easy, Facebook/Amazon)
 394 Decode String (Medium, Facebook/Google)
@@ -1057,3 +1057,168 @@ class Solution:
             if node.right:
                 stack.append((node.right, path + [node.right.val]))
         return res
+
+
+# (Medium) 155. Min Stack
+    # Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+    # Implement the MinStack class:
+    # MinStack() initializes the stack object.
+    # void push(int val) pushes the element val onto the stack.
+    # void pop() removes the element on the top of the stack.
+    # int top() gets the top element of the stack.
+    # int getMin() retrieves the minimum element in the stack.
+    # You must implement a solution with O(1) time complexity for each function.
+class MinStack:
+    def __init__(self):
+        self.stack = []
+
+    def push(self, x: int) -> None:
+
+        # If the stack is empty, then the min value
+        # must just be the first value we add
+        if not self.stack:
+            self.stack.append((x, x))
+            return
+
+        current_min = self.stack[-1][1]
+        self.stack.append((x, min(x, current_min)))
+
+    def pop(self) -> None:
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1][0]
+
+    def getMin(self) -> int:
+        return self.stack[-1][1]
+
+class MinStack:
+    def __init__(self) -> None:
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, x: int) -> None:
+        self.stack.append(x)
+        if not self.min_stack or x <= self.min_stack[-1]:
+            self.min_stack.append(x)
+
+    def pop(self) -> None:
+        if self.min_stack[-1] == self.stack[-1]:
+            self.min_stack.pop()
+        self.stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.min_stack[-1]
+
+# Design a Queue data structure to get minimum or maximum in O(1) time
+from collections import deque as dq
+
+class MinMaxQueue:
+    def __init__(self):
+        # Queue to store the
+        # element to maintain the
+        # order of insertion
+        self.Q = dq([])
+ 
+        # Doubly ended queue to
+        # get the minimum element
+        # in the O(1) time
+        self.D = dq([])
+ 
+    def enque_element(self, element):
+        if (len(self.Q) == 0):
+            self.Q.append(element)
+            self.D.append(element)
+ 
+        else:
+            self.Q.append(element)
+            # Pop the elements out
+            # until the element at
+            # back is greater than
+            # current element
+            while (self.D and
+                   self.D[-1] > element):
+                self.D.pop()
+ 
+            self.D.append(element)
+ 
+    def deque_element(self,):
+        # Condition when the Minimum
+        # element is the element at
+        # the front of the Deque
+        if (self.Q[0] == self.D[0]):
+            self.Q.popleft()
+            self.D.popleft()
+ 
+        else:
+            self.Q.popleft()
+ 
+    def getMin(self,):
+        return self.D[0]
+ 
+# Driver Code
+if __name__ == '__main__':
+    k = MinMaxQueue()
+    example = [1, 2, 4]
+ 
+    # Loop to enque element
+    for i in range(3):
+        k.enque_element(example[i])
+ 
+    print(k.getMin())
+    k.deque_element()
+    print(k.getMin())
+
+# Data Structure Efficiency Comparison
+
+## Time Complexity Summary
+
+| Data Structure       | Access (Start) | Access (Middle) | Access (End) | Search (Value) | Insert (Start) | Insert (Middle) | Insert (End) | Delete (Start) | Delete (Middle) | Delete (End) |
+|----------------------|----------------|-----------------|--------------|----------------|----------------|-----------------|--------------|----------------|-----------------|--------------|
+| **List (Array)**     | O(n)           | O(1)            | O(1)         | O(n)           | O(n)           | O(n)            | O(1)*        | O(n)           | O(n)            | O(1)         |
+| **Linked List**      | O(1)           | O(n)            | O(n)         | O(n)           | O(1)           | O(n)            | O(1)         | O(1)           | O(n)            | O(1)         |
+| **Stack**           | O(n)           | O(n)            | O(1)         | O(n)           | O(n)           | O(n)            | O(1)         | O(n)           | O(n)            | O(1)         |
+| **Dictionary**      | N/A            | N/A             | N/A          | O(1)           | O(1)           | N/A             | O(1)         | O(1)           | N/A             | O(1)         |
+| **Queue (deque)**   | O(1)           | O(n)            | O(1)         | O(n)           | O(1)           | O(n)            | O(1)         | O(1)           | O(n)            | O(1)         |
+
+*Amortized constant time for dynamic arrays
+
+## Best Use Cases
+
+| Data Structure       | Strengths                              | Weaknesses                          | Typical Applications               |
+|----------------------|----------------------------------------|-------------------------------------|------------------------------------|
+| **List (Array)**     | Fast random access, cache-friendly     | Slow insert/delete at start         | General-purpose storage            |
+| **Linked List**      | Fast insert/delete at ends             | Slow random access                  | Undo functionality, queues         |
+| **Stack**           | Simple LIFO operations                 | Limited access patterns             | Function calls, backtracking       |
+| **Dictionary**      | Instant key lookups                    | No order, memory overhead           | Databases, caches                  |
+| **Queue (deque)**   | Efficient FIFO operations              | Slow middle access                  | Task scheduling, buffers           |
+
+## Key Differences
+
+### **Memory Layout**
+- **Lists**: Contiguous memory (better cache locality)
+- **Linked Lists**: Non-contiguous nodes (more flexible)
+- **Dictionaries**: Hash table with buckets
+
+### **Operation Tradeoffs**
+- **Lists** sacrifice start operations for fast middle access
+- **Linked Lists** sacrifice random access for O(1) start operations
+- **Dictionaries** optimize for key-based access at expense of ordering
+
+### **Language Implementations**
+- Python: `list` (dynamic array), `collections.deque` (queue)
+- Java: `ArrayList`, `LinkedList`
+- C++: `std::vector`, `std::list`
+
+## When to Use Which?
+
+1. **Need index-based access?** → List
+2. **Frequent insertions/deletions at ends?** → Linked List or Deque
+3. **Key-value storage?** → Dictionary
+4. **LIFO operations?** → Stack
+5. **FIFO operations?** → Queue
+
+> **Pro Tip**: In Python, `collections.deque` is often better than `list` for queue operations due to O(1) operations at both ends.

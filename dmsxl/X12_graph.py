@@ -133,7 +133,8 @@ def bfs(grid, visited, x, y):
 # 这里大家应该能看出区别了, 无疑就是版本一中 调用dfs 的条件判断 放在了 版本二 的 终止条件位置上。
 # 版本一的写法是 ：下一个节点是否能合法已经判断完了, 只要调用dfs就是可以合法的节点。
 # 版本二的写法是：不管节点是否合法, 上来就dfs, 然后在终止条件的地方进行判断, 不合法再return。
-# 理论上来讲, 版本一的效率更高一些, 因为避免了 没有意义的递归调用, 在调用dfs之前, 就做合法性判断。 但从写法来说, 可能版本二 更利于理解一些。（不过其实都差不太多）
+# 理论上来讲, 版本一的效率更高一些, 因为避免了 没有意义的递归调用, 在调用dfs之前, 就做合法性判断。 
+# 但从写法来说, 可能版本二 更利于理解一些。（不过其实都差不太多）
 # 很多同学看了同一道题目, 都是dfs, 写法却不一样, 有时候有终止条件, 有时候连终止条件都没有, 其实这就是根本原因, 两种写法而已。
 # *** DFS 版本一
 class Solution:
@@ -170,9 +171,12 @@ class Solution:
         result = 0
 
         def dfs(x, y):
+            ### Difference starts here ###
             if visited[x][y] or grid[x][y] == '0':
                 return  # 终止条件：访问过的节点 或者 遇到海水
             visited[x][y] = True
+            ### Difference ends here ###
+
             for d in dirs:
                 nextx = x + d[0]
                 nexty = y + d[1]
@@ -191,31 +195,31 @@ class Solution:
 # 0 代表海水
 # 1 代表陆地
 # 2 代表已经访问的陆地
-class Solution:
-    def numIslands(self, grid: List[List[str]]) -> int:
-        res = 0
+# class Solution:
+#     def numIslands(self, grid: List[List[str]]) -> int:
+#         res = 0
 
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == "1":
-                    res += 1
-                    self.traversal(grid, i, j)
-        return res
+#         for i in range(len(grid)):
+#             for j in range(len(grid[0])):
+#                 if grid[i][j] == "1":
+#                     res += 1
+#                     self.traversal(grid, i, j)
+#         return res
 
-    def traversal(self, grid, i, j):
-        m = len(grid)
-        n = len(grid[0])
+#     def traversal(self, grid, i, j):
+#         m = len(grid)
+#         n = len(grid[0])
 
-        if i < 0 or j < 0 or i >= m or j >= n:
-            return   # 越界了
-        elif grid[i][j] == "2" or grid[i][j] == "0":
-            return 
+#         if i < 0 or j < 0 or i >= m or j >= n:
+#             return   # 越界了
+#         elif grid[i][j] == "2" or grid[i][j] == "0":
+#             return 
 
-        grid[i][j] = "2"
-        self.traversal(grid, i - 1, j) # 往上走
-        self.traversal(grid, i + 1, j) # 往下走
-        self.traversal(grid, i, j - 1) # 往左走
-        self.traversal(grid, i, j + 1) # 往右走
+#         grid[i][j] = "2"
+#         self.traversal(grid, i - 1, j) # 往上走
+#         self.traversal(grid, i + 1, j) # 往下走
+#         self.traversal(grid, i, j - 1) # 往左走
+#         self.traversal(grid, i, j + 1) # 往右走
 
 
 #4 (Medium) 200.岛屿数量 BFS solution
@@ -232,6 +236,7 @@ class Solution:
         n = len(grid[0])
         visited = [[False]*n for _ in range(m)]
         res = 0
+
         for i in range(m):
             for j in range(n):
                 if visited[i][j] == False and grid[i][j] == '1':
@@ -245,21 +250,52 @@ class Solution:
         visited[i][j] = True
         while q:
             x, y = q.popleft()
-            # visited[next_i][next_j] = True // 从队列中取出在标记走过, 错误, 会导致很多节点重复加入队列
-            for k in range(4):
-                next_i = x + self.dirs[k][0]
-                next_j = y + self.dirs[k][1]
+            # visited[nextx][nexty] = True // 从队列中取出在标记走过, 错误, 会导致很多节点重复加入队列
+            for d in dirs:
+                nextx = x + d[0]
+                nexty = y + d[1]
+                if nextx < 0 or nextx >= m or nexty < 0 or nexty >= n:  # 越界了, 直接跳过
+                    continue
+                # bfs
+                if visited[nextx][nexty]:  # 如果已经访问过了, 跳过
+                    continue
+                if grid[nextx][nexty] == '0':
+                    continue
+                q.append((nextx, nexty))
+                visited[nextx][nexty] = True # 只要加入队列立刻标记
 
-                if next_i < 0 or next_i >= len(grid):
-                    continue 
-                if next_j < 0 or next_j >= len(grid[0]):
-                    continue
-                if visited[next_i][next_j]:
-                    continue
-                if grid[next_i][next_j] == '0':
-                    continue
-                q.append((next_i, next_j))
-                visited[next_i][next_j] = True # 只要加入队列立刻标记
+#X17 (Medium) 200.Count Islands
+    # Given a binary matrix representing 1s as land and 0s as water, return the number of islands.
+    # An island is formed by connecting adjacent lands 4-directionally (up, down, left, and right).
+from typing import List
+
+def count_islands(matrix: List[List[int]]) -> int:
+    if not matrix:
+        return 0
+    count = 0
+    for r in range(len(matrix)):
+        for c in range(len(matrix[0])):
+            # If a land cell is found, perform DFS to explore the full 
+            # island, and include this island in our count.
+            if matrix[r][c] == 1:
+                dfs(r, c, matrix)
+                count += 1
+    return count
+
+def dfs(r: int, c: int, matrix: List[List[int]]) -> None:
+    # Mark the current land cell as visited.
+    matrix[r][c] = -1
+    # Define direction vectors for up, down, left, and right.
+    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    # Recursively call DFS on each neighboring land cell to continue 
+    # exploring this island.
+    for d in dirs:
+        next_r, next_c = r + d[0], c + d[1]
+        if is_within_bounds(next_r, next_c, matrix) and matrix[next_r][next_c] == 1:
+            dfs(next_r, next_c, matrix)
+
+def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
+    return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
 
 
 #5 (Medium) 695.岛屿的最大面积
@@ -1150,40 +1186,6 @@ def dfs(node: GraphNode, clone_map = {}) -> GraphNode:
         cloned_neighbor = dfs(neighbor, clone_map)
         cloned_node.neighbors.append(cloned_neighbor)
     return cloned_node
-
-
-#X17 (Medium) Count Islands
-    # Given a binary matrix representing 1s as land and 0s as water, return the number of islands.
-    # An island is formed by connecting adjacent lands 4-directionally (up, down, left, and right).
-from typing import List
-
-def count_islands(matrix: List[List[int]]) -> int:
-    if not matrix:
-        return 0
-    count = 0
-    for r in range(len(matrix)):
-        for c in range(len(matrix[0])):
-            # If a land cell is found, perform DFS to explore the full 
-            # island, and include this island in our count.
-            if matrix[r][c] == 1:
-                dfs(r, c, matrix)
-                count += 1
-    return count
-
-def dfs(r: int, c: int, matrix: List[List[int]]) -> None:
-    # Mark the current land cell as visited.
-    matrix[r][c] = -1
-    # Define direction vectors for up, down, left, and right.
-    dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    # Recursively call DFS on each neighboring land cell to continue 
-    # exploring this island.
-    for d in dirs:
-        next_r, next_c = r + d[0], c + d[1]
-        if is_within_bounds(next_r, next_c, matrix) and matrix[next_r][next_c] == 1:
-            dfs(next_r, next_c, matrix)
-
-def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
-    return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
 
 
 #X18 (Medium) Matrix Infection

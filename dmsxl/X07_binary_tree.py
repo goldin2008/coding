@@ -2922,6 +2922,73 @@ class Solution:
             return right
 
         return left
+#         3
+#        / \
+#       5   1
+#      / \ / \
+#     6  2 0  8
+#       / \
+#      7   4
+    
+# LCA(3, 5, 1)
+# │
+# ├── LCA(5, 5, 1) → returns 5 (base case: matches p)
+# │
+# └── LCA(1, 5, 1) → returns 1 (base case: matches q)
+# │
+# → Both left and right are non-None → return 3
+
+# Step-by-Step Execution
+# 1. Start at the Root (Node 3)
+# Current Node: 3
+# Check Base Case:
+# root (3) is neither p (5) nor q (1) → proceed to recursive calls.
+
+# 2. Recursive Call on Left Subtree (Node 5)
+# Current Node: 5
+# Check Base Case:
+# root (5) matches p (5) → return 5 (no further recursion needed here).
+# This means we've found one of the target nodes in the left subtree.
+
+# 3. Recursive Call on Right Subtree (Node 1)
+# Current Node: 1
+# Check Base Case:
+# root (1) matches q (1) → return 1 (no further recursion needed here).
+# This means we've found the other target node in the right subtree.
+
+# 4. Combine Results at Root (Node 3)
+# Left Result: 5 (from left subtree)
+# Right Result: 1 (from right subtree)
+
+# Decision Logic:
+# Both left and right are non-None → LCA is the current root (3).
+# Why? Because p and q are in different subtrees of 3, making 3 their deepest common ancestor.
+
+# Another Example: LCA of Nodes 5 and 4
+# 1. Start at Root (Node 3)
+# Current Node: 3
+# Base Case: No match → proceed to recursive calls.
+
+# 2. Recursive Call on Left Subtree (Node 5)
+# Current Node: 5
+# Base Case:
+# root (5) matches p (5) → return 5 (no further recursion).
+# Note: Even though q (4) is also in this subtree, we stop here because we’ve already found p.
+
+# 3. Recursive Call on Right Subtree (Node 1)
+# Current Node: 1
+# Base Case: No match → recurse on its subtrees.
+# LCA(0, 5, 4) → returns None (no matches).
+# LCA(8, 5, 4) → returns None (no matches).
+# Result: None (neither subtree contains p or q).
+
+# 4. Combine Results at Root (Node 3)
+# Left Result: 5
+# Right Result: None
+# Decision Logic:
+# Only left is non-None → LCA is 5.
+# Why? Because 5 is an ancestor of both 5 (itself) and 4 (in its right subtree).
+
 #X46 (Medium) Lowest Common Ancestor
     # Return the lowest common ancestor (LCA) of two nodes, p and q, in a binary tree. 
     # The LCA is defined as the lowest node that has both p and q as descendants. 
