@@ -2889,23 +2889,25 @@ left与right的逻辑处理;         // 中
 #         return right
 # 递归法（版本一）
 # postorder
-class Solution:
-    def lowestCommonAncestor(self, root, p, q):
-        if root == q or root == p or root is None:
-            return root
+# time complexity: O(n)
+# space complexity: O(h) 其中h为树的高度
+# class Solution:
+#     def lowestCommonAncestor(self, root, p, q):
+#         if root == q or root == p or root is None:
+#             return root
 
-        left = self.lowestCommonAncestor(root.left, p, q)
-        right = self.lowestCommonAncestor(root.right, p, q)
+#         left = self.lowestCommonAncestor(root.left, p, q)
+#         right = self.lowestCommonAncestor(root.right, p, q)
 
-        if left and right:
-            return root
+#         if left and right:
+#             return root
 
-        if not left and right:
-            return right
-        elif left and not right:
-            return left
-        else: 
-            return None
+#         if not left and right:
+#             return right
+#         elif left and not right:
+#             return left
+#         else: 
+#             return None
 # *** 递归法（版本二）精简
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
@@ -2988,6 +2990,25 @@ class Solution:
 # Decision Logic:
 # Only left is non-None → LCA is 5.
 # Why? Because 5 is an ancestor of both 5 (itself) and 4 (in its right subtree).
+
+# *** 迭代法
+# time complexity: O(n)
+# space complexity: O(1)
+class Solution:
+    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+
+        # Traverse the tree
+        while root:
+
+            if p.val > root.val and q.val > root.val:    
+                # If both p and q are greater than parent
+                root = root.right
+            elif p.val < root.val and q.val < root.val:
+                # If both p and q are lesser than parent
+                root = root.left
+            else:
+                # We have found the split point, i.e. the LCA node.
+                return root
 
 #X46 (Medium) Lowest Common Ancestor
     # Return the lowest common ancestor (LCA) of two nodes, p and q, in a binary tree. 
