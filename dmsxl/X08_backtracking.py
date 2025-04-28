@@ -11,13 +11,29 @@
 递归就要有终止条件, 所以必然是一棵高度有限的树 (N叉树)
 
 回溯三部曲
-1. 回溯函数模板返回值以及参数
-2. 回溯函数终止条件
-3. 回溯搜索的遍历过程
+    1. 回溯函数模板, 返回值以及参数
+    2. 回溯函数终止条件
+    3. 回溯搜索的遍历过程
 
 for循环横向遍历,递归纵向遍历,回溯不断调整结果集
-大家可以从图中看出for循环可以理解是横向遍历, backtracking (递归) 就是纵向遍历, 这样就把这棵树全遍历完了, 一般来说, 搜索叶子节点就是找的其中一个结果了。
-优化回溯算法**只有剪枝**一种方法
+大家可以从图中看出for循环可以理解是横向遍历, backtracking (递归) 就是纵向遍历, 这样就把这棵树全遍历完了, 
+一般来说, 搜索叶子节点就是找的其中一个结果了。优化回溯算法**只有剪枝**一种方法
+
+如何判断call递归函数的时候要不要index的值, 如果要的话是i+1还是i? 
+    如果是组合问题
+        同一个集合中取
+            如果不可以有重复的元素, 需要index, 需要i+1 那么每一层的元素都是从上层的元素开始选取, 也就是从i+1开始选取, 这样就不会出现重复的组合。
+            如果可以有重复的元素, 需要index, 需要i
+        不同集合中取组合
+            那么就不需要考虑i+1还是i了, 因为每个集合之间是互不影响的。
+
+    如果是排列问题
+        那么每一层的元素都是从0开始选取, 也就是从i开始选取, 这样就会出现重复的排列。不需要index, 不需要i+1
+
+***剪枝去重只需要同层去重, 所以只需要在for循环里面考虑去重条件***
+所以整个for循环都可以用一个set(), array()或者dict()来存储已经出现过的元素. 
+call递归函数后, 进入下一层可以再新建一个set(), array()或者dict()来存储已经出现过的元素, 这样就可以避免重复的元素进入下一层递归。
+
 
 回溯算法能解决如下问题:
 组合问题: N个数里面按一定规则找出k个数的集合
@@ -27,20 +43,28 @@ for循环横向遍历,递归纵向遍历,回溯不断调整结果集
 棋盘问题: N皇后, 解数独等等
 """
 # 以下在计算空间复杂度的时候我都把系统栈（不是数据结构里的栈）所占空间算进去。
+
 # 子集问题分析：
 # 时间复杂度：O(2^n)，因为每一个元素的状态无外乎取与不取，所以时间复杂度为O(2^n)
-# 空间复杂度：O(n)，递归深度为n，所以系统栈所用空间为O(n)，每一层递归所用的空间都是常数级别，注意代码里的result和path都是全局变量，就算是放在参数里，传的也是引用，并不会新申请内存空间，最终空间复杂度为O(n)
+# 空间复杂度：O(n)，递归深度为n，所以系统栈所用空间为O(n)，每一层递归所用的空间都是常数级别，
+    # 注意代码里的result和path都是全局变量，就算是放在参数里，传的也是引用，并不会新申请内存空间，最终空间复杂度为O(n)
+    # path和result：
+    # path的大小最多为n（当选择所有元素时）。
+    # result最终会存储所有2^n个子集，但其空间不计入空间复杂度分析（属于输出空间）。
+    # 关键点在于：path在递归过程中是共享的（通过引用传递或全局变量），不会在每个递归层都复制一份。
 
 # 排列问题分析：
-# 时间复杂度：O(n!)，这个可以从排列的树形图中很明显发现，每一层节点为n，第二层每一个分支都延伸了n-1个分支，再往下又是n-2个分支，所以一直到叶子节点一共就是 n * n-1 * n-2 * ..... 1 = n!。
+# 时间复杂度：O(n!)，这个可以从排列的树形图中很明显发现，每一层节点为n，第二层每一个分支都延伸了n-1个分支，
+# 再往下又是n-2个分支，所以一直到叶子节点一共就是 n * n-1 * n-2 * ..... 1 = n!。
 # 空间复杂度：O(n)，和子集问题同理。
 
 # 组合问题分析：
-# 时间复杂度：O(2^n)，组合问题其实就是一种子集的问题，所以组合问题最坏的情况，也不会超过子集问题的时间复杂度。
-# 空间复杂度：O(n)，和子集问题同理。
+# 时间复杂度: O(C(n, k))，最坏情况下是 O(2^n / sqrt(n))，而不是简单的 O(2^n)。
+# 空间复杂度: O(k) 最大递归深度为 k（生成 k 个元素的组合），因此空间复杂度为 O(k)。如果 k 可以接近 n（如 k = n），则空间复杂度为 O(n)。
 
 # N皇后问题分析：
-# 时间复杂度：O(n!) ，其实如果看树形图的话，直觉上是O(n^n)，但皇后之间不能见面所以在搜索的过程中是有剪枝的，最差也就是O（n!），n!表示n * (n-1) * .... * 1。
+# 时间复杂度：O(n!) ，其实如果看树形图的话，直觉上是O(n^n)，但皇后之间不能见面所以在搜索的过程中是有剪枝的，
+# 最差也就是O（n!），n!表示n * (n-1) * .... * 1。
 # 空间复杂度：O(n)，和子集问题同理。
 
 # 解数独问题分析：
@@ -79,6 +103,8 @@ void backtracking(参数) { # 1.回溯函数模板返回值以及参数
 # [[2,4], [3,4], [2,3], [1,2], [1,3], [1,4],]
 # *** 剪枝优化
 # 剪枝精髓是：for循环在寻找起点的时候要有一个范围，如果这个起点到集合终止之间的元素已经不够 题目要求的k个元素了，就没有必要搜索了。
+# Time Complexity: O(nCk) 其中nCk是组合数
+# Space Complexity: O(nCk) 其中nCk是组合数
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         res=[]  #存放符合条件结果的集合
@@ -86,7 +112,7 @@ class Solution:
 
         def backtrack(n, k, startIndex):
             if len(path) == k:
-                res.append(path[:])
+                res.append(path[:]) #self.path.copy()  # shallow copy
                 return
 
             # for i in range(startIndex, n+1):
@@ -133,6 +159,8 @@ class Solution:
     # 示例 1: 输入: k = 3, n = 7 输出: [[1,2,4]]
     # 示例 2: 输入: k = 3, n = 9 输出: [[1,2,6], [1,3,5], [2,3,4]]
 # 本题的剪枝会好想一些，即：已选元素总和如果已经大于n（题中要求的和）了，那么往后遍历就没有意义了，直接剪掉。
+# Time Complexity: O(9Ck) 其中9Ck是组合数
+# Space Complexity: O(9Ck) 其中9Ck是组合数
 class Solution:
     def __init__(self):
         self.res = []
@@ -150,7 +178,7 @@ class Solution:
         # Base Case
         if len(self.path) == k:  # len(path)==k时不管sum是否等于n都会返回
             if self.sum_now == n:
-                self.res.append(self.path[:])
+                self.res.append(self.path[:]) #self.path.copy()  # shallow copy
             return
         # 单层递归逻辑
         for i in range(start_num, 10 - (k - len(self.path)) + 1):
@@ -277,13 +305,17 @@ class Solution:
         if index == len(digits):
             self.result.append(self.s)
             return
+
         digit = int(digits[index])    # 将索引处的数字转换为整数
         letters = self.letterMap[digit]    # 获取对应的字符集
+        # 遍历字符集
         for i in range(len(letters)):
             self.s += letters[i]    # 处理字符
             self.backtracking(digits, index + 1)    # 递归调用，注意索引加1，处理下一个数字
             self.s = self.s[:-1]    # 回溯，删除最后添加的字符
 # *** 回溯精简（版本一）
+# Time Complexity: O(4^n) 其中n是输入数字的长度，因为每个数字最多对应4个字母
+# Space Complexity: O(n) 其中n是输入数字的长度，因为递归深度最多为n
 class Solution:
     def __init__(self):
         self.letterMap = [
@@ -416,6 +448,8 @@ def backtrack(i: int, curr_combination: List[str], digits: str, keypad_map: Dict
 # 如果是一个集合来求组合的话，就需要startIndex. 例如：77.组合 ，216.组合总和III 。
 # 如果是多个集合取组合，各个集合之间相互不影响，那么就不用startIndex，例如：17.电话号码的字母组合
 # *** 回溯 + 剪枝
+# Time Complexity: O(2^n) 其中n是candidates的长度，因为每个元素可以选择或不选择
+# Space Complexity: O(n) 其中n是candidates的长度，因为递归深度最多为n
 class Solution:
     def __init__(self):
         self.path = []
@@ -571,6 +605,8 @@ def dfs(combination: List[int], start_index: int, nums: List[int], target: int,
     # 示例 1: 输入: candidates = [10,1,2,7,6,1,5], target = 8, 所求解集为: [ [1, 7], [1, 2, 5], [2, 6], [1, 1, 6] ]
     # 示例 2: 输入: candidates = [2,5,2,1,2], target = 5, 所求解集为: [   [1,2,2],   [5] ]
 # *** 回溯优化，不用used
+# Time Complexity: O(2^n) 其中n是candidates的长度，因为每个元素可以选择或不选择
+# Space Complexity: O(n) 其中n是candidates的长度，因为递归深度最多为n
 class Solution:
     def __init__(self):
         self.paths = []
@@ -952,6 +988,8 @@ class Solution:
                 return False
         return True
 # *** 回溯+剪枝（版本二）
+# Time Complexity: O(1) 因为IP地址的长度是固定的，最多只有12个字符
+# Space Complexity: O(1) 因为IP地址的长度是固定的，最多只有12个字符
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
         results = []
@@ -970,7 +1008,7 @@ class Solution:
             if self.is_valid(s, index, i):
                 sub = s[index:i+1]
                 path.append(sub)
-                self.backtracking(s, i+1, path, results)
+                self.backtracking(s, i+1, path, results) # i+1是因为下一段子串的起始位置
                 path.pop()
 
     def is_valid(self, s, start, end):
@@ -1011,6 +1049,8 @@ class Solution:
 #             self.path.append(nums[i])
 #             self.backtracking(nums, i+1)
 #             self.path.pop()     # 回溯
+# Time Complexity: O(2^n) 其中n是nums的长度，因为每个元素可以选择或不选择
+# Space Complexity: O(n) 其中n是nums的长度，因为递归深度最多为n
 class Solution:
     def subsets(self, nums):
         result = []
@@ -1095,14 +1135,14 @@ class Solution:
     def backtracking(self, nums, startIndex, used, path, result):
         result.append(path[:])  # 收集子集
         for i in range(startIndex, len(nums)):
-            # used[i - 1] == True，说明同一树枝 nums[i - 1] 使用过
-            # used[i - 1] == False，说明同一树层 nums[i - 1] 使用过
+            # used[i - 1] == True，说明同一树枝 nums[i - 1] 使用过 (在递归中使用过)
+            # used[i - 1] == False，说明同一树层 nums[i - 1] 使用过 (在for循环中使用过)
             # 而我们要对同一树层使用过的元素进行跳过
             if i > 0 and nums[i] == nums[i - 1] and not used[i - 1]:
                 continue
             path.append(nums[i])
             used[i] = True
-            self.backtracking(nums, i + 1, used, path, result)
+            self.backtracking(nums, i + 1, used, path, result) # i + 1是因为不允许重复使用同一元素
             used[i] = False
             path.pop()
 # 回溯 利用集合去重
@@ -1125,6 +1165,8 @@ class Solution:
 #             self.backtracking(nums, i + 1, path, result)
 #             path.pop()
 # *** 回溯 利用递归的时候下一个startIndex是i+1而不是0去重
+# Time Complexity: O(2^n) 其中n是nums的长度，因为每个元素可以选择或不选择
+# Space Complexity: O(n) 其中n是nums的长度，因为递归深度最多为n
 class Solution:
     def subsetsWithDup(self, nums):
         result = []
@@ -1203,9 +1245,14 @@ class Solution:
 #             # 本题要求所有的节点
 #             self.paths.append(self.path[:])
         
-#         # Base Case（可忽略）
-#         if start_index == len(nums):
-#             return
+        # # Base Case（可忽略）
+        # # Implicit Return at Function End:
+        # # Python functions automatically return None when they reach the end
+        # # After the for loop completes, the function simply ends and returns control to the previous level
+        # # 终止条件
+        # # 这里可以不加终止条件, 因为在每次递归中都会检查path的长度
+        # if start_index == len(nums):
+        #     return
 
 #         # 单层递归逻辑
 #         # 深度遍历中每一层都会有一个全新的usage_list用于记录本层元素是否重复使用
@@ -1242,6 +1289,8 @@ class Solution:
             self.backtracking(nums, i + 1, path, result)
             path.pop()
 # *** 回溯 利用哈希表去重
+# Time Complexity: O(2^n) 其中n是nums的长度，因为每个元素可以选择或不选择
+# Space Complexity: O(n) 其中n是nums的长度，因为递归深度最多为n
 class Solution:
     def findSubsequences(self, nums):
         result = []
@@ -1260,7 +1309,7 @@ class Solution:
             
             used[nums[i] + 100] = 1  # 标记当前元素已经使用过
             path.append(nums[i])  # 将当前元素加入当前递增子序列
-            self.backtracking(nums, i + 1, path, result)
+            self.backtracking(nums, i + 1, path, result) # i + 1是因为不允许重复使用同一元素
             path.pop()
 
 
@@ -1328,8 +1377,10 @@ class Solution:
 #             self.backtracking(nums)
 #             self.path.pop()
 # *** 回溯 使用used
-# 使用used因为每次都是从第一个item遍历，这样才能保证所有item都考虑到了。因为没有用start index
+# 使用used因为每次都是从第一个item遍历，这样才能保证所有item都考虑到了。因此没有用start index
 # 使用start index是因为每次都从当前的start index开始遍历，这样就可以避免重复考虑了, 但是全排列需要考虑所有的item，所以不能用start index
+# Time Complexity: O(n!)
+# Space Complexity: O(n)
 class Solution:
     def permute(self, nums):
         result = []
@@ -1337,6 +1388,8 @@ class Solution:
         return result
 
     def backtracking(self, nums, path, used, result):
+        # Base Case 需要设置条件的才需要return, 如果是遍历所有可能同时记录, 那不需要return, 
+        # 因为implicit return at function end (for loop done)
         if len(path) == len(nums):
             result.append(path[:])
             return
@@ -1411,10 +1464,13 @@ def backtrack(nums: List[int], candidate: List[int], used: Set[int], res: List[L
 #         # 记得给nums排序
 #         backtracking(sorted(nums),used,[])
 #         return res
+# Time Complexity: O(n!)
+# Space Complexity: O(n)
 class Solution:
     def permuteUnique(self, nums):
         nums.sort()  # 排序
         result = []
+        # used数组可是全局变量，每层与每层之间公用一个used数组，所以空间复杂度是O(n + n)，最终空间复杂度还是O(n)。
         self.backtracking(nums, [], [False] * len(nums), result)
         return result
 
@@ -1637,11 +1693,15 @@ class Solution:
     # 输出：[["Q"]]
 # 如果从来没有接触过N皇后问题的同学看着这样的题会感觉无从下手，可能知道要用回溯法，但也不知道该怎么去搜。
 # 这里我明确给出了棋盘的宽度就是for循环的长度，递归的深度就是棋盘的高度，这样就可以套进回溯法的模板里了。
+# Time Complexity: O(n!) 其中n是棋盘的宽度，因为每一行都需要尝试放置皇后，最多有n个位置可以放置
+# Space Complexity: O(n^2) 其中n是棋盘的宽度，因为需要存储棋盘的状态
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
         if not n: return []
         board = [['.'] * n for _ in range(n)]
         res = []
+
+        # 检查当前位置是否可以放置皇后
         def isVaild(board, row, col):
             #判断同一列是否冲突
             for i in range(len(board)):
@@ -1664,9 +1724,10 @@ class Solution:
                 i -= 1
                 j += 1
             return True
+
         # 回溯
-            # row表示当前在哪一行摆放皇后
-            # n表示棋盘的宽度
+        # row表示当前在哪一行摆放皇后
+        # n表示棋盘的宽度
         def backtracking(board, row, n):
             # 如果走到最后一行, 说明已经找到一个解
             if row == n:
@@ -1683,6 +1744,8 @@ class Solution:
                 board[row][col] = 'Q'
                 backtracking(board, row+1, n)
                 board[row][col] = '.'
+        
+        # 从第一行开始回溯
         backtracking(board, 0, n)
         return res
 
@@ -1733,6 +1796,7 @@ class Solution:
     # There is a chessboard of size n x n. Your goal is to place n queens on the board 
     # such that no two queens attack each other. Return the number of distinct 
     # configurations where this is possible.
+# *** 回溯 用set()验证validity
 from typing import Set
 
 res = 0
@@ -1750,12 +1814,15 @@ def dfs(r: int, diagonals_set: Set[int], anti_diagonals_set: Set[int], cols_set:
     # Try placing a queen in each column of the current row 'r'.
         # Iterate through all columns in the current row.
     for c in range(n):
-        curr_diagonal = r - c
-        curr_anti_diagonal = r + c
-        # If there are queens on the current column, diagonal or
-        # anti−diagonal, skip this square.
+        # For any cell (r, c) on a diagonal: Moving down-right: r increases by 1, c increases by 1 → r - c stays the same.
+        curr_diagonal = r - c # Calculate the diagonal index for the current position.
+        # For any cell (r, c) on an anti-diagonal: Moving down-left: r increases by 1, c decreases by 1 → r + c stays the same.
+        curr_anti_diagonal = r + c # Calculate the anti-diagonal index for the current position.
+
+        # If there are queens on the current column, diagonal or anti−diagonal, skip this square.
         if (c in cols_set or curr_diagonal in diagonals_set or curr_anti_diagonal in anti_diagonals_set):
             continue
+        
         # Place the queen by marking the current column, diagonal, and
         # anti −diagonal as occupied.
         cols_set.add(c)
@@ -1779,6 +1846,8 @@ def dfs(r: int, diagonals_set: Set[int], anti_diagonals_set: Set[int], cols_set:
     # 空白格用 '.' 表示。
 # 在树形图中可以看出我们需要的是一个二维的递归（也就是两个for循环嵌套着递归）
 # 一个for循环遍历棋盘的行，一个for循环遍历棋盘的列，一行一列确定下来之后，递归遍历这个位置放9个数字的可能性！
+# Time Complexity: O(9^(n^2)) 其中n是数独的大小，因为每个空格最多可以填入9个数字
+# Space Complexity: O(n^2) 其中n是数独的大小，因为需要存储数独的状态
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
         """
@@ -1817,4 +1886,60 @@ class Solution:
             for j in range(start_col, start_col + 3):
                 if board[i][j] == str(val):
                     return False
+        return True
+        
+# 回溯 使用set()验证validity
+from typing import List, Set
+
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        # Initialize sets for rows, columns, and boxes
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+        
+        # Populate the sets with existing numbers
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    num = int(board[i][j])
+                    rows[i].add(num)
+                    cols[j].add(num)
+                    box_idx = (i // 3) * 3 + j // 3
+                    boxes[box_idx].add(num)
+        
+        self.backtracking(board, rows, cols, boxes)
+
+    def backtracking(self, board: List[List[str]], rows: List[Set[int]], cols: List[Set[int]], boxes: List[Set[int]]) -> bool:
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    continue
+                
+                for num in range(1, 10):
+                    box_idx = (i // 3) * 3 + j // 3
+                    
+                    # Check if the number is valid using sets
+                    if num in rows[i] or num in cols[j] or num in boxes[box_idx]:
+                        continue
+                    
+                    # Place the number
+                    board[i][j] = str(num)
+                    rows[i].add(num)
+                    cols[j].add(num)
+                    boxes[box_idx].add(num)
+                    
+                    if self.backtracking(board, rows, cols, boxes):
+                        return True
+                    
+                    # Backtrack
+                    board[i][j] = '.'
+                    rows[i].remove(num)
+                    cols[j].remove(num)
+                    boxes[box_idx].remove(num)
+                
+                return False
         return True
