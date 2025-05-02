@@ -700,7 +700,7 @@ for(int j = 0; j <= bagWeight; j++) { // 遍历背包容量
 动态规划:回文子串
 动态规划:最长回文子序列
 
-关于动规,还有 树形DP(打家劫舍系列里有一道),数位DP,区间DP ,概率型DP,博弈型DP,状态压缩dp等等等,这些我就不去做讲解了,面试中出现的概率非常低。
+关于动规,还有 树形DP(打家劫舍系列里有一道),数位DP,区间DP,概率型DP,博弈型DP,状态压缩dp等等等,这些我就不去做讲解了,面试中出现的概率非常低。
 能把本篇中列举的题目都研究通透的话,你的动规水平就已经非常高了。 对付面试已经足够!
 """
 
@@ -743,6 +743,7 @@ for(int j = 0; j <= bagWeight; j++) { // 遍历背包容量
     # 斐波那契数, 通常用 F(n) 表示, 形成的序列称为 斐波那契数列 。
     # 该数列由 0 和 1 开始, 后面的每一项数字都是前面两项数字的和。
     # 也就是: F(0) = 0, F(1) = 1 F(n) = F(n - 1) + F(n - 2), 其中 n > 1 给你n , 请计算 F(n) 。
+# dp[i] = dp[i - 1] + dp[i - 2]
 # 递归实现
 class Solution:
     def fib(self, n: int) -> int:
@@ -803,6 +804,7 @@ class Solution:
     # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
     # 每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
     # 注意:给定 n 是一个正整数。
+# dp[i] = dp[i - 1] + dp[i - 2]
 # 动态规划(版本一)
 # 空间复杂度为O(n)版本
 class Solution:
@@ -883,6 +885,7 @@ def climbing_stairs_bottom_up_optimized(n: int) -> int:
     # 请你找出达到楼层顶部的最低花费。在开始时, 你可以选择从下标为 0 或 1 的元素作为初始阶梯。
     # 示例 1:输入:cost = [10, 15, 20] 输出:15 解释:最低花费是从 cost[1] 开始, 然后走两步即可到阶梯顶, 一共花费 15 。
     # 示例 2:输入:cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1] 输出:6 解释:最低花费方式是从 cost[0] 开始, 逐个经过那些 1 , 跳过 cost[3] , 一共花费 6 。
+# dpi = min(dp1 + cost[i - 1], dp0 + cost[i - 2])
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
         dp = [0] * (len(cost))
@@ -947,6 +950,7 @@ class Solution:
     # 问总共有多少条不同的路径？
     # 输入:m = 3, n = 7
     # 输出:28
+# dp[i] += dp[i - 1]
 # class Solution: # 动态规划
 #     def uniquePaths(self, m: int, n: int) -> int:
 #         dp = [[1 for i in range(n)] for j in range(m)]
@@ -1195,8 +1199,9 @@ class Solution:
     # 输出: 36
     # 解释: 10 = 3 + 3 + 4, 3 × 3 × 4 = 36。
     # 说明: 你可以假设 n 不小于 2 且不大于 58
-# XXX dp[i] = max(dp[i], dp[i - j] * dp[j])
 # dp[i] = max(dp[i], max((i - j) * j, dp[i - j] * j));
+# dp[i] = max(dp[i], (i - j) * j, dp[i - j] * j)
+# XXX dp[i] = max(dp[i], dp[i - j] * dp[j])
 # 也可以这么理解,j * (i - j) 是单纯的把整数拆分为两个数相乘,而j * dp[i - j]是拆分成两个以及两个以上的个数相乘。
 # 那么在取最大值的时候,为什么还要比较dp[i]呢？因为在递推公式推导的过程中,每次计算dp[i],取最大的而已。
 class Solution:
@@ -1267,12 +1272,12 @@ class Solution:
 #         return result
 
 
-#7 (Medium) 96.不同的二叉搜索树
+#7 ??? (Medium) 96.不同的二叉搜索树
     # 给定一个整数 n, 求以 1 ... n 为节点组成的二叉搜索树有多少种？
 # dp[i] += dp[j - 1] * dp[i - j]
 # 在上面的分析中,其实已经看出其递推关系, dp[i] += dp[以j为头结点左子树节点数量] * dp[以j为头结点右子树节点数量]
 # j相当于是头结点的元素,从1遍历到i为止。
-# 所以递推公式:dp[i] += dp[j - 1] * dp[i - j]; ,j-1 为j为头结点左子树节点数量,i-j 为以j为头结点右子树节点数量
+# 所以递推公式:dp[i] += dp[j - 1] * dp[i - j]; ,j-1 为以j为头结点左子树节点数量,i-j 为以j为头结点右子树节点数量
 # 1, 2, ..., j, ..., i, in this list, left of j is j-1, right of j is i-j
 class Solution:
     def numTrees(self, n: int) -> int:
@@ -1476,9 +1481,7 @@ test_1_wei_bag_problem()
 
 #     return dp[bagWeight]
 
-
 # if __name__ == "__main__":
-
 #     weight = [1, 3, 4]
 #     value = [15, 20, 30]
 #     bagweight = 4
@@ -1491,11 +1494,13 @@ test_1_wei_bag_problem()
     # 给定一个只包含正整数的非空数组。是否可以将这个数组分割成两个子集, 使得两个子集的元素和相等。
     # 注意: 每个数组中的元素不会超过 100 数组的大小不会超过 200
     # 示例 1: 输入: [1, 5, 11, 5] 输出: true 解释: 数组可以分割成 [1, 5, 5] 和 [11].
+# dp[j] = max(dp[j], dp[j-num] + num)
 # 这道题目是要找是否可以将这个数组分割成两个子集,使得两个子集的元素和相等。
 # 那么只要找到集合里能够出现 sum / 2 的子集总和,就算是可以分割成两个相同元素和子集了。
 
 # 即一个商品如果可以重复多次放入是完全背包,而只能放入一次是01背包,写法还是不一样的。
 # 要明确本题中我们要使用的是01背包,因为元素我们只能用一次。
+
 # 一维DP
 # class Solution:
 #     def canPartition(self, nums: List[int]) -> bool:
@@ -1606,6 +1611,7 @@ class Solution:
     # 组合 7 和 8,得到 1,所以数组转化为 [2,1,1,1],
     # 组合 2 和 1,得到 1,所以数组转化为 [1,1,1],
     # 组合 1 和 1,得到 0,所以数组转化为 [1],这就是最优值。
+# dp[j] = max(dp[j], dp[j - stone] + stone)
 # 本题其实就是尽量让石头分成重量相同的两堆,相撞之后剩下的石头最小,这样就化解成01背包问题了。
 # 是不是感觉和昨天讲解的416. 分割等和子集 (opens new window)非常像了。
 # 本题物品的重量为stones[i],物品的价值也为stones[i]。
@@ -1682,7 +1688,8 @@ class Solution:
 
 
 #12 (Medium) 494.目标和
-    # 给定一个非负整数数组,a1, a2, ..., an, 和一个目标数,S。现在你有两个符号 + 和 -。对于数组中的任意一个整数,你都可以从 + 或 -中选择一个符号添加在前面。
+    # 给定一个非负整数数组,a1, a2, ..., an, 和一个目标数,S。现在你有两个符号 + 和 -。对于数组中的任意一个整数,
+    # 你都可以从 + 或 -中选择一个符号添加在前面。
     # 返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
     # 示例:
     # 输入:nums: [1, 1, 1, 1, 1], S: 3
@@ -1694,6 +1701,7 @@ class Solution:
     # +1+1+1-1+1 = 3
     # +1+1+1+1-1 = 3
     # 一共有5种方法让最终目标和为3。
+# dp[j] += dp[j - nums[i]]
 # 如果仅仅是求个数的话,就可以用dp,但回溯算法:39. 组合总和要求的是把所有组合列出来,还是要使用回溯法爆搜的。
 # 大家也可以记住,在求装满背包有几种方法的情况下,递推公式一般为:dp[j] += dp[j - nums[i]];
 # 回溯版
@@ -1776,6 +1784,7 @@ class Solution:
     # 输入:strs = ["10", "0", "1"], m = 1, n = 1
     # 输出:2
     # 解释:最大的子集是 {"0", "1"} ,所以答案是 2 。
+# dp[i][j] = max(dp[i][j], dp[i - zeros][j - ones] + 1)
 # 本题中strs 数组里的元素就是物品,每个物品都是一个!
 # 而m 和 n相当于是一个背包,两个维度的背包。
 # 有同学可能想,那个遍历背包容量的两层for循环先后循序有没有什么讲究？
@@ -1899,6 +1908,7 @@ if __name__ == "__main__":
     # 示例 3:
     # 输入: amount = 10, coins = [10]
     # 输出: 1
+# dp[j] += dp[j - coins[i]]
 # 这是一道典型的背包问题,一看到钱币数量不限,就知道这是一个完全背包。
 # 但本题和纯完全背包不一样,纯完全背包是凑成背包最大价值是多少,而本题是要求凑成总金额的物品组合个数！
 # 组合不强调元素之间的顺序,排列强调元素之间的顺序。
@@ -1944,6 +1954,7 @@ class Solution:
     # 所有可能的组合为： (1, 1, 1, 1) (1, 1, 2) (1, 2, 1) (1, 3) (2, 1, 1) (2, 2) (3, 1)
     # 请注意，顺序不同的序列被视作不同的组合。
     # 因此输出为 7。
+# dp[i] += dp[i - j]
 # 如果把遍历nums(物品)放在外循环,遍历target的作为内循环的话
 # 举一个例子:计算dp[4]的时候,结果集只有 {1,3} 这样的集合,不会有{3,1}这样的集合
 # 因为nums遍历放在外层,3只能出现在1后面!
@@ -1973,19 +1984,20 @@ class Solution:
 
 
 #17 (Easy) 70.爬楼梯(进阶版)
-# 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
-# 每次你可以爬至多m (1 <= m < n)个台阶。你有多少种不同的方法可以爬到楼顶呢？
-# 注意:给定 n 是一个正整数。
-# 输入描述:输入共一行,包含两个正整数,分别表示n, m
-# 输出描述:输出一个整数,表示爬到楼顶的方法数。
-# 输入示例:3 2
-# 输出示例:3
-# 提示:
-# 当 m = 2,n = 3 时,n = 3 这表示一共有三个台阶,m = 2 代表你每次可以爬一个台阶或者两个台阶。
-# 此时你有三种方法可以爬到楼顶。
-# 1 阶 + 1 阶 + 1 阶段
-# 1 阶 + 2 阶
-# 2 阶 + 1 阶
+    # 假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+    # 每次你可以爬至多m (1 <= m < n)个台阶。你有多少种不同的方法可以爬到楼顶呢？
+    # 注意:给定 n 是一个正整数。
+    # 输入描述:输入共一行,包含两个正整数,分别表示n, m
+    # 输出描述:输出一个整数,表示爬到楼顶的方法数。
+    # 输入示例:3 2
+    # 输出示例:3
+    # 提示:
+    # 当 m = 2,n = 3 时,n = 3 这表示一共有三个台阶,m = 2 代表你每次可以爬一个台阶或者两个台阶。
+    # 此时你有三种方法可以爬到楼顶。
+    # 1 阶 + 1 阶 + 1 阶段
+    # 1 阶 + 2 阶
+    # 2 阶 + 1 阶
+# dp[i] += dp[i - j]
 # 时间复杂度: O(n * m)
 # 空间复杂度: O(n)
 class Solution {
@@ -2022,6 +2034,7 @@ public:
     # 示例 5：
     # 输入：coins = [1], amount = 2
     # 输出：2
+# dp[i] = min(dp[i], dp[i - coin] + 1)
 # 本题求钱币最小个数，那么钱币有顺序和没有顺序都可以，都不影响钱币的最小个数。
 # 所以本题并不强调集合是组合还是排列。
 # 如果求组合数就是外层for循环遍历物品，内层for遍历背包。
@@ -2094,6 +2107,7 @@ class Solution:
     # 输入：n = 13
     # 输出：2
     # 解释：13 = 4 + 9
+# dp[j] = min(dp[j - i * i] + 1, dp[j])
 # 在动态规划：322. 零钱兑换中我们就深入探讨了这个问题，本题也是一样的，是求最小数！
 # 所以本题外层for遍历背包，内层for遍历物品，还是外层for遍历物品，内层for遍历背包，都是可以的！
 # 先遍历背包, 再遍历物品
@@ -2158,6 +2172,7 @@ class Solution:
     # 示例 3：
     # 输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
     # 输出: false
+# dp[j] = dp[j] or (dp[j - len(word)] and word == s[j - len(word):j])
 # dp[i] : 字符串长度为i的话，dp[i]为true，表示可以拆分为一个或多个在字典中出现的单词。
 # 如果确定dp[j] 是true，且 [j, i] 这个区间的子串出现在字典里，那么dp[i]一定是true。（j < i ）。
 # 所以递推公式是 if([j, i] 这个区间的子串出现在字典里 && dp[j]是true) 那么 dp[i] = true。
@@ -2234,6 +2249,7 @@ class Solution:
     # 示例 2：
     # 输入：[2,7,9,3,1]
     # 输出：12 解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。   偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+# dp[i] = max(dp[i - 2] + nums[i], dp[i - 1])
 # dp[i]：考虑下标i（包括i）以内的房屋，最多可以偷窃的金额为dp[i]。
 # 决定dp[i]的因素就是第i房间偷还是不偷。
 # 如果偷第i房间，那么dp[i] = dp[i - 2] + nums[i] ，即：第i-1房一定是不考虑的，找出 下标i-2（包括i-2）以内的房屋，最多可以偷窃的金额为dp[i-2] 加上第i房间偷到的钱。
@@ -2916,6 +2932,7 @@ class Solution:
     # 示例 3：
     # 输入：nums = [7,7,7,7,7,7,7]
     # 输出：1
+# dp[i] = max(dp[i], dp[j] + 1)
 # 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序
 # dp[i]表示i之前包括i的以nums[i]结尾的最长递增子序列的长度
 # 为什么一定表示 “以nums[i]结尾的最长递增子序” ，因为我们在 做 递增比较的时候，如果比较 nums[j] 和 nums[i] 的大小，
@@ -2971,6 +2988,7 @@ class Solution:
     # 输入：nums = [2,2,2,2,2]
     # 输出：1
     # 解释：最长连续递增序列是 [2], 长度为1。
+# dp[i+1] = dp[i] + 1
 # dp[i]：以下标i为结尾的连续递增的子序列长度为dp[i]。
 # 注意这里的定义，一定是以下标i为结尾，并不是说一定以下标0为起始位置。
 # 如果 nums[i] > nums[i - 1]，那么以 i 为结尾的连续递增的子序列长度 一定等于 以i - 1为结尾的连续递增的子序列长度 + 1 。
@@ -3031,6 +3049,7 @@ class Solution:
     # B: [3,2,1,4,7]
     # 输出：3
     # 解释：长度最长的公共子数组是 [3, 2, 1] 。
+# dp[j] = dp[j - 1] + 1
 # dp[i][j] ：以下标i - 1为结尾的A，和以下标j - 1为结尾的B，最长重复子数组长度为dp[i][j]。 
 # （特别注意： “以下标i - 1为结尾的A” 标明一定是 以A[i-1]为结尾的字符串 ）
 # 此时细心的同学应该发现，那dp[0][0]是什么含义呢？总不能是以下标-1为结尾的A数组吧。
@@ -3162,6 +3181,7 @@ class Solution:
     # 输入：text1 = "abc", text2 = "def"
     # 输出：0
     # 解释：两个字符串没有公共子序列，返回 0。
+# dp[j] = max(dp[j], dp[j - 1]) 
 # 本题和动态规划:718. 最长重复子数组 区别在于这里不要求是连续的了,
 # 但要有相对顺序,即:"ace" 是 "abcde" 的子序列,但 "aec" 不是 "abcde" 的子序列。
 # dp[i][j]：长度为[0, i - 1]的字符串text1与长度为[0, j - 1]的字符串text2的最长公共子序列为dp[i][j]
@@ -3289,6 +3309,7 @@ class Solution:
     # 输入: [-2,1,-3,4,-1,2,1,-5,4]
     # 输出: 6
     # 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+# dp[i] = max(dp[i-1] + nums[i], nums[i])
 # dp[i]：包括下标i（以nums[i]为结尾）的最大连续子序列和为dp[i]。
 # dp[i]只有两个方向可以推出来：
 # dp[i - 1] + nums[i]，即：nums[i]加入当前连续子序列和
@@ -3318,6 +3339,7 @@ class Solution:
     # 示例 2：
     # 输入：s = "axc", t = "ahbgdc"
     # 输出：false
+# dp[i][j] = dp[i-1][j-1] + 1
 # dp[i][j] 表示以下标i-1为结尾的字符串s，和以下标j-1为结尾的字符串t，相同子序列的长度为dp[i][j]。
 # if (s[i - 1] == t[j - 1])，那么dp[i][j] = dp[i - 1][j - 1] + 1;，因为找到了一个相同的字符，相同子序列长度自然要在dp[i-1][j-1]的基础上加1（如果不理解，在回看一下dp[i][j]的定义）
 # if (s[i - 1] != t[j - 1])，此时相当于t要删除元素，t如果把当前元素t[j - 1]删除，那么dp[i][j] 的数值就是 看s[i - 1]与 t[j - 2]的比较结果了，即：dp[i][j] = dp[i][j - 1];
@@ -3341,6 +3363,7 @@ class Solution:
     # 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
     # 字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
     # 题目数据保证答案符合 32 位带符号整数范围。
+# dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
 # 这道题目如果不是子序列,而是要求连续序列的,那就可以考虑用KMP。
 # dp[i][j]：以i-1为结尾的s子序列中出现以j-1为结尾的t的个数为dp[i][j]。
 # 这一类问题，基本是要分析两种情况
@@ -3794,6 +3817,7 @@ def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
     # Example 2:
     # Input: coins = [2, 4], target = 5
     # Output: -1
+# dp[t] = min(dp[t], 1 + dp[t - coin])
 from typing import List
 
 def min_coin_combination_bottom_up(coins: List[int], target: int) -> int:
@@ -3815,6 +3839,7 @@ def min_coin_combination_bottom_up(coins: List[int], target: int) -> int:
     # You are positioned at the top-left corner of a m × n matrix, and can only move 
     # downward or rightward through the matrix. Determine the number of unique pathways 
     # you can take to reach the bottom-right corner of the matrix.
+# dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
 def matrix_pathways(m: int, n: int) -> int:
     # Base cases: Set all cells in row 0 and column 0 to 1. We can
     # do this by initializing all cells in the DP table to 1.
@@ -3856,6 +3881,7 @@ def matrix_pathways_optimized(m: int, n: int) -> int:
     # Explanation: subarray [2, -1, 4] has the largest sum of 5.
     # Constraints:
     # The input array contains at least one element.
+# dp[i] = max(dp[i - 1] + nums[i], nums[i])
 from typing import List
 
 def maximum_subarray_sum_dp(nums: List[int]) -> int:
@@ -3889,6 +3915,7 @@ def maximum_subarray_sum_dp_optimized(nums: List[int]) -> int:
 
 #X45 Largest Square in a Matrix
     # Determine the area of the largest square of 1's in a binary matrix.
+# dp[i][j] = 1 + min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1])
 from typing import List
 
 def largest_square_in_a_matrix(matrix: List[List[int]]) -> int:
@@ -3959,6 +3986,7 @@ def largest_square_in_a_matrix_optimized(matrix: List[List[int]]) -> int:
     # Input: s = "aabcaabdaab"
     # Output: 3
     # Explanation: The longest repeating substring is "aab", which occurs 3 times.
+# dp[i][j] = dp[i - 1][j - 1] + 1
 # Approach 5: Dynamic Programming
 # Time complexity: O(n^2)
 # Space complexity: O(n^2)
