@@ -15,6 +15,9 @@
 ===================================================================================================
 # 01背包与完全背包的遍历顺序总结
 
+有N件物品和一个最多能背重量为W的背包。第i件物品的重量是weight[i], 得到的价值是value[i] 。每件物品都有无限个（也就是可以放入背包多次），求解将哪些物品装入背包里物品价值总和最大。
+完全背包和01背包问题唯一不同的地方就是, 每种物品有无限件。
+
 dp[i][j] represents max value using first i items with capacity j.
 
 Items: 3 items with weights w = [1, 2, 3] and values v = [15, 20, 50]
@@ -28,26 +31,56 @@ Knapsack capacity: W = 5
 ### 遍历方向
 - **从小到大遍历**  
   二维数组无需覆盖状态，按正常顺序更新即可。
+
+01背包:
+    dp[i][j] 表示从下标为[0-i]的物品里任意取, 每个物品可以取一次, 放进容量为j的背包, 价值总和最大是多少
+    递归公式: dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i]);
+完全背包:
+    dp[i][j] 表示从下标为[0-i]的物品, 每个物品可以取无限次, 放进容量为j的背包, 价值总和最大是多少。
+    递推公式: dp[i][j] = max(dp[i - 1][j], dp[i][j - weight[i]] + value[i]);
+
+*** 注意, 完全背包二维dp数组 和 01背包二维dp数组 递推公式的区别, 01背包中是 dp[i - 1][j - weight[i]] + value[i])
+在 01背包理论基础(二维数组) (opens new window)中, 背包先空留出物品1的容量, 此时容量为1, 
+只考虑放物品0的最大价值是 dp[0][1], 因为01背包每个物品只有一个, 既然空出物品1, 那背包中也不会再有物品1!
+
+而在完全背包中，物品是可以放无限个，所以 即使空出物品1空间重量, 那背包中也可能还有物品1, 
+所以此时我们依然考虑放 物品0 和 物品1 的最大价值即： dp[1][1], 而不是 dp[0][1]
 """
 # 物品重量 [w1, w2, ...], 价值 [v1, v2, ...], 背包容量 W
 n = len(weights)
 dp = [[0] * (W + 1) for _ in range(n + 1)]
 
 # *** 方式1：外层物品，内层容量（标准写法）
-for i in range(1, n + 1):
-    for j in range(1, W + 1):
-        if weights[i-1] <= j:
-            dp[i][j] = max(dp[i-1][j], dp[i-1][j-weights[i-1]] + values[i-1])
+# for i in range(1, n + 1):
+#     for j in range(1, W + 1):
+#         if weights[i-1] <= j:
+#             dp[i][j] = max(dp[i-1][j], dp[i-1][j-weights[i-1]] + values[i-1])
+#         else:
+#             dp[i][j] = dp[i-1][j]
+
+for i in range(n):              # Items 0..n-1
+    for j in range(W + 1):      # Capacities 0..W
+        if j >= weights[i]:     # Direct access to weights[i]
+            dp[i+1][j] = max(dp[i][j], dp[i][j-weights[i]] + values[i])
         else:
-            dp[i][j] = dp[i-1][j]
+            dp[i+1][j] = dp[i][j]
 
 # 方式2：外层容量，内层物品（顺序可互换）
-for j in range(1, W + 1):
-    for i in range(1, n + 1):
-        if weights[i-1] <= j:
-            dp[i][j] = max(dp[i-1][j], dp[i-1][j-weights[i-1]] + values[i-1])
+# for j in range(1, W + 1):
+#     for i in range(1, n + 1):
+#         if weights[i-1] <= j:
+#             dp[i][j] = max(dp[i-1][j], dp[i-1][j-weights[i-1]] + values[i-1])
+#         else:
+#             dp[i][j] = dp[i-1][j]
+
+# Approach 2: Outer loop capacity, inner loop items (order interchangeable)
+for j in range(W + 1):      # Capacity from 0 to W
+    for i in range(n):      # Items from 0 to n-1
+        if weights[i] <= j:
+            dp[i+1][j] = max(dp[i][j], dp[i][j - weights[i]] + values[i])
         else:
-            dp[i][j] = dp[i-1][j]
+            dp[i+1][j] = dp[i][j]
+
 # 结果相同，因为 dp[i][j] 只依赖 dp[i-1][...]，顺序不影响。
 
 """
@@ -217,20 +250,20 @@ print(dp[W])  # 输出：4（[1,1,1,1], [1,1,2], [1,3], [2,2]）
 # j=1：dp[1] += dp[0] → dp = [1, 1, 0, 0, 0]（组合 [1]）
 # j=2：dp[2] += dp[1] → dp = [1, 1, 1, 0, 0]（组合 [1,1]）
 # j=3：dp[3] += dp[2] → dp = [1, 1, 1, 1, 0]（组合 [1,1,1]）
-# j=4：dp[4] += dp[3] → dp = [1, 1, 1, 1, 1]（组合 [1,1,1,1]）
+# j=4：dp[4] += dp[3] → dp = [1, 1, 1, 1, 1]（组合 [1,1,1,1]）***
 
 # Step 2: 处理物品 2（重量 2）
 # for j in range(2, 5):  # j = 2, 3, 4
 #     dp[j] += dp[j - 2]
 # j=2：dp[2] += dp[0] → dp = [1, 1, 2, 1, 1]（新增组合 [2]）
 # j=3：dp[3] += dp[1] → dp = [1, 1, 2, 2, 1]（新增组合 [1,2]）
-# j=4：dp[4] += dp[2] → dp = [1, 1, 2, 2, 3]（新增组合 [2,2] 和 [1,1,2]）
+# j=4：dp[4] += dp[2] → dp = [1, 1, 2, 2, 3]（新增组合 [2,2] 和 [1,1,2]）***
 
 # Step 3: 处理物品 3（重量 3）
 # for j in range(3, 5):  # j = 3, 4
 #     dp[j] += dp[j - 3]
 # j=3：dp[3] += dp[0] → dp = [1, 1, 2, 3, 3]（新增组合 [3]）
-# j=4：dp[4] += dp[1] → dp = [1, 1, 2, 3, 4]（新增组合 [1,3]）
+# j=4：dp[4] += dp[1] → dp = [1, 1, 2, 3, 4]（新增组合 [1,3]）***
 # 最终结果
 # dp = [1, 1, 2, 3, 4]  # dp[4] = 4
 # 组合方式：
@@ -274,22 +307,53 @@ print(dp[W])  # 输出：7（[1,1,1,1], [1,1,2], [1,2,1], [2,1,1], [2,2], [1,3],
 # (1) 排列数代码的执行过程
 # 初始化：dp = [1, 0, 0, 0]
 
-# j=1：
-# 可选物品 1：dp[1] += dp[0] → dp = [1, 1, 0, 0]（方式：[1]）
+# 1. 当 j = 1（和为1）
+# 遍历物品 [1, 2, 3]：
+    # 物品 1（1 ≤ 1）：
+    # dp[1] += dp[0] → dp = [1, 1, 0, 0, 0]
+    # 新增排列：[1]
+    
+    # 物品 2（2 > 1）、物品 3（3 > 1）：跳过
 
-# j=2：
-# 可选物品 1：dp[2] += dp[1] → dp = [1, 1, 1, 0]（新增 [1,1]）
-# 可选物品 2：dp[2] += dp[0] → dp = [1, 1, 2, 0]（新增 [2]）
+# 2. 当 j = 2（和为2）
+# 遍历物品 [1, 2, 3]：
+    # 物品 1（1 ≤ 2）：
+    # dp[2] += dp[1] → dp = [1, 1, 1, 0, 0]
+    # 新增排列：[1,1]
+    
+    # 物品 2（2 ≤ 2）：
+    # dp[2] += dp[0] → dp = [1, 1, 2, 0, 0]
+    # 新增排列：[2]
+    
+    # 物品 3（3 > 2）：跳过
 
-# j=3：
-# 可选物品 1：dp[3] += dp[2] → dp = [1, 1, 2, 2]（新增 [1,1,1] 和 [2,1]）
-# 可选物品 2：dp[3] += dp[1] → dp = [1, 1, 2, 3]（新增 [1,2]）
+# 3. 当 j = 3（和为3）
+# 遍历物品 [1, 2, 3]：
+    # 物品 1（1 ≤ 3）：
+    # dp[3] += dp[2] → dp = [1, 1, 2, 2, 0]
+    # 新增排列：[1,1,1] 和 [2,1]
+    
+    # 物品 2（2 ≤ 3）：
+    # dp[3] += dp[1] → dp = [1, 1, 2, 3, 0]
+    # 新增排列：[1,2]
+    
+    # 物品 3（3 ≤ 3）：
+    # dp[3] += dp[0] → dp = [1, 1, 2, 4, 0]
+    # 新增排列：[3]
 
-# 最终结果：dp[3] = 3，对应排列：
-# [1,1,1]
-# [2,1]
-# [1,2]
-# （注意 [1,2] 和 [2,1] 被视为两种不同的排列）
+# 4. 当 j = 4（和为4）
+# 遍历物品 [1, 2, 3]：
+    # 物品 1（1 ≤ 4）：
+    # dp[4] += dp[3] → dp = [1, 1, 2, 4, 4]
+    # 新增排列：[1,1,1,1]、[2,1,1]、[1,2,1]、[3,1] ***
+    
+    # 物品 2（2 ≤ 4）：
+    # dp[4] += dp[2] → dp = [1, 1, 2, 4, 6]
+    # 新增排列：[1,1,2]、[2,2] ***
+    
+    # 物品 3（3 ≤ 4）：
+    # dp[4] += dp[1] → dp = [1, 1, 2, 4, 7]
+    # 新增排列：[1,3] ***
 
 
 # Let's walk through a concrete example to clearly illustrate how traversal order and direction 
@@ -1739,6 +1803,31 @@ class Solution:
     # +1+1+1+1-1 = 3
     # 一共有5种方法让最终目标和为3。
 # dp[j] += dp[j - nums[i]]
+# 因为每个物品（题目中的1）只用一次！
+# 这次和之前遇到的背包问题不一样了，之前都是求容量为j的背包，最多能装多少。
+# 本题则是装满有几种方法。其实这就是一个***组合***问题了。
+# 先用 二维 dp数组求解本题，dp[i][j]：使用 下标为[0, i]的nums[i]能够凑满j（包括j）这么大容量的包，有dp[i][j]种方法。
+# 以上过程，抽象化如下：
+# 不放物品i：即背包容量为j，里面不放物品i，装满有dp[i - 1][j]中方法。
+# 放物品i： 即：先空出物品i的容量，背包容量为（j - 物品i容量），放满背包有 dp[i - 1][j - 物品i容量] 种方法。
+# 本题中，物品i的容量是nums[i]，价值也是nums[i]。
+# 递推公式：dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]];
+# 考到这个递推公式，我们应该注意到，j - nums[i] 作为数组下标，如果 j - nums[i] 小于零呢？
+# 说明背包容量装不下 物品i，所以此时装满背包的方法值 等于 不放物品i的装满背包的方法，即：dp[i][j] = dp[i - 1][j];
+
+# 所以递推公式：
+# if (nums[i] > j) dp[i][j] = dp[i - 1][j]; 
+# else dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]];
+
+# 动态规划 （一维dp数组）
+# 将二维dp数组压缩成一维dp数组，我们在 01背包理论基础（滚动数组） (opens new window)讲过滚动数组，原理是一样的，即重复利用每一行的数值。
+# 既然是重复利用每一行，就是将二维数组压缩成一行。
+# dp[i][j] 去掉 行的维度，即 dp[j]，表示：填满j（包括j）这么大容积的包，有dp[j]种方法。
+# 确定递推公式
+# 二维DP数组递推公式： dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]];
+# 去掉维度i 之后，递推公式：dp[j] = dp[j] + dp[j - nums[i]] ，即：dp[j] += dp[j - nums[i]]
+
+
 # 如果仅仅是求个数的话,就可以用dp,但回溯算法:39. 组合总和要求的是把所有组合列出来,还是要使用回溯法爆搜的。
 # 大家也可以记住,在求装满背包有几种方法的情况下,递推公式一般为:dp[j] += dp[j - nums[i]];
 # 回溯版
@@ -1770,30 +1859,39 @@ class Solution:
 #         self.backtracking(nums, bagSize, 0, 0, [], result)
 #         return len(result)
 # # 二维DP
-# class Solution:
-#     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-#         total_sum = sum(nums)  # 计算nums的总和
-#         if abs(target) > total_sum:
-#             return 0  # 此时没有方案
-#         if (target + total_sum) % 2 == 1:
-#             return 0  # 此时没有方案
-#         target_sum = (target + total_sum) // 2  # 目标和
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        total_sum = sum(nums)  # 计算nums的总和
+        if abs(target) > total_sum:
+            return 0  # 此时没有方案
+        if (target + total_sum) % 2 == 1:
+            return 0  # 此时没有方案
+        target_sum = (target + total_sum) // 2  # 目标和
 
-#         # 创建二维动态规划数组,行表示选取的元素数量,列表示累加和
-#         dp = [[0] * (target_sum + 1) for _ in range(len(nums) + 1)]
+        # 创建二维动态规划数组,行表示选取的元素数量,列表示累加和
+        dp = [[0] * (target_sum + 1) for _ in range(len(nums) + 1)]
 
-#         # 初始化状态
-#         dp[0][0] = 1
+        # 初始化状态
+        dp[0][0] = 1
 
-#         # 动态规划过程
-#         for i in range(1, len(nums) + 1):
-#             for j in range(target_sum + 1):
-#                 dp[i][j] = dp[i - 1][j]  # 不选取当前元素
-#                 if j >= nums[i - 1]:
-#                     dp[i][j] += dp[i - 1][j - nums[i - 1]]  # 选取当前元素
+        # 动态规划过程
+        # We must explicitly check the condition because we're building the new state from the previous state
+        # The two cases (take/don't take) are handled separately
+        for i in range(1, len(nums) + 1):
+            for j in range(target_sum + 1):
+                dp[i][j] = dp[i - 1][j]  # 不选取当前元素
+                if j >= nums[i - 1]:
+                    dp[i][j] += dp[i - 1][j - nums[i - 1]]  # 选取当前元素
 
-#         return dp[len(nums)][target_sum]  # 返回达到目标和的方案数
-# 一维DP
+        return dp[len(nums)][target_sum]  # 返回达到目标和的方案数
+# 2D DP Solution:
+    # dp[i][j] explicitly represents the number of ways to achieve sum j using the first i numbers
+    # It maintains the full history of all possible states at each step
+    # The condition j >= nums[i-1] is checked separately because we need to consider two distinct cases:
+    # When we don't include nums[i-1] (always possible)
+    # When we do include nums[i-1] (only possible if j >= nums[i-1])
+
+# *** 一维DP
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
         total_sum = sum(nums)  # 计算nums的总和
@@ -1804,11 +1902,30 @@ class Solution:
         target_sum = (target + total_sum) // 2  # 目标和
         dp = [0] * (target_sum + 1)  # 创建动态规划数组,初始化为0
         dp[0] = 1  # 当目标和为0时,只有一种方案,即什么都不选
+
+        # j must be ≥ num to avoid negative indices (j - num must be ≥ 0).
+        # If j < num, we cannot include num in the subset sum, so dp[j] remains unchanged (no update needed).
+        # Therefore, the loop does not need to process j < num.
         for num in nums:
-            for j in range(target_sum, num - 1, -1):
+            for j in range(target_sum, num - 1, -1): # until num - 1 not 0
                 dp[j] += dp[j - num]  # 状态转移方程,累加不同选择方式的数量
         return dp[target_sum]  # 返回达到目标和的方案数
-
+# 1D DP Solution:
+    # dp[j] represents the number of ways to achieve sum j using the numbers processed so far
+    # It uses space optimization by overwriting the DP array
+    # The loop for j in range(target_sum, num-1, -1) implicitly handles the condition because:
+    # It starts from target_sum and goes down to num
+    # This ensures we never try to access negative indices
+    # The reverse iteration prevents overwriting values we'll need later in the same iteration
+# The 1D solution's loop structure (range(target_sum, num-1, -1)) is actually doing three things simultaneously:
+    # Enforcing j >= num through the loop bounds
+    # Preventing recomputation of the same element
+    # Updating the DP array in place
+# What Happens When j < num?
+    # If j < num, the current number num cannot be part of the subset that sums to j.
+    # dp[j] remains the same (equal to the count of ways to form j without using num).
+    # Since we are doing reverse iteration, the values for j < num are already correct from previous iterations and do not need updating.
+    
 
 #13 (Medium) 474.一和零
     # 给你一个二进制字符串数组 strs 和两个整数 m 和 n 。
@@ -1829,7 +1946,7 @@ class Solution:
 """
 # dp[i][j]:最多有i个0和j个1的strs的最大子集的大小为dp[i][j]。
 dp[i][j] 可以由前一个strs里的字符串推导出来,strs里的字符串有zeroNum个0,oneNum个1。
-dp[i][j] 就可以是 dp[i - zeroNum][j - oneNum] + 1。
+dp[i][j] 就可以是 dp[i - zeroNum][j - oneNum] + 1
 然后我们在遍历的过程中,取dp[i][j]的最大值。
 所以递推公式:dp[i][j] = max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1);
 此时大家可以回想一下01背包的递推公式:dp[j] = max(dp[j], dp[j - weight[i]] + value[i]);
@@ -1928,7 +2045,7 @@ if __name__ == "__main__":
     print(result)
 
 
-#15 (Medium) 518.零钱兑换II
+#15 (Medium) 518.零钱兑换II  (组合问题)
     # 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。
     # 示例 1:
     # 输入: amount = 5, coins = [1, 2, 5]
@@ -1945,9 +2062,29 @@ if __name__ == "__main__":
     # 示例 3:
     # 输入: amount = 10, coins = [10]
     # 输出: 1
-# dp[j] += dp[j - coins[i]]
+# dp[j] += dp[j - coins[i]] , dp[j]：凑成总金额j的货币组合数为dp[j]
+# 本题 二维dp 递推公式： dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]]
+# 压缩成一维：dp[j] += dp[j - coins[i]]
+    # 定义二维dp数值 dp[i][j]：使用 下标为[0, i]的coins[i]能够凑满j（包括j）这么大容量的包，有dp[i][j]种组合方法。
+    # 我们再回顾一下，01背包理论基础 (opens new window)，中二维DP数组的递推公式为：
+    # dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + value[i])
+    # 在 完全背包理论基础 (opens new window)详细讲解了完全背包二维DP数组的递推公式为：
+    # dp[i][j] = max(dp[i - 1][j], dp[i][j - weight[i]] + value[i])
+    # 看去完全背包 和 01背包的差别在哪里？
+    # 在于01背包是 dp[i - 1][j - weight[i]] + value[i] ，完全背包是 dp[i][j - weight[i]] + value[i])
+    # 主要原因就是 完全背包单类物品有无限个。
+    # 具体原因我在 完全背包理论基础（二维） (opens new window)的 「确定递推公式」有详细讲解，如果大家忘了，再回顾一下。
+    # 我上面有说过，本题和 494. 目标和 (opens new window)是一样的，唯一区别就是 494. 目标和 (opens new window)是 01背包，本题是完全背包。
+    # 在494. 目标和 (opens new window)中详解讲解了装满背包有几种方法，二维DP数组的递推公式： dp[i][j] = dp[i - 1][j] + dp[i - 1][j - nums[i]]
+    # 所以本题递推公式：dp[i][j] = dp[i - 1][j] + dp[i][j - nums[i]] ，区别依然是 dp[i - 1][j - nums[i]] 和 dp[i][j - nums[i]]
+    # 这个 ‘所以’ 我省略了很多推导的内容，因为这些内容在 494. 目标和 (opens new window)和 完全背包理论基础 (opens new window)都详细讲过。
+    # 这里不再重复讲解。
+    # 大家主要疑惑点
+    # 1、 dp[i][j] = dp[i - 1][j] + dp[i][j - nums[i]] 这个递归公式框架怎么来的，在 494. 目标和 (opens new window)有详细讲解。
+    # 2、为什么是 dp[i][j - nums[i]] 而不是 dp[i - 1][j - nums[i]] ，在完全背包理论基础（二维） (opens new window)有详细讲解
+
 # 这是一道典型的背包问题,一看到钱币数量不限,就知道这是一个完全背包。
-# 但本题和纯完全背包不一样,纯完全背包是凑成背包最大价值是多少,而本题是要求凑成总金额的物品组合个数！
+# 但本题和***纯完全背包不一样***,纯完全背包是凑成背包最大价值是多少,而本题是要求凑成总金额的物品组合个数！
 # 组合不强调元素之间的顺序,排列强调元素之间的顺序。
 # dp[j] 就是所有的dp[j - coins[i]](考虑coins[i]的情况)相加。
 # 所以递推公式:dp[j] += dp[j - coins[i]];
@@ -1971,6 +2108,27 @@ if __name__ == "__main__":
 # 在求装满背包有几种方案的时候,认清遍历顺序是非常关键的。
 # 如果求组合数就是外层for循环遍历物品,内层for遍历背包。
 # 如果求排列数就是外层for遍历背包,内层for循环遍历物品。
+# 2D
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        n = len(coins)
+        # dp[i][j]: number of ways to make amount j using first i coins
+        dp = [[0] * (amount + 1) for _ in range(n + 1)]
+        
+        # Base case: 1 way to make amount 0 (use no coins)
+        for i in range(n + 1):
+            dp[i][0] = 1
+        
+        for i in range(1, n + 1):
+            for j in range(amount + 1):
+                # Option 1: Don't use the i-th coin
+                dp[i][j] = dp[i - 1][j]
+                # Option 2: Use the i-th coin (if possible)
+                if j >= coins[i - 1]:
+                    dp[i][j] += dp[i][j - coins[i - 1]] # not dp[i - 1][j - coins[i - 1]]
+        
+        return dp[n][amount]
+# *** 1D
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         dp = [0]*(amount + 1)
@@ -1982,9 +2140,13 @@ class Solution:
             for j in range(coins[i], amount + 1):
                 dp[j] += dp[j - coins[i]]
         return dp[amount]
+# 最左列如何初始化呢？
+# dp[i][0] 的含义：用物品i（即coins[i]） 装满容量为0的背包 有几种组合方法。
+# 都有一种方法，即不装。
+# 所以 dp[i][0] 都初始化为1
 
 
-#16 (Medium) 377.组合总和 Ⅳ
+#16 (Medium) 377.组合总和 Ⅳ  （排列问题）
     # 给定一个由正整数组成且不存在重复数字的数组，找出和为给定目标正整数的组合的个数。
     # 示例:
     # nums = [1, 2, 3]
@@ -2074,7 +2236,18 @@ public:
     # 示例 5：
     # 输入：coins = [1], amount = 2
     # 输出：2
-# dp[i] = min(dp[i], dp[i - coin] + 1)
+# dp[i] = min(dp[i], dp[i - coin] + 1), dp[j]：凑足总额为j所需钱币的最少个数为dp[j]
+# 凑足总额为j - coins[i]的最少个数为dp[j - coins[i]]，
+# 那么只需要加上一个钱币coins[i]即dp[j - coins[i]] + 1就是dp[j]（考虑coins[i]）
+# 所以dp[j] 要取所有 dp[j - coins[i]] + 1 中最小的。
+# 递推公式：dp[j] = min(dp[j - coins[i]] + 1, dp[j]);
+
+# dp数组如何初始化
+# 首先凑足总金额为0所需钱币的个数一定是0，那么dp[0] = 0;
+# 其他下标对应的数值呢？
+# 考虑到递推公式的特性，dp[j]必须初始化为一个最大的数，否则就会在min(dp[j - coins[i]] + 1, dp[j])比较的过程中被初始值覆盖。
+# 所以下标非0的元素都是应该是最大值。
+
 # 本题求钱币最小个数，那么钱币有顺序和没有顺序都可以，都不影响钱币的最小个数。
 # 所以本题并不强调集合是组合还是排列。
 # 如果求组合数就是外层for循环遍历物品，内层for遍历背包。
