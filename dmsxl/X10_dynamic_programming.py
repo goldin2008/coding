@@ -1012,6 +1012,43 @@ class Solution:
 #             count -= 1  # 计数器减1,继续下一项的计算
 #         return numerator  # 返回最终的唯一路径数
 
+#X43 Matrix Pathways
+    # You are positioned at the top-left corner of a m × n matrix, and can only move 
+    # downward or rightward through the matrix. Determine the number of unique pathways 
+    # you can take to reach the bottom-right corner of the matrix.
+# dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
+def matrix_pathways(m: int, n: int) -> int:
+    # Base cases: Set all cells in row 0 and column 0 to 1. We can
+    # do this by initializing all cells in the DP table to 1.
+    dp = [[1] * n for _ in range(m)]
+    # Fill in the rest of the DP table.
+    for r in range(1, m):
+        for c in range(1, n):
+            # Paths to current cell = paths from above + paths from 
+            # left.
+            dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
+    return dp[m - 1][n - 1]
+
+def matrix_pathways_optimized(m: int, n: int) -> int:
+    # Initialize 'prev_row' as the DP values of row 0, which are all 1s.
+    prev_row = [1] * n
+    # Iterate through the matrix starting from row 1.
+    for r in range(1, m):
+        # Set the first cell of 'curr_row' to 1. This is done by 
+        # setting the entire row to 1.
+        curr_row = [1] * n
+        for c in range(1, n):
+            # The number of unique paths to the current cell is the sum 
+            # of the paths from the cell above it ('prev_row[c]') and 
+            # the cell to the left ('curr_row[c - 1]').
+            curr_row[c] = prev_row[c] + curr_row[c - 1]
+        # Update 'prev_row' with 'curr_row' values for the next 
+        # iteration.
+        prev_row = curr_row
+    # The last element in 'prev_row' stores the result for the 
+    # bottom-right cell.
+    return prev_row[n - 1]
+
 
 #5 (Medium) 63.不同路径 II
     # 一个机器人位于一个 m x n 网格的左上角 (起始点在下图中标记为“Start” )。
@@ -1938,6 +1975,7 @@ class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         dp = [0]*(amount + 1)
         dp[0] = 1
+        # 因为是求组合, 先物品后背包, 不能交换遍历顺序
         # 遍历物品
         for i in range(len(coins)):
             # 遍历背包
@@ -1975,6 +2013,7 @@ class Solution:
         dp = [0] * (target + 1)  # 创建动态规划数组,用于存储组合总数
         dp[0] = 1  # 初始化背包容量为0时的组合总数为1
 
+        # 因为是求排列, 先背包后物品, 不能交换遍历顺序
         for i in range(1, target + 1):  # 遍历背包容量
             for j in nums:  # 遍历物品列表
                 if i >= j:  # 当背包容量大于等于当前物品重量时
@@ -2016,7 +2055,8 @@ public:
 
 
 #18 (Medium) 322.零钱兑换
-    # 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+    # 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。
+    # 如果没有任何一种硬币组合能组成总金额，返回 -1。
     # 你可以认为每种硬币的数量是无限的。
     # 示例 1：
     # 输入：coins = [1, 2, 5], amount = 11
@@ -2094,11 +2134,40 @@ class Solution:
 #                     dp[i] = min(dp[i], dp[i - coin] + 1)
 #         return dp[amount] if dp[amount] != float('inf') else -1
 
+#X42 Minimum Coin Combination
+    # You are given an array of coin values and a target amount of money.
+    # Return the minimum number of coins needed to total the target amount. If this isn't possible, return ‐1. 
+    # You may assume there's an unlimited supply of each coin.
+    # Example 1:
+    # Input: coins = [1, 2, 3], target = 5
+    # Output: 2
+    # Explanation: Use one 2-dollar coin and one 3-dollar coin to make 5 dollars.
+    # Example 2:
+    # Input: coins = [2, 4], target = 5
+    # Output: -1
+# dp[t] = min(dp[t], 1 + dp[t - coin])
+from typing import List
+
+def min_coin_combination_bottom_up(coins: List[int], target: int) -> int:
+    # The DP array will store the minimum number of coins needed for 
+    # each amount. Set each element to a large number initially.
+    dp = [float('inf')] * (target + 1)
+    # Base case: if the target is 0, then 0 coins are needed.
+    dp[0] = 0
+    # Update the DP array for all target amounts greater than 0.
+    
+    for t in range(1, target + 1):
+        for coin in coins:
+            if coin <= t:
+                dp[t] = min(dp[t], 1 + dp[t - coin])
+    return dp[target] if dp[target] != float('inf') else -1
+
 
 #19 (Medium) 279.完全平方数
     # 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
     # 给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
-    # 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+    # 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。
+    # 例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
     # 示例 1：
     # 输入：n = 12
     # 输出：3
@@ -2919,9 +2988,10 @@ class Solution:
 动态规划:回文子串
 动态规划:最长回文子序列
 """
-#30 (Medium) 300.最长递增子序列 (不连续)
+#30 (Medium) 300.最长递增子序列 (不连续) Longest Increasing Subsequence
     # 给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
-    # 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+    # 子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。
+    # 例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
     # 示例 1：
     # 输入：nums = [10,9,2,5,3,7,101,18]
     # 输出：4
@@ -2977,7 +3047,7 @@ class Solution:
 #         return len(tails)  # 返回递增子序列的长度
 
 
-#31 (Easy) 674.最长连续递增序列 (连续)
+#31 (Easy) 674.最长连续递增序列 (连续) Longest Continuous Increasing Subsequence
     # 给定一个未经排序的整数数组，找到最长且 连续递增的子序列，并返回该序列的长度。
     # 连续递增的子序列 可以由两个下标 l 和 r（l < r）确定，如果对于每个 l <= i < r，都有 nums[i] < nums[i + 1] ，那么子序列 [nums[l], nums[l + 1], ..., nums[r - 1], nums[r]] 就是连续递增子序列。
     # 示例 1：
@@ -3040,7 +3110,7 @@ class Solution:
 #         return result
 
 
-#X32 *** (Medium) 718.最长重复子数组 (连续)
+#X32 *** (Medium) 718.最长重复子数组 (连续) Maximum Length of Repeated Subarray
 # 两个整数数组
     # 给两个整数数组 A 和 B ，返回两个数组中公共的、长度最长的子数组sub array的长度。
     # 示例：
@@ -3161,7 +3231,7 @@ class Solution:
 #         return result
 
 
-#X33 (Medium) 1143.最长公共子序列 (不连续)
+#X33 (Medium) 1143.最长公共子序列 (不连续) Longest Common Subsequence
 # 两个字符串
     # 给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
     # 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）
@@ -3286,7 +3356,7 @@ def longest_common_subsequence_optimized(s1: str, s2: str) -> int:
     return prev_row[0]
 
 
-#34 (Medium) 1035.不相交的线 (不连续)
+#34 (Medium) 1035.不相交的线 (不连续) Uncrossed Lines
     # 我们在两条独立的水平线上按给定的顺序写下 A 和 B 中的整数。
     # 现在，我们可以绘制一些连接两个数字 A[i] 和 B[j] 的直线，只要 A[i] == B[j]，且我们绘制的直线不与任何其他连线（非水平线）相交。
     # 以这种方法绘制线条，并返回我们可以绘制的最大连线数。
@@ -3303,7 +3373,7 @@ class Solution:
         return dp[-1][-1]
 
 
-#35 (Medium) 53.最大子序和 (连续)
+#35 (Medium) 53.最大子序和 (连续) Maximum Subarray
     # 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
     # 示例:
     # 输入: [-2,1,-3,4,-1,2,1,-5,4]
@@ -3330,7 +3400,7 @@ class Solution:
         return result
 
 
-#36 (Easy) 392.判断子序列
+#36 (Easy) 392.判断子序列 Is Subsequence
     # 给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
     # 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
     # 示例 1：
@@ -3359,7 +3429,7 @@ class Solution:
         return False
 
 
-#37 *** (Hard) 115.不同的子序列
+#37 *** (Hard) 115.不同的子序列 Distinct Subsequences
     # 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
     # 字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
     # 题目数据保证答案符合 32 位带符号整数范围。
@@ -3443,7 +3513,7 @@ class SolutionDP2:
         return dp[-1]
 
 
-#38 (Medium) 583.两个字符串的删除操作
+#38 (Medium) 583.两个字符串的删除操作 Delete Operation for Two Strings
     # 给定两个单词 word1 和 word2，找到使得 word1 和 word2 相同所需的最小步数，每步可以删除任意一个字符串中的一个字符。
     # 示例：
     # 输入: "sea", "eat"
@@ -3511,7 +3581,7 @@ class Solution:
         return len(text1)+len(text2)-dp[len(text1)][len(text2)]*2
 
 
-#39 (Medium) 72.编辑距离
+#39 (Medium) 72.编辑距离 Edit Distance
     # 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
     # 你可以对一个单词进行如下三种操作：
     # 插入一个字符
@@ -3569,7 +3639,7 @@ class Solution:
         return dp[-1][-1]
 
 
-#X40 (Medium) 647.回文子串 (连续)
+#X40 (Medium) 647.回文子串 (连续) Palindromic Substrings
 # 一个字符串
     # 给定一个字符串，你的任务是计算这个字符串中有多少个回文子串。
     # 具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
@@ -3712,7 +3782,7 @@ def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
     return left, right - left + 1
 
 
-#X41 (Medium) 516.最长回文子序列 (不连续)
+#X41 (Medium) 516.最长回文子序列 (不连续) Longest Palindromic Subsequence
 # 一个字符串
     # 给定一个字符串 s ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 s 的最大长度为 1000 。
     # 示例 1: 输入: "bbbab" 输出: 4 一个可能的最长回文子序列为 "bbbb"。
@@ -3806,74 +3876,7 @@ def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
 
 
 # ByteByteGo 101
-#X42 Minimum Coin Combination
-    # You are given an array of coin values and a target amount of money.
-    # Return the minimum number of coins needed to total the target amount. If this isn't possible, return ‐1. 
-    # You may assume there's an unlimited supply of each coin.
-    # Example 1:
-    # Input: coins = [1, 2, 3], target = 5
-    # Output: 2
-    # Explanation: Use one 2-dollar coin and one 3-dollar coin to make 5 dollars.
-    # Example 2:
-    # Input: coins = [2, 4], target = 5
-    # Output: -1
-# dp[t] = min(dp[t], 1 + dp[t - coin])
-from typing import List
-
-def min_coin_combination_bottom_up(coins: List[int], target: int) -> int:
-    # The DP array will store the minimum number of coins needed for 
-    # each amount. Set each element to a large number initially.
-    dp = [float('inf')] * (target + 1)
-    # Base case: if the target is 0, then 0 coins are needed.
-    dp[0] = 0
-    # Update the DP array for all target amounts greater than 0.
-    
-    for t in range(1, target + 1):
-        for coin in coins:
-            if coin <= t:
-                dp[t] = min(dp[t], 1 + dp[t - coin])
-    return dp[target] if dp[target] != float('inf') else -1
-
-
-#X43 Matrix Pathways
-    # You are positioned at the top-left corner of a m × n matrix, and can only move 
-    # downward or rightward through the matrix. Determine the number of unique pathways 
-    # you can take to reach the bottom-right corner of the matrix.
-# dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
-def matrix_pathways(m: int, n: int) -> int:
-    # Base cases: Set all cells in row 0 and column 0 to 1. We can
-    # do this by initializing all cells in the DP table to 1.
-    dp = [[1] * n for _ in range(m)]
-    # Fill in the rest of the DP table.
-    for r in range(1, m):
-        for c in range(1, n):
-            # Paths to current cell = paths from above + paths from 
-            # left.
-            dp[r][c] = dp[r - 1][c] + dp[r][c - 1]
-    return dp[m - 1][n - 1]
-
-def matrix_pathways_optimized(m: int, n: int) -> int:
-    # Initialize 'prev_row' as the DP values of row 0, which are all 1s.
-    prev_row = [1] * n
-    # Iterate through the matrix starting from row 1.
-    for r in range(1, m):
-        # Set the first cell of 'curr_row' to 1. This is done by 
-        # setting the entire row to 1.
-        curr_row = [1] * n
-        for c in range(1, n):
-            # The number of unique paths to the current cell is the sum 
-            # of the paths from the cell above it ('prev_row[c]') and 
-            # the cell to the left ('curr_row[c - 1]').
-            curr_row[c] = prev_row[c] + curr_row[c - 1]
-        # Update 'prev_row' with 'curr_row' values for the next 
-        # iteration.
-        prev_row = curr_row
-    # The last element in 'prev_row' stores the result for the 
-    # bottom-right cell.
-    return prev_row[n - 1]
-
-
-#X44 Maximum Subarray Sum
+#X42 (Medium) 53.Maximum Subarray Sum
     # Given an array of integers, return the sum of the subarray with the largest sum.
     # Example:
     # Input: nums = [3, 1, -6, 2, -1, 4, -9]
@@ -3913,7 +3916,7 @@ def maximum_subarray_sum_dp_optimized(nums: List[int]) -> int:
     return max_sum
 
 
-#X45 Largest Square in a Matrix
+#X43 (Medium) 221.Largest Square in a Matrix
     # Determine the area of the largest square of 1's in a binary matrix.
 # dp[i][j] = 1 + min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1])
 from typing import List
@@ -3972,7 +3975,7 @@ def largest_square_in_a_matrix_optimized(matrix: List[List[int]]) -> int:
     return max_len ** 2
 
 
-#45 (Medium) 1062. Longest Repeating Substring
+#44 (Medium) 1062. Longest Repeating Substring
     # Given a string s, return the length of the longest repeating substrings. If no repeating substring exists, return 0.
     # Example 1:
     # Input: s = "abcd"
