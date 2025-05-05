@@ -3434,7 +3434,8 @@ class Solution:
 
 # 主要就是两大情况： text1[i - 1] 与 text2[j - 1]相同，text1[i - 1] 与 text2[j - 1]不相同
 # 如果text1[i - 1] 与 text2[j - 1]相同，那么找到了一个公共元素，所以dp[i][j] = dp[i - 1][j - 1] + 1;
-# 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看text1[0, i - 2]与text2[0, j - 1]的最长公共子序列 和 text1[0, i - 1]与text2[0, j - 2]的最长公共子序列，取最大的。
+# 如果text1[i - 1] 与 text2[j - 1]不相同，那就看看text1[0, i - 2]与text2[0, j - 1]的最长公共子序列 
+# 和 text1[0, i - 1]与text2[0, j - 2]的最长公共子序列，取最大的。
 # 即：dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
 # 2维DP
 # class Solution:
@@ -3572,10 +3573,50 @@ class Solution:
             result = max(result, dp[i]) #result 保存dp[i]的最大值
         return result
 
+#X42 (Medium) 53.Maximum Subarray Sum
+    # Given an array of integers, return the sum of the subarray with the largest sum.
+    # Example:
+    # Input: nums = [3, 1, -6, 2, -1, 4, -9]
+    # Output: 5
+    # Explanation: subarray [2, -1, 4] has the largest sum of 5.
+    # Constraints:
+    # The input array contains at least one element.
+# dp[i] = max(dp[i - 1] + nums[i], nums[i])
+from typing import List
+
+def maximum_subarray_sum_dp(nums: List[int]) -> int:
+    n = len(nums)
+    if n == 0:
+        return 0
+    dp = [0] * n
+    # Base case: the maximum subarray sum of an array with just one
+    # element is that element.
+    dp[0] = nums[0]
+    max_sum = dp[0]
+    # Populate the rest of the DP array.
+    for i in range(1, n):
+        # Determine the maximum subarray sum ending at the current 
+        # index.
+        dp[i] = max(dp[i - 1] + nums[i], nums[i])
+        max_sum = max(max_sum, dp[i])
+    return max_sum
+
+def maximum_subarray_sum_dp_optimized(nums: List[int]) -> int:
+    n = len(nums)
+    if n == 0:
+        return 0
+    current_sum = nums[0]
+    max_sum = nums[0]
+    for i in range(1, n):
+        current_sum = max(nums[i], current_sum + nums[i])
+        max_sum = max(max_sum, current_sum)
+    return max_sum
+
 
 #36 (Easy) 392.判断子序列 Is Subsequence
     # 给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
-    # 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+    # 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。
+    # （例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
     # 示例 1：
     # 输入：s = "abc", t = "ahbgdc"
     # 输出：true
@@ -3584,9 +3625,12 @@ class Solution:
     # 输出：false
 # dp[i][j] = dp[i-1][j-1] + 1
 # dp[i][j] 表示以下标i-1为结尾的字符串s，和以下标j-1为结尾的字符串t，相同子序列的长度为dp[i][j]。
-# if (s[i - 1] == t[j - 1])，那么dp[i][j] = dp[i - 1][j - 1] + 1;，因为找到了一个相同的字符，相同子序列长度自然要在dp[i-1][j-1]的基础上加1（如果不理解，在回看一下dp[i][j]的定义）
-# if (s[i - 1] != t[j - 1])，此时相当于t要删除元素，t如果把当前元素t[j - 1]删除，那么dp[i][j] 的数值就是 看s[i - 1]与 t[j - 2]的比较结果了，即：dp[i][j] = dp[i][j - 1];
-# 其实这里 大家可以发现和 1143.最长公共子序列 (opens new window)的递推公式基本那就是一样的，区别就是 本题 如果删元素一定是字符串t，而 1143.最长公共子序列 是两个字符串都可以删元素。
+# if (s[i - 1] == t[j - 1])，那么dp[i][j] = dp[i - 1][j - 1] + 1;，因为找到了一个相同的字符，
+# 相同子序列长度自然要在dp[i-1][j-1]的基础上加1（如果不理解，在回看一下dp[i][j]的定义）
+# if (s[i - 1] != t[j - 1])，此时相当于t要删除元素，t如果把当前元素t[j - 1]删除，
+# 那么dp[i][j] 的数值就是 看s[i - 1]与 t[j - 2]的比较结果了，即：dp[i][j] = dp[i][j - 1];
+# 其实这里 大家可以发现和 1143.最长公共子序列 (opens new window)的递推公式基本那就是一样的，
+# 区别就是 本题 如果删元素一定是字符串t，而 1143.最长公共子序列 是两个字符串都可以删元素。
 class Solution:
     def isSubsequence(self, s: str, t: str) -> bool:
         # dp[i][j]对应的是i-1和j-1，所以要到i+1，j+1
@@ -3604,7 +3648,8 @@ class Solution:
 
 #37 *** (Hard) 115.不同的子序列 Distinct Subsequences
     # 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数。
-    # 字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。（例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
+    # 字符串的一个 子序列 是指，通过删除一些（也可以不删除）字符且不干扰剩余字符相对位置所组成的新字符串。
+    # （例如，"ACE" 是 "ABCDE" 的一个子序列，而 "AEC" 不是）
     # 题目数据保证答案符合 32 位带符号整数范围。
 # dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
 # 这道题目如果不是子序列,而是要求连续序列的,那就可以考虑用KMP。
@@ -3700,14 +3745,17 @@ class SolutionDP2:
 # 情况一：删word1[i - 1]，最少操作次数为dp[i - 1][j] + 1
 # 情况二：删word2[j - 1]，最少操作次数为dp[i][j - 1] + 1
 # 情况三：同时删word1[i - 1]和word2[j - 1]，操作的最少次数为dp[i - 1][j - 1] + 2
-# 那最后当然是取最小值，所以当word1[i - 1] 与 word2[j - 1]不相同的时候，递推公式：dp[i][j] = min({dp[i - 1][j - 1] + 2, dp[i - 1][j] + 1, dp[i][j - 1] + 1});
-# 因为 dp[i][j - 1] + 1 = dp[i - 1][j - 1] + 2，所以递推公式可简化为：dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+# 那最后当然是取最小值，所以当word1[i - 1] 与 word2[j - 1]不相同的时候，
+# 递推公式：dp[i][j] = min({dp[i - 1][j - 1] + 2, dp[i - 1][j] + 1, dp[i][j - 1] + 1});
+# ??? 因为 dp[i][j - 1] + 1 = dp[i - 1][j - 1] + 2，
+# 所以递推公式可简化为：dp[i][j] = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
 
 # 从递推公式中，可以看出来，dp[i][0] 和 dp[0][j]是一定要初始化的。
 # dp[i][0]：word2为空字符串，以i-1为结尾的字符串word1要删除多少个元素，才能和word2相同呢，很明显dp[i][0] = i。
 # dp[0][j]的话同理
 
-# ??? 这里可能不少录友有点迷糊，从字面上理解 就是 当 同时删word1[i - 1]和word2[j - 1]，dp[i][j-1] 本来就不考虑 word2[j - 1]了，那么我在删 word1[i - 1]，是不是就达到两个元素都删除的效果，即 dp[i][j-1] + 1。
+# ??? 这里可能不少录友有点迷糊，从字面上理解 就是 当 同时删word1[i - 1]和word2[j - 1]，dp[i][j-1] 本来就不考虑 
+# word2[j - 1]了，那么我在删 word1[i - 1]，是不是就达到两个元素都删除的效果，即 dp[i][j-1] + 1。
 # 动态规划一
 class Solution:
     def minDistance(self, word1: str, word2: str) -> int:
@@ -3731,7 +3779,7 @@ class Solution:
                     # dp[i][j] = min(dp[i-1][j] + 1, dp[i][j-1] + 1)
         return dp[-1][-1]
 # 动态规划二
-    # 本题和动态规划:1143.最长公共子序列 基本相同,
+    # 本题和动态规划:1143.最长公共子序列 Longest Common Subsequence 基本相同,
     # 只要求出两个字符串的最长公共子序列长度即可,那么除了最长公共子序列之外的字符都是必须删除的,
     # 最后用两个字符串的总长度减去两个最长公共子序列的长度就是删除的最少步数。
 class Solution:
@@ -3754,7 +3802,7 @@ class Solution:
         return len(text1)+len(text2)-dp[len(text1)][len(text2)]*2
 
 
-#39 (Medium) 72.编辑距离 Edit Distance
+#39 *** (Medium) 72.编辑距离 Edit Distance
     # 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
     # 你可以对一个单词进行如下三种操作：
     # 插入一个字符
@@ -3812,7 +3860,7 @@ class Solution:
         return dp[-1][-1]
 
 
-#X40 (Medium) 647.回文子串 (连续) Palindromic Substrings
+#X40 *** (Medium) 647.回文子串 (连续) Palindromic Substrings
 # 一个字符串
     # 给定一个字符串，你的任务是计算这个字符串中有多少个回文子串。
     # 具有不同开始位置或结束位置的子串，即使是由相同的字符组成，也会被视作不同的子串。
@@ -3825,8 +3873,8 @@ class Solution:
     # 输出：6
     # 解释：6个回文子串: "a", "a", "a", "aa", "aa", "aaa"
 # 回文子串是要连续的,回文子序列可不是连续的!
-# 647.回文子串
-# 5.最长回文子串
+# 647.回文子串 Palindromic Substrings
+# 5.最长回文子串 Longest Palindromic Substring
 # 布尔类型的dp[i][j]：表示区间范围[i,j] （注意是左闭右闭）的子串是否是回文子串，如果是dp[i][j]为true，否则为false。
 # 在确定递推公式时，就要分析如下几种情况。
 # 整体上是两种，就是s[i]与s[j]相等，s[i]与s[j]不相等这两种。
@@ -3834,12 +3882,15 @@ class Solution:
 # 当s[i]与s[j]相等时，这就复杂一些了，有如下三种情况
 # 情况一：下标i 与 j相同，同一个字符例如a，当然是回文子串
 # 情况二：下标i 与 j相差为1，例如aa，也是回文子串
-# 情况三：下标：i 与 j相差大于1的时候，例如cabac，此时s[i]与s[j]已经相同了，我们看i到j区间是不是回文子串就看aba是不是回文就可以了，那么aba的区间就是 i+1 与 j-1区间，这个区间是不是回文就看dp[i + 1][j - 1]是否为true。
+# 情况三：下标：i 与 j相差大于1的时候，例如cabac，此时s[i]与s[j]已经相同了，
+# 我们看i到j区间是不是回文子串就看aba是不是回文就可以了，那么aba的区间就是 i+1 与 j-1区间，
+# 这个区间是不是回文就看dp[i + 1][j - 1]是否为true。
 
 # 遍历顺序可有有点讲究了。
 # 首先从递推公式中可以看出，情况三是根据dp[i + 1][j - 1]是否为true，在对dp[i][j]进行赋值true的。
 # dp[i + 1][j - 1] 在 dp[i][j]的左下角
-# 如果这矩阵是从上到下，从左到右遍历，那么会用到没有计算过的dp[i + 1][j - 1]，也就是根据不确定是不是回文的区间[i+1,j-1]，来判断了[i,j]是不是回文，那结果一定是不对的。
+# 如果这矩阵是从上到下，从左到右遍历，那么会用到没有计算过的dp[i + 1][j - 1]，
+# 也就是根据不确定是不是回文的区间[i+1,j-1]，来判断了[i,j]是不是回文，那结果一定是不对的。
 # 所以一定要从下到上，从左到右遍历，这样保证dp[i + 1][j - 1]都是经过计算的。
 # 有的代码实现是优先遍历列，然后遍历行，其实也是一个道理，都是为了保证dp[i + 1][j - 1]都是经过计算的。
 # 动态规划
@@ -3965,7 +4016,8 @@ def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
 # dp[i][j]：字符串s在[i, j]范围内最长的回文子序列的长度为dp[i][j]。
 # 在判断回文子串的题目中，关键逻辑就是看s[i]与s[j]是否相同。
 # 如果s[i]与s[j]相同，那么dp[i][j] = dp[i + 1][j - 1] + 2;
-# 如果s[i]与s[j]不相同，说明s[i]和s[j]的同时加入 并不能增加[i,j]区间回文子序列的长度，那么分别加入s[i]、s[j]看看哪一个可以组成最长的回文子序列。
+# 如果s[i]与s[j]不相同，说明s[i]和s[j]的同时加入 并不能增加[i,j]区间回文子序列的长度，
+# 那么分别加入s[i]、s[j]看看哪一个可以组成最长的回文子序列。
 # 加入s[j]的回文子序列长度为dp[i + 1][j]。
 # 加入s[i]的回文子序列长度为dp[i][j - 1]。
 # 那么dp[i][j]一定是取最大的，即：dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
@@ -4049,47 +4101,7 @@ def expand_palindrome(left: int, right: int, s: str) -> Tuple[int, int]:
 
 
 # ByteByteGo 101
-#X42 (Medium) 53.Maximum Subarray Sum
-    # Given an array of integers, return the sum of the subarray with the largest sum.
-    # Example:
-    # Input: nums = [3, 1, -6, 2, -1, 4, -9]
-    # Output: 5
-    # Explanation: subarray [2, -1, 4] has the largest sum of 5.
-    # Constraints:
-    # The input array contains at least one element.
-# dp[i] = max(dp[i - 1] + nums[i], nums[i])
-from typing import List
-
-def maximum_subarray_sum_dp(nums: List[int]) -> int:
-    n = len(nums)
-    if n == 0:
-        return 0
-    dp = [0] * n
-    # Base case: the maximum subarray sum of an array with just one
-    # element is that element.
-    dp[0] = nums[0]
-    max_sum = dp[0]
-    # Populate the rest of the DP array.
-    for i in range(1, n):
-        # Determine the maximum subarray sum ending at the current 
-        # index.
-        dp[i] = max(dp[i - 1] + nums[i], nums[i])
-        max_sum = max(max_sum, dp[i])
-    return max_sum
-
-def maximum_subarray_sum_dp_optimized(nums: List[int]) -> int:
-    n = len(nums)
-    if n == 0:
-        return 0
-    current_sum = nums[0]
-    max_sum = nums[0]
-    for i in range(1, n):
-        current_sum = max(nums[i], current_sum + nums[i])
-        max_sum = max(max_sum, current_sum)
-    return max_sum
-
-
-#X43 (Medium) 221.Largest Square in a Matrix
+#X42 *** (Medium) 221.Largest Square in a Matrix
     # Determine the area of the largest square of 1's in a binary matrix.
 # dp[i][j] = 1 + min(dp[i - 1][j], dp[i - 1][j - 1], dp[i][j - 1])
 from typing import List
@@ -4148,7 +4160,7 @@ def largest_square_in_a_matrix_optimized(matrix: List[List[int]]) -> int:
     return max_len ** 2
 
 
-#44 (Medium) 1062. Longest Repeating Substring
+#43 ??? (Medium) 1062. Longest Repeating Substring
     # Given a string s, return the length of the longest repeating substrings. If no repeating substring exists, return 0.
     # Example 1:
     # Input: s = "abcd"

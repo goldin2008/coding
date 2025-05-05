@@ -228,23 +228,23 @@ X* 518. Coin Change II
 Week 9 动态规划(DP)进阶
 具体：攻克 DP 难题, 强化状态转移及空间优化技巧；可衡量：题目完成数与正确率、思路清晰；可达成：每天 1 小时；相关：提升 DP 解决复杂问题的能力；时限：本周内完成所有高级 DP 题。
 * 300. Longest Increasing Subsequence
-* 221. Maximal Square
+X* 221. Maximal Square
 174. Dungeon Game
 97. Interleaving String
-* 115. Distinct Subsequences
-* 72. Edit Distance
+X* 115. Distinct Subsequences
+X* 72. Edit Distance
 10. Regular Expression Matching
 44. Wildcard Matching
 132. Palindrome Partitioning II
-* 139. Word Break
+X* 139. Word Break
 
 
 Week 10 贪心算法 & 双指针
 具体：解决贪心与双指针相关题, 掌握题型技巧；可衡量：完成题目数量与正确率；可达成：每天 1 小时；相关：这些题型锻炼思路简化和边界判断能力；时限：本周内完成所有目标题。
 * 56. Merge Intervals
-435. Non-overlapping Intervals
-55. Jump Game
-45. Jump Game II
+* 435. Non-overlapping Intervals
+* 55. Jump Game
+* 45. Jump Game II
 * 11. Container With Most Water
 * 15. 3Sum
 16. 3Sum Closest
