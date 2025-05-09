@@ -56,6 +56,23 @@ void dfs(参数) {
     }
 }
 
+"""
+最短路算法总结篇
+至此已经讲解了四大最短路算法, 分别是Dijkstra、Bellman_ford、SPFA 和 Floyd。
+
+针对这四大最短路算法，我用了七篇长文才彻底讲清楚，分别是：
+
+dijkstra朴素版
+dijkstra堆优化版
+Bellman_ford
+Bellman_ford 队列优化算法 (又名SPFA)
+bellman_ford 算法判断负权回路
+bellman_ford之单源有限最短路
+Floyd 算法精讲
+启发式搜索: A * 算法
+"""
+
+
 #1 (Medium) 797.所有可能的路径
     # 给你一个有 n 个节点的 有向无环图（DAG）, 请你找出所有从节点 0 到节点 n-1 的路径并输出（不要求按特定顺序）
     # graph[i] 是一个从节点 i 可以访问的所有节点的列表（即从节点 i 到节点 graph[i][j]存在一条有向边）。
@@ -1151,7 +1168,771 @@ class Solution:
         return self.getRemoveEdge(edges)
 
 
-#X16 (Medium) 133.Graph Deep Copy
+#16 prim算法精讲
+    # 题目描述：
+    # 在世界的某个区域，有一些分散的神秘岛屿，每个岛屿上都有一种珍稀的资源或者宝藏。国王打算在这些岛屿上建公路，方便运输。
+    # 不同岛屿之间，路途距离不同，国王希望你可以规划建公路的方案，如何可以以最短的总公路距离将所有岛屿联通起来。
+    # 给定一张地图，其中包括了所有的岛屿，以及它们之间的距离。以最小化公路建设长度，确保可以链接到所有岛屿。
+    # 输入描述：
+    # 第一行包含两个整数V和E，V代表顶点数，E代表边数。顶点编号是从1到V。例如：V=2，一个有两个顶点，分别是1和2。
+    # 接下来共有E行，每行三个整数v1，v2和val，v1和v2为边的起点和终点，val代表边的权值。
+    # 输出描述：
+    # 输出联通所有岛屿的最小路径总距离
+    # 输入示例：
+    # 7 11
+    # 1 2 1
+    # 1 3 1
+    # 1 5 2
+    # 2 6 1
+    # 2 4 2
+    # 2 3 2
+    # 3 4 1
+    # 4 5 1
+    # 5 6 2
+    # 5 7 1
+    # 6 7 1
+    # 输出示例：
+    # 6
+# 接收输入
+v, e = list(map(int, input().strip().split()))
+# 按照常规的邻接矩阵存储图信息，不可达的初始化为10001
+graph = [[10001] * (v+1) for _ in range(v+1)]
+for _ in range(e):
+    x, y, w = list(map(int, input().strip().split()))
+    graph[x][y] = w
+    graph[y][x] = w
+
+# 定义加入生成树的标记数组和未加入生成树的最近距离
+visited = [False] * (v + 1)
+minDist = [10001] * (v + 1)
+
+# 循环 n - 1 次，建立 n - 1 条边
+# 从节点视角来看：每次选中一个节点加入树，更新剩余的节点到树的最短距离，
+# 这一步其实蕴含了确定下一条选取的边，计入总路程 ans 的计算
+for _ in range(1, v + 1):
+    min_val = 10002
+    cur = -1
+    for j in range(1, v + 1):
+        if visited[j] == False and minDist[j] < min_val:
+            cur = j
+            min_val = minDist[j]
+    visited[cur] = True
+    for j in range(1, v + 1):
+        if visited[j] == False and minDist[j] > graph[cur][j]:
+            minDist[j] = graph[cur][j]
+
+ans = 0
+for i in range(2, v + 1):
+    ans += minDist[i]
+print(ans)
+
+def prim(v, e, edges):
+    import sys
+    import heapq
+
+    # 初始化邻接矩阵，所有值初始化为一个大值，表示无穷大
+    grid = [[10001] * (v + 1) for _ in range(v + 1)]
+
+    # 读取边的信息并填充邻接矩阵
+    for edge in edges:
+        x, y, k = edge
+        grid[x][y] = k
+        grid[y][x] = k
+
+    # 所有节点到最小生成树的最小距离
+    minDist = [10001] * (v + 1)
+
+    # 记录节点是否在树里
+    isInTree = [False] * (v + 1)
+
+    # Prim算法主循环
+    for i in range(1, v):
+        cur = -1
+        minVal = sys.maxsize
+
+        # 选择距离生成树最近的节点
+        for j in range(1, v + 1):
+            if not isInTree[j] and minDist[j] < minVal:
+                minVal = minDist[j]
+                cur = j
+
+        # 将最近的节点加入生成树
+        isInTree[cur] = True
+
+        # 更新非生成树节点到生成树的距离
+        for j in range(1, v + 1):
+            if not isInTree[j] and grid[cur][j] < minDist[j]:
+                minDist[j] = grid[cur][j]
+
+    # 统计结果
+    result = sum(minDist[2:v+1])
+    return result
+
+if __name__ == "__main__":
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    v = int(data[0])
+    e = int(data[1])
+    
+    edges = []
+    index = 2
+    for _ in range(e):
+        x = int(data[index])
+        y = int(data[index + 1])
+        k = int(data[index + 2])
+        edges.append((x, y, k))
+        index += 3
+
+    result = prim(v, e, edges)
+    print(result)
+
+#17 kruskal算法精讲
+    # 题目描述：
+    # 在世界的某个区域，有一些分散的神秘岛屿，每个岛屿上都有一种珍稀的资源或者宝藏。国王打算在这些岛屿上建公路，方便运输。
+    # 不同岛屿之间，路途距离不同，国王希望你可以规划建公路的方案，如何可以以最短的总公路距离将 所有岛屿联通起来。
+    # 给定一张地图，其中包括了所有的岛屿，以及它们之间的距离。以最小化公路建设长度，确保可以链接到所有岛屿。
+    # 输入描述：
+    # 第一行包含两个整数V 和 E，V代表顶点数，E代表边数 。顶点编号是从1到V。例如：V=2，一个有两个顶点，分别是1和2。
+    # 接下来共有 E 行，每行三个整数 v1，v2 和 val，v1 和 v2 为边的起点和终点，val代表边的权值。
+    # 输出描述：
+    # 输出联通所有岛屿的最小路径总距离
+    # 输入示例：
+    # 7 11
+    # 1 2 1
+    # 1 3 1
+    # 1 5 2
+    # 2 6 1
+    # 2 4 2
+    # 2 3 2
+    # 3 4 1
+    # 4 5 1
+    # 5 6 2
+    # 5 7 1
+    # 6 7 1
+    # 输出示例：
+    # 6
+class Edge:
+    def __init__(self, l, r, val):
+        self.l = l
+        self.r = r
+        self.val = val
+
+n = 10001
+father = list(range(n))
+
+def init():
+    global father
+    father = list(range(n))
+
+def find(u):
+    if u != father[u]:
+        father[u] = find(father[u])
+    return father[u]
+
+def join(u, v):
+    u = find(u)
+    v = find(v)
+    if u != v:
+        father[v] = u
+
+def kruskal(v, edges):
+    edges.sort(key=lambda edge: edge.val)
+    init()
+    result_val = 0
+
+    for edge in edges:
+        x = find(edge.l)
+        y = find(edge.r)
+        if x != y:
+            result_val += edge.val
+            join(x, y)
+
+    return result_val
+
+if __name__ == "__main__":
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+
+    v = int(data[0])
+    e = int(data[1])
+
+    edges = []
+    index = 2
+    for _ in range(e):
+        v1 = int(data[index])
+        v2 = int(data[index + 1])
+        val = int(data[index + 2])
+        edges.append(Edge(v1, v2, val))
+        index += 3
+
+    result_val = kruskal(v, edges)
+    print(result_val)
+
+
+#18 拓扑排序精讲
+    # 题目描述：
+    # 某个大型软件项目的构建系统拥有 N 个文件，文件编号从 0 到 N - 1，在这些文件中，某些文件依赖于其他文件的内容，这意味着如果文件 A 依赖于文件 B，则必须在处理文件 A 之前处理文件 B （0 <= A, B <= N - 1）。请编写一个算法，用于确定文件处理的顺序。
+    # 输入描述：
+    # 第一行输入两个正整数 N, M。表示 N 个文件之间拥有 M 条依赖关系。
+    # 后续 M 行，每行两个正整数 S 和 T，表示 T 文件依赖于 S 文件。
+    # 输出描述：
+    # 输出共一行，如果能处理成功，则输出文件顺序，用空格隔开。
+    # 如果不能成功处理（相互依赖），则输出 -1。
+    # 输入示例：
+    # 5 4
+    # 0 1
+    # 0 2
+    # 1 3
+    # 2 4
+    # 输出示例：
+    # 0 1 2 3 4
+    # 数据范围：
+    # 0 <= N <= 10 ^ 5
+    # 1 <= M <= 10 ^ 9
+from collections import deque, defaultdict
+
+def topological_sort(n, edges):
+    inDegree = [0] * n # inDegree 记录每个文件的入度
+    umap = defaultdict(list) # 记录文件依赖关系
+
+    # 构建图和入度表
+    for s, t in edges:
+        inDegree[t] += 1
+        umap[s].append(t)
+
+    # 初始化队列，加入所有入度为0的节点
+    queue = deque([i for i in range(n) if inDegree[i] == 0])
+    result = []
+
+    while queue:
+        cur = queue.popleft()  # 当前选中的文件
+        result.append(cur)
+        for file in umap[cur]:  # 获取该文件指向的文件
+            inDegree[file] -= 1  # cur的指向的文件入度-1
+            if inDegree[file] == 0:
+                queue.append(file)
+
+    if len(result) == n:
+        print(" ".join(map(str, result)))
+    else:
+        print(-1)
+
+
+if __name__ == "__main__":
+    n, m = map(int, input().split())
+    edges = [tuple(map(int, input().split())) for _ in range(m)]
+    topological_sort(n, edges)
+
+
+#19 dijkstra（朴素版）精讲
+    # 卡码网：47. 参加科学大会(opens new window)
+    # 【题目描述】
+    # 小明是一位科学家，他需要参加一场重要的国际科学大会，以展示自己的最新研究成果。
+    # 小明的起点是第一个车站，终点是最后一个车站。然而，途中的各个车站之间的道路状况、交通拥堵程度以及可能的自然因素（如天气变化）等不同，这些因素都会影响每条路径的通行时间。
+    # 小明希望能选择一条花费时间最少的路线，以确保他能够尽快到达目的地。
+    # 【输入描述】
+    # 第一行包含两个正整数，第一个正整数 N 表示一共有 N 个公共汽车站，第二个正整数 M 表示有 M 条公路。
+    # 接下来为 M 行，每行包括三个整数，S、E 和 V，代表了从 S 车站可以单向直达 E 车站，并且需要花费 V 单位的时间。
+    # 【输出描述】
+    # 输出一个整数，代表小明从起点到终点所花费的最小时间。
+    # 输入示例
+    # 7 9
+    # 1 2 1
+    # 1 3 4
+    # 2 3 2
+    # 2 4 5
+    # 3 4 2
+    # 4 5 3
+    # 2 6 4
+    # 5 7 4
+    # 6 7 9
+    # 输出示例：12
+import sys
+
+def dijkstra(n, m, edges, start, end):
+    # 初始化邻接矩阵
+    grid = [[float('inf')] * (n + 1) for _ in range(n + 1)]
+    for p1, p2, val in edges:
+        grid[p1][p2] = val
+
+    # 初始化距离数组和访问数组
+    minDist = [float('inf')] * (n + 1)
+    visited = [False] * (n + 1)
+
+    minDist[start] = 0  # 起始点到自身的距离为0
+
+    for _ in range(1, n + 1):  # 遍历所有节点
+        minVal = float('inf')
+        cur = -1
+
+        # 选择距离源点最近且未访问过的节点
+        for v in range(1, n + 1):
+            if not visited[v] and minDist[v] < minVal:
+                minVal = minDist[v]
+                cur = v
+
+        if cur == -1:  # 如果找不到未访问过的节点，提前结束
+            break
+
+        visited[cur] = True  # 标记该节点已被访问
+
+        # 更新未访问节点到源点的距离
+        for v in range(1, n + 1):
+            if not visited[v] and grid[cur][v] != float('inf') and minDist[cur] + grid[cur][v] < minDist[v]:
+                minDist[v] = minDist[cur] + grid[cur][v]
+
+    return -1 if minDist[end] == float('inf') else minDist[end]
+
+if __name__ == "__main__":
+    input = sys.stdin.read
+    data = input().split()
+    n, m = int(data[0]), int(data[1])
+    edges = []
+    index = 2
+    for _ in range(m):
+        p1 = int(data[index])
+        p2 = int(data[index + 1])
+        val = int(data[index + 2])
+        edges.append((p1, p2, val))
+        index += 3
+    start = 1  # 起点
+    end = n    # 终点
+
+    result = dijkstra(n, m, edges, start, end)
+    print(result)
+
+
+#20 dijkstra（堆优化版）精讲
+    # 卡码网：47. 参加科学大会(opens new window)
+    # 【题目描述】
+    # 小明是一位科学家，他需要参加一场重要的国际科学大会，以展示自己的最新研究成果。
+    # 小明的起点是第一个车站，终点是最后一个车站。然而，途中的各个车站之间的道路状况、交通拥堵程度以及可能的自然因素（如天气变化）等不同，这些因素都会影响每条路径的通行时间。
+    # 小明希望能选择一条花费时间最少的路线，以确保他能够尽快到达目的地。
+    # 【输入描述】
+    # 第一行包含两个正整数，第一个正整数 N 表示一共有 N 个公共汽车站，第二个正整数 M 表示有 M 条公路。
+    # 接下来为 M 行，每行包括三个整数，S、E 和 V，代表了从 S 车站可以单向直达 E 车站，并且需要花费 V 单位的时间。
+    # 【输出描述】
+    # 输出一个整数，代表小明从起点到终点所花费的最小时间。
+    # 输入示例
+    # 7 9
+    # 1 2 1
+    # 1 3 4
+    # 2 3 2
+    # 2 4 5
+    # 3 4 2
+    # 4 5 3
+    # 2 6 4
+    # 5 7 4
+    # 6 7 9
+    # 输出示例：12
+import heapq
+
+class Edge:
+    def __init__(self, to, val):
+        self.to = to
+        self.val = val
+
+def dijkstra(n, m, edges, start, end):
+    grid = [[] for _ in range(n + 1)]
+
+    for p1, p2, val in edges:
+        grid[p1].append(Edge(p2, val))
+
+    minDist = [float('inf')] * (n + 1)
+    visited = [False] * (n + 1)
+
+    pq = []
+    heapq.heappush(pq, (0, start))
+    minDist[start] = 0
+
+    while pq:
+        cur_dist, cur_node = heapq.heappop(pq)
+
+        if visited[cur_node]:
+            continue
+
+        visited[cur_node] = True
+
+        for edge in grid[cur_node]:
+            if not visited[edge.to] and cur_dist + edge.val < minDist[edge.to]:
+                minDist[edge.to] = cur_dist + edge.val
+                heapq.heappush(pq, (minDist[edge.to], edge.to))
+
+    return -1 if minDist[end] == float('inf') else minDist[end]
+
+# 输入
+n, m = map(int, input().split())
+edges = [tuple(map(int, input().split())) for _ in range(m)]
+start = 1  # 起点
+end = n    # 终点
+
+# 运行算法并输出结果
+result = dijkstra(n, m, edges, start, end)
+print(result)
+
+
+#21 Bellman_ford 算法精讲
+    # 卡码网：94. 城市间货物运输 I(opens new window)
+    # 题目描述
+    # 某国为促进城市间经济交流，决定对货物运输提供补贴。共有 n 个编号为 1 到 n 的城市，通过道路网络连接，网络中的道路仅允许从某个城市单向通行到另一个城市，不能反向通行。
+    # 网络中的道路都有各自的运输成本和政府补贴，道路的权值计算方式为：运输成本 - 政府补贴。
+    # 权值为正表示扣除了政府补贴后运输货物仍需支付的费用；权值为负则表示政府的补贴超过了支出的运输成本，实际表现为运输过程中还能赚取一定的收益。
+    # 请找出从城市 1 到城市 n 的所有可能路径中，综合政府补贴后的最低运输成本。
+    # 如果最低运输成本是一个负数，它表示在遵循最优路径的情况下，运输过程中反而能够实现盈利。
+    # 城市 1 到城市 n 之间可能会出现没有路径的情况，同时保证道路网络中不存在任何负权回路。
+    # 负权回路是指一系列道路的总权值为负，这样的回路使得通过反复经过回路中的道路，理论上可以无限地减少总成本或无限地增加总收益。
+    # 输入描述
+    # 第一行包含两个正整数，第一个正整数 n 表示该国一共有 n 个城市，第二个整数 m 表示这些城市中共有 m 条道路。
+    # 接下来为 m 行，每行包括三个整数，s、t 和 v，表示 s 号城市运输货物到达 t 号城市，道路权值为 v（单向图）。
+    # 输出描述
+    # 如果能够从城市 1 到连通到城市 n， 请输出一个整数，表示运输成本。如果该整数是负数，则表示实现了盈利。如果从城市 1 没有路径可达城市 n，请输出 "unconnected"。
+    # 输入示例：
+    # 6 7
+    # 5 6 -2
+    # 1 2 1
+    # 5 3 1
+    # 2 5 2
+    # 2 4 -3
+    # 4 6 4
+    # 1 3 5
+def main():
+    n, m = map(int, input().strip().split())
+    edges = []
+    for _ in range(m):
+        src, dest, weight = map(int, input().strip().split())
+        edges.append([src, dest, weight])
+    
+    minDist = [float("inf")] * (n + 1)
+    minDist[1] = 0  # 起点处距离为0
+    
+    for i in range(1, n):
+        updated = False
+        for src, dest, weight in edges:
+            if minDist[src] != float("inf") and minDist[src] + weight < minDist[dest]:
+                minDist[dest] = minDist[src] + weight
+                updated = True
+        if not updated:  # 若边不再更新，即停止回圈
+            break
+    
+    if minDist[-1] == float("inf"):  # 返还终点权重
+        return "unconnected"
+    return minDist[-1]
+    
+if __name__ == "__main__":
+    print(main())
+
+#22 Bellman_ford 队列优化算法（又名SPFA）
+    # 卡码网：94. 城市间货物运输 I(opens new window)
+    # 题目描述
+    # 某国为促进城市间经济交流，决定对货物运输提供补贴。共有 n 个编号为 1 到 n 的城市，通过道路网络连接，网络中的道路仅允许从某个城市单向通行到另一个城市，不能反向通行。
+    # 网络中的道路都有各自的运输成本和政府补贴，道路的权值计算方式为：运输成本 - 政府补贴。
+    # 权值为正表示扣除了政府补贴后运输货物仍需支付的费用；权值为负则表示政府的补贴超过了支出的运输成本，实际表现为运输过程中还能赚取一定的收益。
+    # 请找出从城市 1 到城市 n 的所有可能路径中，综合政府补贴后的最低运输成本。
+    # 如果最低运输成本是一个负数，它表示在遵循最优路径的情况下，运输过程中反而能够实现盈利。
+    # 城市 1 到城市 n 之间可能会出现没有路径的情况，同时保证道路网络中不存在任何负权回路。
+    # 负权回路是指一系列道路的总权值为负，这样的回路使得通过反复经过回路中的道路，理论上可以无限地减少总成本或无限地增加总收益。
+    # 输入描述
+    # 第一行包含两个正整数，第一个正整数 n 表示该国一共有 n 个城市，第二个整数 m 表示这些城市中共有 m 条道路。
+    # 接下来为 m 行，每行包括三个整数，s、t 和 v，表示 s 号城市运输货物到达 t 号城市，道路权值为 v（单向图）。
+    # 输出描述
+    # 如果能够从城市 1 到连通到城市 n， 请输出一个整数，表示运输成本。如果该整数是负数，则表示实现了盈利。如果从城市 1 没有路径可达城市 n，请输出 "unconnected"。
+    # 输入示例：
+    # 6 7
+    # 5 6 -2
+    # 1 2 1
+    # 5 3 1
+    # 2 5 2
+    # 2 4 -3
+    # 4 6 4
+    # 1 3 5
+import collections
+
+def main():
+    n, m = map(int, input().strip().split())
+    edges = [[] for _ in range(n + 1)]
+    for _ in range(m):
+        src, dest, weight = map(int, input().strip().split())
+        edges[src].append([dest, weight])
+    
+    minDist = [float("inf")] * (n + 1)
+    minDist[1] = 0
+    que = collections.deque([1])
+    visited = [False] * (n + 1)
+    visited[1] = True
+    
+    while que:
+        cur = que.popleft()
+        visited[cur] = False
+        for dest, weight in edges[cur]:
+            if minDist[cur] != float("inf") and minDist[cur] + weight < minDist[dest]:
+                minDist[dest] = minDist[cur] + weight
+                if visited[dest] == False:
+                    que.append(dest)
+                    visited[dest] = True
+    
+    if minDist[-1] == float("inf"):
+        return "unconnected"
+    return minDist[-1]
+
+if __name__ == "__main__":
+    print(main())
+
+
+#23 bellman_ford之判断负权回路
+    # 卡码网：95. 城市间货物运输 II(opens new window)
+    # 【题目描述】
+    # 某国为促进城市间经济交流，决定对货物运输提供补贴。共有 n 个编号为 1 到 n 的城市，通过道路网络连接，网络中的道路仅允许从某个城市单向通行到另一个城市，不能反向通行。
+    # 网络中的道路都有各自的运输成本和政府补贴，道路的权值计算方式为：运输成本 - 政府补贴。权值为正表示扣除了政府补贴后运输货物仍需支付的费用；
+    # 权值为负则表示政府的补贴超过了支出的运输成本，实际表现为运输过程中还能赚取一定的收益。
+    # 然而，在评估从城市 1 到城市 n 的所有可能路径中综合政府补贴后的最低运输成本时，存在一种情况：图中可能出现负权回路。
+    # 负权回路是指一系列道路的总权值为负，这样的回路使得通过反复经过回路中的道路，理论上可以无限地减少总成本或无限地增加总收益。
+    # 为了避免货物运输商采用负权回路这种情况无限的赚取政府补贴，算法还需检测这种特殊情况。
+    # 请找出从城市 1 到城市 n 的所有可能路径中，综合政府补贴后的最低运输成本。同时能够检测并适当处理负权回路的存在。
+    # 城市 1 到城市 n 之间可能会出现没有路径的情况
+    # 【输入描述】
+    # 第一行包含两个正整数，第一个正整数 n 表示该国一共有 n 个城市，第二个整数 m 表示这些城市中共有 m 条道路。
+    # 接下来为 m 行，每行包括三个整数，s、t 和 v，表示 s 号城市运输货物到达 t 号城市，道路权值为 v。
+    # 【输出描述】
+    # 如果没有发现负权回路，则输出一个整数，表示从城市 1 到城市 n 的最低运输成本（包括政府补贴）。
+    # 如果该整数是负数，则表示实现了盈利。如果发现了负权回路的存在，则输出 "circle"。如果从城市 1 无法到达城市 n，则输出 "unconnected"。
+    # 输入示例
+    # 4 4
+    # 1 2 -1
+    # 2 3 1
+    # 3 1 -1
+    # 3 4 1
+    # 输出示例
+    # circle
+# Bellman-Ford方法求解含有负回路的最短路问题
+import sys
+
+def main():
+    input = sys.stdin.read
+    data = input().split()
+    index = 0
+    
+    n = int(data[index])
+    index += 1
+    m = int(data[index])
+    index += 1
+    
+    grid = []
+    for i in range(m):
+        p1 = int(data[index])
+        index += 1
+        p2 = int(data[index])
+        index += 1
+        val = int(data[index])
+        index += 1
+        # p1 指向 p2，权值为 val
+        grid.append([p1, p2, val])
+
+    start = 1  # 起点
+    end = n    # 终点
+
+    minDist = [float('inf')] * (n + 1)
+    minDist[start] = 0
+    flag = False
+
+    for i in range(1, n + 1):  # 这里我们松弛n次，最后一次判断负权回路
+        for side in grid:
+            from_node = side[0]
+            to = side[1]
+            price = side[2]
+            if i < n:
+                if minDist[from_node] != float('inf') and minDist[to] > minDist[from_node] + price:
+                    minDist[to] = minDist[from_node] + price
+            else:  # 多加一次松弛判断负权回路
+                if minDist[from_node] != float('inf') and minDist[to] > minDist[from_node] + price:
+                    flag = True
+
+    if flag:
+        print("circle")
+    elif minDist[end] == float('inf'):
+        print("unconnected")
+    else:
+        print(minDist[end])
+
+if __name__ == "__main__":
+    main()
+
+# SPFA方法求解含有负回路的最短路问题
+from collections import deque
+from math import inf
+
+def main():
+    n, m = [int(i) for i in input().split()]
+    graph = [[] for _ in range(n+1)]
+    min_dist = [inf for _ in range(n+1)]
+    count = [0 for _ in range(n+1)]  # 记录节点加入队列的次数
+    for _ in range(m):
+        s, t, v = [int(i) for i in input().split()]
+        graph[s].append([t, v])
+        
+    min_dist[1] = 0  # 初始化
+    count[1] = 1
+    d = deque([1])
+    flag = False
+    
+    while d:  # 主循环
+        cur_node = d.popleft()
+        for next_node, val in graph[cur_node]:
+            if min_dist[next_node] > min_dist[cur_node] + val:
+                min_dist[next_node] = min_dist[cur_node] + val
+                count[next_node] += 1
+                if next_node not in d:
+                    d.append(next_node)
+                if count[next_node] == n:  # 如果某个点松弛了n次，说明有负回路
+                    flag = True
+        if flag:
+            break
+            
+    if flag:
+        print("circle")
+    else:
+        if min_dist[-1] == inf:
+            print("unconnected")
+        else:
+            print(min_dist[-1])
+
+
+if __name__ == "__main__":
+    main()
+
+
+#24 bellman_ford之单源有限最短路
+    # 卡码网：96. 城市间货物运输 III(opens new window)
+    # 【题目描述】
+    # 某国为促进城市间经济交流，决定对货物运输提供补贴。共有 n 个编号为 1 到 n 的城市，通过道路网络连接，网络中的道路仅允许从某个城市单向通行到另一个城市，不能反向通行。
+    # 网络中的道路都有各自的运输成本和政府补贴，道路的权值计算方式为：运输成本 - 政府补贴。
+    # 权值为正表示扣除了政府补贴后运输货物仍需支付的费用；
+    # 权值为负则表示政府的补贴超过了支出的运输成本，实际表现为运输过程中还能赚取一定的收益。
+    # 请计算在最多经过 k 个城市的条件下，从城市 src 到城市 dst 的最低运输成本。
+    # 【输入描述】
+    # 第一行包含两个正整数，第一个正整数 n 表示该国一共有 n 个城市，第二个整数 m 表示这些城市中共有 m 条道路。
+    # 接下来为 m 行，每行包括三个整数，s、t 和 v，表示 s 号城市运输货物到达 t 号城市，道路权值为 v。
+    # 最后一行包含三个正整数，src、dst、和 k，src 和 dst 为城市编号，从 src 到 dst 经过的城市数量限制。
+    # 【输出描述】
+    # 输出一个整数，表示从城市 src 到城市 dst 的最低运输成本，如果无法在给定经过城市数量限制下找到从 src 到 dst 的路径，则输出 "unreachable"，表示不存在符合条件的运输方案。
+    # 输入示例：
+    # 6 7
+    # 1 2 1
+    # 2 4 -3
+    # 2 5 2
+    # 1 3 5
+    # 3 5 1
+    # 4 6 4
+    # 5 6 -2
+    # 2 6 1
+    # 输出示例：
+    # 0
+#本题为单源有限最短路问题，同样是 kama94.城市间货物运输I 延伸题目。
+
+
+#25 Floyd 算法精讲
+    # 卡码网：97. 小明逛公园(opens new window)
+    # 【题目描述】
+    # 小明喜欢去公园散步，公园内布置了许多的景点，相互之间通过小路连接，小明希望在观看景点的同时，能够节省体力，走最短的路径。
+    # 给定一个公园景点图，图中有 N 个景点（编号为 1 到 N），以及 M 条双向道路连接着这些景点。每条道路上行走的距离都是已知的。
+    # 小明有 Q 个观景计划，每个计划都有一个起点 start 和一个终点 end，表示他想从景点 start 前往景点 end。由于小明希望节省体力，他想知道每个观景计划中从起点到终点的最短路径长度。 请你帮助小明计算出每个观景计划的最短路径长度。
+    # 【输入描述】
+    # 第一行包含两个整数 N, M, 分别表示景点的数量和道路的数量。
+    # 接下来的 M 行，每行包含三个整数 u, v, w，表示景点 u 和景点 v 之间有一条长度为 w 的双向道路。
+    # 接下里的一行包含一个整数 Q，表示观景计划的数量。
+    # 接下来的 Q 行，每行包含两个整数 start, end，表示一个观景计划的起点和终点。
+    # 【输出描述】
+    # 对于每个观景计划，输出一行表示从起点到终点的最短路径长度。如果两个景点之间不存在路径，则输出 -1。
+    # 【输入示例】
+    # 7 3 1 2 4 2 5 6 3 6 8 2 1 2 2 3
+    # 【输出示例】
+    # 4 -1
+    # 【提示信息】
+    # 从 1 到 2 的路径长度为 4，2 到 3 之间并没有道路。
+    # 1 <= N, M, Q <= 1000.
+# 基于三维数组的Floyd
+if __name__ == '__main__':
+    max_int = 10005  # 设置最大路径，因为边最大距离为10^4
+
+    n, m = map(int, input().split())
+
+    grid = [[[max_int] * (n+1) for _ in range(n+1)] for _ in range(n+1)]  # 初始化三维dp数组
+
+    for _ in range(m):
+        p1, p2, w = map(int, input().split())
+        grid[p1][p2][0] = w
+        grid[p2][p1][0] = w
+
+    # 开始floyd
+    for k in range(1, n+1):
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                grid[i][j][k] = min(grid[i][j][k-1], grid[i][k][k-1] + grid[k][j][k-1])
+
+    # 输出结果
+    z = int(input())
+    for _ in range(z):
+        start, end = map(int, input().split())
+        if grid[start][end][n] == max_int:
+            print(-1)
+        else:
+            print(grid[start][end][n])
+
+# 基于二维数组的Floyd
+if __name__ == '__main__':
+    max_int = 10005  # 设置最大路径，因为边最大距离为10^4
+
+    n, m = map(int, input().split())
+
+    grid = [[max_int]*(n+1) for _ in range(n+1)]  # 初始化二维dp数组
+
+    for _ in range(m):
+        p1, p2, val = map(int, input().split())
+        grid[p1][p2] = val
+        grid[p2][p1] = val
+
+    # 开始floyd
+    for k in range(1, n+1):
+        for i in range(1, n+1):
+            for j in range(1, n+1):
+                grid[i][j] = min(grid[i][j], grid[i][k] + grid[k][j])
+
+    # 输出结果
+    z = int(input())
+    for _ in range(z):
+        start, end = map(int, input().split())
+        if grid[start][end] == max_int:
+            print(-1)
+        else:
+            print(grid[start][end])
+
+
+#26 A * 算法精讲 （A star算法）
+    # 卡码网：126. 骑士的攻击(opens new window)
+    # 题目描述
+    # 在象棋中，马和象的移动规则分别是“马走日”和“象走田”。现给定骑士的起始坐标和目标坐标，要求根据骑士的移动规则，计算从起点到达目标点所需的最短步数。
+    # 骑士移动规则如图，红色是起始位置，黄色是骑士可以走的地方。
+    # 棋盘大小 1000 x 1000（棋盘的 x 和 y 坐标均在 [1, 1000] 区间内，包含边界）
+    # 输入描述
+    # 第一行包含一个整数 n，表示测试用例的数量。
+    # 接下来的 n 行，每行包含四个整数 a1, a2, b1, b2，分别表示骑士的起始位置 (a1, a2) 和目标位置 (b1, b2)。
+    # 输出描述
+    # 输出共 n 行，每行输出一个整数，表示骑士从起点到目标点的最短路径长度。
+    # 输入示例
+    # 6
+    # 5 2 5 4
+    # 1 1 2 2
+    # 1 1 8 8
+    # 1 1 8 7
+    # 2 1 3 3
+    # 4 6 4 6
+
+
+
+
+#X27 (Medium) 133.Graph Deep Copy
     # Given a reference to a node within an undirected graph, create a deep copy (clone) of the graph. 
     # The copied graph must be completely independent of the original one. 
     # This means you need to make new nodes for the copied graph instead of 
@@ -1188,7 +1969,7 @@ def dfs(node: GraphNode, clone_map = {}) -> GraphNode:
     return cloned_node
 
 
-#X18 (Medium) Matrix Infection
+#X28 (Medium) Matrix Infection
     # You are given a matrix where each cell is either:
     # 0: Empty
     # 1: Uninfected
@@ -1236,7 +2017,7 @@ def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
     return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
 
 
-#X19 (Medium) 785.Bipartite Graph Validation
+#X29 (Medium) 785.Bipartite Graph Validation
     # Given an undirected graph, determine if it's bipartite. A graph is bipartite if the nodes 
     # can be colored in one of two colors, so that no two adjacent nodes are the same color.
     # The input is presented as an adjacency list, where graph[i] is a list of all nodes adjacent to node i.
@@ -1262,7 +2043,7 @@ def dfs(node: int, color: int, graph: List[List[int]], colors: List[int]) -> boo
     return True
 
 
-#X20 (Medium) Longest Increasing Path
+#X30 (Medium) Longest Increasing Path
     # Find the longest strictly increasing path in a matrix of positive integers. 
     # A path is a sequence of cells where each one is 4-directionally adjacent 
     # (up, down, left, or right) to the previous one.
@@ -1298,7 +2079,7 @@ def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
     return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
 
 
-#X21 (Hard) Shortest Transformation Sequence
+#X31 (Hard) Shortest Transformation Sequence
     # Given two words, start and end, and a dictionary containing an array of words, 
     # return the length of the shortest transformation sequence to transform start to end. 
     # A transformation sequence is a series of words in which:
@@ -1400,7 +2181,7 @@ def explore_level(queue, visited, other_visited, dictionary_set) -> bool:
     return False
 
 
-#X22 (Hard) Merging Communities
+#X32 (Hard) Merging Communities
     # There are n people numbered from 0 to n - 1 , with each person initially 
     # belonging to a separate community. When two people from different communities connect, 
     # their communities merge into a single community.
@@ -1447,7 +2228,7 @@ class MergingCommunities:
         return self.uf.get_size(x)
 
 
-#X23 (Medium) 207.Prerequisites
+#X33 (Medium) 207.Prerequisites
     # Given an integer n representing the number of courses labeled from 0 to n - 1, 
     # and an array of prerequisite pairs, determine if it's possible to enroll in all courses.
     # Each prerequisite is represented as a pair [a, b], indicating that course a must be taken before course b.
@@ -1552,7 +2333,7 @@ class Solution:
         return True
 
 
-#X24 (Hard) Shortest Path
+#X34 (Hard) Shortest Path
     # Given an integer n representing nodes labeled from 0 to n - 1 in an undirected graph, 
     # and an array of non-negative weighted edges, return an array where each index i 
     # contains the shortest path length from a specified start node to node i. 
@@ -1592,7 +2373,7 @@ def shortest_path(n: int, edges: List[int], start: int) -> List[int]:
     return [-1 if dist == float('inf') else dist for dist in distances]
 
 
-#X25 (Medium) Connect the Dots
+#X35 (Medium) Connect the Dots
     # Given a set of points on a plane, determine the minimum cost to connect all these points.
     # The cost of connecting two points is equal to the Manhattan distance between them, 
     # which is calculated as |x1 - x2| + |y1 - y2| for two points (x1, y1) and (x2, y2).
