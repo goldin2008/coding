@@ -197,7 +197,7 @@ Week 8 动态规划(DP)基础
     核心题目 (14道)
     Easy Level (5道)
 * 70. Climbing Stairs
-* 121. Best Time to Buy and Sell Stock
+X* 121. Best Time to Buy and Sell Stock
 * 198. House Robber
 * 509. Fibonacci Number
 * 746. Min Cost Climbing Stairs
@@ -218,7 +218,7 @@ X* 647. Palindromic Substrings
 * 139. Word Break
 * 213. House Robber II
 * 279. Perfect Squares
-* 309. Best Time to Buy and Sell Stock with Cooldown
+X* 309. Best Time to Buy and Sell Stock with Cooldown
 X* 518. Coin Change II
     Hard Level (2道)
 * 72. Edit Distance
@@ -227,7 +227,7 @@ X* 518. Coin Change II
 
 Week 9 动态规划(DP)进阶
 具体：攻克 DP 难题, 强化状态转移及空间优化技巧；可衡量：题目完成数与正确率、思路清晰；可达成：每天 1 小时；相关：提升 DP 解决复杂问题的能力；时限：本周内完成所有高级 DP 题。
-* 300. Longest Increasing Subsequence
+X* 300. Longest Increasing Subsequence
 X* 221. Maximal Square
 174. Dungeon Game
 97. Interleaving String
@@ -243,8 +243,8 @@ Week 10 贪心算法 & 双指针
 具体：解决贪心与双指针相关题, 掌握题型技巧；可衡量：完成题目数量与正确率；可达成：每天 1 小时；相关：这些题型锻炼思路简化和边界判断能力；时限：本周内完成所有目标题。
 * 56. Merge Intervals
 * 435. Non-overlapping Intervals
-* 55. Jump Game
-* 45. Jump Game II
+X* 55. Jump Game
+X* 45. Jump Game II
 * 11. Container With Most Water
 * 15. 3Sum
 16. 3Sum Closest

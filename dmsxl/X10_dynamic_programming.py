@@ -3327,6 +3327,9 @@ class Solution:
         # 返回最长公共子数组的长度
         return result
 # 1维DP，内层遍历需要从后向前
+# dp[j] represents the length of the longest common subarray ending at nums1[i-1] and nums2[j-1].
+# If nums1[i-1] != nums2[j-1], the current elements cannot extend any previous common subarray.
+# Thus, we reset dp[j] to 0 because the common subarray ending here has length 0.
 class Solution:
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         dp = [0] * (len(nums2) + 1)
@@ -3572,6 +3575,7 @@ class Solution:
             dp[i] = max(dp[i-1] + nums[i], nums[i]) #状态转移公式
             result = max(result, dp[i]) #result 保存dp[i]的最大值
         return result
+
 
 #X42 (Medium) 53.Maximum Subarray Sum
     # Given an array of integers, return the sum of the subarray with the largest sum.
