@@ -252,13 +252,47 @@ X* 45. Jump Game II
 * 42. Trapping Rain Water
 * 88. Merge Sorted Array
 
+767. Reorganize String
+621. Task Scheduler
+1229. Meeting Scheduler
+* 134. Gas station
+
 
 Week 11 二分搜索 & 综合题型
 具体：刷完二分搜索及综合题, 强化边界处理与思维拓展；可衡量：题目完成数与总结归纳情况；可达成：每天 1 小时；相关：二分及综合题考验算法综合实力；时限：本周内完成所有目标题。
+33. Search in Rotated Sorted Array
+81. Search in Rotated Sorted Array II
+278. First Bad Version
+162. Find Peak Element
+4. Median of Two Sorted Arrays
+153. Find Minimum in Rotated Sorted Array
+34. Find First and Last Position of Element in Sorted Array
+69. Sqrt(x)
+875. Koko Eating Bananas
+35. Search Insert Position
+
 
 
 Week 12 10 题＋模拟面试
 具体：回顾前 11 周所有重点题目, 针对错题进行重新攻克, 并安排 2 次全真模拟面试；可衡量：复做 10 道经典题及模拟面试次数；可达成：合理安排复盘时间；相关：全面检测知识盲区、提升实战能力；时限：本周内完成所有复习与模拟。
+    核心题目 (14道)
+Easy Level (5道)
+26. Remove Duplicates from Sorted Array
+27. Remove Element
+118. Pascal's Triangle
+217. Contains Duplicate
+350. Intersection of Two Arrays II
+    Medium Level (8道)
+48. Rotate Image
+73. Set Matrix Zeroes
+146. LRU Cache
+208. Implement Trie (Prefix Tree)
+215. Kth Largest Element in an Array
+347. Top K Frequent Elements
+380. Insert Delete GetRandom O(1)
+547. Friend Circles
+    Hard Level (1道)
+76. Minimum Window Substring
 
 
 
