@@ -6,7 +6,7 @@
 求解每一个子问题的最优解
 将局部最优解堆叠成全局最优解
 """
-#1 (Easy) 455.分发饼干
+#1 (Easy) 455.分发饼干 Assign Cookies
     # 假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
     # 对每个孩子 i，都有一个胃口值  g[i]，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j，都有一个尺寸 s[j] 。
     # 如果 s[j] >= g[i]，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
@@ -18,6 +18,17 @@
     # 输出: 2
     # 解释:你有两个孩子和三块小饼干，2 个孩子的胃口值分别是 1,2。你拥有的饼干数量和尺寸都足以让所有孩子满足。所以你应该输出 2.
 # 注意不可以小胃口优先
+# *** 贪心 小饼干优先 (小胃口优先 + 小饼干优先) 把资源(饼干)分配给最需要的孩子
+class Solution:
+    def findContentChildren(self, g, s):
+        g.sort()  # 将孩子的贪心因子排序
+        s.sort()  # 将饼干的尺寸排序
+        index = 0
+        for i in range(len(s)):  # 遍历饼干
+            if index < len(g) and g[index] <= s[i]:  # 如果当前孩子的贪心因子小于等于当前饼干尺寸
+                index += 1  # 满足一个孩子，指向下一个孩子
+        return index  # 返回满足的孩子数目
+
 # # 贪心 大饼干优先 (大胃口优先 + 大饼干优先)
 # class Solution:
 #     def findContentChildren(self, g, s):
@@ -41,16 +52,6 @@ def findContentChildren(g, s):
         cookie += 1
     return child
 
-# 贪心 小饼干优先 (小胃口优先 + 小饼干优先)
-class Solution:
-    def findContentChildren(self, g, s):
-        g.sort()  # 将孩子的贪心因子排序
-        s.sort()  # 将饼干的尺寸排序
-        index = 0
-        for i in range(len(s)):  # 遍历饼干
-            if index < len(g) and g[index] <= s[i]:  # 如果当前孩子的贪心因子小于等于当前饼干尺寸
-                index += 1  # 满足一个孩子，指向下一个孩子
-        return index  # 返回满足的孩子数目
 
 # Wrong Solution
 # def findContentChildren(g, s):
@@ -80,8 +81,9 @@ def findContentChildren(g, s):
     return satisfied
 
 
-#2 (Medium) 376.摆动序列
-    # 如果连续数字之间的差严格地在正数和负数之间交替，则数字序列称为摆动序列。第一个差（如果存在的话）可能是正数或负数。少于两个元素的序列也是摆动序列。
+#2 (Medium) 376.摆动序列 Wiggle Subsequence
+    # 如果连续数字之间的差严格地在正数和负数之间交替，则数字序列称为摆动序列。第一个差（如果存在的话）可能是正数或负数。
+    # 少于两个元素的序列也是摆动序列。
     # 例如, [1,7,4,9,2,5] 是一个摆动序列，因为差值 (6,-3,5,-7,3)  是正负交替出现的。
     # 相反, [1,4,7,2,5]  和  [1,7,4,5,5] 不是摆动序列，第一个序列是因为它的前两个差值都是正数，第二个序列是因为它的最后一个差值为零。
     # 给定一个整数序列，返回作为摆动序列的最长子序列的长度。 通过从原始序列中删除一些（也可以不删除）元素来获得子序列，剩下的元素保持其原始顺序。
@@ -105,21 +107,21 @@ def findContentChildren(g, s):
 # dp[i][1] = max(dp[i][1], dp[j][0] + 1)，其中0 < j < i且nums[j] > nums[i]，表示将 nums[i]接到前面某个山峰后面，作为山谷。
 # 初始状态：
 # 由于一个数可以接到前面的某个数后面，也可以以自身为子序列的起点，所以初始状态为：dp[0][0] = dp[0][1] = 1。
-# 贪心（版本一）
-# class Solution:
-#     def wiggleMaxLength(self, nums):
-#         if len(nums) <= 1:
-#             return len(nums)  # 如果数组长度为0或1，则返回数组长度
-#         curDiff = 0  # 当前一对元素的差值
-#         preDiff = 0  # 前一对元素的差值
-#         result = 1  # 记录峰值的个数，初始为1（默认最右边的元素被视为峰值）
-#         for i in range(len(nums) - 1):
-#             curDiff = nums[i + 1] - nums[i]  # 计算下一个元素与当前元素的差值
-#             # 如果遇到一个峰值
-#             if (preDiff <= 0 and curDiff > 0) or (preDiff >= 0 and curDiff < 0):
-#                 result += 1  # 峰值个数加1
-#                 preDiff = curDiff  # 注意这里，只在摆动变化的时候更新preDiff
-#         return result  # 返回最长摆动子序列的长度
+# *** 贪心（版本一）
+class Solution:
+    def wiggleMaxLength(self, nums):
+        if len(nums) <= 1:
+            return len(nums)  # 如果数组长度为0或1，则返回数组长度
+        curDiff = 0  # 当前一对元素的差值
+        preDiff = 0  # 前一对元素的差值
+        result = 1  # 记录峰值的个数，初始为1（默认最右边的元素被视为峰值）
+        for i in range(len(nums) - 1):
+            curDiff = nums[i + 1] - nums[i]  # 计算下一个元素与当前元素的差值
+            # 如果遇到一个峰值
+            if (preDiff <= 0 and curDiff > 0) or (preDiff >= 0 and curDiff < 0):
+                result += 1  # 峰值个数加1
+                preDiff = curDiff  # 注意这里，只在摆动变化的时候更新preDiff
+        return result  # 返回最长摆动子序列的长度
 # # 贪心（版本二）
 # class Solution:
 #     def wiggleMaxLength(self, nums: List[int]) -> int:
@@ -192,7 +194,7 @@ class Solution:
         return res
 
 
-#3 (Medium) 53.最大子序和
+#3 (Medium) 53.最大子序和 Maximum Subarray
     # 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
     # 示例:
     # 输入: [-2,1,-3,4,-1,2,1,-5,4]
@@ -223,7 +225,7 @@ class Solution:
         return result
 
 
-#4 (Medium) 122.买卖股票的最佳时机II
+#4 (Medium) 122.买卖股票的最佳时机II Best Time to Buy and Sell Stock II
     # 给定一个数组，它的第  i 个元素是一支给定股票第 i 天的价格。
     # 设计一个算法来计算你所能获取的最大利润。你可以尽可能地完成更多的交易（多次买卖一支股票）。
     # 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
@@ -262,7 +264,7 @@ class Solution:
         return dp[-1][1]
 
 
-#X5 *** (Medium) 55.跳跃游戏
+#X5 *** (Medium) 55.跳跃游戏 Jump Game
     # 给定一个非负整数数组，你最初位于数组的第一个位置。
     # 数组中的每个元素代表你在该位置可以跳跃的最大长度。
     # 判断你是否能够到达最后一个位置。
@@ -301,7 +303,7 @@ class Solution:
                 cover = max(i + nums[i], cover)
                 if cover >= len(nums) - 1: return True
         return False
-    
+
 # Jump to the End
     # You are given an integer array in which you're originally positioned at index 0. 
     # Each number in the array represents the maximum jump distance from the current index. 
@@ -321,7 +323,7 @@ def jump_to_the_end(nums: List[int]) -> bool:
     return destination == 0
 
 
-#6 *** (Medium) 45.跳跃游戏II
+#6 *** (Medium) 45.跳跃游戏II Jump Game II
     # 给定一个非负整数数组，你最初位于数组的第一个位置。
     # 数组中的每个元素代表你在该位置可以跳跃的最大长度。
     # 你的目标是使用最少的跳跃次数到达数组的最后一个位置。
