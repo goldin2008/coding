@@ -1,0 +1,4 @@
+feature_name,feature_meaning
+wirein_ct,Number of wire inbound transactions
+perc_hrg_wire_amt,Percentage of wire amount associated with high-risk geographic country
+degree_centrality,Number of connections an entity has in a network (degree centrality)
