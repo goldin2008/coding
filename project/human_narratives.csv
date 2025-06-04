@@ -1,0 +1,11 @@
+entity_id,risk_score,input,narrative
+123,0.8,"Risk Score: 80%
+Top Features and Contributions:
+- Number of wire inbound transactions (Number of inbound wire transactions initiated by the entity): 52% contribution
+- Percentage of wire amount associated with HRG country (Proportion of transactions linked to high-risk geographies): 36% contribution
+- Number of connections an entity has in a network (Degree centrality in a network analysis): 12% contribution
+","123: 80%
+Number of wire inbound transactions is the most significant contributor to the risk score, accounting for 52% of the total risk. A high number of inbound wire transactions can be indicative of unusual or suspicious activity, especially if the volume is significantly higher than typical patterns for similar entities.
+Percentage of wire amount associated with HRG country: Contributing 36% to the risk score, this feature highlights the proportion of wire transactions linked to a high-risk geographic (HRG) country.
+Number of connections an entity has in a network: This feature contributes 12% to the risk score. Degree centrality measures the number of connections an entity has within a network, which can be indicative of its influence or involvement in complex networks. A high degree centrality may suggest that the entity is well-connected, potentially facilitating or participating in coordinated activities that could pose a risk.
+"
