@@ -1,37 +1,91 @@
 import shap
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from config import TOP_N_FEATURES
 
+# def compute_shap_values(model, X_train, entity_features, top_n=TOP_N_FEATURES, plot=True):
+#     """
+#     Computes SHAP values for one or more entities and optionally plots feature contributions.
+
+#     Parameters:
+#     - model: Trained XGBClassifier
+#     - X_train: Training features used to train the model
+#     - entity_features: DataFrame of one or more entities' features
+#     - top_n: Number of top features to show (default: 5)
+#     - plot: Whether to display a SHAP bar plot
+
+#     Returns:
+#     - top_features_df: DataFrame of top features and their mean SHAP values (for multi-entity input) or per-sample SHAP values
+#     - shap_values: SHAP values object
+#     """
+#     explainer = shap.Explainer(model, X_train, model_output="probability")
+#     shap_values = explainer(entity_features)
+
+#     feature_names = entity_features.columns
+
+#     # Case 1: Single entity (row)
+#     if entity_features.shape[0] == 1:
+#         contributions = pd.DataFrame({
+#             "Feature": feature_names,
+#             "SHAP Value": shap_values.values[0]
+#         })
+#         contributions["Abs SHAP Value"] = contributions["SHAP Value"].abs()
+#         top_features_df = contributions.sort_values("Abs SHAP Value", ascending=False).head(top_n)
+#     else:
+#         # Case 2: Multiple entities (rows)
+#         mean_abs_shap = pd.Series(
+#             shap_values.values.abs().mean(axis=0),
+#             index=feature_names
+#         ).sort_values(ascending=False)
+#         top_features_df = mean_abs_shap.head(top_n).reset_index()
+#         top_features_df.columns = ["Feature", "Mean Abs SHAP Value"]
+
+#     if plot:
+#         shap.plots.bar(shap_values, max_display=top_n, show=True)
+
+#     return top_features_df, shap_values
 def compute_shap_values(model, X_train, entity_features, top_n=TOP_N_FEATURES, plot=True):
     """
-    Computes SHAP values for a single entity and plots the feature contributions.
+    Computes SHAP values for one or more entities and optionally plots feature contributions.
 
     Parameters:
     - model: Trained XGBClassifier
     - X_train: Training features used to train the model
-    - entity_features: Single-row DataFrame of the entity’s features
-    - top_n: Number of top features to show (default from config)
+    - entity_features: DataFrame of one or more entities' features
+    - top_n: Number of top features to show (default: 5)
     - plot: Whether to display a SHAP bar plot
 
     Returns:
-    - top_features: DataFrame of top features and their SHAP values
+    - top_features_df: DataFrame of top features and their mean SHAP values (for multi-entity input) or per-sample SHAP values
+    - shap_values: SHAP values object
     """
     explainer = shap.Explainer(model, X_train, model_output="probability")
     shap_values = explainer(entity_features)
 
-    contributions = pd.DataFrame({
-        "Feature": entity_features.columns,
-        "SHAP Value": shap_values.values[0]
-    })
-    contributions["Abs SHAP Value"] = contributions["SHAP Value"].abs()
+    feature_names = entity_features.columns
 
-    top_features = contributions.sort_values("Abs SHAP Value", ascending=False).head(top_n)
+    # Case 1: Single entity (row)
+    if entity_features.shape[0] == 1:
+        contributions = pd.DataFrame({
+            "Feature": feature_names,
+            "SHAP Value": shap_values.values[0]
+        })
+        contributions["Abs SHAP Value"] = contributions["SHAP Value"].abs()
+        top_features_df = contributions.sort_values("Abs SHAP Value", ascending=False).head(top_n)
+    else:
+        # Case 2: Multiple entities (rows)
+        mean_abs_shap = pd.Series(
+            np.abs(shap_values.values).mean(axis=0),
+            index=feature_names
+        ).sort_values(ascending=False)
+        top_features_df = mean_abs_shap.head(top_n).reset_index()
+        top_features_df.columns = ["Feature", "Mean Abs SHAP Value"]
 
     if plot:
         shap.plots.bar(shap_values, max_display=top_n, show=True)
 
-    return top_features
+    return top_features_df, shap_values
 
 
 def generate_shap_summary(model, X, plot_summary=True):
@@ -53,4 +107,4 @@ def generate_shap_summary(model, X, plot_summary=True):
     if plot_summary:
         shap.summary_plot(shap_values, X)
 
-    return explainer, shap_values
+    # return explainer, shap_values

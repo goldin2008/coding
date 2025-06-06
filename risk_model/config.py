@@ -7,6 +7,13 @@ AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT", "https://your-endpoin
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY", "your-azure-openai-api-key")
 DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT", "your-gpt-deployment")
 
+# Default LLM Configuration
+LLM_CONFIG = {
+    "api_key": os.getenv("OPENAI_API_KEY", ""),  # fallback to empty string
+    "model_name": "gpt-4o",
+    "temperature": 0.2
+}
+
 # ===============================
 # Data Generation Parameters
 # ===============================
