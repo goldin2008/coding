@@ -1,25 +1,27 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from data.feature_library import feature_library
 
 import os
 
 # ✅ Predefined AML feature library
-FEATURE_LIBRARY = {
-    "wirein_ct": "Number of inbound wire transactions",
-    "perc_hrg_wire_amt": "% of wire amount to high-risk geographies",
-    "degree_centrality": "Network connectivity score (number of connections in transaction network)",
-    "txn_frequency": "Transaction frequency over last 30 days",
-    "avg_wire_amt": "Average amount per wire transaction",
-    "same_day_wire_ratio": "% of same-day wire transactions",
-    "high_risk_country_flag": "Indicator if customer operates in high-risk country",
-    "cash_deposit_amt": "Total cash deposit amount",
-    "kyc_flag": "Missing or incomplete KYC documentation",
-    "suspicious_activity_flag": "Flagged by transaction monitoring system",
-    "txn_amount_std": "Standard deviation of transaction amounts",
-    "suspicious_counterparty_score": "Counterparty risk score based on past suspicious reports"
-}
+# FEATURE_LIBRARY = {
+#     "wirein_ct": "Number of inbound wire transactions",
+#     "perc_hrg_wire_amt": "% of wire amount to high-risk geographies",
+#     "degree_centrality": "Network connectivity score (number of connections in transaction network)",
+#     "txn_frequency": "Transaction frequency over last 30 days",
+#     "avg_wire_amt": "Average amount per wire transaction",
+#     "same_day_wire_ratio": "% of same-day wire transactions",
+#     "high_risk_country_flag": "Indicator if customer operates in high-risk country",
+#     "cash_deposit_amt": "Total cash deposit amount",
+#     "kyc_flag": "Missing or incomplete KYC documentation",
+#     "suspicious_activity_flag": "Flagged by transaction monitoring system",
+#     "txn_amount_std": "Standard deviation of transaction amounts",
+#     "suspicious_counterparty_score": "Counterparty risk score based on past suspicious reports"
+# }
 
+FEATURE_LIBRARY = feature_library
 
 def generate_feature_library_csv(output_path="data/feature_library.csv"):
     """
@@ -51,17 +53,35 @@ def generate_and_save_aml_data(
 
     data = {
         "wirein_ct": np.random.poisson(3, num_samples),
-        "perc_hrg_wire_amt": np.random.uniform(0, 1, num_samples),
-        "degree_centrality": np.random.uniform(0, 1, num_samples),
-        "txn_frequency": np.random.randint(1, 20, num_samples),
-        "avg_wire_amt": np.random.uniform(500, 5000, num_samples),
+        "wireout_ct": np.random.poisson(3, num_samples),
+        "avg_wire_amount": np.random.uniform(500, 5000, num_samples),
+        "max_wire_amount": np.random.uniform(1000, 10000, num_samples),
+        "perc_wire_to_high_risk_country": np.random.uniform(0, 1, num_samples),
+        "perc_wire_from_high_risk_country": np.random.uniform(0, 1, num_samples),
+        "num_high_risk_counterparties": np.random.poisson(2, num_samples),
         "same_day_wire_ratio": np.random.uniform(0, 0.5, num_samples),
-        "high_risk_country_flag": np.random.choice([0, 1], num_samples),
+        "suspicious_counterparty_score": np.random.uniform(0, 1, num_samples),
+        "txn_frequency": np.random.randint(1, 20, num_samples),
+        "degree_centrality": np.random.uniform(0, 1, num_samples),
+        "betweenness_centrality": np.random.uniform(0, 1, num_samples),
+        "clustering_coefficient": np.random.uniform(0, 1, num_samples),
         "cash_deposit_amt": np.random.uniform(1000, 10000, num_samples),
+        "cash_withdrawal_amt": np.random.uniform(1000, 10000, num_samples),
         "kyc_flag": np.random.choice([0, 1], num_samples),
-        "suspicious_activity_flag": np.random.choice([0, 1], num_samples),
+        "num_sar_filings": np.random.poisson(0.5, num_samples),
+        "past_sar_flag": np.random.choice([0, 1], num_samples),
+        "customer_age": np.random.randint(18, 80, num_samples),
+        "account_tenure": np.random.uniform(0, 20, num_samples),
         "txn_amount_std": np.random.uniform(50, 500, num_samples),
-        "suspicious_counterparty_score": np.random.uniform(0, 1, num_samples)
+        "num_large_cash_txns": np.random.poisson(1, num_samples),
+        "international_txn_ratio": np.random.uniform(0, 1, num_samples),
+        "num_unusual_txn_patterns": np.random.poisson(2, num_samples),
+        "num_new_accounts_opened": np.random.poisson(0.5, num_samples),
+        "recent_address_change_flag": np.random.choice([0, 1], num_samples),
+        "pep_flag": np.random.choice([0, 1], num_samples),
+        "num_credit_card_txns": np.random.poisson(5, num_samples),
+        "num_failed_login_attempts": np.random.poisson(1, num_samples),
+        "recent_device_change_flag": np.random.choice([0, 1], num_samples)
     }
     
     df = pd.DataFrame(data)

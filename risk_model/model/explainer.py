@@ -48,6 +48,27 @@ def compute_shap_values(model, X_train, entity_features, top_n=10, plot=True):
     return top_features
 
 
+def generate_shap_summary(model, X, plot_summary=True):
+    """
+    Generate and (optionally) plot SHAP values for a given model and dataset.
+
+    Parameters:
+    - model: Trained model (e.g., XGBoost classifier)
+    - X: Feature matrix to explain
+    - plot_summary: Boolean flag to indicate if a summary plot should be displayed
+
+    Returns:
+    - explainer: SHAP TreeExplainer object
+    - shap_values: Computed SHAP values
+    """
+    explainer = shap.TreeExplainer(model)
+    shap_values = explainer.shap_values(X)
+
+    if plot_summary:
+        shap.summary_plot(shap_values, X)
+    
+    # return explainer, shap_values
+
 # def compute_shap_values(model, X_train, entity_features, top_n):
 #     explainer = shap.Explainer(model, X_train)
 #     shap_values = explainer(entity_features)
