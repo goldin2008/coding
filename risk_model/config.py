@@ -8,6 +8,23 @@ AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY", "your-azure-openai-api-
 DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT", "your-gpt-deployment")
 
 # ===============================
+# Data Generation Parameters
+# ===============================
+AML_DATA_PATH = "data/aml_data.csv"
+NUM_SAMPLES = 1000
+FRAUD_RATIO = 0.3  # Percentage of fraud/risk cases in generated data
+
+# ===============================
+# Feature Library
+# ===============================
+FEATURE_LIBRARY_CSV_PATH = "data/feature_library.csv"
+
+# ===============================
+# Dummy Dataset
+# ===============================
+DUMMY_DATA_CSV = "data/dummy_aml_data.csv"
+
+# ===============================
 # XGBoost Model Parameters
 # ===============================
 XGBOOST_PARAMS = {
@@ -17,21 +34,10 @@ XGBOOST_PARAMS = {
     "random_state": 42
 }
 
-# ===============================
-# Data Generation Parameters
-# ===============================
-NUM_SAMPLES = 1000
-FRAUD_RATIO = 0.3  # Percentage of fraud/risk cases in generated data
+OUTPUT_MODEL_PATH = "models/xgb_model.json"
+TEST_SIZE = 0.2
+RANDOM_STATE = 42
 
-# ===============================
-# Feature Library
-# ===============================
-FEATURE_LIBRARY_CSV = "data/feature_library.csv"
-
-# ===============================
-# Dummy Dataset
-# ===============================
-DUMMY_DATA_CSV = "data/dummy_aml_data.csv"
 
 # ===============================
 # SHAP Parameters

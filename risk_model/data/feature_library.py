@@ -1,14 +1,19 @@
 import pandas as pd
+from config import FEATURE_LIBRARY_CSV_PATH
 
-def load_feature_descriptions(path="data/generated/feature_library.csv", feature_names=None):
+def load_feature_descriptions(path=FEATURE_LIBRARY_CSV_PATH, feature_names=None):
+    """
+    Loads feature descriptions from a CSV file. If the file is not found,
+    it falls back to returning a dictionary with feature names mapping to themselves.
+    """
     try:
         df = pd.read_csv(path)
         return df.set_index("Feature Name")["Feature Meaning"].to_dict()
     except FileNotFoundError:
         return {f: f for f in feature_names}  # fallback
 
-
 # feature_library.py
+
 feature_library = {
     "wirein_ct": "Number of incoming wire transactions. A high value may indicate frequent transfers that could mask suspicious activity.",
     "wireout_ct": "Number of outgoing wire transactions. Frequent outgoing wires might indicate rapid movement of funds.",
