@@ -34,17 +34,44 @@ class AzureClient:
         )
         print("✅ Azure Client setup successful.")
 
-    def get_response(self, prompt: str) -> str:
-        print(f"✉️ Sending prompt: '{prompt}'")
+    def get_response(
+        self,
+        prompt: str,
+        model_name: str = None,
+        system_content: str = None,
+        temperature: float = None,
+        max_tokens: int = None
+    ) -> str:
+        """
+        Generate a response using Azure OpenAI.
+
+        Parameters:
+        - prompt (str): User prompt.
+        - model_name (str, optional): LLM deployment name. Defaults to config.
+        - system_content (str, optional): System instructions. Defaults to config.
+        - temperature (float, optional): Response creativity. Defaults to config.
+        - max_tokens (int, optional): Max tokens in response. Defaults to config.
+
+        Returns:
+        - str: The generated response text.
+        """
+        # Use provided values or fall back to config defaults
+        model_name = model_name or LLM_CONFIG["model_name"]
+        system_content = system_content or PROMPT_CONFIG["content"]
+        temperature = temperature if temperature is not None else LLM_CONFIG.get("temperature", 0.2)
+        max_tokens = max_tokens or LLM_CONFIG.get("max_tokens", 500)
+
+        print(f"✉️ Sending prompt using model '{model_name}'")
         response = self.client.chat.completions.create(
-            model=LLM_CONFIG["model_name"],
+            model=model_name,
             messages=[
-                {"role": "system", "content": PROMPT_CONFIG["content"]},
+                {"role": "system", "content": system_content},
                 {"role": "user", "content": prompt}
             ],
-            temperature=LLM_CONFIG.get("temperature", 0.2),
-            max_tokens=LLM_CONFIG.get("max_tokens", 500)
+            temperature=temperature,
+            max_tokens=max_tokens
         )
+
         response_text = response.choices[0].message.content.strip()
         print("✅ Response received successfully.")
         return response_text
