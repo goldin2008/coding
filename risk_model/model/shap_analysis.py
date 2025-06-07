@@ -3,8 +3,10 @@
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
+import config  # Import config
 
-def summarize_top_features(shap_values, X_test, top_n=5):
+
+def summarize_top_features(shap_values, X_test, top_n=None):
     """
     Summarizes the most frequently occurring top features across all samples
     based on their absolute SHAP values.
@@ -12,11 +14,14 @@ def summarize_top_features(shap_values, X_test, top_n=5):
     Parameters:
     - shap_values: SHAP values object from SHAP package
     - X_test: DataFrame of features
-    - top_n: Number of top features to consider per sample
+    - top_n: Number of top features to consider per sample (overrides config if provided)
 
     Returns:
     - summary_df: DataFrame with feature names and their frequencies
     """
+    if top_n is None:
+        top_n = config.SHAP_CONFIG["top_n_features"]
+
     feature_names = X_test.columns
     feature_counts = {}
 
@@ -29,6 +34,7 @@ def summarize_top_features(shap_values, X_test, top_n=5):
     summary_df = pd.DataFrame(list(feature_counts.items()), columns=["Feature", "Frequency"])
     summary_df.sort_values("Frequency", ascending=False, inplace=True)
     return summary_df
+
 
 def identify_high_impact_features(shap_values, X_test):
     """
@@ -49,19 +55,24 @@ def identify_high_impact_features(shap_values, X_test):
     ).sort_values(ascending=False)
     return mean_abs_shap
 
-def cluster_features(mean_abs_shap, n_clusters=3):
+
+def cluster_features(mean_abs_shap, n_clusters=None):
     """
     Clusters features based on their mean absolute SHAP values.
 
     Parameters:
     - mean_abs_shap: Series of mean absolute SHAP values per feature
-    - n_clusters: Number of clusters to form
+    - n_clusters: Number of clusters to form (overrides config if provided)
 
     Returns:
     - clustered: DataFrame with features, mean SHAP values, and cluster labels
     """
+    if n_clusters is None:
+        n_clusters = config.CLUSTER_CONFIG["n_clusters"]
+
+    random_state = config.CLUSTER_CONFIG.get("random_state", 42)
     shap_matrix = mean_abs_shap.values.reshape(-1, 1)
-    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    kmeans = KMeans(n_clusters=n_clusters, random_state=random_state)
     cluster_labels = kmeans.fit_predict(shap_matrix)
     clustered = pd.DataFrame({
         "Feature": mean_abs_shap.index,
@@ -69,6 +80,7 @@ def cluster_features(mean_abs_shap, n_clusters=3):
         "Cluster": cluster_labels
     }).sort_values("Cluster")
     return clustered
+
 
 def build_llm_prompt_for_hypotheses(top_features):
     """

@@ -3,16 +3,14 @@ import numpy as np
 import os
 from data.feature_library import feature_library
 from config import (
-    FEATURE_LIBRARY_CSV_PATH,
-    AML_DATA_PATH,
-    NUM_SAMPLES,
-    FRAUD_RATIO,
-    RANDOM_STATE
+    DATA_PATHS,
+    DATA_GENERATION,
+    TRAINING_CONFIG,
 )
 
 FEATURE_LIBRARY = feature_library
 
-def generate_feature_library_csv(output_path=FEATURE_LIBRARY_CSV_PATH):
+def generate_feature_library_csv(output_path=DATA_PATHS["feature_library_csv"]):
     """
     Generates a feature library CSV with feature names and descriptions.
     """
@@ -30,10 +28,10 @@ def generate_feature_library_csv(output_path=FEATURE_LIBRARY_CSV_PATH):
 
 
 def generate_and_save_aml_data(
-    num_samples=NUM_SAMPLES, 
-    fraud_ratio=FRAUD_RATIO, 
-    output_path=AML_DATA_PATH, 
-    random_state=RANDOM_STATE
+    num_samples=DATA_GENERATION["num_samples"], 
+    fraud_ratio=DATA_GENERATION["fraud_ratio"], 
+    output_path=DATA_PATHS["aml_data"], 
+    random_state=TRAINING_CONFIG["random_state"]
 ):
     np.random.seed(random_state)
 
@@ -94,7 +92,7 @@ def generate_and_save_aml_data(
     return df
 
 
-def load_dataset(path=AML_DATA_PATH):
+def load_dataset(path=DATA_PATHS["aml_data"]):
     """
     Loads a dataset from a CSV file and splits it into features (X) and label (y).
     """
@@ -106,7 +104,7 @@ def load_dataset(path=AML_DATA_PATH):
     return X, y
 
 
-def load_feature_descriptions(path=FEATURE_LIBRARY_CSV_PATH, feature_names=None):
+def load_feature_descriptions(path=DATA_PATHS["feature_library_csv"], feature_names=None):
     """
     Loads feature descriptions from a CSV, or falls back to the FEATURE_LIBRARY dict.
     """

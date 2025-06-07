@@ -1,7 +1,7 @@
 import pandas as pd
-from config import FEATURE_LIBRARY_CSV_PATH
+from config import DATA_PATHS
 
-def load_feature_descriptions(path=FEATURE_LIBRARY_CSV_PATH, feature_names=None):
+def load_feature_descriptions(path=DATA_PATHS["feature_library_csv"], feature_names=None):
     """
     Loads feature descriptions from a CSV file. If the file is not found,
     it falls back to returning a dictionary with feature names mapping to themselves.
@@ -11,6 +11,7 @@ def load_feature_descriptions(path=FEATURE_LIBRARY_CSV_PATH, feature_names=None)
         return df.set_index("Feature Name")["Feature Meaning"].to_dict()
     except FileNotFoundError:
         return {f: f for f in feature_names}  # fallback
+
 
 # feature_library.py
 

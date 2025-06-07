@@ -1,6 +1,6 @@
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
-from config import OUTPUT_MODEL_PATH, TEST_SIZE, RANDOM_STATE
+from config import OUTPUT_MODEL_PATH, TRAINING_CONFIG
 import pandas as pd
 from pathlib import Path
 
@@ -17,8 +17,11 @@ def train_xgboost(X, y, xgb_params):
     - model: Trained XGBoost classifier
     - X_test: Test feature set
     """
+    test_size = TRAINING_CONFIG.get("test_size", 0.2)
+    random_state = TRAINING_CONFIG.get("random_state", 42)
+    
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE
+        X, y, test_size=test_size, random_state=random_state
     )
 
     model = xgb.XGBClassifier(**xgb_params)
