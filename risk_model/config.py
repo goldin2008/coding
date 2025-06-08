@@ -25,7 +25,7 @@ LLM_CONFIG = {
     "api_key": os.getenv("OPENAI_API_KEY", ""),
     "model_name": "gpt-4o",
     "temperature": 0.2,
-    "max_tokens", 500
+    "max_tokens": 500
 }
 
 PROMPT_CONFIG = {
