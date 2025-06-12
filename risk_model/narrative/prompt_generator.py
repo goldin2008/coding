@@ -117,30 +117,49 @@ def build_shap_explanation_prompt(risk_score, top_features, feature_descriptions
     return prompt
 
 
-def build_evaluation_prompt(generated_text: str) -> str:
-    """
-    Builds the prompt text for evaluating a risk explanation.
+# def build_evaluation_prompt(generated_text: str) -> str:
+#     """
+#     Builds the prompt text for evaluating a risk explanation.
 
-    Parameters:
-    - generated_text (str): The risk explanation to evaluate.
+#     Parameters:
+#     - generated_text (str): The risk explanation to evaluate.
 
-    Returns:
-    - str: The evaluation prompt text.
+#     Returns:
+#     - str: The evaluation prompt text.
+#     """
+#     evaluation_prompt = f"""
+#         Please evaluate the following risk explanation on the following criteria (scale 1-5):
+#         1. Clarity
+#         2. Conciseness
+#         3. Completeness
+        
+#         Provide a short justification for each score.
+        
+#         Generated Explanation:
+#         \"\"\"
+#         {generated_text}
+#         \"\"\"
+#         """
+#     return evaluation_prompt.strip()
+
+def build_evaluation_prompt(prompt: str, explanation: str) -> str:
     """
-    evaluation_prompt = f"""
-        Please evaluate the following risk explanation on the following criteria (scale 1-5):
-        1. Clarity
-        2. Conciseness
-        3. Completeness
-        
-        Provide a short justification for each score.
-        
-        Generated Explanation:
-        \"\"\"
-        {generated_text}
-        \"\"\"
-        """
-    return evaluation_prompt.strip()
+    Construct the evaluation prompt given the original prompt and model-generated explanation.
+    """
+    return f"""
+You are an evaluation assistant. Given a prompt and a model-generated answer, please assess the quality of the answer based on:
+- Clarity (1-5)
+- Conciseness (1-5)
+- Completeness (1-5)
+Provide a score for each, then write a short summary comment.
+
+Prompt:
+{prompt}
+
+Model-Generated Answer:
+{explanation}
+"""
+
 
 
 def build_judge_prompt(human_narrative, llm_narrative):

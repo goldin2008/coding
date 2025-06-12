@@ -327,16 +327,46 @@ def save_entities_to_json(entities: list, file_path: str):
     print(f"✅ Entities saved to {file_path}")
 
 
+def build_evaluation_prompt(prompt: str, explanation: str) -> str:
+    """
+    Construct the evaluation prompt given the original prompt and model-generated explanation.
+    """
+    return f"""
+You are an evaluation assistant. Given a prompt and a model-generated answer, please assess the quality of the answer based on:
+- Clarity (1-5)
+- Conciseness (1-5)
+- Completeness (1-5)
+Provide a score for each, then write a short summary comment.
+
+Prompt:
+{prompt}
+
+Model-Generated Answer:
+{explanation}
+"""
+
 # Import or define build_prompt_from_entity_row here
 # from your_module import build_prompt_from_entity_row
-
+    
 def enrich_entities_with_llm_explanations(
     input_json_path: str,
     output_json_path: str,
     feature_library_df: pd.DataFrame,
     azure_client: AzureClient,
     top_n: int = 10,
+    log_every_n: int = 5,  # New parameter for logging frequency
 ):
+    """
+    Enrich entities with LLM-generated explanations and save the updated list to a JSON file.
+
+    Parameters:
+    - input_json_path (str): Path to input JSON file with entity data.
+    - output_json_path (str): Path to save enriched JSON file.
+    - feature_library_df (pd.DataFrame): DataFrame with 'feature_name' and 'description'.
+    - azure_client (AzureClient): Initialized Azure OpenAI client.
+    - top_n (int): Number of top features to use in prompt generation.
+    - log_every_n (int): Frequency of logging progress (e.g., 1 = every entity, 10 = every 10th entity).
+    """
     # Load existing entities JSON file
     with open(input_json_path, "r") as f:
         entity_data_list = json.load(f)
@@ -350,7 +380,8 @@ def enrich_entities_with_llm_explanations(
         entity_data["llm_explanation"] = explanation
         updated_entities.append(entity_data)
 
-        print(f"Processed entity {i+1}/{len(entity_data_list)}")
+        if (i + 1) % log_every_n == 0 or i == len(entity_data_list) - 1:
+            print(f"Processed entity {i + 1}/{len(entity_data_list)}")
 
     # Save updated entities back to JSON file
     with open(output_json_path, "w") as f:
@@ -359,6 +390,113 @@ def enrich_entities_with_llm_explanations(
     print(f"✅ Saved enriched entities with explanations to {output_json_path}")
 
 
+def enrich_and_evaluate_entities(
+    input_json_path: str,
+    output_json_path: str,
+    feature_library_df: pd.DataFrame,
+    azure_client: AzureClient,
+    judge_models: dict = JUDGE_MODELS,
+    top_n: int = 10,
+    log_every_n: int = 5
+):
+    # Load input JSON
+    with open(input_json_path, "r", encoding="utf-8") as f:
+        entity_data_list = json.load(f)
+
+    enriched_entities = []
+
+    for i, entity in enumerate(entity_data_list):
+        # Build prompt and get explanation
+        prompt = build_prompt_from_entity_row(entity, feature_library_df, top_n)
+        explanation = azure_client.get_response(prompt)
+
+        # Attach to entity
+        entity["prompt"] = prompt
+        entity["llm_explanation"] = explanation
+
+        # Evaluate using judge models
+        entity["evaluations"] = {}
+        for judge_name, deployment_name in judge_models.items():
+            eval_prompt = build_evaluation_prompt(prompt, explanation)
+
+            start_time = datetime.now()
+            eval_response = openai.ChatCompletion.create(
+                engine=deployment_name,
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant that evaluates AI-generated text."},
+                    {"role": "user", "content": eval_prompt}
+                ],
+                temperature=0
+            )
+            end_time = datetime.now()
+
+            eval_text = eval_response['choices'][0]['message']['content']
+            clarity, conciseness, completeness = extract_scores(eval_text)
+            eval_duration = (end_time - start_time).total_seconds()
+
+            entity["evaluations"][judge_name] = {
+                "Clarity": clarity,
+                "Conciseness": conciseness,
+                "Completeness": completeness,
+                "Summary": eval_text.strip(),
+                "EvalTime": eval_duration
+            }
+
+        enriched_entities.append(entity)
+
+        if (i + 1) % log_every_n == 0 or i == len(entity_data_list) - 1:
+            print(f"✅ Processed {i + 1}/{len(entity_data_list)} entities")
+
+    # Save back to JSON
+    with open(output_json_path, "w", encoding="utf-8") as f:
+        json.dump(enriched_entities, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Enriched and evaluated entities saved to {output_json_path}")
+
+
+
+def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
+    """
+    Load enriched entity JSON file, compute mean and standard deviation for all
+    judge model evaluation scores, and save updated entities back to JSON.
+
+    Parameters:
+    - input_json_path: Path to input JSON file with judge model scores.
+    - output_json_path: Path to output JSON file to save updated entities.
+    """
+    with open(input_json_path, "r", encoding="utf-8") as f:
+        entity_data_list = json.load(f)
+
+    for entity in entity_data_list:
+        # Collect scores by dimension
+        clarity_scores = []
+        conciseness_scores = []
+        completeness_scores = []
+
+        for key, value in entity.items():
+            if key.startswith("Clarity_"):
+                clarity_scores.append(value)
+            elif key.startswith("Conciseness_"):
+                conciseness_scores.append(value)
+            elif key.startswith("Completeness_"):
+                completeness_scores.append(value)
+
+        # Compute mean and std
+        def calc_stats(scores):
+            return {
+                "mean": float(np.mean(scores)) if scores else None,
+                "std": float(np.std(scores, ddof=1)) if len(scores) > 1 else None
+            }
+
+        entity["Clarity_stats"] = calc_stats(clarity_scores)
+        entity["Conciseness_stats"] = calc_stats(conciseness_scores)
+        entity["Completeness_stats"] = calc_stats(completeness_scores)
+
+    # Save updated JSON
+    with open(output_json_path, "w", encoding="utf-8") as f:
+        json.dump(entity_data_list, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Updated entities saved to: {output_json_path}")
 
 
 # Step 5: Run the Full Pipeline
@@ -407,3 +545,17 @@ if __name__ == "__main__":
     #     azure_client=client,
     #     top_n=10,
     # )
+    
+    enrich_and_evaluate_entities(
+        input_json_path="entities_with_prompts.json",
+        output_json_path="entities_enriched_evaluated.json",
+        feature_library_df=feature_library_df,
+        azure_client=azure_client,
+        top_n=5,
+        log_every_n=3  # print progress every 3 entities
+    )
+
+    update_mean_std_scores_in_json(
+        input_json_path="entities_with_evals.json",
+        output_json_path="entities_with_stats.json"
+    )
