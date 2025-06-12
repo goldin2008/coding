@@ -247,6 +247,75 @@ def build_prompt_from_entity_row(entity_data: dict, feature_library_df: pd.DataF
     return prompt
 
 
+def build_controlled_prompt_from_entity_row(
+    entity_data: dict,
+    feature_library_df: pd.DataFrame,
+    ccc_levels: dict = {"clarity": 3, "conciseness": 3, "completeness": 3},
+    top_n: int = 10
+) -> str:
+    """
+    Builds a prompt from entity data with CCC quality level instructions.
+
+    Parameters:
+    - entity_data (dict): Must include 'entity_id', 'risk_score', and 'features'
+    - feature_library_df (pd.DataFrame): Includes 'feature_name' and 'description'
+    - ccc_levels (dict): Quality control levels, e.g., {"clarity": 2, "conciseness": 3, "completeness": 1}
+    - top_n (int): Number of top features to include
+
+    Returns:
+    - str: Prompt for LLM that includes CCC requirements
+    """
+    # Unpack CCC levels with defaults
+    clarity = ccc_levels.get("clarity", 3)
+    conciseness = ccc_levels.get("conciseness", 3)
+    completeness = ccc_levels.get("completeness", 3)
+
+    entity_id = entity_data["entity_id"]
+    risk_score = entity_data["risk_score"]
+    features_dict = entity_data["features"]
+
+    # Create feature score DataFrame
+    feature_rows = [
+        {"feature_name": feat, "contribution_pct": vals["contribution_pct"]}
+        for feat, vals in features_dict.items()
+    ]
+    feature_score_df = pd.DataFrame(feature_rows)
+
+    # Join with descriptions
+    merged_df = pd.merge(
+        feature_score_df,
+        feature_library_df.rename(columns={"feature_name": "feature_name", "description": "feature_meaning"}),
+        on="feature_name",
+        how="left"
+    ).sort_values(by="contribution_pct", ascending=False).head(top_n)
+
+    features_text = ""
+    for _, row in merged_df.iterrows():
+        features_text += (
+            f"- {row['feature_name']} ({row.get('feature_meaning', 'No description available')}): "
+            f"{row['contribution_pct']:.1f}% contribution\n"
+        )
+
+    prompt = (
+        f"You are a risk model explanation assistant.\n"
+        f"Your task is to generate a narrative explanation of a risk score using features and their contributions.\n\n"
+        f"⚠️ Please follow these quality targets in your explanation:\n"
+        f"- Clarity Level: {clarity} (1=low, 3=high)\n"
+        f"- Conciseness Level: {conciseness} (1=verbose, 3=succinct)\n"
+        f"- Completeness Level: {completeness} (1=partial, 3=fully explained)\n\n"
+        f"Entity ID: {entity_id}\n"
+        f"Risk Score: {risk_score:.0%}\n"
+        f"Top Features and Contributions:\n{features_text}\n"
+        f"Instructions:\n"
+        f"- Start with the risk score\n"
+        f"- Explain each feature’s contribution in plain language\n"
+        f"- Highlight why each feature indicates risk\n"
+        f"- Follow the CCC levels provided\n"
+    )
+
+    return prompt
+
+
 # def add_prompt_column(
 #     entity_data_list: list,
 #     feature_library_df: pd.DataFrame,
@@ -566,6 +635,279 @@ def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
     print(f"✅ Updated entities saved to: {output_json_path}")
 
 
+def build_controlled_prompt_from_entity_row(
+    entity_data: dict,
+    feature_library_df: pd.DataFrame,
+    ccc_levels: dict = {"clarity": 3, "conciseness": 3, "completeness": 3},
+    top_n: int = 10
+) -> str:
+    """
+    Builds a prompt with specified Clarity, Conciseness, and Completeness (CCC) quality levels (1–5).
+
+    Parameters:
+    - entity_data (dict): Must include 'entity_id', 'risk_score', and 'features'
+    - feature_library_df (pd.DataFrame): Includes 'feature_name' and 'description'
+    - ccc_levels (dict): {"clarity": int, "conciseness": int, "completeness": int}, all 1 (worst) to 5 (best)
+    - top_n (int): Number of top features to include
+
+    Returns:
+    - str: Prompt string to be sent to LLM
+    """
+    # Unpack CCC with defaults
+    clarity = ccc_levels.get("clarity", 3)
+    conciseness = ccc_levels.get("conciseness", 3)
+    completeness = ccc_levels.get("completeness", 3)
+
+    entity_id = entity_data["entity_id"]
+    risk_score = entity_data["risk_score"]
+    features_dict = entity_data["features"]
+
+    # Prepare DataFrame of top features
+    feature_rows = [
+        {"feature_name": feat, "contribution_pct": vals["contribution_pct"]}
+        for feat, vals in features_dict.items()
+    ]
+    feature_score_df = pd.DataFrame(feature_rows)
+
+    merged_df = pd.merge(
+        feature_score_df,
+        feature_library_df.rename(columns={"feature_name": "feature_name", "description": "feature_meaning"}),
+        on="feature_name",
+        how="left"
+    ).sort_values(by="contribution_pct", ascending=False).head(top_n)
+
+    # Format features into bullet list
+    features_text = ""
+    for _, row in merged_df.iterrows():
+        features_text += (
+            f"- {row['feature_name']} ({row.get('feature_meaning', 'No description available')}): "
+            f"{row['contribution_pct']:.1f}% contribution\n"
+        )
+
+    # Final prompt
+    prompt = (
+        f"You are a risk model explanation assistant.\n"
+        f"Your task is to write a narrative explaining a risk score based on its contributing features.\n\n"
+        f"🎯 Quality Targets:\n"
+        f"- Clarity: {clarity} out of 5 (5 = clearest, 1 = very unclear)\n"
+        f"- Conciseness: {conciseness} out of 5 (5 = very concise, 1 = verbose or redundant)\n"
+        f"- Completeness: {completeness} out of 5 (5 = fully covered, 1 = very incomplete)\n\n"
+        f"Entity ID: {entity_id}\n"
+        f"Risk Score: {risk_score:.0%}\n"
+        f"Top Features and Contributions:\n{features_text}\n"
+        f"Please write a paragraph that:\n"
+        f"- Begins with the risk score\n"
+        f"- Clearly explains the meaning of each feature\n"
+        f"- Ties each feature’s contribution back to the risk\n"
+        f"- Matches the above clarity, conciseness, and completeness levels\n"
+    )
+
+    return prompt
+
+
+def generate_controlled_narratives(
+    input_json_path: str,
+    output_json_path: str,
+    feature_library_df: pd.DataFrame,
+    azure_client: AzureClient,
+    ccc_levels: dict = {"clarity": 3, "conciseness": 3, "completeness": 3},
+    top_n: int = 10,
+    log_every_n: int = 5
+):
+    """
+    Generates LLM narratives with controlled Clarity/Conciseness/Completeness levels.
+
+    Adds prompt and llm_explanation fields to each entity.
+
+    Parameters:
+    - input_json_path: JSON input file with entity features
+    - output_json_path: JSON file to write enriched entities
+    - feature_library_df: DataFrame with feature_name and description
+    - azure_client: AzureClient instance to call LLM
+    - ccc_levels: Dict with keys clarity, conciseness, completeness (values 1–5)
+    - top_n: Number of top features to include
+    - log_every_n: Frequency for logging
+    """
+    with open(input_json_path, "r", encoding="utf-8") as f:
+        entities = json.load(f)
+
+    for i, entity in enumerate(entities):
+        prompt = build_controlled_prompt_from_entity_row(
+            entity_data=entity,
+            feature_library_df=feature_library_df,
+            ccc_levels=ccc_levels,
+            top_n=top_n
+        )
+        explanation = azure_client.get_response(prompt)
+
+        entity["prompt"] = prompt
+        entity["llm_explanation"] = explanation
+
+        if (i + 1) % log_every_n == 0 or i == len(entities) - 1:
+            print(f"📝 Generated explanation for {i + 1}/{len(entities)} entities")
+
+    with open(output_json_path, "w", encoding="utf-8") as f:
+        json.dump(entities, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Narratives saved to {output_json_path}")
+
+
+def evaluate_controlled_narratives(
+    input_json_path: str,
+    output_json_path: str,
+    azure_client: AzureClient,
+    judge_models: dict = JUDGE_MODELS,
+    log_every_n: int = 5
+):
+    """
+    Evaluates LLM-generated narratives for CCC quality using judge models.
+
+    Parameters:
+    - input_json_path: JSON file with 'prompt' and 'llm_explanation'
+    - output_json_path: Path to write evaluations
+    - azure_client: AzureClient instance to call judge LLMs
+    - judge_models: Dict of judge model name -> deployment name
+    - log_every_n: Logging frequency
+    """
+    with open(input_json_path, "r", encoding="utf-8") as f:
+        entities = json.load(f)
+
+    for i, entity in enumerate(entities):
+        prompt = entity.get("prompt")
+        explanation = entity.get("llm_explanation")
+
+        if not prompt or not explanation:
+            print(f"⚠️ Missing prompt or explanation for entity {i + 1}. Skipping.")
+            continue
+
+        entity["evaluations"] = {}
+
+        for judge_name, deployment_name in judge_models.items():
+            eval_prompt = build_evaluation_prompt(prompt, explanation)
+
+            start_time = datetime.now()
+            eval_text = azure_client.get_response(eval_prompt, deployment_name=deployment_name)
+            end_time = datetime.now()
+
+            clarity, conciseness, completeness = extract_scores(eval_text)
+            eval_duration = (end_time - start_time).total_seconds()
+
+            entity["evaluations"][judge_name] = {
+                "Clarity": clarity,
+                "Conciseness": conciseness,
+                "Completeness": completeness,
+                "Summary": eval_text.strip(),
+                "EvalTime": eval_duration
+            }
+
+        if (i + 1) % log_every_n == 0 or i == len(entities) - 1:
+            print(f"📊 Evaluated {i + 1}/{len(entities)} entities")
+
+    with open(output_json_path, "w", encoding="utf-8") as f:
+        json.dump(entities, f, indent=2, ensure_ascii=False)
+
+    print(f"✅ Evaluations saved to {output_json_path}")
+
+
+
+def generate_and_evaluate_controlled_narratives(
+    input_json_path: str,
+    output_json_path: str,
+    feature_library_df: pd.DataFrame,
+    azure_client: AzureClient,
+    judge_models: dict = JUDGE_MODELS,
+    control_sets: list = None,
+    top_n: int = 10,
+    log_every_n: int = 5
+):
+    """
+    Orchestrates full workflow: controlled prompt → controlled narrative → judge model evaluation.
+
+    Parameters:
+    - input_json_path: JSON input file with 'prompt' and 'llm_explanation'
+    - output_json_path: Output path to save results
+    - feature_library_df: DataFrame containing feature descriptions
+    - azure_client: LLM caller
+    - judge_models: Dict of judge model name -> deployment name
+    - control_sets: List of CCC dicts, e.g. [{'clarity': 5, 'conciseness': 4, 'completeness': 5}, ...]
+    - top_n: Number of features to include in the prompt
+    - log_every_n: Frequency of logging
+    """
+    if control_sets is None:
+        control_sets = [
+            {"clarity": 3, "conciseness": 3, "completeness": 3},
+            {"clarity": 5, "conciseness": 4, "completeness": 5}
+        ]
+
+    with open(input_json_path, "r", encoding="utf-8") as f:
+        entities = json.load(f)
+
+    output_entities = []
+
+    for idx, entity in enumerate(entities):
+        base_prompt = entity.get("prompt")
+        base_explanation = entity.get("llm_explanation")
+        entity_id = entity.get("entity_id")
+
+        if not base_prompt or not base_explanation or not entity_id:
+            print(f"⚠️ Skipping entity {idx+1}: missing prompt/explanation/entity_id")
+            continue
+
+        entity_output = {
+            "entity_id": entity_id,
+            "prompt": base_prompt,
+            "llm_explanation": base_explanation,
+            "controlled_variants": []
+        }
+
+        for control in control_sets:
+            controlled_prompt = build_controlled_prompt_from_entity_row(
+                entity_data=entity,
+                feature_library_df=feature_library_df,
+                ccc_levels=control,
+                top_n=top_n
+            )
+            controlled_narrative = azure_client.get_response(controlled_prompt)
+
+            variant = {
+                "ccc_values": control,
+                "controlled_prompt": controlled_prompt,
+                "controlled_narrative": controlled_narrative,
+                "evaluations": {}
+            }
+
+            for judge_name, deployment_name in judge_models.items():
+                eval_prompt = build_evaluation_prompt(controlled_prompt, controlled_narrative)
+
+                start_time = datetime.now()
+                eval_text = azure_client.get_response(eval_prompt, deployment_name=deployment_name)
+                end_time = datetime.now()
+
+                clarity, conciseness, completeness = extract_scores(eval_text)
+                eval_duration = (end_time - start_time).total_seconds()
+
+                variant["evaluations"][judge_name] = {
+                    "Clarity": clarity,
+                    "Conciseness": conciseness,
+                    "Completeness": completeness,
+                    "Summary": eval_text.strip(),
+                    "EvalTime": eval_duration
+                }
+
+            entity_output["controlled_variants"].append(variant)
+
+        output_entities.append(entity_output)
+
+        if (idx + 1) % log_every_n == 0 or idx == len(entities) - 1:
+            print(f"✅ Processed {idx + 1}/{len(entities)} entities")
+
+    with open(output_json_path, "w", encoding="utf-8") as f:
+        json.dump(output_entities, f, indent=2, ensure_ascii=False)
+
+    print(f"🎯 All controlled prompts, narratives, and evaluations saved to {output_json_path}")
+
+
+
 # Step 5: Run the Full Pipeline
 if __name__ == "__main__":
     feature_lib = create_realistic_aml_feature_library()
@@ -634,4 +976,16 @@ if __name__ == "__main__":
     update_mean_std_scores_in_json(
         input_json_path="entities_with_evals.json",
         output_json_path="entities_with_stats.json"
+    )
+
+    generate_and_evaluate_controlled_narratives(
+        input_json_path="input.json",
+        output_json_path="controlled_output.json",
+        feature_library_df=feature_library_df,
+        azure_client=azure_client,
+        control_sets=[
+            {"clarity": 1, "conciseness": 1, "completeness": 1},
+            {"clarity": 3, "conciseness": 3, "completeness": 3}
+        ],
+        top_n=10
     )
