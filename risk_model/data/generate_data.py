@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import json
 import matplotlib.pyplot as plt
-import seaborn as sns
 import shap
 
 
@@ -545,14 +544,23 @@ if __name__ == "__main__":
     #     azure_client=client,
     #     top_n=10,
     # )
-    
+
+    enrich_entities_with_llm_explanations(
+        input_json_path="entities_with_prompts.json",
+        output_json_path="entities_with_llm_explanations.json",
+        feature_library_df=feature_library_df,
+        azure_client=azure_client,
+        top_n=5,
+        log_every_n=5  # Print status every 5 entities
+    )
+
     enrich_and_evaluate_entities(
         input_json_path="entities_with_prompts.json",
         output_json_path="entities_enriched_evaluated.json",
         feature_library_df=feature_library_df,
         azure_client=azure_client,
         top_n=5,
-        log_every_n=3  # print progress every 3 entities
+        log_every_n=5  # print progress every 3 entities
     )
 
     update_mean_std_scores_in_json(
