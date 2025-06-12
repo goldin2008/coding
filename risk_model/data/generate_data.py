@@ -496,7 +496,7 @@ def enrich_and_evaluate_entities(
             eval_prompt = build_evaluation_prompt(prompt, explanation)
 
             start_time = datetime.now()
-            eval_text = azure_client.get_response(eval_prompt, model_name=deployment_name)
+            eval_text = azure_client.get_response(eval_prompt, deployment_name=deployment_name)
             end_time = datetime.now()
 
             clarity, conciseness, completeness = extract_scores(eval_text)
@@ -519,7 +519,7 @@ def enrich_and_evaluate_entities(
     with open(output_json_path, "w", encoding="utf-8") as f:
         json.dump(enriched_entities, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Evaluations completed and saved to {output_json_p
+    print(f"✅ Evaluations completed and saved to {output_json_path}")
 
 
 def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
