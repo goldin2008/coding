@@ -3,7 +3,10 @@ import numpy as np
 import json
 import matplotlib.pyplot as plt
 import shap
-
+from narrative.azure_openai_client import AzureClient
+from narrative.judge import JUDGE_MODELS
+import re
+from datetime import datetime
 
 # Step 1: Create AML Feature Library
 def create_realistic_aml_feature_library():
@@ -389,6 +392,69 @@ def enrich_entities_with_llm_explanations(
     print(f"✅ Saved enriched entities with explanations to {output_json_path}")
 
 
+# def enrich_and_evaluate_entities(
+#     input_json_path: str,
+#     output_json_path: str,
+#     feature_library_df: pd.DataFrame,
+#     azure_client: AzureClient,
+#     judge_models: dict = JUDGE_MODELS,
+#     top_n: int = 10,
+#     log_every_n: int = 5
+# ):
+#     # Load input JSON
+#     with open(input_json_path, "r", encoding="utf-8") as f:
+#         entity_data_list = json.load(f)
+
+#     enriched_entities = []
+
+#     for i, entity in enumerate(entity_data_list):
+#         # Build prompt and get explanation
+#         prompt = build_prompt_from_entity_row(entity, feature_library_df, top_n)
+#         explanation = azure_client.get_response(prompt)
+
+#         # Attach to entity
+#         entity["prompt"] = prompt
+#         entity["llm_explanation"] = explanation
+
+#         # Evaluate using judge models
+#         entity["evaluations"] = {}
+#         for judge_name, deployment_name in judge_models.items():
+#             eval_prompt = build_evaluation_prompt(prompt, explanation)
+
+#             start_time = datetime.now()
+#             eval_response = openai.ChatCompletion.create(
+#                 engine=deployment_name,
+#                 messages=[
+#                     {"role": "system", "content": "You are a helpful assistant that evaluates AI-generated text."},
+#                     {"role": "user", "content": eval_prompt}
+#                 ],
+#                 temperature=0
+#             )
+#             end_time = datetime.now()
+
+#             eval_text = eval_response['choices'][0]['message']['content']
+#             clarity, conciseness, completeness = extract_scores(eval_text)
+#             eval_duration = (end_time - start_time).total_seconds()
+
+#             entity["evaluations"][judge_name] = {
+#                 "Clarity": clarity,
+#                 "Conciseness": conciseness,
+#                 "Completeness": completeness,
+#                 "Summary": eval_text.strip(),
+#                 "EvalTime": eval_duration
+#             }
+
+#         enriched_entities.append(entity)
+
+#         if (i + 1) % log_every_n == 0 or i == len(entity_data_list) - 1:
+#             print(f"✅ Processed {i + 1}/{len(entity_data_list)} entities")
+
+#     # Save back to JSON
+#     with open(output_json_path, "w", encoding="utf-8") as f:
+#         json.dump(enriched_entities, f, indent=2, ensure_ascii=False)
+
+#     print(f"✅ Enriched and evaluated entities saved to {output_json_path}")
+
 def enrich_and_evaluate_entities(
     input_json_path: str,
     output_json_path: str,
@@ -398,38 +464,41 @@ def enrich_and_evaluate_entities(
     top_n: int = 10,
     log_every_n: int = 5
 ):
-    # Load input JSON
+    """
+    Evaluates pre-existing LLM explanations using judge models.
+
+    Parameters:
+    - input_json_path: Path to input JSON file (must include 'prompt' and 'llm_explanation')
+    - output_json_path: Path to save enriched JSON with evaluation scores
+    - feature_library_df: DataFrame with feature descriptions (optional if prompt is reused)
+    - azure_client: AzureClient instance for calling judge model
+    - judge_models: Dictionary of judge model names and deployment names
+    - top_n: Number of top features to use in prompt (ignored since prompt is reused)
+    - log_every_n: Frequency of logging progress
+    """
+    # Load input
     with open(input_json_path, "r", encoding="utf-8") as f:
         entity_data_list = json.load(f)
 
     enriched_entities = []
 
     for i, entity in enumerate(entity_data_list):
-        # Build prompt and get explanation
-        prompt = build_prompt_from_entity_row(entity, feature_library_df, top_n)
-        explanation = azure_client.get_response(prompt)
+        prompt = entity.get("prompt", "")
+        explanation = entity.get("llm_explanation", "")
 
-        # Attach to entity
-        entity["prompt"] = prompt
-        entity["llm_explanation"] = explanation
+        if not prompt or not explanation:
+            print(f"⚠️ Entity {i+1} missing prompt or explanation. Skipping.")
+            continue
 
-        # Evaluate using judge models
         entity["evaluations"] = {}
+
         for judge_name, deployment_name in judge_models.items():
             eval_prompt = build_evaluation_prompt(prompt, explanation)
 
             start_time = datetime.now()
-            eval_response = openai.ChatCompletion.create(
-                engine=deployment_name,
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant that evaluates AI-generated text."},
-                    {"role": "user", "content": eval_prompt}
-                ],
-                temperature=0
-            )
+            eval_text = azure_client.get_response(eval_prompt, model_name=deployment_name)
             end_time = datetime.now()
 
-            eval_text = eval_response['choices'][0]['message']['content']
             clarity, conciseness, completeness = extract_scores(eval_text)
             eval_duration = (end_time - start_time).total_seconds()
 
@@ -446,12 +515,11 @@ def enrich_and_evaluate_entities(
         if (i + 1) % log_every_n == 0 or i == len(entity_data_list) - 1:
             print(f"✅ Processed {i + 1}/{len(entity_data_list)} entities")
 
-    # Save back to JSON
+    # Save updated entities
     with open(output_json_path, "w", encoding="utf-8") as f:
         json.dump(enriched_entities, f, indent=2, ensure_ascii=False)
 
-    print(f"✅ Enriched and evaluated entities saved to {output_json_path}")
-
+    print(f"✅ Evaluations completed and saved to {output_json_p
 
 
 def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):

@@ -28,20 +28,37 @@ Model-Generated Answer:
 {output}
 """
 
-def evaluate_with_judge(deployment_name: str, prompt: str, output: str) -> str:
+# def evaluate_with_judge(deployment_name: str, prompt: str, output: str) -> str:
+#     """
+#     Send evaluation request to Azure OpenAI judge model and return the evaluation text.
+#     """
+#     eval_prompt = build_evaluation_prompt(prompt, output)
+#     response = openai.ChatCompletion.create(
+#         engine=deployment_name,
+#         messages=[
+#             {"role": "system", "content": "You are a helpful assistant that evaluates AI-generated text."},
+#             {"role": "user", "content": eval_prompt}
+#         ],
+#         temperature=0
+#     )
+#     return response['choices'][0]['message']['content']
+
+def evaluate_with_judge(azure_client, deployment_name: str, prompt: str, output: str) -> str:
     """
-    Send evaluation request to Azure OpenAI judge model and return the evaluation text.
+    Send evaluation request to Azure OpenAI judge model via AzureClient and return the evaluation text.
+
+    Parameters:
+    - azure_client: Your AzureClient instance
+    - deployment_name (str): The name of the deployment (judge model)
+    - prompt (str): The original explanation prompt
+    - output (str): The model's explanation output
+
+    Returns:
+    - str: Judge model's evaluation response
     """
     eval_prompt = build_evaluation_prompt(prompt, output)
-    response = openai.ChatCompletion.create(
-        engine=deployment_name,
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant that evaluates AI-generated text."},
-            {"role": "user", "content": eval_prompt}
-        ],
-        temperature=0
-    )
-    return response['choices'][0]['message']['content']
+    return azure_client.get_response(eval_prompt, deployment_name=deployment_name)
+
 
 def extract_scores(eval_text: str):
     """
