@@ -17,7 +17,7 @@ def compute_shap_values(model, X_train, entity_features, top_n=None, plot=None):
     - plot: Whether to display a SHAP bar plot (default from config)
 
     Returns:
-    - top_features_df: DataFrame of top features and their mean SHAP values (for multi-entity input) or per-sample SHAP values
+    - top_features_df: DataFrame with 'Feature', 'Mean Abs SHAP Value', 'SHAP Value'
     - shap_values: SHAP values object
     """
     # Fallback to config values if not explicitly provided
@@ -35,16 +35,18 @@ def compute_shap_values(model, X_train, entity_features, top_n=None, plot=None):
             "Feature": feature_names,
             "SHAP Value": shap_values.values[0]
         })
-        contributions["Abs SHAP Value"] = contributions["SHAP Value"].abs()
-        top_features_df = contributions.sort_values("Abs SHAP Value", ascending=False).head(top_n)
+        contributions["Mean Abs SHAP Value"] = contributions["SHAP Value"].abs()
+        top_features_df = contributions.sort_values("Mean Abs SHAP Value", ascending=False).head(top_n)
     else:
         # Multiple entities
-        mean_abs_shap = pd.Series(
-            np.abs(shap_values.values).mean(axis=0),
-            index=feature_names
-        ).sort_values(ascending=False)
-        top_features_df = mean_abs_shap.head(top_n).reset_index()
-        top_features_df.columns = ["Feature", "Mean Abs SHAP Value"]
+        abs_mean = np.abs(shap_values.values).mean(axis=0)
+        signed_mean = shap_values.values.mean(axis=0)
+        
+        top_features_df = pd.DataFrame({
+            "Feature": feature_names,
+            "Mean Abs SHAP Value": abs_mean,
+            "SHAP Value": signed_mean
+        }).sort_values("Mean Abs SHAP Value", ascending=False).head(top_n).reset_index(drop=True)
 
     if plot:
         shap.plots.bar(shap_values, max_display=top_n, show=True)
