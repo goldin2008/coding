@@ -456,6 +456,65 @@ def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
             
 #     plt.show()
 
+def plot_evaluation_stats(filtered_data, selected_entity_ids):
+    """
+    Plot evaluation scores (mean + std) for selected entity_ids.
+
+    Parameters:
+    - filtered_data: list of dicts (each containing 'entity_id' and 'stats')
+    - selected_entity_ids: list of entity IDs to plot
+    """
+    
+    for entity in filtered_data:
+        entity_id = entity["entity_id"]
+        if entity_id not in selected_entity_ids:
+            continue
+        
+        stats = entity["stats"]
+        labels = ['Clarity', 'Conciseness', 'Completeness']
+        means = [
+            stats['Clarity']['mean'],
+            stats['Conciseness']['mean'],
+            stats['Completeness']['mean']
+        ]
+        stds = [
+            stats['Clarity']['std'],
+            stats['Conciseness']['std'],
+            stats['Completeness']['std']
+        ]
+
+        x = np.arange(len(labels))
+        width = 0.4
+        # colors = ['#66c2a5', '#fc8d62', '#8da0cb']  # teal, orange, blue
+        colors = ['skyblue', "lightgreen", "salmon"]
+        
+        fig, ax = plt.subplots()
+        bars = ax.bar(x, means, width, yerr=stds, capsize=6, color=colors)
+
+        # Add labels and title
+        ax.set_ylabel('Average Score')
+        ax.set_title(f'Evaluation Scores for Entity ID {entity_id} : Mean and Variability')
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels)
+        ax.set_ylim(0, 6)
+
+        # Add annotation text
+        for i, bar in enumerate(bars):
+            yval = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width() / 2, yval + 0.1,
+                    f'Mean: {round(yval, 2)}\nStd: {round(stds[i], 2)}',
+                    ha='center', va='bottom', fontsize=9)
+
+        # Clean design
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.yaxis.grid(True, linestyle='--', alpha=0.6)
+
+        plt.tight_layout()
+        plt.show()
+
 
 def plot_entity_quality_stats_business(entity_data_list, threshold=4.0, save_path=None):
     entity_ids = list(range(1, len(entity_data_list) + 1))
