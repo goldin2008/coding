@@ -51,6 +51,25 @@ def load_aml_feature_library_from_csv(csv_path: str) -> pd.DataFrame:
     return feature_library_df
 
 
+def load_aml_feature_library_from_excel(csv_path: str) -> pd.DataFrame:
+    """
+    Loads AML feature library from a CSV file.
+
+    Parameters:
+    - csv_path (str): Path to the CSV file containing feature_name and description columns.
+
+    Returns:
+    - pd.DataFrame: DataFrame with columns ['feature_name', 'description']
+    """
+    feature_library_df = pd.read_excel(csv_path)
+
+    # Optional: Validate the required columns exist
+    required_cols = {"Feature Name", "llm_explanation"}
+    if not required_cols.issubset(feature_library_df.columns):
+        raise ValueError(f"Excel file must contain columns: {required_cols}")
+
+    return feature_library_df
+
 # Step 2: Simulate Feature Values by Feature Name
 def simulate_feature_value_by_feature(feature_name):
     if "ct" in feature_name or "num" in feature_name or "freq" in feature_name:
