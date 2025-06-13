@@ -8,6 +8,7 @@ from evaluation.judge import JUDGE_MODELS
 import re
 from datetime import datetime
 from evaluation.judge import *
+from prompts.prompt_generator import *
 
 from matplotlib.patches import Patch
 
