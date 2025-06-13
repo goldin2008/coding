@@ -28,20 +28,6 @@ Model-Generated Answer:
 {output}
 """
 
-# def evaluate_with_judge(deployment_name: str, prompt: str, output: str) -> str:
-#     """
-#     Send evaluation request to Azure OpenAI judge model and return the evaluation text.
-#     """
-#     eval_prompt = build_evaluation_prompt(prompt, output)
-#     response = openai.ChatCompletion.create(
-#         engine=deployment_name,
-#         messages=[
-#             {"role": "system", "content": "You are a helpful assistant that evaluates AI-generated text."},
-#             {"role": "user", "content": eval_prompt}
-#         ],
-#         temperature=0
-#     )
-#     return response['choices'][0]['message']['content']
 
 def evaluate_with_judge(azure_client, deployment_name: str, prompt: str, output: str) -> str:
     """
