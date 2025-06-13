@@ -10,6 +10,8 @@ from datetime import datetime
 from evaluation.judge import *
 from prompts.prompt_generator import *
 
+from tqdm import tqdm
+
 from matplotlib.patches import Patch
 
 # Step 1: Create AML Feature Library
@@ -712,6 +714,37 @@ def generate_and_evaluate_controlled_narratives(
     print(f"🎯 All controlled prompts, narratives, and evaluations saved to {output_json_path}")
 
 
+def generate_plain_explanations(
+    input_excel_path: str,
+    output_excel_path: str,
+    azure_client,
+    model_name: str = "your-deployment-name"
+):
+    # Load Excel
+    df = pd.read_excel(input_excel_path)
+
+    # Add new column for LLM explanations
+    explanations = []
+
+    for _, row in tqdm(df.iterrows(), total=len(df)):
+        feature = row["feature"]
+        meaning = row["meaning"]
+
+        prompt = (
+            f"You are a data analyst explaining a feature in simple terms.\n"
+            f"Feature: {feature}\n"
+            f"Meaning: {meaning}\n"
+            f"Write a plain-language explanation between 30 and 50 words so a business audience can understand it clearly:"
+        )
+
+        response = azure_client.get_response(prompt, model_name=model_name)
+        explanations.append(response.strip())
+
+    df["llm_explanation"] = explanations
+
+    # Save to Excel
+    df.to_excel(output_excel_path, index=False)
+    print(f"✅ Explanations saved to: {output_excel_path}")
 
 # Step 5: Run the Full Pipeline
 if __name__ == "__main__":
