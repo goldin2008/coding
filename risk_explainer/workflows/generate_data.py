@@ -200,10 +200,40 @@ def save_entities_to_json(entities: list, file_path: str):
 # Import or define build_prompt_from_entity_row here
 # from your_module import build_prompt_from_entity_row
 
+# def add_prompt_to_entity_json(
+#     entity_data_list: list,
+#     feature_library_df: pd.DataFrame,
+#     top_n: int = 10
+# ) -> list:
+#     """
+#     Adds a 'prompt' field to each entity dictionary based on its top features.
+
+#     Parameters:
+#     - entity_data_list (list of dict): Each entity dict includes 'entity_id', 'risk_score', and 'features'
+#     - feature_library_df (pd.DataFrame): Feature descriptions
+#     - top_n (int): Number of top features to include in the prompt
+
+#     Returns:
+#     - list of dict: Same format as input but with added 'prompt' field
+#     """
+#     updated_entities = []
+
+#     for entity_data in entity_data_list:
+#         # Generate explanation prompt
+#         prompt = build_prompt_from_entity_row(entity_data, feature_library_df, top_n)
+        
+#         # Add prompt to entity dict
+#         entity_with_prompt = entity_data.copy()
+#         entity_with_prompt["prompt"] = prompt
+
+#         updated_entities.append(entity_with_prompt)
+
+#     return updated_entities
 def add_prompt_to_entity_json(
     entity_data_list: list,
     feature_library_df: pd.DataFrame,
-    top_n: int = 10
+    top_n: int = 10,
+    selected_features: list[str] = None
 ) -> list:
     """
     Adds a 'prompt' field to each entity dictionary based on its top features.
@@ -212,6 +242,7 @@ def add_prompt_to_entity_json(
     - entity_data_list (list of dict): Each entity dict includes 'entity_id', 'risk_score', and 'features'
     - feature_library_df (pd.DataFrame): Feature descriptions
     - top_n (int): Number of top features to include in the prompt
+    - selected_features (list of str, optional): If provided, only use these features before top-n selection
 
     Returns:
     - list of dict: Same format as input but with added 'prompt' field
@@ -219,9 +250,14 @@ def add_prompt_to_entity_json(
     updated_entities = []
 
     for entity_data in entity_data_list:
-        # Generate explanation prompt
-        prompt = build_prompt_from_entity_row(entity_data, feature_library_df, top_n)
-        
+        # Generate explanation prompt with optional filtering
+        prompt = build_prompt_from_entity_row(
+            entity_data=entity_data,
+            feature_library_df=feature_library_df,
+            top_n=top_n,
+            selected_features=selected_features
+        )
+
         # Add prompt to entity dict
         entity_with_prompt = entity_data.copy()
         entity_with_prompt["prompt"] = prompt
@@ -229,6 +265,7 @@ def add_prompt_to_entity_json(
         updated_entities.append(entity_with_prompt)
 
     return updated_entities
+
 
 
 def enrich_entities_with_llm_explanations(
@@ -257,9 +294,10 @@ def enrich_entities_with_llm_explanations(
     updated_entities = []
 
     for i, entity_data in enumerate(entity_data_list):
-        prompt = build_prompt_from_entity_row(entity_data, feature_library_df, top_n)
+        # prompt = build_prompt_from_entity_row(entity_data, feature_library_df, top_n)
+        prompt = entity_data["prompt"]
         explanation = azure_client.get_response(prompt)
-        entity_data["prompt"] = prompt
+        # entity_data["prompt"] = prompt
         entity_data["llm_explanation"] = explanation
         updated_entities.append(entity_data)
 
