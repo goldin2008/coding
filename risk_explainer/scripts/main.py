@@ -19,6 +19,41 @@ from evaluation import judge
 import workflows.generate_data as gd
 import prompts.prompt_generator as pg
 
+
+def generate_model_results(model_name, feature_lib, azure_client, top_n):
+    # Generate LLM explanations
+    print("\n=== Generating LLM Explanations ===")
+    updated_entities = gd.enrich_entities_with_llm_explanations(
+        input_json_path="data/output/entities_with_prompts.json",
+        output_json_path=f"data/output/entities_with_llm_explanations_{model_name}.json",
+        feature_library_df=feature_lib,
+        azure_client=azure_client,
+        top_n=top_n,
+        log_every_n=25
+    )
+    
+    # Evaluate explanations with judge models
+    print("\n=== Evaluating Explanations ===")
+    enriched_entities = gd.enrich_and_evaluate_entities(
+        input_json_path=f"data/output/entities_with_llm_explanations_{model_name}.json",
+        output_json_path=f"data/output/entities_enriched_evaluated_{model_name}.json",
+        feature_library_df=feature_lib,
+        azure_client=azure_client,
+        judge_models=judge.MOCK_JUDGE_MODELS,
+        top_n=top_n,
+        log_every_n=25
+    )
+    
+    # Compute statistics
+    print("\n=== Calculating Evaluation Statistics ===")
+    entity_data_list = gd.update_mean_std_scores_in_json(
+        input_json_path=f"data/output/entities_enriched_evaluated_{model_name}.json",
+        output_json_path=f"data/output/entities_with_stats_{model_name}.json"
+    )
+
+    return entity_data_list
+
+    
 def main():
     # Configuration
     use_mock = True  # Set to False to use real Azure OpenAI
@@ -45,7 +80,7 @@ def main():
     # Example SHAP visualization for entity 1
     print("\n=== Generating SHAP Explanation for Entity 1 ===")
     explanation = gd.load_shap_explanation(input_data_path, entity_id=1)
-    shap.plots.bar(explanation)
+    # shap.plots.bar(explanation)
     
     # Generate prompt for first entity as example
     print("\n=== Sample Prompt Generation ===")
@@ -77,56 +112,71 @@ def main():
     output_data_path = "data/output/entities_with_prompts.json"
     Path("data/output").mkdir(parents=True, exist_ok=True)
     gd.save_entities_to_json(df_with_prompts, output_data_path)
+
+    final = dict()
+
+    models = ["model_1", "model_2", "model_3", "model_4", "model_5"]
+    for model_name in models:
+        entity_data_list = generate_model_results(model_name, feature_lib, azure_client, top_n)
+        final[model_name] = entity_data_list
+
+    output_data_path_final = "data/output/final.json"
+    gd.save_entities_to_json(final, output_data_path_final)
     
-    # Generate LLM explanations
-    print("\n=== Generating LLM Explanations ===")
-    gd.enrich_entities_with_llm_explanations(
-        input_json_path="data/output/entities_with_prompts.json",
-        output_json_path="data/output/entities_with_llm_explanations.json",
-        feature_library_df=feature_lib,
-        azure_client=azure_client,
-        top_n=top_n,
-        log_every_n=25
-    )
     
-    # Evaluate explanations with judge models
-    print("\n=== Evaluating Explanations ===")
-    gd.enrich_and_evaluate_entities(
-        input_json_path="data/output/entities_with_llm_explanations.json",
-        output_json_path="data/output/entities_enriched_evaluated.json",
-        feature_library_df=feature_lib,
-        azure_client=azure_client,
-        judge_models=judge.MOCK_JUDGE_MODELS,
-        top_n=top_n,
-        log_every_n=25
-    )
+    # # Generate LLM explanations
+    # print("\n=== Generating LLM Explanations ===")
+    # updated_entities = gd.enrich_entities_with_llm_explanations(
+    #     input_json_path="data/output/entities_with_prompts.json",
+    #     output_json_path="data/output/entities_with_llm_explanations.json",
+    #     feature_library_df=feature_lib,
+    #     azure_client=azure_client,
+    #     top_n=top_n,
+    #     log_every_n=25
+    # )
     
-    # Compute statistics
-    print("\n=== Calculating Evaluation Statistics ===")
-    gd.update_mean_std_scores_in_json(
-        input_json_path="data/output/entities_enriched_evaluated.json",
-        output_json_path="data/output/entities_with_stats.json"
-    )
+    # # Evaluate explanations with judge models
+    # print("\n=== Evaluating Explanations ===")
+    # enriched_entities = gd.enrich_and_evaluate_entities(
+    #     input_json_path="data/output/entities_with_llm_explanations.json",
+    #     output_json_path="data/output/entities_enriched_evaluated.json",
+    #     feature_library_df=feature_lib,
+    #     azure_client=azure_client,
+    #     judge_models=judge.MOCK_JUDGE_MODELS,
+    #     top_n=top_n,
+    #     log_every_n=25
+    # )
     
-    # Load final output for visualization
-    with open("data/output/entities_with_stats.json", "r") as f:
-        output = json.load(f)
+    # # Compute statistics
+    # print("\n=== Calculating Evaluation Statistics ===")
+    # entity_data_list = gd.update_mean_std_scores_in_json(
+    #     input_json_path="data/output/entities_enriched_evaluated.json",
+    #     output_json_path="data/output/entities_with_stats.json"
+    # )
+
+
+
     
-    # Identify and visualize low-quality explanations
-    print("\n=== Identifying Low-Quality Explanations ===")
-    below_thresh_ids = gd.get_entities_below_threshold(output, threshold=threshold)
-    print(f"Entities below threshold ({threshold}): {below_thresh_ids}")
+    # # Load final output for visualization
+    # with open("data/output/entities_with_stats.json", "r") as f:
+    #     output = json.load(f)
     
-    if below_thresh_ids:
-        print("\n=== Visualizing Low-Quality Explanations ===")
-        filtered_data = [entity for entity in output if entity['entity_id'] in below_thresh_ids]
-        gd.plot_entity_quality_stats_business(
-            filtered_data, 
-            threshold=threshold, 
-            save_path="data/output/evaluation_scores.png"
-        )
-    else:
-        print("No entities below threshold found.")
+    # # Identify and visualize low-quality explanations
+    # print("\n=== Identifying Low-Quality Explanations ===")
+    # below_thresh_ids = gd.get_entities_below_threshold(output, threshold=threshold)
+    # print(f"Entities below threshold ({threshold}): {below_thresh_ids}")
+    
+    # if below_thresh_ids:
+    #     print("\n=== Visualizing Low-Quality Explanations ===")
+    #     filtered_data = [entity for entity in output if entity['entity_id'] in below_thresh_ids]
+    #     gd.plot_entity_quality_stats_business(
+    #         filtered_data, 
+    #         threshold=threshold, 
+    #         save_path="data/output/evaluation_scores.png"
+    #     )
+    # else:
+    #     print("No entities below threshold found.")
+        
     
     print("\n=== Pipeline Complete ===")
 

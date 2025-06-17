@@ -272,6 +272,8 @@ def enrich_entities_with_llm_explanations(
 
     print(f"✅ Saved enriched entities with explanations to {output_json_path}")
 
+    return updated_entities
+
 
 def enrich_and_evaluate_entities(
     input_json_path: str,
@@ -339,6 +341,8 @@ def enrich_and_evaluate_entities(
         json.dump(enriched_entities, f, indent=2, ensure_ascii=False)
 
     print(f"✅ Evaluations completed and saved to {output_json_path}")
+
+    return enriched_entities
 
 
 # def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
@@ -479,6 +483,8 @@ def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
         json.dump(entity_data_list, f, indent=2, ensure_ascii=False)
 
     print(f"✅ Per-entity stats saved to: {output_json_path}")
+
+    return entity_data_list
 
 
 # def plot_evaluation_stats(input_data):
