@@ -123,10 +123,74 @@ def build_shap_explanation_prompt(risk_score, top_features, feature_descriptions
 
 
 
+# def build_feature_contribution_prompt_from_structured_json(
+#     entity_data: dict,
+#     feature_library_df: pd.DataFrame,
+#     top_n: int = 10
+# ) -> str:
+#     """
+#     Builds a risk explanation prompt using structured SHAP data for a single entity.
+
+#     Parameters:
+#     - entity_data (dict): One JSON record from structured_aml_dataset.json, containing:
+#         'entity_id', 'risk_score', 'features': {feature_name: {feature_value, shap_value, contribution_pct, ...}}
+#     - feature_library_df (pd.DataFrame): DataFrame with:
+#         'feature_name', 'description'
+#     - top_n (int): Number of top features to include based on contribution_pct
+
+#     Returns:
+#     - str: Prompt ready to send to an LLM.
+#     """
+#     entity_id = entity_data["entity_id"]
+#     risk_score = entity_data["risk_score"]
+#     features_dict = entity_data["features"]
+
+#     # Convert nested features to DataFrame
+#     feature_rows = [
+#         {
+#             "feature_name": feature,
+#             "contribution_pct": values["contribution_pct"]
+#         }
+#         for feature, values in features_dict.items()
+#     ]
+#     feature_score_df = pd.DataFrame(feature_rows)
+
+#     # Merge with feature library descriptions
+#     merged_df = pd.merge(
+#         feature_score_df,
+#         feature_library_df.rename(columns={"feature_name": "feature_name", "description": "feature_meaning"}),
+#         on="feature_name",
+#         how="left"
+#     ).sort_values(by="contribution_pct", ascending=False).head(top_n)
+
+#     # Build feature list string
+#     features_text = ""
+#     for _, row in merged_df.iterrows():
+#         features_text += (
+#             f"- {row['feature_name']} ({row.get('feature_meaning', 'No description available')}): "
+#             f"{row['contribution_pct']:.1f}% contribution\n"
+#         )
+
+#     # Final prompt
+#     prompt_text = (
+#         f"You are a risk model explanation assistant. "
+#         f"Given a risk score and a list of features with their descriptions and contributions, "
+#         f"generate a clear, concise narrative explaining the risk score for entity ID {entity_id}.\n\n"
+#         f"Entity ID: {entity_id}\n"
+#         f"Risk Score: {risk_score:.0%}\n"
+#         "Top Features and Contributions:\n"
+#         f"{features_text}\n"
+#         "Please produce a narrative that:\n"
+#         "- Starts with the risk score\n"
+#         "- Explains each feature’s contribution in plain language\n"
+#         "- Highlights why each feature might indicate a higher risk\n"
+#     )
+#     return prompt_text
 def build_feature_contribution_prompt_from_structured_json(
     entity_data: dict,
     feature_library_df: pd.DataFrame,
-    top_n: int = 10
+    top_n: int = 10,
+    selected_features: list[str] = None
 ) -> str:
     """
     Builds a risk explanation prompt using structured SHAP data for a single entity.
@@ -137,6 +201,7 @@ def build_feature_contribution_prompt_from_structured_json(
     - feature_library_df (pd.DataFrame): DataFrame with:
         'feature_name', 'description'
     - top_n (int): Number of top features to include based on contribution_pct
+    - selected_features (list[str], optional): If provided, only consider these features before ranking
 
     Returns:
     - str: Prompt ready to send to an LLM.
@@ -155,7 +220,11 @@ def build_feature_contribution_prompt_from_structured_json(
     ]
     feature_score_df = pd.DataFrame(feature_rows)
 
-    # Merge with feature library descriptions
+    # Optional filtering by selected feature names
+    if selected_features is not None:
+        feature_score_df = feature_score_df[feature_score_df["feature_name"].isin(selected_features)]
+
+    # Merge with descriptions
     merged_df = pd.merge(
         feature_score_df,
         feature_library_df.rename(columns={"feature_name": "feature_name", "description": "feature_meaning"}),
