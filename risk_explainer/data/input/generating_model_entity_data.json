@@ -1,0 +1,1808 @@
+{
+  "GPT-4o-finetuned-risk-explainer": [
+    {
+      "entity_id": 1,
+      "risk_score": 0.1406709239,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 28257.46,
+          "shap_value": -0.0182214,
+          "abs_shap_value": 0.0182214,
+          "contribution_pct": 3.87388319766146
+        },
+        "wireout_ct": {
+          "feature_value": 76870.24,
+          "shap_value": -0.04785222,
+          "abs_shap_value": 0.04785222,
+          "contribution_pct": 10.173417576519899
+        },
+        "wirein_amt": {
+          "feature_value": 53213.95,
+          "shap_value": 0.0033745,
+          "abs_shap_value": 0.0033745,
+          "contribution_pct": 0.7174212108020568
+        },
+        "wireout_amt": {
+          "feature_value": 22172.48,
+          "shap_value": 0.04923017,
+          "abs_shap_value": 0.04923017,
+          "contribution_pct": 10.466370771785773
+        },
+        "avg_txn_amt": {
+          "feature_value": 47840.56,
+          "shap_value": 0.03393615,
+          "abs_shap_value": 0.03393615,
+          "contribution_pct": 7.214850740246027
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 9257.33,
+          "shap_value": -0.09210254,
+          "abs_shap_value": 0.09210254,
+          "contribution_pct": 19.581068533040412
+        },
+        "acct_age_days": {
+          "feature_value": 97056.49,
+          "shap_value": 0.01151689,
+          "abs_shap_value": 0.01151689,
+          "contribution_pct": 2.4484993831602013
+        },
+        "num_sar_reports": {
+          "feature_value": 29510.72,
+          "shap_value": -0.08666668,
+          "abs_shap_value": 0.08666668,
+          "contribution_pct": 18.42540065248019
+        },
+        "login_freq_30d": {
+          "feature_value": 24835.31,
+          "shap_value": 0.09417791,
+          "abs_shap_value": 0.09417791,
+          "contribution_pct": 20.02229373922274
+        },
+        "geo_diversity_score": {
+          "feature_value": 94670.57,
+          "shap_value": 0.03328678,
+          "abs_shap_value": 0.03328678,
+          "contribution_pct": 7.076794195081253
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 1.\n\nEntity ID: 1\nRisk Score: 14%\nTop Features and Contributions:\n- login_freq_30d (Description of login_freq_30d): 20.0% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 19.6% contribution\n- num_sar_reports (Description of num_sar_reports): 18.4% contribution\n- wireout_amt (Description of wireout_amt): 10.5% contribution\n- wireout_ct (Description of wireout_ct): 10.2% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 14%. Key contributing factors include login_freq_30d, high_risk_country_txn_pct, num_sar_reports, wireout_amt, wireout_ct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 3,
+          "Conciseness": 1,
+          "Completeness": 4,
+          "Summary": "Clarity: 3/5\nConciseness: 1/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 5.245e-05
+        },
+        "MockJudge2": {
+          "Clarity": 1,
+          "Conciseness": 2,
+          "Completeness": 5,
+          "Summary": "Clarity: 1/5\nConciseness: 2/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 1.1e-06
+        },
+        "MockJudge3": {
+          "Clarity": 5,
+          "Conciseness": 5,
+          "Completeness": 1,
+          "Summary": "Clarity: 5/5\nConciseness: 5/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 9.637e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.0,
+          "std": 1.632993161855452,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 2.6666666666666665,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.3333333333333335,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 2,
+      "risk_score": 0.4310271464,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 47656.2,
+          "shap_value": 0.08140511,
+          "abs_shap_value": 0.08140511,
+          "contribution_pct": 18.30395291097777
+        },
+        "wireout_ct": {
+          "feature_value": 92325.95,
+          "shap_value": 0.08906792,
+          "abs_shap_value": 0.08906792,
+          "contribution_pct": 20.0269370504964
+        },
+        "wirein_amt": {
+          "feature_value": 56007.92,
+          "shap_value": 0.08968519,
+          "abs_shap_value": 0.08968519,
+          "contribution_pct": 20.165730315604197
+        },
+        "wireout_amt": {
+          "feature_value": 68138.94,
+          "shap_value": 0.06218997,
+          "abs_shap_value": 0.06218997,
+          "contribution_pct": 13.983425394488384
+        },
+        "avg_txn_amt": {
+          "feature_value": 66427.43,
+          "shap_value": 0.00176692,
+          "abs_shap_value": 0.00176692,
+          "contribution_pct": 0.3972922642996839
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 10074.67,
+          "shap_value": 0.04332077,
+          "abs_shap_value": 0.04332077,
+          "contribution_pct": 9.74068254618535
+        },
+        "acct_age_days": {
+          "feature_value": 732.45,
+          "shap_value": -0.05492035,
+          "abs_shap_value": 0.05492035,
+          "contribution_pct": 12.348850093740037
+        },
+        "num_sar_reports": {
+          "feature_value": 3280.3,
+          "shap_value": -0.00055295,
+          "abs_shap_value": 0.00055295,
+          "contribution_pct": 0.1243309021033834
+        },
+        "login_freq_30d": {
+          "feature_value": 37773.33,
+          "shap_value": 0.00334633,
+          "abs_shap_value": 0.00334633,
+          "contribution_pct": 0.752422873018564
+        },
+        "geo_diversity_score": {
+          "feature_value": 94217.24,
+          "shap_value": 0.01848509,
+          "abs_shap_value": 0.01848509,
+          "contribution_pct": 4.156375649086232
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 2.\n\nEntity ID: 2\nRisk Score: 43%\nTop Features and Contributions:\n- wirein_amt (Description of wirein_amt): 20.2% contribution\n- wireout_ct (Description of wireout_ct): 20.0% contribution\n- wirein_ct (Description of wirein_ct): 18.3% contribution\n- wireout_amt (Description of wireout_amt): 14.0% contribution\n- acct_age_days (Description of acct_age_days): 12.3% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 43%. Key contributing factors include wirein_amt, wireout_ct, wirein_ct, wireout_amt, acct_age_days.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 5,
+          "Conciseness": 3,
+          "Completeness": 2,
+          "Summary": "Clarity: 5/5\nConciseness: 3/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 1.095e-05
+        },
+        "MockJudge2": {
+          "Clarity": 2,
+          "Conciseness": 5,
+          "Completeness": 4,
+          "Summary": "Clarity: 2/5\nConciseness: 5/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 2.74e-05
+        },
+        "MockJudge3": {
+          "Clarity": 3,
+          "Conciseness": 2,
+          "Completeness": 4,
+          "Summary": "Clarity: 3/5\nConciseness: 2/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 1.76e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.3333333333333335,
+          "std": 0.9428090415820634,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 3,
+      "risk_score": 0.8967890253,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 31526.76,
+          "shap_value": 0.0420629,
+          "abs_shap_value": 0.0420629,
+          "contribution_pct": 8.003123704826256
+        },
+        "wireout_ct": {
+          "feature_value": 55137.82,
+          "shap_value": 0.06245291,
+          "abs_shap_value": 0.06245291,
+          "contribution_pct": 11.88264157859731
+        },
+        "wirein_amt": {
+          "feature_value": 79765.14,
+          "shap_value": 0.02400897,
+          "abs_shap_value": 0.02400897,
+          "contribution_pct": 4.56808153825491
+        },
+        "wireout_amt": {
+          "feature_value": 95077.53,
+          "shap_value": 0.09884622,
+          "abs_shap_value": 0.09884622,
+          "contribution_pct": 18.80703723267942
+        },
+        "avg_txn_amt": {
+          "feature_value": 23760.29,
+          "shap_value": -0.04269908,
+          "abs_shap_value": 0.04269908,
+          "contribution_pct": 8.12416688631247
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 84991.27,
+          "shap_value": -0.0861735,
+          "abs_shap_value": 0.0861735,
+          "contribution_pct": 16.395854317649174
+        },
+        "acct_age_days": {
+          "feature_value": 16526.8,
+          "shap_value": -0.03089736,
+          "abs_shap_value": 0.03089736,
+          "contribution_pct": 5.878705325418613
+        },
+        "num_sar_reports": {
+          "feature_value": 86410.52,
+          "shap_value": -0.06150765,
+          "abs_shap_value": 0.06150765,
+          "contribution_pct": 11.702791099595052
+        },
+        "login_freq_30d": {
+          "feature_value": 42058.11,
+          "shap_value": -0.04856187,
+          "abs_shap_value": 0.04856187,
+          "contribution_pct": 9.239654254644616
+        },
+        "geo_diversity_score": {
+          "feature_value": 3391.54,
+          "shap_value": 0.02837057,
+          "abs_shap_value": 0.02837057,
+          "contribution_pct": 5.397944062022178
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 3.\n\nEntity ID: 3\nRisk Score: 90%\nTop Features and Contributions:\n- wireout_amt (Description of wireout_amt): 18.8% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 16.4% contribution\n- wireout_ct (Description of wireout_ct): 11.9% contribution\n- num_sar_reports (Description of num_sar_reports): 11.7% contribution\n- login_freq_30d (Description of login_freq_30d): 9.2% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 90%. Key contributing factors include wireout_amt, high_risk_country_txn_pct, wireout_ct, num_sar_reports, login_freq_30d.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 3,
+          "Conciseness": 4,
+          "Completeness": 3,
+          "Summary": "Clarity: 3/5\nConciseness: 4/5\nCompleteness: 3/5\nComplete evaluation provided.",
+          "EvalTime": 8.826e-05
+        },
+        "MockJudge2": {
+          "Clarity": 4,
+          "Conciseness": 5,
+          "Completeness": 2,
+          "Summary": "Clarity: 4/5\nConciseness: 5/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 2.806e-05
+        },
+        "MockJudge3": {
+          "Clarity": 1,
+          "Conciseness": 4,
+          "Completeness": 4,
+          "Summary": "Clarity: 1/5\nConciseness: 4/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 3.041e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 2.6666666666666665,
+          "std": 1.247219128924647,
+          "min": 1,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 4.333333333333333,
+          "std": 0.4714045207910317,
+          "min": 4,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.0,
+          "std": 0.816496580927726,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 4,
+      "risk_score": 0.8538144598,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 53648.16,
+          "shap_value": 0.06730008,
+          "abs_shap_value": 0.06730008,
+          "contribution_pct": 12.125947836288438
+        },
+        "wireout_ct": {
+          "feature_value": 90242.48,
+          "shap_value": -0.06571973,
+          "abs_shap_value": 0.06571973,
+          "contribution_pct": 11.841204613649202
+        },
+        "wirein_amt": {
+          "feature_value": 33303.66,
+          "shap_value": 0.03747027,
+          "abs_shap_value": 0.03747027,
+          "contribution_pct": 6.751292709186134
+        },
+        "wireout_amt": {
+          "feature_value": 30528.39,
+          "shap_value": 0.03086731,
+          "abs_shap_value": 0.03086731,
+          "contribution_pct": 5.561589093304859
+        },
+        "avg_txn_amt": {
+          "feature_value": 50608.18,
+          "shap_value": -0.04324029,
+          "abs_shap_value": 0.04324029,
+          "contribution_pct": 7.79091943079391
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 11693.12,
+          "shap_value": 0.03745041,
+          "abs_shap_value": 0.03745041,
+          "contribution_pct": 6.747714387674055
+        },
+        "acct_age_days": {
+          "feature_value": 14297.06,
+          "shap_value": -0.07918074,
+          "abs_shap_value": 0.07918074,
+          "contribution_pct": 14.26657327715981
+        },
+        "num_sar_reports": {
+          "feature_value": 42737.36,
+          "shap_value": 0.03500262,
+          "abs_shap_value": 0.03500262,
+          "contribution_pct": 6.306678153330967
+        },
+        "login_freq_30d": {
+          "feature_value": 44194.73,
+          "shap_value": 0.06757576,
+          "abs_shap_value": 0.06757576,
+          "contribution_pct": 12.175619118989855
+        },
+        "geo_diversity_score": {
+          "feature_value": 97607.88,
+          "shap_value": -0.09120161,
+          "abs_shap_value": 0.09120161,
+          "contribution_pct": 16.432461379622758
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 4.\n\nEntity ID: 4\nRisk Score: 85%\nTop Features and Contributions:\n- geo_diversity_score (Description of geo_diversity_score): 16.4% contribution\n- acct_age_days (Description of acct_age_days): 14.3% contribution\n- login_freq_30d (Description of login_freq_30d): 12.2% contribution\n- wirein_ct (Description of wirein_ct): 12.1% contribution\n- wireout_ct (Description of wireout_ct): 11.8% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 85%. Key contributing factors include geo_diversity_score, acct_age_days, login_freq_30d, wirein_ct, wireout_ct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 1,
+          "Conciseness": 5,
+          "Completeness": 4,
+          "Summary": "Clarity: 1/5\nConciseness: 5/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 8.513e-05
+        },
+        "MockJudge2": {
+          "Clarity": 5,
+          "Conciseness": 1,
+          "Completeness": 5,
+          "Summary": "Clarity: 5/5\nConciseness: 1/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 3.224e-05
+        },
+        "MockJudge3": {
+          "Clarity": 4,
+          "Conciseness": 2,
+          "Completeness": 4,
+          "Summary": "Clarity: 4/5\nConciseness: 2/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 9.631e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.3333333333333335,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 2.6666666666666665,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 4.333333333333333,
+          "std": 0.4714045207910317,
+          "min": 4,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 5,
+      "risk_score": 0.314846539,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 70619.71,
+          "shap_value": -0.06465383,
+          "abs_shap_value": 0.06465383,
+          "contribution_pct": 13.964155693034764
+        },
+        "wireout_ct": {
+          "feature_value": 72860.32,
+          "shap_value": -0.05639629,
+          "abs_shap_value": 0.05639629,
+          "contribution_pct": 12.180663915340197
+        },
+        "wirein_amt": {
+          "feature_value": 54632.02,
+          "shap_value": -0.07041378,
+          "abs_shap_value": 0.07041378,
+          "contribution_pct": 15.208209426341757
+        },
+        "wireout_amt": {
+          "feature_value": 87381.0,
+          "shap_value": -0.02067661,
+          "abs_shap_value": 0.02067661,
+          "contribution_pct": 4.465805061264887
+        },
+        "avg_txn_amt": {
+          "feature_value": 56928.62,
+          "shap_value": 0.02140152,
+          "abs_shap_value": 0.02140152,
+          "contribution_pct": 4.6223736064452385
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 98480.36,
+          "shap_value": 0.00439677,
+          "abs_shap_value": 0.00439677,
+          "contribution_pct": 0.9496294469556478
+        },
+        "acct_age_days": {
+          "feature_value": 95577.45,
+          "shap_value": -0.03594911,
+          "abs_shap_value": 0.03594911,
+          "contribution_pct": 7.764411931451439
+        },
+        "num_sar_reports": {
+          "feature_value": 60166.02,
+          "shap_value": -0.06363093,
+          "abs_shap_value": 0.06363093,
+          "contribution_pct": 13.74322624680698
+        },
+        "login_freq_30d": {
+          "feature_value": 31701.79,
+          "shap_value": -0.09095739,
+          "abs_shap_value": 0.09095739,
+          "contribution_pct": 19.645288691978237
+        },
+        "geo_diversity_score": {
+          "feature_value": 31298.26,
+          "shap_value": 0.03452226,
+          "abs_shap_value": 0.03452226,
+          "contribution_pct": 7.456235980380842
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 5.\n\nEntity ID: 5\nRisk Score: 31%\nTop Features and Contributions:\n- login_freq_30d (Description of login_freq_30d): 19.6% contribution\n- wirein_amt (Description of wirein_amt): 15.2% contribution\n- wirein_ct (Description of wirein_ct): 14.0% contribution\n- num_sar_reports (Description of num_sar_reports): 13.7% contribution\n- wireout_ct (Description of wireout_ct): 12.2% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 31%. Key contributing factors include login_freq_30d, wirein_amt, wirein_ct, num_sar_reports, wireout_ct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 4,
+          "Conciseness": 2,
+          "Completeness": 3,
+          "Summary": "Clarity: 4/5\nConciseness: 2/5\nCompleteness: 3/5\nComplete evaluation provided.",
+          "EvalTime": 8.4e-05
+        },
+        "MockJudge2": {
+          "Clarity": 2,
+          "Conciseness": 3,
+          "Completeness": 1,
+          "Summary": "Clarity: 2/5\nConciseness: 3/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 9.749e-05
+        },
+        "MockJudge3": {
+          "Clarity": 5,
+          "Conciseness": 3,
+          "Completeness": 2,
+          "Summary": "Clarity: 5/5\nConciseness: 3/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 1.983e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.6666666666666665,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 2.6666666666666665,
+          "std": 0.4714045207910317,
+          "min": 2,
+          "max": 3,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 2.0,
+          "std": 0.816496580927726,
+          "min": 1,
+          "max": 3,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    }
+  ],
+  "Claude-3-sonnet-v1": [
+    {
+      "entity_id": 1,
+      "risk_score": 0.1887614245,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 2673.41,
+          "shap_value": -0.06822646,
+          "abs_shap_value": 0.06822646,
+          "contribution_pct": 14.604108066417442
+        },
+        "wireout_ct": {
+          "feature_value": 96937.91,
+          "shap_value": -0.00701811,
+          "abs_shap_value": 0.00701811,
+          "contribution_pct": 1.502250547104524
+        },
+        "wirein_amt": {
+          "feature_value": 13079.13,
+          "shap_value": 0.03652945,
+          "abs_shap_value": 0.03652945,
+          "contribution_pct": 7.819254221995288
+        },
+        "wireout_amt": {
+          "feature_value": 98623.44,
+          "shap_value": 0.03880757,
+          "abs_shap_value": 0.03880757,
+          "contribution_pct": 8.306893631518616
+        },
+        "avg_txn_amt": {
+          "feature_value": 42721.95,
+          "shap_value": -0.0900743,
+          "abs_shap_value": 0.0900743,
+          "contribution_pct": 19.28071324830432
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 97797.63,
+          "shap_value": 0.07670877,
+          "abs_shap_value": 0.07670877,
+          "contribution_pct": 16.419775651879934
+        },
+        "acct_age_days": {
+          "feature_value": 19382.6,
+          "shap_value": 0.0047512,
+          "abs_shap_value": 0.0047512,
+          "contribution_pct": 1.0170106765785965
+        },
+        "num_sar_reports": {
+          "feature_value": 77699.3,
+          "shap_value": 0.07149875,
+          "abs_shap_value": 0.07149875,
+          "contribution_pct": 15.304552978620963
+        },
+        "login_freq_30d": {
+          "feature_value": 41794.75,
+          "shap_value": -0.06494149,
+          "abs_shap_value": 0.06494149,
+          "contribution_pct": 13.900948956668243
+        },
+        "geo_diversity_score": {
+          "feature_value": 47358.64,
+          "shap_value": -0.00861697,
+          "abs_shap_value": 0.00861697,
+          "contribution_pct": 1.8444920209120788
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 1.\n\nEntity ID: 1\nRisk Score: 19%\nTop Features and Contributions:\n- avg_txn_amt (Description of avg_txn_amt): 19.3% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 16.4% contribution\n- num_sar_reports (Description of num_sar_reports): 15.3% contribution\n- wirein_ct (Description of wirein_ct): 14.6% contribution\n- login_freq_30d (Description of login_freq_30d): 13.9% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 19%. Key contributing factors include avg_txn_amt, high_risk_country_txn_pct, num_sar_reports, wirein_ct, login_freq_30d.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 3,
+          "Conciseness": 3,
+          "Completeness": 5,
+          "Summary": "Clarity: 3/5\nConciseness: 3/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 4.232e-05
+        },
+        "MockJudge2": {
+          "Clarity": 2,
+          "Conciseness": 5,
+          "Completeness": 5,
+          "Summary": "Clarity: 2/5\nConciseness: 5/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 4.06e-05
+        },
+        "MockJudge3": {
+          "Clarity": 4,
+          "Conciseness": 3,
+          "Completeness": 1,
+          "Summary": "Clarity: 4/5\nConciseness: 3/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 4.945e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.0,
+          "std": 0.816496580927726,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.6666666666666665,
+          "std": 0.9428090415820634,
+          "min": 3,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.6666666666666665,
+          "std": 1.8856180831641267,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 2,
+      "risk_score": 0.202411489,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 57288.97,
+          "shap_value": 0.00112738,
+          "abs_shap_value": 0.00112738,
+          "contribution_pct": 0.43328544459069046
+        },
+        "wireout_ct": {
+          "feature_value": 10794.13,
+          "shap_value": -0.0674222,
+          "abs_shap_value": 0.0674222,
+          "contribution_pct": 25.912343577393997
+        },
+        "wirein_amt": {
+          "feature_value": 2635.3,
+          "shap_value": 0.01839584,
+          "abs_shap_value": 0.01839584,
+          "contribution_pct": 7.070064852152075
+        },
+        "wireout_amt": {
+          "feature_value": 30661.0,
+          "shap_value": 0.06364544,
+          "abs_shap_value": 0.06364544,
+          "contribution_pct": 24.46082311782195
+        },
+        "avg_txn_amt": {
+          "feature_value": 33867.1,
+          "shap_value": -0.00236442,
+          "abs_shap_value": 0.00236442,
+          "contribution_pct": 0.9087164672950737
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 27065.51,
+          "shap_value": -0.01540328,
+          "abs_shap_value": 0.01540328,
+          "contribution_pct": 5.919935623263576
+        },
+        "acct_age_days": {
+          "feature_value": 20437.91,
+          "shap_value": -0.01034899,
+          "abs_shap_value": 0.01034899,
+          "contribution_pct": 3.9774226376329267
+        },
+        "num_sar_reports": {
+          "feature_value": 94168.63,
+          "shap_value": 0.03774488,
+          "abs_shap_value": 0.03774488,
+          "contribution_pct": 14.506472628414786
+        },
+        "login_freq_30d": {
+          "feature_value": 97497.71,
+          "shap_value": 0.00431918,
+          "abs_shap_value": 0.00431918,
+          "contribution_pct": 1.6599884924047066
+        },
+        "geo_diversity_score": {
+          "feature_value": 65989.55,
+          "shap_value": 0.03942176,
+          "abs_shap_value": 0.03942176,
+          "contribution_pct": 15.150947159030226
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 2.\n\nEntity ID: 2\nRisk Score: 20%\nTop Features and Contributions:\n- wireout_ct (Description of wireout_ct): 25.9% contribution\n- wireout_amt (Description of wireout_amt): 24.5% contribution\n- geo_diversity_score (Description of geo_diversity_score): 15.2% contribution\n- num_sar_reports (Description of num_sar_reports): 14.5% contribution\n- wirein_amt (Description of wirein_amt): 7.1% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 20%. Key contributing factors include wireout_ct, wireout_amt, geo_diversity_score, num_sar_reports, wirein_amt.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 2,
+          "Conciseness": 3,
+          "Completeness": 4,
+          "Summary": "Clarity: 2/5\nConciseness: 3/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 8.806e-05
+        },
+        "MockJudge2": {
+          "Clarity": 2,
+          "Conciseness": 2,
+          "Completeness": 1,
+          "Summary": "Clarity: 2/5\nConciseness: 2/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 3.781e-05
+        },
+        "MockJudge3": {
+          "Clarity": 5,
+          "Conciseness": 4,
+          "Completeness": 3,
+          "Summary": "Clarity: 5/5\nConciseness: 4/5\nCompleteness: 3/5\nComplete evaluation provided.",
+          "EvalTime": 1.528e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.0,
+          "std": 1.4142135623730951,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.0,
+          "std": 0.816496580927726,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 2.6666666666666665,
+          "std": 1.247219128924647,
+          "min": 1,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 3,
+      "risk_score": 0.3890370642,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 37296.45,
+          "shap_value": 0.00414294,
+          "abs_shap_value": 0.00414294,
+          "contribution_pct": 0.9936249510105587
+        },
+        "wireout_ct": {
+          "feature_value": 9828.48,
+          "shap_value": 0.05050489,
+          "abs_shap_value": 0.05050489,
+          "contribution_pct": 12.112876086075023
+        },
+        "wirein_amt": {
+          "feature_value": 89324.77,
+          "shap_value": 0.0318837,
+          "abs_shap_value": 0.0318837,
+          "contribution_pct": 7.646849785547305
+        },
+        "wireout_amt": {
+          "feature_value": 12228.05,
+          "shap_value": -0.02570111,
+          "abs_shap_value": 0.02570111,
+          "contribution_pct": 6.16404393128237
+        },
+        "avg_txn_amt": {
+          "feature_value": 24207.13,
+          "shap_value": 0.07640194,
+          "abs_shap_value": 0.07640194,
+          "contribution_pct": 18.323913426120495
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 96365.36,
+          "shap_value": 0.02234824,
+          "abs_shap_value": 0.02234824,
+          "contribution_pct": 5.3599059786461325
+        },
+        "acct_age_days": {
+          "feature_value": 37778.37,
+          "shap_value": 0.05107121,
+          "abs_shap_value": 0.05107121,
+          "contribution_pct": 12.248699844627234
+        },
+        "num_sar_reports": {
+          "feature_value": 31224.63,
+          "shap_value": -0.01250668,
+          "abs_shap_value": 0.01250668,
+          "contribution_pct": 2.9995484613112264
+        },
+        "login_freq_30d": {
+          "feature_value": 61803.33,
+          "shap_value": 0.0719815,
+          "abs_shap_value": 0.0719815,
+          "contribution_pct": 17.263734065945087
+        },
+        "geo_diversity_score": {
+          "feature_value": 55939.95,
+          "shap_value": 0.07040988,
+          "abs_shap_value": 0.07040988,
+          "contribution_pct": 16.886803469434582
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 3.\n\nEntity ID: 3\nRisk Score: 39%\nTop Features and Contributions:\n- avg_txn_amt (Description of avg_txn_amt): 18.3% contribution\n- login_freq_30d (Description of login_freq_30d): 17.3% contribution\n- geo_diversity_score (Description of geo_diversity_score): 16.9% contribution\n- acct_age_days (Description of acct_age_days): 12.2% contribution\n- wireout_ct (Description of wireout_ct): 12.1% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 39%. Key contributing factors include avg_txn_amt, login_freq_30d, geo_diversity_score, acct_age_days, wireout_ct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 1,
+          "Conciseness": 5,
+          "Completeness": 3,
+          "Summary": "Clarity: 1/5\nConciseness: 5/5\nCompleteness: 3/5\nComplete evaluation provided.",
+          "EvalTime": 2.13e-06
+        },
+        "MockJudge2": {
+          "Clarity": 1,
+          "Conciseness": 3,
+          "Completeness": 3,
+          "Summary": "Clarity: 1/5\nConciseness: 3/5\nCompleteness: 3/5\nComplete evaluation provided.",
+          "EvalTime": 6.41e-05
+        },
+        "MockJudge3": {
+          "Clarity": 2,
+          "Conciseness": 2,
+          "Completeness": 2,
+          "Summary": "Clarity: 2/5\nConciseness: 2/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 6.799e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 1.3333333333333333,
+          "std": 0.4714045207910317,
+          "min": 1,
+          "max": 2,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 2.6666666666666665,
+          "std": 0.4714045207910317,
+          "min": 2,
+          "max": 3,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 4,
+      "risk_score": 0.159853948,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 75612.37,
+          "shap_value": 0.07638164,
+          "abs_shap_value": 0.07638164,
+          "contribution_pct": 15.604905833525054
+        },
+        "wireout_ct": {
+          "feature_value": 50153.23,
+          "shap_value": -0.02670868,
+          "abs_shap_value": 0.02670868,
+          "contribution_pct": 5.456631152954479
+        },
+        "wirein_amt": {
+          "feature_value": 60644.83,
+          "shap_value": 0.04846438,
+          "abs_shap_value": 0.04846438,
+          "contribution_pct": 9.901359622288485
+        },
+        "wireout_amt": {
+          "feature_value": 79909.28,
+          "shap_value": -0.00573227,
+          "abs_shap_value": 0.00573227,
+          "contribution_pct": 1.171113026145297
+        },
+        "avg_txn_amt": {
+          "feature_value": 63429.34,
+          "shap_value": -0.06352827,
+          "abs_shap_value": 0.06352827,
+          "contribution_pct": 12.978939325167078
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 87370.31,
+          "shap_value": 0.0573818,
+          "abs_shap_value": 0.0573818,
+          "contribution_pct": 11.72320449728715
+        },
+        "acct_age_days": {
+          "feature_value": 37938.49,
+          "shap_value": -0.03697451,
+          "abs_shap_value": 0.03697451,
+          "contribution_pct": 7.553958605637827
+        },
+        "num_sar_reports": {
+          "feature_value": 1337.81,
+          "shap_value": -0.04171671,
+          "abs_shap_value": 0.04171671,
+          "contribution_pct": 8.52279855780097
+        },
+        "login_freq_30d": {
+          "feature_value": 41036.38,
+          "shap_value": -0.04227674,
+          "abs_shap_value": 0.04227674,
+          "contribution_pct": 8.637213689682783
+        },
+        "geo_diversity_score": {
+          "feature_value": 25927.8,
+          "shap_value": -0.09030697,
+          "abs_shap_value": 0.09030697,
+          "contribution_pct": 18.449875689510883
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 4.\n\nEntity ID: 4\nRisk Score: 16%\nTop Features and Contributions:\n- geo_diversity_score (Description of geo_diversity_score): 18.4% contribution\n- wirein_ct (Description of wirein_ct): 15.6% contribution\n- avg_txn_amt (Description of avg_txn_amt): 13.0% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 11.7% contribution\n- wirein_amt (Description of wirein_amt): 9.9% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 16%. Key contributing factors include geo_diversity_score, wirein_ct, avg_txn_amt, high_risk_country_txn_pct, wirein_amt.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 1,
+          "Conciseness": 4,
+          "Completeness": 1,
+          "Summary": "Clarity: 1/5\nConciseness: 4/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 6.117e-05
+        },
+        "MockJudge2": {
+          "Clarity": 3,
+          "Conciseness": 1,
+          "Completeness": 5,
+          "Summary": "Clarity: 3/5\nConciseness: 1/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 5.024e-05
+        },
+        "MockJudge3": {
+          "Clarity": 1,
+          "Conciseness": 4,
+          "Completeness": 5,
+          "Summary": "Clarity: 1/5\nConciseness: 4/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 2.997e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 1.6666666666666667,
+          "std": 0.9428090415820634,
+          "min": 1,
+          "max": 3,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.0,
+          "std": 1.4142135623730951,
+          "min": 1,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.6666666666666665,
+          "std": 1.8856180831641267,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 5,
+      "risk_score": 0.6907259174,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 57111.34,
+          "shap_value": 0.00017307,
+          "abs_shap_value": 0.00017307,
+          "contribution_pct": 0.045263306279613565
+        },
+        "wireout_ct": {
+          "feature_value": 6692.73,
+          "shap_value": 0.05932705,
+          "abs_shap_value": 0.05932705,
+          "contribution_pct": 15.515909370866979
+        },
+        "wirein_amt": {
+          "feature_value": 86817.36,
+          "shap_value": -0.05764844,
+          "abs_shap_value": 0.05764844,
+          "contribution_pct": 15.076899498826634
+        },
+        "wireout_amt": {
+          "feature_value": 75277.69,
+          "shap_value": 0.0474613,
+          "abs_shap_value": 0.0474613,
+          "contribution_pct": 12.412638575886191
+        },
+        "avg_txn_amt": {
+          "feature_value": 24959.75,
+          "shap_value": 0.01658071,
+          "abs_shap_value": 0.01658071,
+          "contribution_pct": 4.33638270678599
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 7748.89,
+          "shap_value": 0.00781734,
+          "abs_shap_value": 0.00781734,
+          "contribution_pct": 2.0444828954288687
+        },
+        "acct_age_days": {
+          "feature_value": 59355.53,
+          "shap_value": 0.06760139,
+          "abs_shap_value": 0.06760139,
+          "contribution_pct": 17.679912292700095
+        },
+        "num_sar_reports": {
+          "feature_value": 34756.84,
+          "shap_value": -0.08285044,
+          "abs_shap_value": 0.08285044,
+          "contribution_pct": 21.66802358075199
+        },
+        "login_freq_30d": {
+          "feature_value": 81132.99,
+          "shap_value": -0.00874233,
+          "abs_shap_value": 0.00874233,
+          "contribution_pct": 2.286397182570371
+        },
+        "geo_diversity_score": {
+          "feature_value": 39456.37,
+          "shap_value": -0.03416063,
+          "abs_shap_value": 0.03416063,
+          "contribution_pct": 8.93409058990325
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 5.\n\nEntity ID: 5\nRisk Score: 69%\nTop Features and Contributions:\n- num_sar_reports (Description of num_sar_reports): 21.7% contribution\n- acct_age_days (Description of acct_age_days): 17.7% contribution\n- wireout_ct (Description of wireout_ct): 15.5% contribution\n- wirein_amt (Description of wirein_amt): 15.1% contribution\n- wireout_amt (Description of wireout_amt): 12.4% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 69%. Key contributing factors include num_sar_reports, acct_age_days, wireout_ct, wirein_amt, wireout_amt.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 5,
+          "Conciseness": 3,
+          "Completeness": 5,
+          "Summary": "Clarity: 5/5\nConciseness: 3/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 4.091e-05
+        },
+        "MockJudge2": {
+          "Clarity": 2,
+          "Conciseness": 5,
+          "Completeness": 4,
+          "Summary": "Clarity: 2/5\nConciseness: 5/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 9.68e-05
+        },
+        "MockJudge3": {
+          "Clarity": 3,
+          "Conciseness": 2,
+          "Completeness": 1,
+          "Summary": "Clarity: 3/5\nConciseness: 2/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 2.81e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.3333333333333335,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    }
+  ],
+  "Gemini-1.5-pro": [
+    {
+      "entity_id": 1,
+      "risk_score": 0.1995487428,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 50537.61,
+          "shap_value": -0.06811996,
+          "abs_shap_value": 0.06811996,
+          "contribution_pct": 15.763955957351019
+        },
+        "wireout_ct": {
+          "feature_value": 22918.77,
+          "shap_value": -0.06047782,
+          "abs_shap_value": 0.06047782,
+          "contribution_pct": 13.995452887473844
+        },
+        "wirein_amt": {
+          "feature_value": 31151.46,
+          "shap_value": -0.05583451,
+          "abs_shap_value": 0.05583451,
+          "contribution_pct": 12.920922979700444
+        },
+        "wireout_amt": {
+          "feature_value": 19466.02,
+          "shap_value": -0.04095353,
+          "abs_shap_value": 0.04095353,
+          "contribution_pct": 9.477246363885913
+        },
+        "avg_txn_amt": {
+          "feature_value": 3477.64,
+          "shap_value": 0.00611515,
+          "abs_shap_value": 0.00611515,
+          "contribution_pct": 1.415135230152735
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 20663.62,
+          "shap_value": -0.09966197,
+          "abs_shap_value": 0.09966197,
+          "contribution_pct": 23.0632388172694
+        },
+        "acct_age_days": {
+          "feature_value": 68113.46,
+          "shap_value": -0.04164583,
+          "abs_shap_value": 0.04164583,
+          "contribution_pct": 9.637454718519034
+        },
+        "num_sar_reports": {
+          "feature_value": 52517.62,
+          "shap_value": -0.04995195,
+          "abs_shap_value": 0.04995195,
+          "contribution_pct": 11.559612480450669
+        },
+        "login_freq_30d": {
+          "feature_value": 44010.9,
+          "shap_value": -0.00027047,
+          "abs_shap_value": 0.00027047,
+          "contribution_pct": 0.06259071743120123
+        },
+        "geo_diversity_score": {
+          "feature_value": 48526.3,
+          "shap_value": 0.00909359,
+          "abs_shap_value": 0.00909359,
+          "contribution_pct": 2.104389847765731
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 1.\n\nEntity ID: 1\nRisk Score: 20%\nTop Features and Contributions:\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 23.1% contribution\n- wirein_ct (Description of wirein_ct): 15.8% contribution\n- wireout_ct (Description of wireout_ct): 14.0% contribution\n- wirein_amt (Description of wirein_amt): 12.9% contribution\n- num_sar_reports (Description of num_sar_reports): 11.6% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 20%. Key contributing factors include high_risk_country_txn_pct, wirein_ct, wireout_ct, wirein_amt, num_sar_reports.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 1,
+          "Conciseness": 2,
+          "Completeness": 3,
+          "Summary": "Clarity: 1/5\nConciseness: 2/5\nCompleteness: 3/5\nComplete evaluation provided.",
+          "EvalTime": 7.444e-05
+        },
+        "MockJudge2": {
+          "Clarity": 4,
+          "Conciseness": 1,
+          "Completeness": 2,
+          "Summary": "Clarity: 4/5\nConciseness: 1/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 1.19e-05
+        },
+        "MockJudge3": {
+          "Clarity": 5,
+          "Conciseness": 5,
+          "Completeness": 5,
+          "Summary": "Clarity: 5/5\nConciseness: 5/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 5.133e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 3.3333333333333335,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 2.6666666666666665,
+          "std": 1.699673171197595,
+          "min": 1,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 2,
+      "risk_score": 0.4154517351,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 36036.82,
+          "shap_value": -0.00285271,
+          "abs_shap_value": 0.00285271,
+          "contribution_pct": 0.6028119843259713
+        },
+        "wireout_ct": {
+          "feature_value": 67838.37,
+          "shap_value": -0.08289119,
+          "abs_shap_value": 0.08289119,
+          "contribution_pct": 17.51590688399491
+        },
+        "wirein_amt": {
+          "feature_value": 19919.61,
+          "shap_value": -0.01444706,
+          "abs_shap_value": 0.01444706,
+          "contribution_pct": 3.0528377950357264
+        },
+        "wireout_amt": {
+          "feature_value": 75836.94,
+          "shap_value": -0.03682076,
+          "abs_shap_value": 0.03682076,
+          "contribution_pct": 7.7806700996562395
+        },
+        "avg_txn_amt": {
+          "feature_value": 30412.36,
+          "shap_value": 0.02183925,
+          "abs_shap_value": 0.02183925,
+          "contribution_pct": 4.61489658208895
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 13318.55,
+          "shap_value": -0.05048149,
+          "abs_shap_value": 0.05048149,
+          "contribution_pct": 10.667346894227482
+        },
+        "acct_age_days": {
+          "feature_value": 53800.69,
+          "shap_value": 0.01393963,
+          "abs_shap_value": 0.01393963,
+          "contribution_pct": 2.945611723964174
+        },
+        "num_sar_reports": {
+          "feature_value": 10371.53,
+          "shap_value": 0.09804623,
+          "abs_shap_value": 0.09804623,
+          "contribution_pct": 20.71834938075745
+        },
+        "login_freq_30d": {
+          "feature_value": 68587.27,
+          "shap_value": -0.06111575,
+          "abs_shap_value": 0.06111575,
+          "contribution_pct": 12.914494123507117
+        },
+        "geo_diversity_score": {
+          "feature_value": 54818.2,
+          "shap_value": -0.09079972,
+          "abs_shap_value": 0.09079972,
+          "contribution_pct": 19.18707453244199
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 2.\n\nEntity ID: 2\nRisk Score: 42%\nTop Features and Contributions:\n- num_sar_reports (Description of num_sar_reports): 20.7% contribution\n- geo_diversity_score (Description of geo_diversity_score): 19.2% contribution\n- wireout_ct (Description of wireout_ct): 17.5% contribution\n- login_freq_30d (Description of login_freq_30d): 12.9% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 10.7% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 42%. Key contributing factors include num_sar_reports, geo_diversity_score, wireout_ct, login_freq_30d, high_risk_country_txn_pct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 2,
+          "Conciseness": 4,
+          "Completeness": 2,
+          "Summary": "Clarity: 2/5\nConciseness: 4/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 4.424e-05
+        },
+        "MockJudge2": {
+          "Clarity": 4,
+          "Conciseness": 1,
+          "Completeness": 4,
+          "Summary": "Clarity: 4/5\nConciseness: 1/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 6.044e-05
+        },
+        "MockJudge3": {
+          "Clarity": 2,
+          "Conciseness": 4,
+          "Completeness": 4,
+          "Summary": "Clarity: 2/5\nConciseness: 4/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 1.766e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 2.6666666666666665,
+          "std": 0.9428090415820634,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.0,
+          "std": 1.4142135623730951,
+          "min": 1,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.3333333333333335,
+          "std": 0.9428090415820634,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 3,
+      "risk_score": 0.6174516691,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 22347.14,
+          "shap_value": 0.09821607,
+          "abs_shap_value": 0.09821607,
+          "contribution_pct": 17.94409352612149
+        },
+        "wireout_ct": {
+          "feature_value": 11754.14,
+          "shap_value": 0.09113988,
+          "abs_shap_value": 0.09113988,
+          "contribution_pct": 16.651272349621497
+        },
+        "wirein_amt": {
+          "feature_value": 8075.17,
+          "shap_value": 0.03036414,
+          "abs_shap_value": 0.03036414,
+          "contribution_pct": 5.547533799715734
+        },
+        "wireout_amt": {
+          "feature_value": 98444.24,
+          "shap_value": -0.01676419,
+          "abs_shap_value": 0.01676419,
+          "contribution_pct": 3.062820506355738
+        },
+        "avg_txn_amt": {
+          "feature_value": 98155.24,
+          "shap_value": 0.02525291,
+          "abs_shap_value": 0.02525291,
+          "contribution_pct": 4.613711166072197
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 88106.93,
+          "shap_value": -0.00960168,
+          "abs_shap_value": 0.00960168,
+          "contribution_pct": 1.754228650442745
+        },
+        "acct_age_days": {
+          "feature_value": 12171.19,
+          "shap_value": -0.0213175,
+          "abs_shap_value": 0.0213175,
+          "contribution_pct": 3.89471105637901
+        },
+        "num_sar_reports": {
+          "feature_value": 34770.98,
+          "shap_value": 0.09733682,
+          "abs_shap_value": 0.09733682,
+          "contribution_pct": 17.78345439412565
+        },
+        "login_freq_30d": {
+          "feature_value": 3256.26,
+          "shap_value": 0.06733307,
+          "abs_shap_value": 0.06733307,
+          "contribution_pct": 12.301763911759906
+        },
+        "geo_diversity_score": {
+          "feature_value": 9764.5,
+          "shap_value": -0.09001858,
+          "abs_shap_value": 0.09001858,
+          "contribution_pct": 16.446410639406047
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 3.\n\nEntity ID: 3\nRisk Score: 62%\nTop Features and Contributions:\n- wirein_ct (Description of wirein_ct): 17.9% contribution\n- num_sar_reports (Description of num_sar_reports): 17.8% contribution\n- wireout_ct (Description of wireout_ct): 16.7% contribution\n- geo_diversity_score (Description of geo_diversity_score): 16.4% contribution\n- login_freq_30d (Description of login_freq_30d): 12.3% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 62%. Key contributing factors include wirein_ct, num_sar_reports, wireout_ct, geo_diversity_score, login_freq_30d.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 1,
+          "Conciseness": 5,
+          "Completeness": 2,
+          "Summary": "Clarity: 1/5\nConciseness: 5/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 3.007e-05
+        },
+        "MockJudge2": {
+          "Clarity": 1,
+          "Conciseness": 4,
+          "Completeness": 4,
+          "Summary": "Clarity: 1/5\nConciseness: 4/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 2.675e-05
+        },
+        "MockJudge3": {
+          "Clarity": 3,
+          "Conciseness": 4,
+          "Completeness": 1,
+          "Summary": "Clarity: 3/5\nConciseness: 4/5\nCompleteness: 1/5\nComplete evaluation provided.",
+          "EvalTime": 7.75e-06
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 1.6666666666666667,
+          "std": 0.9428090415820634,
+          "min": 1,
+          "max": 3,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 4.333333333333333,
+          "std": 0.4714045207910317,
+          "min": 4,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 2.3333333333333335,
+          "std": 1.247219128924647,
+          "min": 1,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 4,
+      "risk_score": 0.5856827843,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 24466.82,
+          "shap_value": -0.06616823,
+          "abs_shap_value": 0.06616823,
+          "contribution_pct": 12.10845365603741
+        },
+        "wireout_ct": {
+          "feature_value": 38952.37,
+          "shap_value": 0.07207764,
+          "abs_shap_value": 0.07207764,
+          "contribution_pct": 13.189845996735114
+        },
+        "wirein_amt": {
+          "feature_value": 93819.08,
+          "shap_value": 0.0238662,
+          "abs_shap_value": 0.0238662,
+          "contribution_pct": 4.3673946944888815
+        },
+        "wireout_amt": {
+          "feature_value": 38898.76,
+          "shap_value": -0.07464945,
+          "abs_shap_value": 0.07464945,
+          "contribution_pct": 13.660474305776079
+        },
+        "avg_txn_amt": {
+          "feature_value": 16837.06,
+          "shap_value": -0.0202192,
+          "abs_shap_value": 0.0202192,
+          "contribution_pct": 3.7000120172800695
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 96683.55,
+          "shap_value": -0.08961449,
+          "abs_shap_value": 0.08961449,
+          "contribution_pct": 16.39900144033516
+        },
+        "acct_age_days": {
+          "feature_value": 69693.01,
+          "shap_value": 0.07627503,
+          "abs_shap_value": 0.07627503,
+          "contribution_pct": 13.957947278744848
+        },
+        "num_sar_reports": {
+          "feature_value": 73342.34,
+          "shap_value": 0.0064557,
+          "abs_shap_value": 0.0064557,
+          "contribution_pct": 1.1813606660973206
+        },
+        "login_freq_30d": {
+          "feature_value": 80581.61,
+          "shap_value": 0.01798545,
+          "abs_shap_value": 0.01798545,
+          "contribution_pct": 3.29124698980127
+        },
+        "geo_diversity_score": {
+          "feature_value": 99716.64,
+          "shap_value": 0.0991517,
+          "abs_shap_value": 0.0991517,
+          "contribution_pct": 18.144262954703862
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 4.\n\nEntity ID: 4\nRisk Score: 59%\nTop Features and Contributions:\n- geo_diversity_score (Description of geo_diversity_score): 18.1% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 16.4% contribution\n- acct_age_days (Description of acct_age_days): 14.0% contribution\n- wireout_amt (Description of wireout_amt): 13.7% contribution\n- wireout_ct (Description of wireout_ct): 13.2% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 59%. Key contributing factors include geo_diversity_score, high_risk_country_txn_pct, acct_age_days, wireout_amt, wireout_ct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 4,
+          "Conciseness": 2,
+          "Completeness": 5,
+          "Summary": "Clarity: 4/5\nConciseness: 2/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 1.763e-05
+        },
+        "MockJudge2": {
+          "Clarity": 3,
+          "Conciseness": 4,
+          "Completeness": 4,
+          "Summary": "Clarity: 3/5\nConciseness: 4/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 2.284e-05
+        },
+        "MockJudge3": {
+          "Clarity": 5,
+          "Conciseness": 2,
+          "Completeness": 5,
+          "Summary": "Clarity: 5/5\nConciseness: 2/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 1.483e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 4.0,
+          "std": 0.816496580927726,
+          "min": 3,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 2.6666666666666665,
+          "std": 0.9428090415820634,
+          "min": 2,
+          "max": 4,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 4.666666666666667,
+          "std": 0.4714045207910317,
+          "min": 4,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    },
+    {
+      "entity_id": 5,
+      "risk_score": 0.555548462,
+      "features": {
+        "wirein_ct": {
+          "feature_value": 90808.98,
+          "shap_value": -0.05488831,
+          "abs_shap_value": 0.05488831,
+          "contribution_pct": 12.370299701992582
+        },
+        "wireout_ct": {
+          "feature_value": 94212.73,
+          "shap_value": 0.0828013,
+          "abs_shap_value": 0.0828013,
+          "contribution_pct": 18.661111932843227
+        },
+        "wirein_amt": {
+          "feature_value": 82124.74,
+          "shap_value": -0.00128904,
+          "abs_shap_value": 0.00128904,
+          "contribution_pct": 0.2905137929707895
+        },
+        "wireout_amt": {
+          "feature_value": 37767.73,
+          "shap_value": 0.00396739,
+          "abs_shap_value": 0.00396739,
+          "contribution_pct": 0.8941394503618049
+        },
+        "avg_txn_amt": {
+          "feature_value": 39322.88,
+          "shap_value": 0.07970875,
+          "abs_shap_value": 0.07970875,
+          "contribution_pct": 17.96413710626545
+        },
+        "high_risk_country_txn_pct": {
+          "feature_value": 48882.26,
+          "shap_value": 0.06392617,
+          "abs_shap_value": 0.06392617,
+          "contribution_pct": 14.407182179603037
+        },
+        "acct_age_days": {
+          "feature_value": 1707.22,
+          "shap_value": -0.02733966,
+          "abs_shap_value": 0.02733966,
+          "contribution_pct": 6.161599581961596
+        },
+        "num_sar_reports": {
+          "feature_value": 8669.28,
+          "shap_value": 0.02770874,
+          "abs_shap_value": 0.02770874,
+          "contribution_pct": 6.2447799570544245
+        },
+        "login_freq_30d": {
+          "feature_value": 38734.53,
+          "shap_value": -0.0024999,
+          "abs_shap_value": 0.0024999,
+          "contribution_pct": 0.5634079866006306
+        },
+        "geo_diversity_score": {
+          "feature_value": 12776.53,
+          "shap_value": 0.09958117,
+          "abs_shap_value": 0.09958117,
+          "contribution_pct": 22.442828310346457
+        }
+      },
+      "prompt": "You are a risk model explanation assistant. Given a risk score and a list of features with their descriptions and contributions, generate a clear, concise narrative explaining the risk score for entity ID 5.\n\nEntity ID: 5\nRisk Score: 56%\nTop Features and Contributions:\n- geo_diversity_score (Description of geo_diversity_score): 22.4% contribution\n- wireout_ct (Description of wireout_ct): 18.7% contribution\n- avg_txn_amt (Description of avg_txn_amt): 18.0% contribution\n- high_risk_country_txn_pct (Description of high_risk_country_txn_pct): 14.4% contribution\n- wirein_ct (Description of wirein_ct): 12.4% contribution\n\nPlease produce a narrative that:\n- Starts with the risk score\n- Explains each feature\u2019s contribution in plain language\n- Highlights why each feature might indicate a higher risk\n",
+      "llm_explanation": "This entity has a risk score of 56%. Key contributing factors include geo_diversity_score, wireout_ct, avg_txn_amt, high_risk_country_txn_pct, wirein_ct.",
+      "evaluations": {
+        "MockJudge1": {
+          "Clarity": 2,
+          "Conciseness": 2,
+          "Completeness": 5,
+          "Summary": "Clarity: 2/5\nConciseness: 2/5\nCompleteness: 5/5\nComplete evaluation provided.",
+          "EvalTime": 1.719e-05
+        },
+        "MockJudge2": {
+          "Clarity": 1,
+          "Conciseness": 4,
+          "Completeness": 4,
+          "Summary": "Clarity: 1/5\nConciseness: 4/5\nCompleteness: 4/5\nComplete evaluation provided.",
+          "EvalTime": 2.719e-05
+        },
+        "MockJudge3": {
+          "Clarity": 3,
+          "Conciseness": 5,
+          "Completeness": 2,
+          "Summary": "Clarity: 3/5\nConciseness: 5/5\nCompleteness: 2/5\nComplete evaluation provided.",
+          "EvalTime": 5.436e-05
+        }
+      },
+      "stats": {
+        "Clarity": {
+          "mean": 2.0,
+          "std": 0.816496580927726,
+          "min": 1,
+          "max": 3,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Conciseness": {
+          "mean": 3.6666666666666665,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        },
+        "Completeness": {
+          "mean": 3.6666666666666665,
+          "std": 1.247219128924647,
+          "min": 2,
+          "max": 5,
+          "count_none": 0,
+          "count_total": 3,
+          "valid_percentage": 100.0
+        }
+      }
+    }
+  ]
+}

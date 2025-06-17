@@ -10,9 +10,14 @@ from datetime import datetime
 from evaluation.judge import *
 from prompts.prompt_generator import *
 
+from typing import List, Optional, Dict, Any
+
 from tqdm import tqdm
 
 from matplotlib.patches import Patch
+
+from scipy.interpolate import make_interp_spline
+
 
 # Step 1: Create AML Feature Library
 def create_realistic_aml_feature_library():
@@ -132,6 +137,29 @@ def generate_structured_shap_dataset(feature_library, n_entities=100, base_value
     df.to_json(output_path, orient="records", lines=True)
     print(f"✅ Structured dataset saved to {output_path}")
     return df
+
+def generate_mock_judges(
+    num_judges: int = 3,
+    name_prefix: str = "MockJudge",
+    deployment_prefix: str = "mock_judge_model",
+    start_index: int = 1
+) -> dict:
+    """
+    Generates mock judge models with flexible naming
+    
+    Args:
+        num_judges: Number of judges to generate
+        name_prefix: Prefix for display names
+        deployment_prefix: Prefix for deployment names
+        start_index: Starting index number
+        
+    Returns:
+        Dictionary of {display_name: deployment_name}
+    """
+    return {
+        f"{name_prefix}{i}": f"{deployment_prefix}{i}"
+        for i in range(start_index, start_index + num_judges)
+    }
 
 
 def load_shap_explanation(json_path, entity_id):
@@ -355,11 +383,57 @@ def enrich_and_evaluate_entities(
 
 #     print(f"✅ Updated entities saved to: {output_json_path}")
 
+# def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
+#     """
+#     For each entity, compute mean and standard deviation across judge models
+#     for Clarity, Conciseness, and Completeness. Save results in a 'stats' field.
+
+#     Parameters:
+#     - input_json_path: Path to input JSON file with judge model scores.
+#     - output_json_path: Path to output JSON file to save updated entities.
+#     """
+#     with open(input_json_path, "r", encoding="utf-8") as f:
+#         entity_data_list = json.load(f)
+
+#     def calc_stats(scores):
+#         return {
+#             "mean": float(np.mean(scores)) if scores else None,
+#             "std": float(np.std(scores, ddof=1)) if len(scores) > 1 else None
+#         }
+
+#     for entity in entity_data_list:
+#         clarity_scores = []
+#         conciseness_scores = []
+#         completeness_scores = []
+
+#         # Collect scores from all judge models for this entity
+#         for evaluation in entity.get("evaluations", {}).values():
+#             clarity_scores.append(evaluation.get("Clarity"))
+#             conciseness_scores.append(evaluation.get("Conciseness"))
+#             completeness_scores.append(evaluation.get("Completeness"))
+
+#         # Store per-entity stats
+#         entity["stats"] = {
+#             "Clarity": calc_stats(clarity_scores),
+#             "Conciseness": calc_stats(conciseness_scores),
+#             "Completeness": calc_stats(completeness_scores)
+#         }
+
+#     # Save updated JSON
+#     with open(output_json_path, "w", encoding="utf-8") as f:
+#         json.dump(entity_data_list, f, indent=2, ensure_ascii=False)
+
+#     print(f"✅ Per-entity stats saved to: {output_json_path}")
+
 def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
     """
-    For each entity, compute mean and standard deviation across judge models
-    for Clarity, Conciseness, and Completeness. Save results in a 'stats' field.
-
+    For each entity, compute statistics across judge models for Clarity, Conciseness, 
+    and Completeness. Includes:
+    - mean, std, min, max of valid scores
+    - count of None values
+    - percentage of valid scores
+    - total count of scores
+    
     Parameters:
     - input_json_path: Path to input JSON file with judge model scores.
     - output_json_path: Path to output JSON file to save updated entities.
@@ -367,10 +441,19 @@ def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
     with open(input_json_path, "r", encoding="utf-8") as f:
         entity_data_list = json.load(f)
 
-    def calc_stats(scores):
+    def calc_stats(scores: List[Optional[float]]) -> Dict[str, Any]:
+        valid_scores = [s for s in scores if s is not None]
+        valid_count = len(valid_scores)
+        total_count = len(scores)
+        
         return {
-            "mean": float(np.mean(scores)) if scores else None,
-            "std": float(np.std(scores, ddof=1)) if len(scores) > 1 else None
+            "mean": float(np.mean(valid_scores)) if valid_count > 0 else None,
+            "std": float(np.std(valid_scores, ddof=1)) if valid_count > 1 else None,
+            "min": float(min(valid_scores)) if valid_count > 0 else None,
+            "max": float(max(valid_scores)) if valid_count > 0 else None,
+            "count_none": total_count - valid_count,
+            "count_total": total_count,
+            "valid_percentage": round((valid_count / total_count) * 100, 2) if total_count > 0 else 0.0,
         }
 
     for entity in entity_data_list:
@@ -396,7 +479,6 @@ def update_mean_std_scores_in_json(input_json_path: str, output_json_path: str):
         json.dump(entity_data_list, f, indent=2, ensure_ascii=False)
 
     print(f"✅ Per-entity stats saved to: {output_json_path}")
-
 
 
 # def plot_evaluation_stats(input_data):
@@ -588,6 +670,161 @@ def get_entities_below_threshold(entity_data_list, threshold=4.0):
             below_threshold_entities.append(i)  # or entity ID if you have one
 
     return below_threshold_entities
+
+
+def plot_entity_quality_stats_business_curve(entity_data_list, threshold=4.0, save_path=None):
+    # Prepare data
+    entity_ids = [e['entity_id'] for e in entity_data_list]  # Use actual entity IDs
+    metrics = {
+        'Clarity': {'color': 'dodgerblue', 'title': "Clarity Scores"},
+        'Conciseness': {'color': 'mediumseagreen', 'title': "Conciseness Scores"}, 
+        'Completeness': {'color': 'darkorange', 'title': "Completeness Scores"}
+    }
+    
+    # Create figure with 3 subplots
+    fig, axes = plt.subplots(3, 1, figsize=(14, 12), sharex=True)
+    
+    # Generate smooth x-values for curves
+    x = np.arange(len(entity_ids))
+    x_smooth = np.linspace(x.min(), x.max(), 300)  # 300 points for smooth curve
+    
+    def plot_metric(ax, metric, means, stds):
+        # Create smooth curves using spline interpolation
+        spl = make_interp_spline(x, means, k=3)  # Cubic spline
+        means_smooth = spl(x_smooth)
+        
+        spl_upper = make_interp_spline(x, np.array(means)+np.array(stds), k=3)
+        upper_smooth = spl_upper(x_smooth)
+        
+        spl_lower = make_interp_spline(x, np.array(means)-np.array(stds), k=3)
+        lower_smooth = spl_lower(x_smooth)
+        
+        # Plot smooth curve and confidence band
+        ax.plot(x_smooth, means_smooth, 
+                color=metric['color'], 
+                linewidth=2.5,
+                label='Mean Score')
+        
+        ax.fill_between(x_smooth, lower_smooth, upper_smooth,
+                       color=metric['color'], alpha=0.2,
+                       label='±1 Std Dev')
+        
+        # Add original data points
+        ax.scatter(x, means, 
+                  color=metric['color'],
+                  s=80, zorder=3,
+                  edgecolor='white', linewidth=1)
+        
+        # Threshold line and styling
+        ax.axhline(threshold, color='red', linestyle='--', 
+                  linewidth=1.5, alpha=0.7, label=f'Threshold ({threshold})')
+        
+        # Highlight points below threshold
+        below_threshold = np.array(means) < threshold
+        ax.scatter(x[below_threshold], np.array(means)[below_threshold],
+                 color='red', s=100, zorder=4,
+                 edgecolor='black', linewidth=1)
+        
+        # Customize axes
+        ax.set_ylim(0, 5.5)
+        ax.set_ylabel("Score (1-5)", fontsize=11)
+        ax.set_title(metric['title'], fontsize=12, pad=10, fontweight='bold')
+        ax.grid(axis='y', linestyle='--', alpha=0.3)
+        ax.legend(loc='upper right', fontsize=9)
+
+    # Plot each metric
+    for ax, (metric_name, metric_style) in zip(axes, metrics.items()):
+        means = [e["stats"][metric_name]["mean"] for e in entity_data_list]
+        stds = [e["stats"][metric_name]["std"] for e in entity_data_list]
+        plot_metric(ax, metric_style, means, stds)
+    
+    # X-axis formatting with slight tilt (30 degrees)
+    axes[-1].set_xticks(np.arange(len(entity_ids)))
+    axes[-1].set_xticklabels(entity_ids, rotation=30, ha='right', fontsize=10)  # 30 degree tilt
+    axes[-1].set_xlabel("Entity ID", fontsize=11)
+    
+    # Add slight padding below x-axis labels
+    plt.subplots_adjust(bottom=0.12)
+    
+    # Main title
+    fig.suptitle("Narrative Quality Evaluation Trends\n(Smooth Curve with Standard Deviation Band)", 
+                fontsize=14, fontweight='bold', y=0.97)
+    
+    # Adjust layout
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+    plt.subplots_adjust(hspace=0.4)
+    
+    if save_path:
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Figure saved to: {save_path}")
+    
+    plt.show()
+
+def plot_model_metric_trends(model_data_dict, save_prefix="model_metrics"):
+    """
+    Plots metric trends for multiple generation models across three quality dimensions.
+    
+    Args:
+        model_data_dict: Dictionary containing model data (format shown in sample)
+        save_prefix: Prefix for saving figures (optional)
+    """
+    # Prepare metrics and colors
+    metrics = ['Clarity', 'Conciseness', 'Completeness']
+    colors = plt.cm.tab10.colors  # Distinct colors for models
+    
+    # Create one figure per metric
+    for metric in metrics:
+        plt.figure(figsize=(12, 6))
+        
+        # Plot each model's trend
+        for model_idx, (model_name, entity_data) in enumerate(model_data_dict.items()):
+            # Extract data for this model
+            entity_ids = [e['entity_id'] for e in entity_data]
+            means = [e['stats'][metric]['mean'] for e in entity_data]
+            stds = [e['stats'][metric]['std'] for e in entity_data]
+            
+            # Create smooth curve
+            x = np.arange(len(entity_ids))
+            x_smooth = np.linspace(x.min(), x.max(), 300)
+            spl = make_interp_spline(x, means, k=3)
+            means_smooth = spl(x_smooth)
+            
+            # Plot main line and confidence band
+            plt.plot(x_smooth, means_smooth, 
+                    color=colors[model_idx], 
+                    linewidth=2.5,
+                    label=model_name)
+            
+            plt.fill_between(x_smooth, 
+                            means_smooth - np.mean(stds), 
+                            means_smooth + np.mean(stds),
+                            color=colors[model_idx], 
+                            alpha=0.15)
+            
+            # Add actual data points
+            plt.scatter(x, means, 
+                       color=colors[model_idx],
+                       s=80, zorder=3,
+                       edgecolor='white', linewidth=1)
+        
+        # Customize plot
+        plt.title(f'{metric} Scores Across Entities by Generation Model', fontsize=14)
+        plt.xlabel('Entity ID', fontsize=12)
+        plt.ylabel('Score (1-5 scale)', fontsize=12)
+        plt.xticks(np.arange(len(entity_ids)), labels=entity_ids, rotation=45, ha='right')
+        plt.ylim(0, 5.5)
+        plt.grid(True, alpha=0.3)
+        plt.legend(loc='best')
+        
+        # Adjust layout and save if needed
+        plt.tight_layout()
+        if save_prefix:
+            plt.savefig(f"{save_prefix}_{metric.lower()}.png", dpi=300, bbox_inches='tight')
+        plt.show()
+
+
+
+
 
 
 def generate_controlled_narratives(
@@ -823,6 +1060,36 @@ def generate_plain_explanations(
     # Save to Excel
     df.to_excel(output_excel_path, index=False)
     print(f"✅ Explanations saved to: {output_excel_path}")
+
+
+def show_dict_structure(d, indent=0):
+    for key, value in d.items():
+        print("  " * indent + f"├── {key} ({type(value).__name__})")
+        if isinstance(value, dict):
+            show_dict_structure(value, indent + 1)
+        elif isinstance(value, (list, tuple)) and value and isinstance(value[0], dict):
+            print("  " * (indent + 1) + f"└── [nested dicts]")
+            show_dict_structure(value[0], indent + 2)
+
+
+def display_dict_structure(d, indent=4, level=0):
+    indent_str = " " * indent * level
+    next_level = level + 1
+    print(indent_str + "{")
+    for key, value in d.items():
+        if isinstance(value, dict):
+            print(f"{indent_str}    \"{key}\": {{")
+            display_dict_structure(value, indent, next_level)
+            print(indent_str + "    },")
+        elif isinstance(value, list) and value and isinstance(value[0], dict):
+            print(f"{indent_str}    \"{key}\": [")
+            print(f"{indent_str}        {{")
+            display_dict_structure(value[0], indent, next_level + 1)
+            print(f"{indent_str}        }},")
+            print(f"{indent_str}    ],")
+        else:
+            print(f"{indent_str}    \"{key}\": {repr(value)},")
+    print(indent_str + "}")
 
 # Step 5: Run the Full Pipeline
 if __name__ == "__main__":

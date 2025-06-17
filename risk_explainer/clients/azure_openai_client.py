@@ -1,6 +1,3 @@
-# from azure.ai.openai import OpenAIClient
-from azure.identity import DefaultAzureCredential
-
 from azure.identity import CertificateCredential
 from openai import AzureOpenAI
 from config.config import AZURE_CONFIG, LLM_CONFIG, PROMPT_CONFIG
@@ -93,20 +90,41 @@ class MockAzureClient:
         """
         Simulates a response for testing purposes. Returns a mocked narrative or evaluation summary.
         """
-        # Example logic: vary output slightly based on model type
+        # # Example logic: vary output slightly based on model type
+        # if model_name and "judge" in model_name.lower():
+        #     # Simulate judge model feedback with scores embedded
+        #     scores = {
+        #         "clarity": random.randint(1, 5),
+        #         "conciseness": random.randint(1, 5),
+        #         "completeness": random.randint(1, 5)
+        #     }
+        #     return (
+        #         f"Clarity: {scores['clarity']}/5\n"
+        #         f"Conciseness: {scores['conciseness']}/5\n"
+        #         f"Completeness: {scores['completeness']}/5\n"
+        #         "This explanation is generally clear and well-structured, with room for improvement."
+        #     )
+        
+        # Randomly decide if we should return None for any score (20% chance)
+        return_none = random.random() < 0.001
+        
         if model_name and "judge" in model_name.lower():
-            # Simulate judge model feedback with scores embedded
+            # Simulate judge model with potential None values
             scores = {
-                "clarity": random.randint(1, 5),
-                "conciseness": random.randint(1, 5),
-                "completeness": random.randint(1, 5)
+                "Clarity": random.randint(1, 5) if not return_none else None,
+                "Conciseness": random.randint(1, 5) if not return_none else None,
+                "Completeness": random.randint(1, 5) if not return_none else None
             }
-            return (
-                f"Clarity: {scores['clarity']}/5\n"
-                f"Conciseness: {scores['conciseness']}/5\n"
-                f"Completeness: {scores['completeness']}/5\n"
-                "This explanation is generally clear and well-structured, with room for improvement."
-            )
+            
+            feedback = [
+                f"Clarity: {scores['Clarity']}/5" if scores['Clarity'] is not None else "Clarity: Not scored",
+                f"Conciseness: {scores['Conciseness']}/5" if scores['Conciseness'] is not None else "Conciseness: Not scored",
+                f"Completeness: {scores['Completeness']}/5" if scores['Completeness'] is not None else "Completeness: Not scored",
+                "This evaluation contains missing scores." if return_none else "Complete evaluation provided."
+            ]
+            
+            return "\n".join(feedback)
+        
         else:
             # Simulate narrative generation
             return (
@@ -121,3 +139,9 @@ def get_azure_client(use_mock=False):
         return MockAzureClient()
     else:
         return AzureClient()
+
+if __name__ == "__main__":
+    # Test connectivity
+    client = AzureClient()
+    test_response = client.get_response("Test prompt")
+    print(f"Test response: {test_response}")

@@ -8,6 +8,7 @@ This module contains functions to build various prompts for LLMs:
 """
 
 import pandas as pd
+from typing import Dict, List, Optional
 
 
 """

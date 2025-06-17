@@ -18,6 +18,22 @@ AZURE_CONFIG = {
 
 }
 
+# Judge model deployment names (same as original)
+JUDGE_MODELS = {
+    "GPT-4": "gpt-4-deployment",
+    "GPT-4o": "gpt-4o-deployment",
+    "GPT-35-Turbo": "gpt-35-turbo-deployment"
+}
+
+# Mock judge models (same as original)
+# MOCK_JUDGE_MODELS = {
+#     "MockJudge1": "mock_judge_model1",
+#     "MockJudge2": "mock_judge_model2",
+#     "MockJudge3": "mock_judge_model3",
+# }
+
+MOCK_JUDGE_MODELS = {'MockJudge1': 'mock_judge_model1', 'MockJudge2': 'mock_judge_model2', 'MockJudge3': 'mock_judge_model3', 'MockJudge4': 'mock_judge_model4', 'MockJudge5': 'mock_judge_model5', 'MockJudge6': 'mock_judge_model6', 'MockJudge7': 'mock_judge_model7', 'MockJudge8': 'mock_judge_model8', 'MockJudge9': 'mock_judge_model9', 'MockJudge10': 'mock_judge_model10'}
+
 # ===============================
 # OpenAI LLM Configuration
 # ===============================
@@ -58,7 +74,7 @@ XGBOOST_PARAMS = {
     "n_estimators": 100,
     "max_depth": 5,
     "learning_rate": 0.1,
-    "random_state": TRAINING_CONFIG["random_state"],
+    "random_state": 42,
 }
 
 OUTPUT_MODEL_PATH = "models/xgb_model.json"

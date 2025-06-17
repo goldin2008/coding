@@ -11,6 +11,12 @@ risk_explainer/
 │   ├── __init__.py
 │   └── prompt_generator.py        # Functions to build standard & controlled prompts
 
+├── model/                         # Unit tests for each module
+│   ├── __init__.py
+│   ├── shap_analysis.py
+│   ├── shap_utils.py
+│   └── trainer.py
+
 ├── evaluation/                    # Judge model evaluation logic
 │   ├── __init__.py
 │   └── judge.py                  # extract_scores, evaluation prompt builder, etc.
@@ -18,6 +24,13 @@ risk_explainer/
 ├── workflows/                     # Main logic for generating and evaluating narratives
 │   ├── __init__.py
 │   └── generate_data.py         # load, build, evaluate, and save enriched JSONs
+
+├── notbooks/                         # Jupyter notebooks for EDA, dev, demo
+│   ├── 01_feature_analysis.ipynb       # Exploratory Data Analysis (EDA) of input features
+│   ├── 02_llm_narrative_testing.ipynb  # Interactive narrative generation and tweaking
+│   ├── 03_judge_eval_debug.ipynb       # Test judge evaluation on sample prompts
+│   ├── 04_end_to_end_pipeline.ipynb    # Run full workflow interactively
+│   └── 05_run.ipynb    # Run full workflow interactively
 
 ├── data/                          # Input/output files (not tracked in version control)
 │   ├── input/
@@ -38,33 +51,3 @@ risk_explainer/
 ├── requirements.txt              # Python dependencies
 ├── README.md                     # Project overview, how to run, etc.
 └── setup.py                      # Optional: make it pip-installable
-
-
-risk_explainer/
-├── config/
-│   └── config.py
-├── clients/
-│   └── azure_client.py
-├── prompts/
-│   └── builders.py
-├── evaluation/
-│   └── judge.py
-├── workflows/
-│   └── generate_data.py
-├── notebooks/                    # Jupyter notebooks for EDA, dev, demo
-│   ├── 01_feature_analysis.ipynb       # Exploratory Data Analysis (EDA) of input features
-│   ├── 02_llm_narrative_testing.ipynb  # Interactive narrative generation and tweaking
-│   ├── 03_judge_eval_debug.ipynb       # Test judge evaluation on sample prompts
-│   └── 04_end_to_end_pipeline.ipynb    # Run full workflow interactively
-├── data/
-│   ├── input/
-│   └── output/
-├── tests/
-│   └── test_generate_data.py
-├── scripts/
-│   └── main.py
-├── .env
-├── .gitignore
-├── requirements.txt
-├── README.md
-└── setup.py
