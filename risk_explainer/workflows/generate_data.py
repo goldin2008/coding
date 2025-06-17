@@ -18,6 +18,7 @@ from matplotlib.patches import Patch
 
 from scipy.interpolate import make_interp_spline
 
+import os
 
 # Step 1: Create AML Feature Library
 def create_realistic_aml_feature_library():
@@ -865,6 +866,137 @@ def plot_model_metric_trends(model_data_dict, save_prefix="model_metrics"):
         if save_prefix:
             plt.savefig(f"{save_prefix}_{metric.lower()}.png", dpi=300, bbox_inches='tight')
         plt.show()
+
+
+# def plot_model_metric_trends_combined(model_data_dict, save_path="plots/model_metrics_combined.png"):
+#     """
+#     Plots metric trends for multiple generation models in a single figure with subplots.
+
+#     Args:
+#         model_data_dict (dict): Dictionary of model names to entity data.
+#         save_path (str): Full file path to save the figure.
+#     """
+#     metrics = ['Clarity', 'Conciseness', 'Completeness']
+#     colors = plt.cm.tab10.colors  # up to 10 distinct model lines
+
+#     # Prepare figure and axes
+#     fig, axes = plt.subplots(1, 3, figsize=(20, 6), sharey=True)
+    
+#     for ax, metric in zip(axes, metrics):
+#         for model_idx, (model_name, entity_data) in enumerate(model_data_dict.items()):
+#             entity_ids = [e['entity_id'] for e in entity_data]
+#             means = [e['stats'][metric]['mean'] for e in entity_data]
+#             stds = [e['stats'][metric]['std'] for e in entity_data]
+
+#             x = np.arange(len(entity_ids))
+#             if len(x) >= 4:  # Spline needs at least k+1 points
+#                 x_smooth = np.linspace(x.min(), x.max(), 300)
+#                 spl = make_interp_spline(x, means, k=3)
+#                 means_smooth = spl(x_smooth)
+#             else:
+#                 x_smooth = x
+#                 means_smooth = means
+
+#             ax.plot(x_smooth, means_smooth, 
+#                     color=colors[model_idx], 
+#                     linewidth=2.5,
+#                     label=model_name)
+            
+#             ax.fill_between(x_smooth,
+#                             np.array(means_smooth) - np.mean(stds),
+#                             np.array(means_smooth) + np.mean(stds),
+#                             color=colors[model_idx],
+#                             alpha=0.15)
+            
+#             ax.scatter(x, means,
+#                        color=colors[model_idx],
+#                        s=80, zorder=3,
+#                        edgecolor='white', linewidth=1)
+
+#         ax.set_title(f'{metric}', fontsize=14)
+#         ax.set_xlabel('Entity Index', fontsize=12)
+#         ax.set_ylim(0, 5.5)
+#         ax.grid(True, alpha=0.3)
+#         ax.tick_params(axis='x', rotation=45)
+
+#     axes[0].set_ylabel('Score (1–5 scale)', fontsize=12)
+#     axes[-1].legend(loc='upper right', fontsize=10)
+
+#     fig.suptitle('Model Metric Trends by Generation Model', fontsize=16)
+#     fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+#     # Ensure output directory exists
+#     os.makedirs(os.path.dirname(save_path), exist_ok=True)
+#     fig.savefig(save_path, dpi=300, bbox_inches='tight')
+#     plt.close(fig)
+
+#     print(f"Combined figure saved to: {save_path}")
+import os
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.interpolate import make_interp_spline
+
+def plot_model_metric_trends_combined_vertical(model_data_dict, save_path="plots/model_metrics_vertical.png"):
+    """
+    Plots metric trends for multiple generation models in a vertically stacked figure.
+    
+    Args:
+        model_data_dict (dict): Mapping model names to list of entity dicts with evaluation stats.
+        save_path (str): File path where the figure will be saved.
+    """
+    metrics = ['Clarity', 'Conciseness', 'Completeness']
+    colors = plt.cm.tab10.colors  # distinct colors per model
+
+    # Set up 3-row subplot (vertical stacking)
+    fig, axes = plt.subplots(nrows=3, ncols=1, figsize=(12, 16), sharex=True)
+
+    for ax, metric in zip(axes, metrics):
+        for model_idx, (model_name, entity_data) in enumerate(model_data_dict.items()):
+            entity_ids = [e['entity_id'] for e in entity_data]
+            means = [e['stats'][metric]['mean'] for e in entity_data]
+            stds = [e['stats'][metric]['std'] for e in entity_data]
+
+            x = np.arange(len(entity_ids))
+            if len(x) >= 4:
+                x_smooth = np.linspace(x.min(), x.max(), 300)
+                spl = make_interp_spline(x, means, k=3)
+                means_smooth = spl(x_smooth)
+            else:
+                x_smooth = x
+                means_smooth = means
+
+            ax.plot(x_smooth, means_smooth,
+                    color=colors[model_idx],
+                    linewidth=2.5,
+                    label=model_name)
+
+            ax.fill_between(x_smooth,
+                            np.array(means_smooth) - np.mean(stds),
+                            np.array(means_smooth) + np.mean(stds),
+                            color=colors[model_idx],
+                            alpha=0.15)
+
+            ax.scatter(x, means,
+                       color=colors[model_idx],
+                       s=80, zorder=3,
+                       edgecolor='white', linewidth=1)
+
+        ax.set_title(f'{metric} Score', fontsize=14)
+        ax.set_ylabel('Score (1–5 scale)', fontsize=12)
+        ax.grid(True, alpha=0.3)
+
+    axes[-1].set_xlabel('Entity Index', fontsize=12)
+    axes[0].legend(loc='upper right', fontsize=10)
+    fig.suptitle('Model Metric Trends by Generation Model', fontsize=16)
+    fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+    # Ensure save directory exists
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    fig.savefig(save_path, dpi=300, bbox_inches='tight')
+    print(f"Figure saved to: {save_path}")
+
+    # Show plot
+    plt.show()
 
 
 
