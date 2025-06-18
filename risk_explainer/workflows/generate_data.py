@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import json
@@ -18,7 +19,6 @@ from matplotlib.patches import Patch
 
 from scipy.interpolate import make_interp_spline
 
-import os
 
 # Step 1: Create AML Feature Library
 def create_realistic_aml_feature_library():
@@ -931,10 +931,6 @@ def plot_model_metric_trends(model_data_dict, save_prefix="model_metrics"):
 #     plt.close(fig)
 
 #     print(f"Combined figure saved to: {save_path}")
-import os
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.interpolate import make_interp_spline
 
 def plot_model_metric_trends_combined_vertical(model_data_dict, save_path="plots/model_metrics_vertical.png"):
     """
@@ -997,6 +993,143 @@ def plot_model_metric_trends_combined_vertical(model_data_dict, save_path="plots
 
     # Show plot
     plt.show()
+
+
+# def print_business_friendly_summary(entity):
+#     from tabulate import tabulate
+
+#     entity_id = entity['entity_id']
+#     risk_score = entity['risk_score']
+#     prompt = entity.get('prompt', '[No prompt]')
+#     llm_explanation = entity.get('llm_explanation', '[No explanation]')
+#     stats = entity.get('stats', {})
+#     features = entity['features']
+
+#     # Extract top 5 features by contribution
+#     feature_rows = sorted([
+#         (
+#             fname,
+#             fdata.get('feature_value'),
+#             fdata.get('contribution_pct', 0)
+#         )
+#         for fname, fdata in features.items()
+#     ], key=lambda x: -x[2])[:5]
+
+#     # Format feature table
+#     feature_table = tabulate(
+#         [(fname, fvalue, f"{contrib:.1f}%") for fname, fvalue, contrib in feature_rows],
+#         headers=["Feature", "Value", "Contribution %"],
+#         tablefmt="grid"
+#     )
+
+#     # Format stats table
+#     stats_table = tabulate(
+#         [
+#             (metric,
+#              f"{metric_stats['mean']:.1f}",
+#              f"{metric_stats['std']:.2f}",
+#              f"{metric_stats['min']:.1f}–{metric_stats['max']:.1f}")
+#             for metric, metric_stats in stats.items()
+#         ],
+#         headers=["Metric", "Mean", "Std Dev", "Range"],
+#         tablefmt="grid"
+#     )
+
+#     # Print the full report
+#     print(f"\n{'='*80}")
+#     print(f"🆔 Entity ID: {entity_id} | 💡 Risk Score: {risk_score:.0%}")
+#     print(f"{'='*80}")
+
+#     print("\n📌 Top Contributing Features:")
+#     print(feature_table)
+
+#     print("\n🤖 Prompt Given to LLM:")
+#     print(prompt)
+
+#     print("\n📝 LLM Explanation:")
+#     print(llm_explanation)
+
+#     print("\n📊 Evaluation Summary:")
+#     print(stats_table)
+
+#     # Optional: Flag discrepancy between risk score and explanation (if numeric in text)
+#     import re
+#     match = re.search(r'(\d{2,3})\%', llm_explanation)
+#     if match:
+#         explained_score = int(match.group(1))
+#         actual_score = int(risk_score * 100)
+#         if abs(explained_score - actual_score) > 20:
+#             print(f"\n⚠️ Warning: LLM explanation mentions a risk score of {explained_score}%, "
+#                   f"but actual score is {actual_score}%. This may indicate a hallucination.")
+
+def print_business_friendly_summary(entity):
+    from tabulate import tabulate
+    import re
+
+    entity_id = entity['entity_id']
+    risk_score = entity['risk_score']
+    prompt = entity.get('prompt', '[No prompt]')
+    llm_explanation = entity.get('llm_explanation', '[No explanation]')
+    stats = entity.get('stats', {})
+    features = entity['features']
+
+    # Extract top 5 features by contribution
+    feature_rows = sorted([
+        (fname, fdata.get('contribution_pct', 0))
+        for fname, fdata in features.items()
+    ], key=lambda x: -x[1])[:5]
+
+    # Format feature table without value
+    feature_table = tabulate(
+        [(fname, f"{contrib:.1f}%") for fname, contrib in feature_rows],
+        headers=["Feature", "Contribution %"],
+        tablefmt="grid"
+    )
+
+    # Format stats table
+    stats_table = tabulate(
+        [
+            (metric,
+             f"{metric_stats['mean']:.1f}",
+             f"{metric_stats['std']:.2f}",
+             f"{metric_stats['min']:.1f}–{metric_stats['max']:.1f}")
+            for metric, metric_stats in stats.items()
+        ],
+        headers=["Metric", "Mean", "Std Dev", "Range"],
+        tablefmt="grid"
+    )
+
+    # Print the full report
+    print(f"\n{'='*80}")
+    # print(f"🆔 Entity ID: {entity_id} | 💡 Risk Score: {risk_score:.0%}")
+    print(f" Entity ID: {entity_id} |  Risk Score: {risk_score:.0%}")
+    print(f"{'='*80}")
+
+    # print("\n📌 Top Contributing Features:")
+    print("\n Top Contributing Features:")
+    print(feature_table)
+
+    # print("\n🤖 Prompt Given to LLM:")
+    print("\n Prompt Given to LLM:")
+    print(prompt)
+
+    # print("\n📝 LLM Explanation:")
+    print("\n LLM Explanation:")
+    print(llm_explanation)
+
+    # print("\n📊 Evaluation Summary:")
+    print("\n Evaluation Summary:")
+    print(stats_table)
+
+    # Optional: Flag discrepancy between risk score and explanation (if numeric in text)
+    match = re.search(r'(\d{2,3})\%', llm_explanation)
+    if match:
+        explained_score = int(match.group(1))
+        actual_score = int(risk_score * 100)
+        if abs(explained_score - actual_score) > 20:
+            print(f"\n⚠️ Warning: LLM explanation mentions a risk score of {explained_score}%, "
+                  f"but actual score is {actual_score}%. This may indicate a hallucination.")
+
 
 
 
