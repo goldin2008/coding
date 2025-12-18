@@ -1,4 +1,7 @@
 """
+广搜 (bfs) 是一圈一圈的搜索过程, 和深搜 (dfs) 是一条路跑到黑然后再回溯。
+
+#
 DFS
 正是因为dfs搜索可一个方向, 并需要回溯, 所以用递归的方式来实现是最方便的。
 1. 确认递归函数, 参数
@@ -107,6 +110,74 @@ class Solution:
             self.path.append(node)
             self.dfs(graph, node)
             self.path.pop() # 回溯
+
+# 邻接矩阵写法
+def dfs(graph, x, n, path, result):
+    if x == n:
+        result.append(path.copy())
+        return
+    for i in range(1, n + 1):
+        if graph[x][i] == 1:
+            path.append(i)
+            dfs(graph, i, n, path, result)
+            path.pop()
+
+def main():
+    n, m = map(int, input().split())
+    graph = [[0] * (n + 1) for _ in range(n + 1)]
+
+    for _ in range(m):
+        s, t = map(int, input().split())
+        graph[s][t] = 1
+
+    result = []
+    dfs(graph, 1, n, [1], result)
+
+    if not result:
+        print(-1)
+    else:
+        for path in result:
+            print(' '.join(map(str, path)))
+
+if __name__ == "__main__":
+    main()
+
+# 邻接表写法
+from collections import defaultdict
+
+result = []  # 收集符合条件的路径
+path = []  # 1节点到终点的路径
+
+def dfs(graph, x, n):
+    if x == n:  # 找到符合条件的一条路径
+        result.append(path.copy())
+        return
+    for i in graph[x]:  # 找到 x指向的节点
+        path.append(i)  # 遍历到的节点加入到路径中来
+        dfs(graph, i, n)  # 进入下一层递归
+        path.pop()  # 回溯，撤销本节点
+
+def main():
+    n, m = map(int, input().split())
+
+    graph = defaultdict(list)  # 邻接表
+    for _ in range(m):
+        s, t = map(int, input().split())
+        graph[s].append(t)
+
+    path.append(1)  # 无论什么路径已经是从1节点出发
+    dfs(graph, 1, n)  # 开始遍历
+
+    # 输出结果
+    if not result:
+        print(-1)
+    for pa in result:
+        print(' '.join(map(str, pa)))
+
+if __name__ == "__main__":
+    main()
+
+
 
 #2 广搜的使用场景, 广搜的过程以及广搜的代码框架
     # 其实, 我们仅仅需要一个容器, 能保存我们要遍历过的元素就可以, 那么用队列, 还是用栈, 甚至用数组, 都是可以的。
@@ -1288,6 +1359,7 @@ if __name__ == "__main__":
     result = prim(v, e, edges)
     print(result)
 
+
 #17 kruskal算法精讲
     # 题目描述：
     # 在世界的某个区域，有一些分散的神秘岛屿，每个岛屿上都有一种珍稀的资源或者宝藏。国王打算在这些岛屿上建公路，方便运输。
@@ -1623,6 +1695,7 @@ def main():
     
 if __name__ == "__main__":
     print(main())
+
 
 #22 Bellman_ford 队列优化算法（又名SPFA）
     # 卡码网：94. 城市间货物运输 I(opens new window)
