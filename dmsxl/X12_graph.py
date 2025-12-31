@@ -111,6 +111,17 @@ class Solution:
             self.dfs(graph, node)
             self.path.pop() # 回溯
 
+# 【输入示例】
+# 5 5
+# 1 3
+# 3 5
+# 1 2
+# 2 4
+# 4 5
+# 【输出示例】
+# 1 3 5
+# 1 2 4 5  
+
 # 邻接矩阵写法
 def dfs(graph, x, n, path, result):
     if x == n:
@@ -210,7 +221,7 @@ def bfs(grid, visited, x, y):
                 visited[nextx][nexty] = True # 标记为访问过的节点
 
 
-#3 (Medium) 200.岛屿数量
+#3 (Medium) 200.岛屿数量 DFS solution
     # 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格, 请你计算网格中岛屿的数量。
     # 岛屿总是被水包围, 并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
     # 此外, 你可以假设该网格的四条边均被水包围。
@@ -309,6 +320,110 @@ class Solution:
 #         self.traversal(grid, i, j - 1) # 往左走
 #         self.traversal(grid, i, j + 1) # 往右走
 
+# 题目描述：
+# 给定一个由 1（陆地）和 0（水）组成的矩阵，你需要计算岛屿的数量。岛屿由水平方向或垂直方向上相邻的陆地连接而成，并且四周都是水域。你可以假设矩阵外均被水包围。
+# 输入描述：
+# 第一行包含两个整数 N, M，表示矩阵的行数和列数。
+# 后续 N 行，每行包含 M 个数字，数字为 1 或者 0。
+# 输出描述：
+# 输出一个整数，表示岛屿的数量。如果不存在岛屿，则输出 0。
+# 输入示例：
+# 4 5
+# 1 1 0 0 0
+# 1 1 0 0 0
+# 0 0 1 0 0
+# 0 0 0 1 1
+# 输出示例：
+# 3
+# 版本一
+# 理论上来讲，版本一的效率更高一些，因为避免了 没有意义的递归调用，在调用dfs之前，就做合法性判断。 
+# 但从写法来说，可能版本二 更利于理解一些。（不过其实都差不太多）
+direction = [[0, 1], [1, 0], [0, -1], [-1, 0]]  # 四个方向：上、右、下、左
+
+
+def dfs(grid, visited, x, y):
+    """
+    对一块陆地进行深度优先遍历并标记
+    """
+    for i, j in direction:
+        next_x = x + i
+        next_y = y + j
+        # 下标越界，跳过
+        if next_x < 0 or next_x >= len(grid) or next_y < 0 or next_y >= len(grid[0]):
+            continue
+        # 未访问的陆地，标记并调用深度优先搜索
+        if not visited[next_x][next_y] and grid[next_x][next_y] == 1:
+            visited[next_x][next_y] = True
+            dfs(grid, visited, next_x, next_y)
+
+
+if __name__ == '__main__':  
+    # 版本一
+    n, m = map(int, input().split())
+    
+    # 邻接矩阵
+    grid = []
+    for i in range(n):
+        grid.append(list(map(int, input().split())))
+    
+    # 访问表
+    visited = [[False] * m for _ in range(n)]
+    
+    res = 0
+    for i in range(n):
+        for j in range(m):
+            # 判断：如果当前节点是陆地，res+1并标记访问该节点，使用深度搜索标记相邻陆地。
+            if grid[i][j] == 1 and not visited[i][j]:
+                res += 1
+                visited[i][j] = True
+                dfs(grid, visited, i, j)
+    
+    print(res)
+# 版本二
+direction = [[0, 1], [1, 0], [0, -1], [-1, 0]]  # 四个方向：上、右、下、左
+
+
+def dfs(grid, visited, x, y):
+    """
+    对一块陆地进行深度优先遍历并标记
+    """
+    # 与版本一的差别，在调用前增加判断终止条件
+    if visited[x][y] or grid[x][y] == 0:
+        return
+    visited[x][y] = True
+
+    for i, j in direction:
+        next_x = x + i
+        next_y = y + j
+        # 下标越界，跳过
+        if next_x < 0 or next_x >= len(grid) or next_y < 0 or next_y >= len(grid[0]):
+            continue
+        # 由于判断条件放在了方法首部，此处直接调用dfs方法
+        dfs(grid, visited, next_x, next_y)
+
+
+if __name__ == '__main__':
+    # 版本二
+    n, m = map(int, input().split())
+
+    # 邻接矩阵
+    grid = []
+    for i in range(n):
+        grid.append(list(map(int, input().split())))
+
+    # 访问表
+    visited = [[False] * m for _ in range(n)]
+
+    res = 0
+    for i in range(n):
+        for j in range(m):
+            # 判断：如果当前节点是陆地，res+1并标记访问该节点，使用深度搜索标记相邻陆地。
+            if grid[i][j] == 1 and not visited[i][j]:
+                res += 1
+                dfs(grid, visited, i, j)
+
+    print(res)
+
 
 #4 (Medium) 200.岛屿数量 BFS solution
 # 不少同学用广搜做这道题目的时候, 超时了。 这里有一个广搜中很重要的细节：
@@ -352,6 +467,42 @@ class Solution:
                 q.append((nextx, nexty))
                 visited[nextx][nexty] = True # 只要加入队列立刻标记
 
+from collections import deque
+directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+def bfs(grid, visited, x, y):
+    que = deque([])
+    que.append([x,y])
+    visited[x][y] = True
+    while que:
+        cur_x, cur_y = que.popleft()
+        for i, j in directions:
+            next_x = cur_x + i
+            next_y = cur_y + j
+            if next_y < 0 or next_x < 0 or next_x >= len(grid) or next_y >= len(grid[0]):
+                continue
+            if not visited[next_x][next_y] and grid[next_x][next_y] == 1: 
+                visited[next_x][next_y] = True
+                que.append([next_x, next_y])
+
+
+def main():
+    n, m = map(int, input().split())
+    grid = []
+    for i in range(n):
+        grid.append(list(map(int, input().split())))
+    visited = [[False] * m for _ in range(n)]
+    res = 0
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == 1 and not visited[i][j]:
+                res += 1
+                bfs(grid, visited, i, j)
+    print(res)
+
+if __name__ == "__main__":
+    main()
+
+
 #X17 (Medium) 200.Count Islands
     # Given a binary matrix representing 1s as land and 0s as water, return the number of islands.
     # An island is formed by connecting adjacent lands 4-directionally (up, down, left, and right).
@@ -384,6 +535,227 @@ def dfs(r: int, c: int, matrix: List[List[int]]) -> None:
 
 def is_within_bounds(r: int, c: int, matrix: List[List[int]]) -> bool:
     return 0 <= r < len(matrix) and 0 <= c < len(matrix[0])
+# 输入示例
+# 4 5
+# 1 1 0 0 0
+# 1 1 0 0 0
+# 0 0 1 0 0
+# 0 0 0 1 1
+# 输出示例
+# 4
+# 大家通过注释可以发现，两种写法，版本一，在主函数遇到陆地就计数为1，接下来的相邻陆地都在dfs中计算。
+# 版本二 在主函数遇到陆地 计数为0，也就是不计数，陆地数量都去dfs里做计算。
+# 这也是为什么大家看了很多 dfs的写法 ，发现写法怎么都不一样呢？ 其实这就是根本原因。
+
+# DFS
+# 四个方向
+position = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+count = 0
+
+
+def dfs(grid, visited, x, y):
+    """
+    深度优先搜索，对一整块陆地进行标记
+    """
+    global count  # 定义全局变量，便于传递count值
+    for i, j in position:
+        cur_x = x + i
+        cur_y = y + j
+        # 下标越界，跳过
+        if cur_x < 0 or cur_x >= len(grid) or cur_y < 0 or cur_y >= len(grid[0]):
+            continue
+        if not visited[cur_x][cur_y] and grid[cur_x][cur_y] == 1:
+            visited[cur_x][cur_y] = True
+            count += 1
+            dfs(grid, visited, cur_x, cur_y)
+
+
+n, m = map(int, input().split())
+# 邻接矩阵
+grid = []
+for i in range(n):
+    grid.append(list(map(int, input().split())))
+# 访问表
+visited = [[False] * m for _ in range(n)]
+
+result = 0  # 记录最终结果
+for i in range(n):
+    for j in range(m):
+        if grid[i][j] == 1 and not visited[i][j]:
+            count = 1
+            visited[i][j] = True
+            dfs(grid, visited, i, j)
+            result = max(count, result)
+
+print(result)
+# BFS
+from collections import deque
+
+position = [[0, 1], [1, 0], [0, -1], [-1, 0]]  # 四个方向
+count = 0
+
+
+def bfs(grid, visited, x, y):
+    """
+    广度优先搜索对陆地进行标记
+    """
+    global count  # 声明全局变量
+    que = deque()
+    que.append([x, y])
+    while que:
+        cur_x, cur_y = que.popleft()
+        for i, j in position:
+            next_x = cur_x + i
+            next_y = cur_y + j
+            # 下标越界，跳过
+            if next_x < 0 or next_x >= len(grid) or next_y < 0 or next_y >= len(grid[0]):
+                continue
+            if grid[next_x][next_y] == 1 and not visited[next_x][next_y]:
+                visited[next_x][next_y] = True
+                count += 1
+                que.append([next_x, next_y])
+
+
+n, m = map(int, input().split())
+# 邻接矩阵
+grid = []
+for i in range(n):
+    grid.append(list(map(int, input().split())))
+visited = [[False] * m for _ in range(n)]  # 访问表
+
+result = 0  # 记录最终结果
+for i in range(n):
+    for j in range(m):
+        if grid[i][j] == 1 and not visited[i][j]:
+            count = 1
+            visited[i][j] = True
+            bfs(grid, visited, i, j)
+            res = max(result, count)
+
+print(result)
+
+
+# 102. 沉没孤岛
+# 题目描述：
+# 给定一个由 1（陆地）和 0（水）组成的矩阵，岛屿指的是由水平或垂直方向上相邻的陆地单元格组成的区域，
+# 且完全被水域单元格包围。孤岛是那些位于矩阵内部、所有单元格都不接触边缘的岛屿。
+# 现在你需要将所有孤岛“沉没”，即将孤岛中的所有陆地单元格（1）转变为水域单元格（0）。
+# 输入描述：
+# 第一行包含两个整数 N, M，表示矩阵的行数和列数。
+# 之后 N 行，每行包含 M 个数字，数字为 1 或者 0，表示岛屿的单元格。
+# 输出描述
+# 输出将孤岛“沉没”之后的岛屿矩阵。
+# 输入示例：
+# 4 5
+# 1 1 0 0 0
+# 1 1 0 0 0
+# 0 0 1 0 0
+# 0 0 0 1 1
+# 输出示例：
+# 1 1 0 0 0
+# 1 1 0 0 0
+# 0 0 0 0 0
+# 0 0 0 1 1
+# 深搜版
+def dfs(grid, x, y):
+    grid[x][y] = 2
+    directions = [(-1, 0), (0, -1), (1, 0), (0, 1)]  # 四个方向
+    for dx, dy in directions:
+        nextx, nexty = x + dx, y + dy
+        # 超过边界
+        if nextx < 0 or nextx >= len(grid) or nexty < 0 or nexty >= len(grid[0]):
+            continue
+        # 不符合条件，不继续遍历
+        if grid[nextx][nexty] == 0 or grid[nextx][nexty] == 2:
+            continue
+        dfs(grid, nextx, nexty)
+
+def main():
+    n, m = map(int, input().split())
+    grid = [[int(x) for x in input().split()] for _ in range(n)]
+
+    # 步骤一：
+    # 从左侧边，和右侧边 向中间遍历
+    for i in range(n):
+        if grid[i][0] == 1:
+            dfs(grid, i, 0)
+        if grid[i][m - 1] == 1:
+            dfs(grid, i, m - 1)
+
+    # 从上边和下边 向中间遍历
+    for j in range(m):
+        if grid[0][j] == 1:
+            dfs(grid, 0, j)
+        if grid[n - 1][j] == 1:
+            dfs(grid, n - 1, j)
+
+    # 步骤二、步骤三
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == 1:
+                grid[i][j] = 0
+            if grid[i][j] == 2:
+                grid[i][j] = 1
+
+    # 打印结果
+    for row in grid:
+        print(' '.join(map(str, row)))
+
+if __name__ == "__main__":
+    main()
+
+# 广搜版
+from collections import deque
+
+n, m = list(map(int, input().split()))
+g = []
+for _ in range(n):
+    row = list(map(int,input().split()))
+    g.append(row)
+    
+directions = [(1,0),(-1,0),(0,1),(0,-1)]
+count = 0
+
+def bfs(r,c,mode):
+    global count 
+    q = deque()
+    q.append((r,c))
+    count += 1
+    
+    while q:
+        r, c = q.popleft()
+        if mode:
+            g[r][c] = 2
+            
+        for di in directions:
+            next_r = r + di[0]
+            next_c = c + di[1]
+            if next_c < 0 or next_c >= m or next_r < 0 or next_r >= n:
+                continue
+            if g[next_r][next_c] == 1:
+                q.append((next_r,next_c))
+                if mode:
+                    g[r][c] = 2
+                    
+                count += 1
+
+for i in range(n):
+    if g[i][0] == 1: bfs(i,0,True)
+    if g[i][m-1] == 1: bfs(i, m-1,True)
+    
+for j in range(m):
+    if g[0][j] == 1: bfs(0,j,1)
+    if g[n-1][j] == 1: bfs(n-1,j,1)
+
+for i in range(n):
+    for j in range(m):
+        if g[i][j] == 2:
+            g[i][j] = 1
+        else:
+            g[i][j] = 0
+            
+for row in g:
+    print(" ".join(map(str, row)))
 
 
 #5 (Medium) 695.岛屿的最大面积
@@ -625,6 +997,185 @@ class Solution:
             if new_x >= len(board) or new_y >= len(board[0]) or new_x < 0 or new_y < 0:
                 continue
             self.dfs(board, new_x, new_y, visited)
+# 101. 孤岛的总面积
+# 题目描述
+# 给定一个由 1（陆地）和 0（水）组成的矩阵，岛屿指的是由水平或垂直方向上相邻的陆地单元格组成的区域，
+# 且完全被水域单元格包围。孤岛是那些位于矩阵内部、所有单元格都不接触边缘的岛屿。
+# 现在你需要计算所有孤岛的总面积，岛屿面积的计算方式为组成岛屿的陆地的总数。
+# 输入描述
+# 第一行包含两个整数 N, M，表示矩阵的行数和列数。之后 N 行，每行包含 M 个数字，数字为 1 或者 0。
+# 输出描述
+# 输出一个整数，表示所有孤岛的总面积，如果不存在孤岛，则输出 0。
+# 输入示例
+# 4 5
+# 1 1 0 0 0
+# 1 1 0 0 0
+# 0 0 1 0 0
+# 0 0 0 1 1
+# 输出示例：
+# 1
+
+# 深搜版
+position = [[1, 0], [0, 1], [-1, 0], [0, -1]]
+count = 0
+
+def dfs(grid, x, y):
+    global count
+    grid[x][y] = 0
+    count += 1
+    for i, j in position:
+        next_x = x + i
+        next_y = y + j
+        if next_x < 0 or next_y < 0 or next_x >= len(grid) or next_y >= len(grid[0]):
+            continue
+        if grid[next_x][next_y] == 1: 
+            dfs(grid, next_x, next_y)
+                
+n, m = map(int, input().split())
+
+# 邻接矩阵
+grid = []
+for i in range(n):
+    grid.append(list(map(int, input().split())))
+
+# 清除边界上的连通分量
+for i in range(n):
+    if grid[i][0] == 1: 
+        dfs(grid, i, 0)
+    if grid[i][m - 1] == 1: 
+        dfs(grid, i, m - 1)
+
+for j in range(m):
+    if grid[0][j] == 1: 
+        dfs(grid, 0, j)
+    if grid[n - 1][j] == 1: 
+        dfs(grid, n - 1, j)
+    
+count = 0 # 将count重置为0
+# 统计内部所有剩余的连通分量
+for i in range(n):
+    for j in range(m):
+        if grid[i][j] == 1:
+            dfs(grid, i, j)
+            
+print(count)
+# 广搜版
+from collections import deque
+
+# 处理输入
+n, m = list(map(int, input().split()))
+g = []
+for _ in range(n):
+    row = list(map(int, input().split()))
+    g.append(row)
+
+# 定义四个方向、孤岛面积（遍历完边缘后会被重置）
+directions = [[0,1], [1,0], [-1,0], [0,-1]]
+count = 0
+
+# 广搜
+def bfs(r, c):
+    global count
+    q = deque()
+    q.append((r, c))
+    g[r][c] = 0
+    count += 1
+
+    while q:
+        r, c = q.popleft()
+        for di in directions:
+            next_r = r + di[0]
+            next_c = c + di[1]
+            if next_c < 0 or next_c >= m or next_r < 0 or next_r >= n:
+                continue
+            if g[next_r][next_c] == 1:
+                q.append((next_r, next_c))
+                g[next_r][next_c] = 0
+                count += 1
+
+
+for i in range(n):
+    if g[i][0] == 1: 
+        bfs(i, 0)
+    if g[i][m-1] == 1: 
+        bfs(i, m-1)
+
+for i in range(m):
+    if g[0][i] == 1: 
+        bfs(0, i)
+    if g[n-1][i] == 1: 
+        bfs(n-1, i)
+
+count = 0
+for i in range(n):
+    for j in range(m):
+        if g[i][j] == 1: 
+            bfs(i, j)
+
+print(count)
+
+direction = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+result = 0
+
+###
+# 深度搜尋
+def dfs(grid, y, x):
+    grid[y][x] = 0
+    global result 
+    result += 1
+    
+    for i, j in direction:
+        next_x = x + j
+        next_y = y + i
+        if (next_x < 0 or next_y < 0 or
+            next_x >= len(grid[0]) or next_y >= len(grid)
+        ):
+            continue
+        if grid[next_y][next_x] == 1 and not visited[next_y][next_x]:
+            visited[next_y][next_x] = True
+            dfs(grid, next_y, next_x)    
+
+
+# 讀取輸入值
+n, m = map(int, input().split())
+grid = []
+visited = [[False] * m for _ in range(n)]
+
+for i in range(n):
+    grid.append(list(map(int, input().split())))
+
+# 處理邊界
+for j in range(m):
+    # 上邊界
+    if grid[0][j] == 1 and not visited[0][j]: 
+        visited[0][j] = True
+        dfs(grid, 0, j)
+    # 下邊界
+    if grid[n - 1][j] == 1 and not visited[n - 1][j]: 
+        visited[n - 1][j] = True
+        dfs(grid, n - 1, j)
+    
+for i in range(n):
+    # 左邊界
+    if grid[i][0] == 1 and not visited[i][0]: 
+        visited[i][0] = True
+        dfs(grid, i, 0)
+    # 右邊界
+    if grid[i][m - 1] == 1 and not visited[i][m - 1]: 
+        visited[i][m - 1] = True
+        dfs(grid, i, m - 1)
+    
+# 計算孤島總面積
+result = 0  # 初始化，避免使用到處理邊界時所產生的累加值
+
+for i in range(n):
+    for j in range(m):
+        if grid[i][j] == 1 and not visited[i][j]:
+            visited[i][j] = True
+            dfs(grid, i, j)
+
+# 輸出孤島的總面積
+print(result)
 
 
 #8 (Medium) 417.太平洋大西洋水流问题
@@ -741,6 +1292,89 @@ class Solution:
                 if visited[row][col][0] and visited[row][col][1]:
                     ans.append([row, col])
         return ans
+# 103. 水流问题
+# 题目描述：
+# 现有一个 N × M 的矩阵，每个单元格包含一个数值，这个数值代表该位置的相对高度。
+# 矩阵的左边界和上边界被认为是第一组边界，而矩阵的右边界和下边界被视为第二组边界。
+# 矩阵模拟了一个地形，当雨水落在上面时，水会根据地形的倾斜向低处流动，
+# 但只能从较高或等高的地点流向较低或等高并且相邻（上下左右方向）的地点。
+# 我们的目标是确定那些单元格，从这些单元格出发的水可以达到第一组边界和第二组边界。
+# 输入描述：
+# 第一行包含两个整数 N 和 M，分别表示矩阵的行数和列数。
+# 后续 N 行，每行包含 M 个整数，表示矩阵中的每个单元格的高度。
+# 输出描述：
+# 输出共有多行，每行输出两个整数，用一个空格隔开，表示可达第一组边界和第二组边界的单元格的坐标，
+# 输出顺序任意。
+# 输入示例：
+# 5 5
+# 1 3 1 2 4
+# 1 2 1 3 2
+# 2 4 7 2 1
+# 4 5 6 1 1
+# 1 4 1 2 1
+# 输出示例：
+# 0 4
+# 1 3
+# 2 2
+# 3 0
+# 3 1
+# 3 2
+# 4 0
+# 4 1
+first = set()
+second = set()
+directions = [[-1, 0], [0, 1], [1, 0], [0, -1]]
+
+def dfs(i, j, graph, visited, side):
+    if visited[i][j]:
+        return
+    
+    visited[i][j] = True
+    side.add((i, j))
+    
+    for x, y in directions:
+        new_x = i + x
+        new_y = j + y
+        if (
+            0 <= new_x < len(graph)
+            and 0 <= new_y < len(graph[0])
+            and int(graph[new_x][new_y]) >= int(graph[i][j])
+        ):
+            dfs(new_x, new_y, graph, visited, side)
+
+def main():
+    global first
+    global second
+    
+    N, M = map(int, input().strip().split())
+    graph = []
+    for _ in range(N):
+        row = input().strip().split()
+        graph.append(row)
+    
+    # 是否可到达第一边界
+    visited = [[False] * M for _ in range(N)]
+    for i in range(M):
+        dfs(0, i, graph, visited, first)
+    for i in range(N):
+        dfs(i, 0, graph, visited, first)
+    
+    # 是否可到达第二边界
+    visited = [[False] * M for _ in range(N)]
+    for i in range(M):
+        dfs(N - 1, i, graph, visited, second)
+    for i in range(N):
+        dfs(i, M - 1, graph, visited, second)
+
+    # 可到达第一边界和第二边界
+    res = first & second
+    
+    for x, y in res:
+        print(f"{x} {y}")
+    
+    
+if __name__ == "__main__":
+    main()
 
 
 #9 ??? (Hard) 827.最大人工岛
@@ -817,111 +1451,178 @@ class Solution:
                         visited_island.add(grid[nearR][nearC])    #标记当前岛屿已访问
                     res = max(res, count) 
         return res
+# 104.建造最大岛屿
+# 题目描述：
+# 给定一个由 1（陆地）和 0（水）组成的矩阵，你最多可以将矩阵中的一格水变为一块陆地，
+# 在执行了此操作之后，矩阵中最大的岛屿面积是多少。
+# 岛屿面积的计算方式为组成岛屿的陆地的总数。岛屿是被水包围，
+# 并且通过水平方向或垂直方向上相邻的陆地连接而成的。你可以假设矩阵外均被水包围。
+# 输入描述：
+# 第一行包含两个整数 N, M，表示矩阵的行数和列数。之后 N 行，每行包含 M 个数字，
+# 数字为 1 或者 0，表示岛屿的单元格。
+# 输出描述：
+# 输出一个整数，表示最大的岛屿面积。
+# 输入示例：
+# 4 5
+# 1 1 0 0 0
+# 1 1 0 0 0
+# 0 0 1 0 0
+# 0 0 0 1 1
+# 输出示例
+# 6
+# BFS
+from typing import List
+from collections import defaultdict
 
-
-#10 (Hard) 127.单词接龙
-    # 字典 wordList 中从单词 beginWord 和 endWord 的 转换序列 是一个按下述规格形成的序列：
-    # 序列中第一个单词是 beginWord 。
-    # 序列中最后一个单词是 endWord 。
-    # 每次转换只能改变一个字母。
-    # 转换过程中的中间单词必须是字典 wordList 中的单词。
-    # 给你两个单词 beginWord 和 endWord 和一个字典 wordList , 找到从 beginWord 到 endWord 的 最短转换序列 中的 单词数目 。如果不存在这样的转换序列, 返回 0。
-    # 示例 1：
-    # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
-    # 输出：5
-    # 解释：一个最短转换序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog", 返回它的长度 5。
-    # 示例 2：
-    # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
-    # 输出：0
-    # 解释：endWord "cog" 不在字典中, 所以无法进行转换。
-# 首先题目中并没有给出点与点之间的连线, 而是要我们自己去连, 条件是字符只能差一个, 所以判断点与点之间的关系, 要自己判断是不是差一个字符, 如果差一个字符, 那就是有链接。
-# 然后就是求起点和终点的最短路径长度, 这里无向图求最短路, 广搜最为合适, 广搜只要搜到了终点, 那么一定是最短的路径。因为广搜就是以起点中心向四周扩散的搜索。
-# 本题如果用深搜, 会比较麻烦, 要在到达终点的不同路径中选则一条最短路。 而广搜只要达到终点, 一定是最短路。
-# 另外需要有一个注意点：
-# 本题是一个无向图, 需要用标记位, 标记着节点是否走过, 否则就会死循环！
-# 本题给出集合是数组型的, 可以转成set结构, 查找更快一些
 class Solution:
-    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        wordSet = set(wordList)
-        if len(wordSet)== 0 or endWord not in wordSet:
+    def __init__(self):
+        self.direction = [(1,0),(-1,0),(0,1),(0,-1)]
+        self.res = 0
+        self.count = 0
+        self.idx = 1
+        self.count_area = defaultdict(int)
+
+    def max_area_island(self, grid: List[List[int]]) -> int:
+        if not grid or len(grid) == 0 or len(grid[0]) == 0:
             return 0
-        mapping = {beginWord:1}
-        queue = deque([beginWord]) 
-        while queue:
-            word = queue.popleft()
-            path = mapping[word]
-            for i in range(len(word)):
-                word_list = list(word)
-                for j in range(26):
-                    word_list[i] = chr(ord('a')+j)
-                    newWord = "".join(word_list)
-                    if newWord == endWord:
-                        return path+1
-                    if newWord in wordSet and newWord not in mapping:
-                        mapping[newWord] = path+1
-                        queue.append(newWord)                      
-        return 0
 
-
-#11 ??? (Medium) 841.钥匙和房间
-    # 有 N 个房间, 开始时你位于 0 号房间。每个房间有不同的号码：0, 1, 2, ..., N-1, 并且房间里可能有一些钥匙能使你进入下一个房间。
-    # 在形式上, 对于每个房间 i 都有一个钥匙列表 rooms[i], 每个钥匙 rooms[i][j] 由 [0,1, ..., N-1] 中的一个整数表示, 其中 N = rooms.length。 钥匙 rooms[i][j] = v 可以打开编号为 v 的房间。
-    # 最初, 除 0 号房间外的其余所有房间都被锁住。
-    # 你可以自由地在房间之间来回走动。
-    # 如果能进入每个房间返回 true, 否则返回 false。
-    # 示例 1：
-    # 输入: [[1],[2],[3],[]]
-    # 输出: true
-    # 解释: 我们从 0 号房间开始, 拿到钥匙 1。 之后我们去 1 号房间, 拿到钥匙 2。 然后我们去 2 号房间, 拿到钥匙 3。 最后我们去了 3 号房间。 由于我们能够进入每个房间, 我们返回 true。
-    # 示例 2：
-    # 输入：[[1,3],[3,0,1],[2],[0]]
-    # 输出：false
-    # 解释：我们不能进入 2 号房间。
-# 本题是一个有向图搜索全路径的问题。 只能用深搜（DFS）或者广搜（BFS）来搜。不能用并查集的方式去解决。
-# DFS 深度搜索优先
-class Solution:
-    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
-        visited = [False for i in range(len(rooms))]
-
-        self.dfs(0, rooms, visited)
-
-        # 检查是否都访问到了
-        for i in range(len(visited)):
-            if not visited[i] :
-                return False
-        return True
-
-    def dfs(self, key: int, rooms: List[List[int]]  , visited : List[bool] ) :
-        if visited[key] :
-            return
-        visited[key] = True
-        keys = rooms[key]
-        for i in range(len(keys)) :
-            # 深度优先搜索遍历
-            self.dfs(keys[i], rooms, visited)
-# BFS 广度搜索优先
-class Solution:
-    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
-        visited = [False] * len(rooms)
-        self.bfs(rooms, 0, visited)
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    self.count = 0
+                    self.idx += 1
+                    self.dfs(grid,i,j)
+        # print(grid)
+        self.check_area(grid)
+        # print(self.count_area)
         
-        for room in visited:
-            if room == False:
-                return False
-        return True
+        if self.check_largest_connect_island(grid=grid):
+            return self.res + 1
+        return max(self.count_area.values())
     
-    def bfs(self, rooms, index, visited):
-        q = collections.deque()
-        q.append(index)
+    def dfs(self,grid,row,col):
+        grid[row][col] = self.idx
+        self.count += 1
+        for dr,dc in self.direction:
+            _row = dr + row 
+            _col = dc + col 
+            if 0<=_row<len(grid) and 0<=_col<len(grid[0]) and grid[_row][_col] == 1:
+                self.dfs(grid,_row,_col)
+        return
 
-        visited[0] = True
+    def check_area(self,grid):
+        m, n = len(grid), len(grid[0])
+        for row in range(m):
+            for col in range(n):
+                  self.count_area[grid[row][col]] = self.count_area.get(grid[row][col],0) + 1
+        return
 
-        while len(q) != 0:
-            index = q.popleft()
-            for nextIndex in rooms[index]:
-                if visited[nextIndex] == False:
-                    q.append(nextIndex)
-                    visited[nextIndex] = True
+    def check_largest_connect_island(self,grid):
+        m, n = len(grid), len(grid[0])
+        has_connect = False
+        for row in range(m):
+            for col in range(n):
+                if grid[row][col] == 0:
+                    has_connect = True
+                    area = 0
+                    visited = set()
+                    for dr, dc in self.direction:
+                        _row = row + dr 
+                        _col = col + dc
+                        if 0<=_row<len(grid) and 0<=_col<len(grid[0]) and grid[_row][_col] != 0 and grid[_row][_col] not in visited:
+                            visited.add(grid[_row][_col])
+                            area += self.count_area[grid[_row][_col]]
+                            self.res = max(self.res, area)
+                            
+        return has_connect
+
+
+
+
+def main():
+    m, n = map(int, input().split())
+    grid = []
+
+    for i in range(m):
+        grid.append(list(map(int,input().split())))
+
+    
+    sol = Solution()
+    print(sol.max_area_island(grid))
+
+if __name__ == '__main__':
+    main()
+
+import collections
+
+directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
+area = 0
+
+def dfs(i, j, grid, visited, num):
+    global area
+    
+    if visited[i][j]:
+        return
+
+    visited[i][j] = True
+    grid[i][j] = num  # 标记岛屿号码
+    area += 1
+    
+    for x, y in directions:
+        new_x = i + x
+        new_y = j + y
+        if (
+            0 <= new_x < len(grid)
+            and 0 <= new_y < len(grid[0])
+            and grid[new_x][new_y] == "1"
+        ):
+            dfs(new_x, new_y, grid, visited, num)
+    
+
+def main():
+    global area
+    
+    N, M = map(int, input().strip().split())
+    grid = []
+    for i in range(N):
+        grid.append(input().strip().split())
+    visited = [[False] * M for _ in range(N)]
+    rec = collections.defaultdict(int)
+    
+    cnt = 2
+    for i in range(N):
+        for j in range(M):
+            if grid[i][j] == "1":
+                area = 0
+                dfs(i, j, grid, visited, cnt)
+                rec[cnt] = area  # 纪录岛屿面积
+                cnt += 1
+    
+    res = 0
+    for i in range(N):
+        for j in range(M):
+            if grid[i][j] == "0":
+                max_island = 1  # 将水变为陆地，故从1开始计数
+                v = set()
+                for x, y in directions:
+                    new_x = i + x
+                    new_y = j + y
+                    if (
+                        0 <= new_x < len(grid)
+                        and 0 <= new_y < len(grid[0])
+                        and grid[new_x][new_y] != "0"
+                        and grid[new_x][new_y] not in v  # 岛屿不可重复
+                    ):
+                        max_island += rec[grid[new_x][new_y]]
+                        v.add(grid[new_x][new_y])
+                res = max(res, max_island)
+
+    if res == 0:
+        return max(rec.values())  # 无水的情况
+    return res
+    
+if __name__ == "__main__":
+    print(main())
 
 
 #12 (Easy) 463.岛屿的周长
@@ -1011,6 +1712,319 @@ class Solution:
         ans = sum([sum(row) for row in res])
 
         return ans
+# 106. 岛屿的周长
+# 题目描述
+# 给定一个由 1（陆地）和 0（水）组成的矩阵，岛屿是被水包围，
+# 并且通过水平方向或垂直方向上相邻的陆地连接而成的。
+# 你可以假设矩阵外均被水包围。在矩阵中恰好拥有一个岛屿，假设组成岛屿的陆地边长都为 1，
+# 请计算岛屿的周长。岛屿内部没有水域。
+# 输入描述
+# 第一行包含两个整数 N, M，表示矩阵的行数和列数。之后 N 行，每行包含 M 个数字，
+# 数字为 1 或者 0，表示岛屿的单元格。
+# 输出描述
+# 输出一个整数，表示岛屿的周长。
+# 输入示例
+# 5 5
+# 0 0 0 0 0
+# 0 1 0 1 0
+# 0 1 1 1 0
+# 0 1 1 1 0
+# 0 0 0 0 0
+# 输出示例
+# 14
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    # 读取 n 和 m
+    n = int(data[0])
+    m = int(data[1])
+    
+    # 初始化 grid
+    grid = []
+    index = 2
+    for i in range(n):
+        grid.append([int(data[index + j]) for j in range(m)])
+        index += m
+    
+    sum_land = 0    # 陆地数量
+    cover = 0       # 相邻数量
+
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j] == 1:
+                sum_land += 1
+                # 统计上边相邻陆地
+                if i - 1 >= 0 and grid[i - 1][j] == 1:
+                    cover += 1
+                # 统计左边相邻陆地
+                if j - 1 >= 0 and grid[i][j - 1] == 1:
+                    cover += 1
+                # 不统计下边和右边，避免重复计算
+    
+    result = sum_land * 4 - cover * 2
+    print(result)
+
+if __name__ == "__main__":
+    main()
+
+
+#10 (Hard) 127.单词接龙
+    # 字典 wordList 中从单词 beginWord 和 endWord 的 转换序列 是一个按下述规格形成的序列：
+    # 序列中第一个单词是 beginWord 。
+    # 序列中最后一个单词是 endWord 。
+    # 每次转换只能改变一个字母。
+    # 转换过程中的中间单词必须是字典 wordList 中的单词。
+    # 给你两个单词 beginWord 和 endWord 和一个字典 wordList , 找到从 beginWord 到 endWord 的 最短转换序列 中的 单词数目 。如果不存在这样的转换序列, 返回 0。
+    # 示例 1：
+    # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
+    # 输出：5
+    # 解释：一个最短转换序列是 "hit" -> "hot" -> "dot" -> "dog" -> "cog", 返回它的长度 5。
+    # 示例 2：
+    # 输入：beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log"]
+    # 输出：0
+    # 解释：endWord "cog" 不在字典中, 所以无法进行转换。
+# 首先题目中并没有给出点与点之间的连线, 而是要我们自己去连, 条件是字符只能差一个, 所以判断点与点之间的关系, 要自己判断是不是差一个字符, 如果差一个字符, 那就是有链接。
+# 然后就是求起点和终点的最短路径长度, 这里无向图求最短路, 广搜最为合适, 广搜只要搜到了终点, 那么一定是最短的路径。因为广搜就是以起点中心向四周扩散的搜索。
+# 本题如果用深搜, 会比较麻烦, 要在到达终点的不同路径中选则一条最短路。 而广搜只要达到终点, 一定是最短路。
+# 另外需要有一个注意点：
+# 本题是一个无向图, 需要用标记位, 标记着节点是否走过, 否则就会死循环！
+# 本题给出集合是数组型的, 可以转成set结构, 查找更快一些
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        wordSet = set(wordList)
+        if len(wordSet)== 0 or endWord not in wordSet:
+            return 0
+        mapping = {beginWord:1}
+        queue = deque([beginWord]) 
+        while queue:
+            word = queue.popleft()
+            path = mapping[word]
+            for i in range(len(word)):
+                word_list = list(word)
+                for j in range(26):
+                    word_list[i] = chr(ord('a')+j)
+                    newWord = "".join(word_list)
+                    if newWord == endWord:
+                        return path+1
+                    if newWord in wordSet and newWord not in mapping:
+                        mapping[newWord] = path+1
+                        queue.append(newWord)                      
+        return 0
+
+# 110. 字符串接龙
+    # 题目描述
+    # 字典 strList 中从字符串 beginStr 和 endStr 的转换序列是一个按下述规格形成的序列：
+    # 序列中第一个字符串是 beginStr。
+    # 序列中最后一个字符串是 endStr。
+    # 每次转换只能改变一个位置的字符（例如 ftr 可以转化 fty ，但 ftr 不能转化 frx）。
+    # 转换过程中的中间字符串必须是字典 strList 中的字符串。
+    # beginStr 和 endStr 不在 字典 strList 中
+    # 字符串中只有小写的26个字母
+    # 给你两个字符串 beginStr 和 endStr 和一个字典 strList，找到从 beginStr 到 endStr 的最短转换序列中的字符串数目。如果不存在这样的转换序列，返回 0。
+    # 输入描述
+    # 第一行包含一个整数 N，表示字典 strList 中的字符串数量。 第二行包含两个字符串，用空格隔开，分别代表 beginStr 和 endStr。 后续 N 行，每行一个字符串，代表 strList 中的字符串。
+    # 输出描述
+    # 输出一个整数，代表从 beginStr 转换到 endStr 需要的最短转换序列中的字符串数量。如果不存在这样的转换序列，则输出 0。
+    # 输入示例
+    # 6
+    # abc def
+    # efc
+    # dbc
+    # ebc
+    # dec
+    # dfc
+    # yhn
+    # 输出示例
+    # 4
+    # 提示信息
+    # 从 startStr 到 endStr，在 strList 中最短的路径为 abc -> dbc -> dec -> def，所以输出结果为 4
+    # 数据范围：
+    # 2 <= N <= 500
+def judge(s1,s2):
+    count=0
+    for i in range(len(s1)):
+        if s1[i]!=s2[i]:
+            count+=1
+    return count==1
+
+if __name__=='__main__':
+    n=int(input())
+    beginstr,endstr=map(str,input().split())
+    if beginstr==endstr:
+        print(0)
+        exit()
+    strlist=[]
+    for i in range(n):
+        strlist.append(input())
+    
+    # use bfs
+    visit=[False for i in range(n)]
+    queue=[[beginstr,1]]
+    while queue:
+        str,step=queue.pop(0)
+        if judge(str,endstr):
+            print(step+1)
+            exit()
+        for i in range(n):
+            if visit[i]==False and judge(strlist[i],str):
+                visit[i]=True
+                queue.append([strlist[i],step+1])
+    print(0)
+
+
+#11 ??? (Medium) 841.钥匙和房间
+    # 有 N 个房间, 开始时你位于 0 号房间。每个房间有不同的号码：0, 1, 2, ..., N-1, 并且房间里可能有一些钥匙能使你进入下一个房间。
+    # 在形式上, 对于每个房间 i 都有一个钥匙列表 rooms[i], 每个钥匙 rooms[i][j] 由 [0,1, ..., N-1] 中的一个整数表示, 其中 N = rooms.length。 钥匙 rooms[i][j] = v 可以打开编号为 v 的房间。
+    # 最初, 除 0 号房间外的其余所有房间都被锁住。
+    # 你可以自由地在房间之间来回走动。
+    # 如果能进入每个房间返回 true, 否则返回 false。
+    # 示例 1：
+    # 输入: [[1],[2],[3],[]]
+    # 输出: true
+    # 解释: 我们从 0 号房间开始, 拿到钥匙 1。 之后我们去 1 号房间, 拿到钥匙 2。 然后我们去 2 号房间, 拿到钥匙 3。 最后我们去了 3 号房间。 由于我们能够进入每个房间, 我们返回 true。
+    # 示例 2：
+    # 输入：[[1,3],[3,0,1],[2],[0]]
+    # 输出：false
+    # 解释：我们不能进入 2 号房间。
+# 本题是一个有向图搜索全路径的问题。 只能用深搜（DFS）或者广搜（BFS）来搜。不能用并查集的方式去解决。
+# DFS 深度搜索优先
+class Solution:
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        visited = [False for i in range(len(rooms))]
+
+        self.dfs(0, rooms, visited)
+
+        # 检查是否都访问到了
+        for i in range(len(visited)):
+            if not visited[i] :
+                return False
+        return True
+
+    def dfs(self, key: int, rooms: List[List[int]]  , visited : List[bool] ) :
+        if visited[key] :
+            return
+        visited[key] = True
+        keys = rooms[key]
+        for i in range(len(keys)) :
+            # 深度优先搜索遍历
+            self.dfs(keys[i], rooms, visited)
+# BFS 广度搜索优先
+class Solution:
+    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+        visited = [False] * len(rooms)
+        self.bfs(rooms, 0, visited)
+        
+        for room in visited:
+            if room == False:
+                return False
+        return True
+    
+    def bfs(self, rooms, index, visited):
+        q = collections.deque()
+        q.append(index)
+
+        visited[0] = True
+
+        while len(q) != 0:
+            index = q.popleft()
+            for nextIndex in rooms[index]:
+                if visited[nextIndex] == False:
+                    q.append(nextIndex)
+                    visited[nextIndex] = True
+
+# 105.有向图的完全联通
+    # 【题目描述】
+    # 给定一个有向图，包含 N 个节点，节点编号分别为 1，2，...，N。现从 1 号节点开始，如果可以从 1 号节点的边可以到达任何节点，则输出 1，否则输出 -1。
+    # 【输入描述】
+    # 第一行包含两个正整数，表示节点数量 N 和边的数量 K。 后续 K 行，每行两个正整数 s 和 t，表示从 s 节点有一条边单向连接到 t 节点。
+    # 【输出描述】
+    # 如果可以从 1 号节点的边可以到达任何节点，则输出 1，否则输出 -1。
+    # 【输入示例】
+    # 4 4
+    # 1 2
+    # 2 1
+    # 1 3
+    # 2 4
+    # 【输出示例】
+    # 1
+    # 【提示信息】
+    # 从 1 号节点可以到达任意节点，输出 1。
+    # 数据范围：
+    # 1 <= N <= 100；
+    # 1 <= K <= 2000。
+# BFS算法
+import collections
+
+path = set()  # 纪录 BFS 所经过之节点
+
+def bfs(root, graph):
+    global path
+    
+    que = collections.deque([root])
+    while que:
+        cur = que.popleft()
+        path.add(cur)
+        
+        for nei in graph[cur]:
+            que.append(nei)
+        graph[cur] = []
+    return
+
+def main():
+    N, K = map(int, input().strip().split())
+    graph = collections.defaultdict(list)
+    for _ in range(K):
+        src, dest = map(int, input().strip().split())
+        graph[src].append(dest)
+    
+    bfs(1, graph)
+    if path == {i for i in range(1, N + 1)}:
+        return 1
+    return -1
+        
+
+if __name__ == "__main__":
+    print(main())
+# DFS
+def dfs(graph, key, visited):
+    for neighbor in graph[key]:
+        if not visited[neighbor]:  # Check if the next node is not visited
+            visited[neighbor] = True
+            dfs(graph, neighbor, visited)
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+
+    n = int(data[0])
+    m = int(data[1])
+    
+    graph = [[] for _ in range(n + 1)]
+    index = 2
+    for _ in range(m):
+        s = int(data[index])
+        t = int(data[index + 1])
+        graph[s].append(t)
+        index += 2
+
+    visited = [False] * (n + 1)
+    visited[1] = True  # Process node 1 beforehand
+    dfs(graph, 1, visited)
+
+    for i in range(1, n + 1):
+        if not visited[i]:
+            print(-1)
+            return
+    
+    print(1)
+
+if __name__ == "__main__":
+    main()
+
+
 
 
 # // 并查集初始化
