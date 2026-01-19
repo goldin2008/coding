@@ -55,7 +55,7 @@ class Solution:
     # addAtIndex(index,val)：在链表中的第 index 个节点之前添加值为 val  的节点。如果 index 等于链表的长度，
     # 则该节点将附加到链表的末尾。如果 index 大于链表长度，则不会插入节点。如果index小于0，则在头部插入节点。
     # deleteAtIndex(index)：如果索引 index 有效，则删除链表中的第 index 个节点。
-# （版本一）单链表法
+# (版本一）单链表法
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -136,7 +136,7 @@ class MyLinkedList:
 # obj.addAtTail(val)
 # obj.addAtIndex(index,val)
 # obj.deleteAtIndex(index)
-# （版本二）双链表法
+# (版本二）双链表法
 class ListNode:
     def __init__(self, val=0, prev=None, next=None):
         self.val = val
@@ -244,7 +244,7 @@ class MyLinkedList:
 #X3 (Easy) 206.Reverse Linked List
     # 题意：反转一个单链表。
     # 示例: 输入: 1->2->3->4->5->NULL 输出: 5->4->3->2->1->NULL
-# ***（版本一）双指针法
+# ***(版本一）双指针法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -261,7 +261,7 @@ class Solution:
             pre = cur
             cur = temp
         return pre
-# （版本二）递归法
+# (版本二）递归法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, val=0, next=None):
@@ -418,7 +418,7 @@ def remove_kth_last_node(head: ListNode, k: int) -> ListNode:
 #X6 (Easy) 160.链表相交
     # 给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。
     # 如果两个链表没有交点，返回 null 。
-# （版本一）求长度，同时出发
+# (版本一）求长度，同时出发
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         lenA, lenB = 0, 0
@@ -434,7 +434,7 @@ class Solution:
         if lenA > lenB:     # 让curB为最长链表的头，lenB为其长度
             curA, curB = curB, curA
             lenA, lenB = lenB, lenA 
-        for _ in range(lenB - lenA):  # 让curA和curB在同一起点上（末尾位置对齐）
+        for _ in range(lenB - lenA):  # 让curA和curB在同一起点上(末尾位置对齐）
             curB = curB.next 
         while curA:         #  遍历curA 和 curB，遇到相同则直接返回
             if curA == curB:
@@ -443,7 +443,7 @@ class Solution:
                 curA = curA.next 
                 curB = curB.next
         return None 
-# （版本二）求长度，同时出发 （代码复用）
+# (版本二）求长度，同时出发 (代码复用）
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         lenA = self.getLength(headA)
@@ -476,7 +476,7 @@ class Solution:
             head = head.next
             steps -= 1
         return head
-# （版本三）求长度，同时出发 （代码复用 + 精简）
+# (版本三）求长度，同时出发 (代码复用 + 精简）
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
         dis = self.getLength(headA) - self.getLength(headB)
@@ -508,7 +508,7 @@ class Solution:
             head = head.next
             steps -= 1
         return head
-# （版本四）等比例法
+# (版本四）等比例法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -570,10 +570,10 @@ def linked_list_intersection(head_A: ListNode, head_B: ListNode) -> ListNode:
 
 #7 (Medium) 142.环形链表II
     # 题意： 给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
-    # 为了表示给定链表中的环，使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 
+    # 为了表示给定链表中的环，使用整数 pos 来表示链表尾连接到链表中的位置(索引从 0 开始）。 
     # 如果 pos 是 -1，则在该链表中没有环。
     # 说明：不允许修改给定的链表
-# （版本一）快慢指针法
+# (版本一）快慢指针法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -606,7 +606,7 @@ class Solution:
                 return slow
         # If there is no cycle, return None
         return None
-# （版本二）集合法
+# (版本二）集合法
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
@@ -706,6 +706,29 @@ class Solution:
 #     def remove_node(self, node: DoublyLinkedListNode) -> None:
 #         node.prev.next = node.next
 #         node.next.prev = node.prev
+"""
+设置一个虚拟头结点在进行删除操作
+
+双指针遍历linked list,用slow来定位中间位置
+方法1
+while fast.next and fast.next.next:
+    fast = fast.next.next
+    slow = slow.next
+
+方法2
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+
+区别在slow停在的位置, 第1个要从slow.next断, 第2个要从slow断!!!
+两种方法区别在linked list中node数目为偶数时slow的停留点不一样, 这时分割的时候要注意是用slow还是slow.next来分
+node数目为奇数的时候,用两种方法slow的停留点都一样, 没有影响
+
+额外 2 步的无效性有人可能会想，能不能把待删节点的 prev 和 next 也置空，变成 4 步操作：
+但这两步完全没必要：
+从 链表功能 看：只要前后节点完成了指针重定向，链表的遍历、新增等操作就和这个节点无关了，它的指针指向什么都不影响链表。
+从 内存回收 看：在 Python 这类带垃圾回收的语言里，只要没有其他变量引用这个节点，不管它的指针是不是 None, 都会被回收;如果有其他变量引用它,就算置空指针,它也不会被回收.
+"""
 
 class ListNode:
     def __init__(self, key: int, value: int):
